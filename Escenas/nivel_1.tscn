@@ -78,10 +78,10 @@ script = ExtResource("2_5j2cu")
 [node name="CanvasLayer" parent="." instance=ExtResource("4_j23ur")]
 
 [node name="InventoryUI" parent="CanvasLayer" instance=ExtResource("5_gjkhy")]
-offset_left = 5.0
-offset_top = -1.0
-offset_right = 5.0
-offset_bottom = -1.0
+offset_left = 30.0
+offset_top = 13.0
+offset_right = 30.0
+offset_bottom = 13.0
 
 [node name="LabelDialogue" parent="CanvasLayer" instance=ExtResource("6_dp2kd")]
 visible = false
