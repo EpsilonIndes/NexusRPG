@@ -1,7 +1,147 @@
-[gd_scene load_steps=4 format=3 uid="uid://dbcn88xgtkshp"]
+[gd_scene load_steps=22 format=3 uid="uid://dbcn88xgtkshp"]
 
-[ext_resource type="Texture2D" uid="uid://hu3p4djfhj3q" path="res://Sprites/miguelito/miguelitoabajo.png" id="1_464nr"]
 [ext_resource type="Script" path="res://Scripts/Dialogable.gd" id="1_kbsk6"]
+[ext_resource type="Texture2D" uid="uid://6tdjdbax0khp" path="res://Sprites/miguelito/miguelitoder.png" id="2_eviuu"]
+[ext_resource type="Texture2D" uid="uid://cg0u2v30puvmx" path="res://Sprites/miguelito/Miguelitoabajosheet.png" id="3_l045p"]
+[ext_resource type="Texture2D" uid="uid://cx0vng0gfayta" path="res://Sprites/miguelito/miguelitoizq.png" id="4_7kgx3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5d8d4"]
+atlas = ExtResource("2_eviuu")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_smnl3"]
+atlas = ExtResource("3_l045p")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_60lyx"]
+atlas = ExtResource("4_7kgx3")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4qpgl"]
+atlas = ExtResource("2_eviuu")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s6q8e"]
+atlas = ExtResource("2_eviuu")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3bqa8"]
+atlas = ExtResource("2_eviuu")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wtyuy"]
+atlas = ExtResource("2_eviuu")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ax0rd"]
+atlas = ExtResource("3_l045p")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7vpgp"]
+atlas = ExtResource("3_l045p")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_umajf"]
+atlas = ExtResource("3_l045p")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k1tn3"]
+atlas = ExtResource("3_l045p")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iryh8"]
+atlas = ExtResource("4_7kgx3")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vqv7y"]
+atlas = ExtResource("4_7kgx3")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3lgca"]
+atlas = ExtResource("4_7kgx3")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bau60"]
+atlas = ExtResource("4_7kgx3")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_j15uq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5d8d4")
+}],
+"loop": true,
+"name": &"idle_der",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_smnl3")
+}],
+"loop": true,
+"name": &"idle_down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_60lyx")
+}],
+"loop": true,
+"name": &"idle_izq",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4qpgl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s6q8e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3bqa8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wtyuy")
+}],
+"loop": true,
+"name": &"move_der",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ax0rd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7vpgp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_umajf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k1tn3")
+}],
+"loop": true,
+"name": &"move_down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iryh8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vqv7y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3lgca")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bau60")
+}],
+"loop": true,
+"name": &"move_izq",
+"speed": 5.0
+}]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_i1s18"]
 radius = 0.386952
@@ -10,11 +150,12 @@ height = 1.34857
 [node name="Miguelito" type="CharacterBody3D" groups=["interactuables"]]
 script = ExtResource("1_kbsk6")
 
-[node name="Sprite3D" type="Sprite3D" parent="."]
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
 billboard = 2
 texture_filter = 0
-texture = ExtResource("1_464nr")
+sprite_frames = SubResource("SpriteFrames_j15uq")
+animation = &"idle_down"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0606673, 0)

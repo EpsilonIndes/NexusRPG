@@ -1,10 +1,13 @@
-[gd_scene format=3 uid="uid://dkn8gxfmy5tm6"]
+[gd_scene load_steps=2 format=3 uid="uid://dkn8gxfmy5tm6"]
+
+[ext_resource type="Script" path="res://Scripts/LabelDialogue.gd" id="1_2hgxt"]
 
 [node name="LabelDialogue" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 298.0
 offset_bottom = 175.0
+script = ExtResource("1_2hgxt")
 
 [node name="PanelGeneral" type="Panel" parent="."]
 layout_mode = 0

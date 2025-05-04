@@ -5,5 +5,3 @@ extends Node3D
 
 func interact():
 	UImanager.mostrar_dialogo(nombre_npc, dialogo_texto)
-	
-

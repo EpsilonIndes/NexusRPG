@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-@export var speed: float = 2.5
+@export var speed: float = 5.0
 @export var rotation_speed: float = 10.0
 @onready var animated_sprite: AnimatedSprite3D = $AnimatedSprite3D
 

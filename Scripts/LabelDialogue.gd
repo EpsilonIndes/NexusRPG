@@ -1,20 +1,20 @@
 extends Control
 
-func _ready():
-	UImanager.label_dialogue = $Nivel1/CanvasLayer/LabelDialogue #No se asignaaaa, para arreglar.
+@onready var kosmo = $"../../Personajes/Player"
 
-var dialogo_activo := false
+func _ready():
+	UImanager.label_dialogue  = $"../../CanvasLayer/LabelDialogue"
 
 func mostrar_dialogo(nombre, texto):
+	
 	get_node("PanelGeneral/NombrePanel/Nombre").text = nombre
 	get_node("PanelGeneral/Dialogo").text = texto
 	get_node("PanelGeneral").visible = true
-	dialogo_activo = true
-
+	kosmo.speed = 0
 func ocultar_dialogo():
 	get_node("PanelGeneral").visible = false
-	dialogo_activo = false
 
 func _input(event):
-	if event.is_action_pressed("cancelar") and dialogo_activo:
+	if event.is_action_pressed("accion") and kosmo.speed == 0:
+		kosmo.speed = 5
 		ocultar_dialogo()

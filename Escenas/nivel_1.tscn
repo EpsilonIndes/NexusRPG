@@ -1,15 +1,13 @@
-[gd_scene load_steps=15 format=3 uid="uid://cjswe57kq821f"]
+[gd_scene load_steps=13 format=3 uid="uid://cjswe57kq821f"]
 
 [ext_resource type="PackedScene" uid="uid://bmocargan5l0q" path="res://Escenas/player.tscn" id="1_a8vtw"]
 [ext_resource type="Script" path="res://Scripts/InventoryManager.gd" id="2_5j2cu"]
 [ext_resource type="PackedScene" uid="uid://dbcn88xgtkshp" path="res://Escenas/Personajes/miguelito.tscn" id="2_csbrw"]
-[ext_resource type="Script" path="res://Scripts/playerControllerDialogo.gd" id="2_extpn"]
 [ext_resource type="Script" path="res://Scripts/Interactable.gd" id="2_rijmf"]
 [ext_resource type="Script" path="res://Scripts/Dialogable2.gd" id="4_76hek"]
 [ext_resource type="PackedScene" uid="uid://ecyr37wcvpst" path="res://Escenas/canvas_layer.tscn" id="4_j23ur"]
 [ext_resource type="PackedScene" uid="uid://qh76bv7y2534" path="res://Escenas/InventoryUI.tscn" id="5_gjkhy"]
 [ext_resource type="PackedScene" uid="uid://dkn8gxfmy5tm6" path="res://Escenas/label_dialogue.tscn" id="6_dp2kd"]
-[ext_resource type="Script" path="res://Scripts/LabelDialogue.gd" id="8_jmoye"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_3faga"]
 
@@ -26,10 +24,8 @@ size = Vector3(1, 0.981689, 1)
 
 [node name="Player" parent="Personajes" instance=ExtResource("1_a8vtw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82957, -1.41913)
-script = ExtResource("2_extpn")
-speed = 5.0
 
-[node name="Miguelito" parent="Personajes" instance=ExtResource("2_csbrw")]
+[node name="MiguelitoNPC" parent="Personajes" instance=ExtResource("2_csbrw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.779405, -4.18304)
 script = ExtResource("4_76hek")
 
@@ -84,10 +80,8 @@ offset_right = 30.0
 offset_bottom = 13.0
 
 [node name="LabelDialogue" parent="CanvasLayer" instance=ExtResource("6_dp2kd")]
-visible = false
 offset_left = 66.0
 offset_top = 276.0
 offset_right = 562.0
 offset_bottom = 454.0
 scale = Vector2(2.0051, 2.0051)
-script = ExtResource("8_jmoye")

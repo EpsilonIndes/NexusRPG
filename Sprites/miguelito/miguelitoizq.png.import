@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://hu3p4djfhj3q"
-path="res://.godot/imported/miguelitoabajo.png-0e3cec268119be472f22b45347b2767e.ctex"
+uid="uid://cx0vng0gfayta"
+path="res://.godot/imported/miguelitoizq.png-427f00333117b2884b7f16594188e1ed.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/miguelito/miguelitoabajo.png"
-dest_files=["res://.godot/imported/miguelitoabajo.png-0e3cec268119be472f22b45347b2767e.ctex"]
+source_file="res://Sprites/miguelito/miguelitoizq.png"
+dest_files=["res://.godot/imported/miguelitoizq.png-427f00333117b2884b7f16594188e1ed.ctex"]
 
 [params]
 
@@ -25,7 +25,7 @@ mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
-process/fix_alpha_border=false
+process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false
