@@ -1,5 +1,5 @@
 🧩 NexusRPG
-NexusRPG es un RPG clásico en 3D desarrollado con Godot 4, utilizando Sprites3D para lograr una estética retro con mecánicas modernas. Sumérgete en un mundo de aventuras, combates tácticos y exploración profunda.
+Es un RPG clásico en 3D desarrollado con Godot 4, utilizando Sprites3D para lograr una estética retro con mecánicas modernas. Sumérgete en un mundo de aventuras, combates tácticos y exploración profunda.
 
 🚀 Características
 🎮 Estilo clásico en 3D: Combina lo mejor de los RPGs de antaño con tecnología actual.
