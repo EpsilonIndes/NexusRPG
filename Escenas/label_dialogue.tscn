@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://dkn8gxfmy5tm6"]
+
+[node name="LabelDialogue" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 298.0
+offset_bottom = 175.0
+
+[node name="PanelGeneral" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 101.0
+offset_right = 494.0
+offset_bottom = 175.0
+
+[node name="NombrePanel" type="Panel" parent="PanelGeneral"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = -23.0
+offset_right = 125.0
+offset_bottom = -1.0
+
+[node name="Nombre" type="Label" parent="PanelGeneral/NombrePanel"]
+layout_mode = 0
+offset_left = 4.0
+offset_top = -2.0
+offset_right = 83.0
+offset_bottom = 21.0
+text = "NombrePJ"
+
+[node name="Dialogo" type="Label" parent="PanelGeneral"]
+layout_mode = 0
+offset_left = 7.0
+offset_top = 6.0
+offset_right = 80.0
+offset_bottom = 29.0
+text = "\"Diálogo\""

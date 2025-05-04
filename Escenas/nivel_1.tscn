@@ -1,0 +1,93 @@
+[gd_scene load_steps=15 format=3 uid="uid://cjswe57kq821f"]
+
+[ext_resource type="PackedScene" uid="uid://bmocargan5l0q" path="res://Escenas/player.tscn" id="1_a8vtw"]
+[ext_resource type="Script" path="res://Scripts/InventoryManager.gd" id="2_5j2cu"]
+[ext_resource type="PackedScene" uid="uid://dbcn88xgtkshp" path="res://Escenas/Personajes/miguelito.tscn" id="2_csbrw"]
+[ext_resource type="Script" path="res://Scripts/playerControllerDialogo.gd" id="2_extpn"]
+[ext_resource type="Script" path="res://Scripts/Interactable.gd" id="2_rijmf"]
+[ext_resource type="Script" path="res://Scripts/Dialogable2.gd" id="4_76hek"]
+[ext_resource type="PackedScene" uid="uid://ecyr37wcvpst" path="res://Escenas/canvas_layer.tscn" id="4_j23ur"]
+[ext_resource type="PackedScene" uid="uid://qh76bv7y2534" path="res://Escenas/InventoryUI.tscn" id="5_gjkhy"]
+[ext_resource type="PackedScene" uid="uid://dkn8gxfmy5tm6" path="res://Escenas/label_dialogue.tscn" id="6_dp2kd"]
+[ext_resource type="Script" path="res://Scripts/LabelDialogue.gd" id="8_jmoye"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_3faga"]
+
+[sub_resource type="HeightMapShape3D" id="HeightMapShape3D_of6q4"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_oluom"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_k26f6"]
+size = Vector3(1, 0.981689, 1)
+
+[node name="Nivel1" type="Node"]
+
+[node name="Personajes" type="Node" parent="."]
+
+[node name="Player" parent="Personajes" instance=ExtResource("1_a8vtw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82957, -1.41913)
+script = ExtResource("2_extpn")
+speed = 5.0
+
+[node name="Miguelito" parent="Personajes" instance=ExtResource("2_csbrw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.779405, -4.18304)
+script = ExtResource("4_76hek")
+
+[node name="Terreno" type="Node" parent="."]
+
+[node name="Suelo" type="Node3D" parent="Terreno"]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terreno/Suelo"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Terreno/Suelo/StaticBody3D"]
+transform = Transform3D(16.1101, 0, 0, 0, 2.47752, 0, 0, 0, 14.3823, 0, 0, 0)
+mesh = SubResource("PlaneMesh_3faga")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terreno/Suelo/StaticBody3D"]
+transform = Transform3D(6, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0)
+shape = SubResource("HeightMapShape3D_of6q4")
+
+[node name="Letrero" type="Node3D" parent="Terreno" groups=["interactuables"]]
+transform = Transform3D(-0.00331724, 0, 1.33304, 0, 1.28745, 0, -0.304086, 0, -0.0145417, 2.64961, 0.241799, -1.62964)
+script = ExtResource("2_rijmf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terreno/Letrero"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Terreno/Letrero/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -1.86265e-09, 0, 1, 0, 0.304871, 0)
+mesh = SubResource("BoxMesh_oluom")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terreno/Letrero/StaticBody3D"]
+transform = Transform3D(1, 0, 3.72529e-09, 0, 1, 0, 0, 0, 1, 0, 0.313355, 0)
+shape = SubResource("BoxShape3D_k26f6")
+
+[node name="Iluminación" type="Node" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Iluminación"]
+transform = Transform3D(1, 0, 0, 0, 0.425858, 0.90479, 0, -0.90479, 0.425858, 0, 6.39511, 0)
+
+[node name="gameManager" type="Node" parent="."]
+
+[node name="InventoryManager" type="Node" parent="gameManager"]
+script = ExtResource("2_5j2cu")
+
+[node name="ItemDatabase" type="Node" parent="gameManager/InventoryManager"]
+
+[node name="DialogueSistem" type="Node" parent="gameManager"]
+
+[node name="CanvasLayer" parent="." instance=ExtResource("4_j23ur")]
+
+[node name="InventoryUI" parent="CanvasLayer" instance=ExtResource("5_gjkhy")]
+offset_left = 5.0
+offset_top = -1.0
+offset_right = 5.0
+offset_bottom = -1.0
+
+[node name="LabelDialogue" parent="CanvasLayer" instance=ExtResource("6_dp2kd")]
+visible = false
+offset_left = 66.0
+offset_top = 276.0
+offset_right = 562.0
+offset_bottom = 454.0
+scale = Vector2(2.0051, 2.0051)
+script = ExtResource("8_jmoye")

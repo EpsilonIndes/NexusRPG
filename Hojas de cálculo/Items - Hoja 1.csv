@@ -1,0 +1,6 @@
+id,name,type,description,value,rarity,effect
+potion,Poción,item,Recupera 50 HP.,50,common,heal_50hp
+ether,Éter,item,Recupera 30 MP.,120,rare,restore_30mp
+bronze_sword,Espada de Bronce,weapon,Espada básica de principiantes.,200,common,atk_boost_5
+iron_armor,Armadura de Hierro,armor,Armadura simple de hierro.,180,common,def_boost_5
+phoenix_down,Cola de Fénix,item,Revive a un aliado KO.,300,rare,revive_ally

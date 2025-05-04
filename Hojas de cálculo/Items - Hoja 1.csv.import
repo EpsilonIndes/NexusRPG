@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://brq1jluxclcc"
+
+[deps]
+
+files=["res://Hojas de cálculo/Items - Hoja 1.name.translation", "res://Hojas de cálculo/Items - Hoja 1.type.translation", "res://Hojas de cálculo/Items - Hoja 1.description.translation", "res://Hojas de cálculo/Items - Hoja 1.value.translation", "res://Hojas de cálculo/Items - Hoja 1.rarity.translation", "res://Hojas de cálculo/Items - Hoja 1.effect.translation"]
+
+source_file="res://Hojas de cálculo/Items - Hoja 1.csv"
+dest_files=["res://Hojas de cálculo/Items - Hoja 1.name.translation", "res://Hojas de cálculo/Items - Hoja 1.type.translation", "res://Hojas de cálculo/Items - Hoja 1.description.translation", "res://Hojas de cálculo/Items - Hoja 1.value.translation", "res://Hojas de cálculo/Items - Hoja 1.rarity.translation", "res://Hojas de cálculo/Items - Hoja 1.effect.translation"]
+
+[params]
+
+compress=true
+delimiter=0
