@@ -16,6 +16,7 @@ config/features=PackedStringArray("4.2", "GL Compatibility")
 
 [autoload]
 
+GameManager="*res://Scripts/Singletons/GameManager.gd"
 InventoryManager="*res://Scripts/InventoryManager.gd"
 UImanager="*res://Scripts/Singletons/UImanager.gd"
 

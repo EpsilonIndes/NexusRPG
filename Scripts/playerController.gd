@@ -6,7 +6,6 @@ extends CharacterBody3D
 
 @onready var raycast : RayCast3D = $RayCast3D
 
-@onready var interaction_label = $"../../CanvasLayer/InteractionLabel"
 @onready var inventory_ui = $"../../CanvasLayer/InventoryUI"
 
 @onready var inventory_manager = get_tree().get_root().get_node("InventoryManager")
@@ -14,6 +13,14 @@ extends CharacterBody3D
 var rayCast_Rotation = Vector3.ZERO 
 
 func _process(delta):
+	if GameManager.estado_actual == GameManager.EstadosDeJuego.DIALOGO:
+		raycast.enabled = false
+	else:
+		raycast.enabled = true
+
+	if GameManager.estado_actual != GameManager.EstadosDeJuego.LIBRE:
+		# Si el estado no es LIBRE, no se procesa la entrada del jugador
+		return
 
 	var input_dir = Vector3.ZERO #Vector3(0, 0, 0)
 

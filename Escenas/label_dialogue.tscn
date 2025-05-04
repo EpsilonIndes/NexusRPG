@@ -10,6 +10,7 @@ offset_bottom = 175.0
 script = ExtResource("1_2hgxt")
 
 [node name="PanelGeneral" type="Panel" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 3.0
 offset_top = 101.0
