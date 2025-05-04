@@ -1,7 +1,7 @@
 extends Control
 
 func _ready():
-	UImanager.label_dialogue = $Nivel1/CanvasLayer/LabelDialogue #No se asignaaaa
+	UImanager.label_dialogue = $Nivel1/CanvasLayer/LabelDialogue #No se asignaaaa, para arreglar.
 
 var dialogo_activo := false
 
