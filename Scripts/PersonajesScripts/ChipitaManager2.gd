@@ -19,7 +19,6 @@ enum State {
 var state = State.FOLLOW
 
 # Lógica principal
-
 @export var kosmo_path: NodePath
 var kosmo: Node3D = null
 @onready var nav_agent = $NavigationAgent3D
@@ -57,6 +56,7 @@ func _physics_process(delta):
 			Return_to_kosmo(delta)
 			
 	check_state_transition()
+
 
 func Follow_kosmo(delta):
 	var distance = global_position.distance_to(kosmo.global_position)
@@ -129,4 +129,10 @@ func update_animation(move_vector: Vector3):
 			anim_sprite.play("walk" + last_direction)
 
 		anim_sprite.flip_h = false
-		
+	
+	var last_flip_h = false
+	anim_sprite.flip_h = move_vector.x < 0
+	last_flip_h = anim_sprite.flip_h
+	if last_direction == "_side":
+		anim_sprite.flip_h = last_flip_h
+
