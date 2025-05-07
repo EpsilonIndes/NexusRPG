@@ -19,7 +19,6 @@ func _process(delta):
 		raycast.enabled = true
 
 	if GameManager.estado_actual != GameManager.EstadosDeJuego.LIBRE:
-		# Si el estado no es LIBRE, no se procesa la entrada del jugador
 		return
 
 	var input_dir = Vector3.ZERO #Vector3(0, 0, 0)

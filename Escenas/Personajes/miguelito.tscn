@@ -1,6 +1,6 @@
 [gd_scene load_steps=22 format=3 uid="uid://dbcn88xgtkshp"]
 
-[ext_resource type="Script" path="res://Scripts/Dialogable.gd" id="1_kbsk6"]
+[ext_resource type="Script" path="res://Scripts/Dialogable2.gd" id="1_im0mv"]
 [ext_resource type="Texture2D" uid="uid://6tdjdbax0khp" path="res://Sprites/miguelito/miguelitoder.png" id="2_eviuu"]
 [ext_resource type="Texture2D" uid="uid://cg0u2v30puvmx" path="res://Sprites/miguelito/Miguelitoabajosheet.png" id="3_l045p"]
 [ext_resource type="Texture2D" uid="uid://cx0vng0gfayta" path="res://Sprites/miguelito/miguelitoizq.png" id="4_7kgx3"]
@@ -148,11 +148,15 @@ radius = 0.386952
 height = 1.34857
 
 [node name="Miguelito" type="CharacterBody3D" groups=["interactuables"]]
-script = ExtResource("1_kbsk6")
+script = ExtResource("1_im0mv")
+nombre_npc = "<null>"
+dialogo_texto = "<null>"
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
-billboard = 2
+billboard = 1
 texture_filter = 0
 sprite_frames = SubResource("SpriteFrames_j15uq")
 animation = &"idle_down"

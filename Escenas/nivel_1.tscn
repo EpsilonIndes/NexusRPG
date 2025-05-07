@@ -1,22 +1,30 @@
-[gd_scene load_steps=13 format=3 uid="uid://cjswe57kq821f"]
+[gd_scene load_steps=14 format=3 uid="uid://cjswe57kq821f"]
 
 [ext_resource type="PackedScene" uid="uid://bmocargan5l0q" path="res://Escenas/player.tscn" id="1_a8vtw"]
 [ext_resource type="Script" path="res://Scripts/InventoryManager.gd" id="2_5j2cu"]
 [ext_resource type="PackedScene" uid="uid://dbcn88xgtkshp" path="res://Escenas/Personajes/miguelito.tscn" id="2_csbrw"]
 [ext_resource type="Script" path="res://Scripts/Interactable.gd" id="2_rijmf"]
-[ext_resource type="Script" path="res://Scripts/Dialogable2.gd" id="4_76hek"]
+[ext_resource type="PackedScene" uid="uid://ddbnhhajofjkw" path="res://Escenas/Personajes/chipita_seguidora.tscn" id="3_34qh6"]
 [ext_resource type="PackedScene" uid="uid://ecyr37wcvpst" path="res://Escenas/canvas_layer.tscn" id="4_j23ur"]
 [ext_resource type="PackedScene" uid="uid://qh76bv7y2534" path="res://Escenas/InventoryUI.tscn" id="5_gjkhy"]
 [ext_resource type="PackedScene" uid="uid://dkn8gxfmy5tm6" path="res://Escenas/label_dialogue.tscn" id="6_dp2kd"]
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_3faga"]
+[sub_resource type="NavigationMesh" id="NavigationMesh_p4rn7"]
+vertices = PackedVector3Array(-9.38201, 0.5, -9.11942, -9.38201, 0.5, 9.13058, 9.36799, 0.5, 9.13058, 9.36799, 0.5, -9.11942)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
 
-[sub_resource type="HeightMapShape3D" id="HeightMapShape3D_of6q4"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_tefin"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_oluom"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_k26f6"]
 size = Vector3(1, 0.981689, 1)
+
+[sub_resource type="Environment" id="Environment_njs3v"]
+background_mode = 1
+background_color = Color(0.396078, 0.678431, 0.780392, 0.87451)
+ambient_light_source = 2
+ambient_light_color = Color(0.345098, 0.152941, 0.337255, 1)
 
 [node name="Nivel1" type="Node"]
 
@@ -27,24 +35,26 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82957, -1.41913)
 
 [node name="MiguelitoNPC" parent="Personajes" instance=ExtResource("2_csbrw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.779405, -4.18304)
-script = ExtResource("4_76hek")
+nombre_npc = "Miguelito"
+dialogo_texto = "Te sigo Camarada!"
+
+[node name="Chipita_Seguidora" parent="Personajes" instance=ExtResource("3_34qh6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.757282, 0)
+kosmo_path = NodePath("../Player")
+speed = 180.0
 
 [node name="Terreno" type="Node" parent="."]
 
-[node name="Suelo" type="Node3D" parent="Terreno"]
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="Terreno"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 9.31323e-10, 0, 1, 0, 0, 0)
+navigation_mesh = SubResource("NavigationMesh_p4rn7")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Terreno/Suelo"]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Terreno/Suelo/StaticBody3D"]
-transform = Transform3D(16.1101, 0, 0, 0, 2.47752, 0, 0, 0, 14.3823, 0, 0, 0)
-mesh = SubResource("PlaneMesh_3faga")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Terreno/Suelo/StaticBody3D"]
-transform = Transform3D(6, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0)
-shape = SubResource("HeightMapShape3D_of6q4")
+[node name="CSGMesh3D" type="CSGMesh3D" parent="Terreno/NavigationRegion3D"]
+transform = Transform3D(9.88201, 0, 0, 0, 7.91547, 0, 0, 0, 9.61942, 0, 0, 0)
+mesh = SubResource("PlaneMesh_tefin")
 
 [node name="Letrero" type="Node3D" parent="Terreno" groups=["interactuables"]]
-transform = Transform3D(-0.00331724, 0, 1.33304, 0, 1.28745, 0, -0.304086, 0, -0.0145417, 2.64961, 0.241799, -1.62964)
+transform = Transform3D(-0.00331724, 0, 1.33304, 0, 1.28745, 0, -0.304086, 0, -0.0145417, 2.64961, 0.382242, -1.62964)
 script = ExtResource("2_rijmf")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Terreno/Letrero"]
@@ -85,3 +95,8 @@ offset_top = 276.0
 offset_right = 562.0
 offset_bottom = 454.0
 scale = Vector2(2.0051, 2.0051)
+
+[node name="Entorno" type="Node" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Entorno"]
+environment = SubResource("Environment_njs3v")

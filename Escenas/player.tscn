@@ -16,7 +16,7 @@ shape = SubResource("CapsuleShape3D_jtofr")
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
-billboard = 2
+billboard = 1
 texture_filter = 0
 sprite_frames = ExtResource("1_f6xyg")
 animation = &"down"
