@@ -19,15 +19,16 @@ enum State {
 var state = State.FOLLOW
 
 # Lógica principal
+var last_direction = "_down" # Inicializa la dirección de la animación
 @export var kosmo_path: NodePath
 var kosmo: Node3D = null
 @onready var nav_agent = $NavigationAgent3D
 @onready var anim_sprite = $AnimatedSprite3D
 @export var speed: float = 120.0
 
-const FOLLOW_DISTANCE = 2.0
+const FOLLOW_DISTANCE = 1.5
 const EXPLORE_RADIUS = 5.0
-const MAX_DISTANCE_FROM_KOSMO = 6.0
+const MAX_DISTANCE_FROM_KOSMO = 5.0
 var target_position: Vector3 = Vector3.ZERO
 
 
@@ -64,8 +65,8 @@ func Follow_kosmo(delta):
 		nav_agent.target_position = kosmo.global_position
 		Move_to_target(delta)
 	else:
-		# Aquí agregamos animaciones idle
-		pass
+		velocity = Vector3.ZERO
+		update_animation(Vector3.ZERO)
 
 func Explore_area(delta):
 	Move_to_target(delta)
@@ -94,22 +95,19 @@ func check_state_transition():
 
 func Move_to_target(delta):
 	if nav_agent.is_navigation_finished():
-		anim_sprite.play("idle_down")  # O cualquier idle por defecto
+		velocity = Vector3.ZERO
+		update_animation(Vector3.ZERO)
 		return
+	
 	var next_pos = nav_agent.get_next_path_position()
 	var direction = (next_pos - global_position).normalized()
 	direction.y = 0
-	var move_vector = direction * speed
-	velocity = speed * direction * delta
-
-	move_and_slide()
+	velocity = direction * speed * delta
 	
-	update_animation(move_vector)
+	update_animation(direction)
+	move_and_slide()
 
 func update_animation(move_vector: Vector3):
-	
-	var last_direction = "_down"
-
 	if move_vector.length() < 0.1:
 		anim_sprite.play("idle" + last_direction)
 		return
@@ -118,21 +116,10 @@ func update_animation(move_vector: Vector3):
 		last_direction = "_side"
 		anim_sprite.play("walk" + last_direction)
 		anim_sprite.flip_h = move_vector.x < 0
-		
 	else:
 		if move_vector.z > 0:
 			last_direction = "_down"
-			anim_sprite.play("walk" + last_direction)
-			
 		else:
 			last_direction = "_up"
-			anim_sprite.play("walk" + last_direction)
-
+		anim_sprite.play("walk" + last_direction)
 		anim_sprite.flip_h = false
-	
-	var last_flip_h = false
-	anim_sprite.flip_h = move_vector.x < 0
-	last_flip_h = anim_sprite.flip_h
-	if last_direction == "_side":
-		anim_sprite.flip_h = last_flip_h
-

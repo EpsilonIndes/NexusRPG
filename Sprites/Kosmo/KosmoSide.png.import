@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bphoicqodc0a8"
-path="res://.godot/imported/Player3.png-8c24a6b45d6432668a74398b85aac000.ctex"
+uid="uid://dhh4stil06p5y"
+path="res://.godot/imported/KosmoSide.png-ec1cecac3588c608c781d417d6d55ae0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/Player3.png"
-dest_files=["res://.godot/imported/Player3.png-8c24a6b45d6432668a74398b85aac000.ctex"]
+source_file="res://Sprites/Kosmo/KosmoSide.png"
+dest_files=["res://.godot/imported/KosmoSide.png-ec1cecac3588c608c781d417d6d55ae0.ctex"]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
-compress/channel_pack=1
+compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0

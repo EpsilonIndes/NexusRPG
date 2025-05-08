@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dp6m5kdrguvs4"
-path="res://.godot/imported/Kosmoabajo-export.png-15c5bcee6422beb1c144a4c3fb1fa856.ctex"
+uid="uid://yjavb58n3c1n"
+path="res://.godot/imported/KosmoAbajoSheet.png-600103e4f3d49f258b2f75a0abf852a5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/Kosmoabajo-export.png"
-dest_files=["res://.godot/imported/Kosmoabajo-export.png-15c5bcee6422beb1c144a4c3fb1fa856.ctex"]
+source_file="res://Sprites/Kosmo/KosmoAbajoSheet.png"
+dest_files=["res://.godot/imported/KosmoAbajoSheet.png-600103e4f3d49f258b2f75a0abf852a5.ctex"]
 
 [params]
 

@@ -156,10 +156,10 @@ billboard = 1
 texture_filter = 0
 sprite_frames = SubResource("SpriteFrames_hi2w4")
 animation = &"idle_down"
+frame_progress = 0.78553
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0843664, 0)
 shape = SubResource("CapsuleShape3D_85nbb")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
-debug_enabled = true

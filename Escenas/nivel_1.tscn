@@ -22,9 +22,9 @@ size = Vector3(1, 0.981689, 1)
 
 [sub_resource type="Environment" id="Environment_njs3v"]
 background_mode = 1
-background_color = Color(0.396078, 0.678431, 0.780392, 0.87451)
+background_color = Color(7.70092e-07, 0.661235, 0.874662, 1)
 ambient_light_source = 2
-ambient_light_color = Color(0.345098, 0.152941, 0.337255, 1)
+ambient_light_color = Color(0.0723334, 0.62, 0, 1)
 
 [node name="Nivel1" type="Node"]
 
@@ -70,7 +70,8 @@ shape = SubResource("BoxShape3D_k26f6")
 [node name="Iluminación" type="Node" parent="."]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Iluminación"]
-transform = Transform3D(1, 0, 0, 0, 0.425858, 0.90479, 0, -0.90479, 0.425858, 0, 6.39511, 0)
+transform = Transform3D(0.749845, -0.036311, -0.660617, 0.589674, 0.489476, 0.642416, 0.300029, -0.871261, 0.388442, 0, 6.39511, 0)
+shadow_enabled = true
 
 [node name="gameManager" type="Node" parent="."]
 
