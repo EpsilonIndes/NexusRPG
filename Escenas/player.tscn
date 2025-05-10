@@ -19,12 +19,12 @@ transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
 billboard = 1
 texture_filter = 0
 sprite_frames = ExtResource("1_f6xyg")
-animation = &"down"
+animation = &"idle_down"
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.798036, 0.602609, 0, -0.602609, 0.798036, 0, 3.2232, 5.44492)
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
-transform = Transform3D(0.0883964, -0.999844, 0, 4.99922, 0.0176793, 0, 0, 0, 1, 0.00669003, -0.00791371, 0.00429404)
+transform = Transform3D(0.0174524, -0.999848, 0, 0.999848, 0.0174524, 0, 0, 0, 1, -0.00496274, -0.284316, 0)
 target_position = Vector3(0, 0, -1)
 debug_shape_custom_color = Color(0, 0.639216, 0, 1)

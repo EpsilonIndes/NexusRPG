@@ -1,0 +1,128 @@
+[gd_scene load_steps=16 format=3 uid="uid://ckhl1sgngkvhd"]
+
+[ext_resource type="Script" path="res://Scripts/PersonajesScripts/SigridManager.gd" id="1_go8cu"]
+[ext_resource type="Texture2D" uid="uid://bc5m28bxdvmua" path="res://Sprites/Sigrid/SigridDown.png" id="1_wvfvn"]
+[ext_resource type="Texture2D" uid="uid://c4bgxjncxo0rg" path="res://Sprites/Sigrid/SigridUp.png" id="3_fm2nf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aefyg"]
+atlas = ExtResource("1_wvfvn")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_74l16"]
+atlas = ExtResource("3_fm2nf")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4grs4"]
+atlas = ExtResource("1_wvfvn")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u7as7"]
+atlas = ExtResource("1_wvfvn")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eyuqa"]
+atlas = ExtResource("1_wvfvn")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5tfji"]
+atlas = ExtResource("1_wvfvn")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7u6ee"]
+atlas = ExtResource("3_fm2nf")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gxbyb"]
+atlas = ExtResource("3_fm2nf")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rkgnp"]
+atlas = ExtResource("3_fm2nf")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q2urs"]
+atlas = ExtResource("3_fm2nf")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wfda4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aefyg")
+}],
+"loop": true,
+"name": &"idle_down",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"idle_side",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_74l16")
+}],
+"loop": true,
+"name": &"idle_up",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4grs4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u7as7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eyuqa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5tfji")
+}],
+"loop": true,
+"name": &"walk_down",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"walk_side",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7u6ee")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gxbyb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rkgnp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q2urs")
+}],
+"loop": true,
+"name": &"walk_up",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xejmx"]
+radius = 0.268492
+height = 1.07289
+
+[node name="Sigrid" type="CharacterBody3D"]
+script = ExtResource("1_go8cu")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+billboard = 1
+texture_filter = 0
+sprite_frames = SubResource("SpriteFrames_wfda4")
+animation = &"idle_down"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0969321, 0)
+shape = SubResource("CapsuleShape3D_xejmx")

@@ -19,6 +19,11 @@ config/features=PackedStringArray("4.2", "GL Compatibility")
 GameManager="*res://Scripts/Singletons/GameManager.gd"
 InventoryManager="*res://Scripts/InventoryManager.gd"
 UImanager="*res://Scripts/Singletons/UImanager.gd"
+DataLoader="*res://Scripts/Singletons/DataLoader.gd"
+
+[filesystem]
+
+import/fbx/enabled=false
 
 [input]
 

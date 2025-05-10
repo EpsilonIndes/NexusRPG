@@ -1,13 +1,15 @@
-[gd_scene load_steps=14 format=3 uid="uid://cjswe57kq821f"]
+[gd_scene load_steps=16 format=3 uid="uid://cjswe57kq821f"]
 
 [ext_resource type="PackedScene" uid="uid://bmocargan5l0q" path="res://Escenas/player.tscn" id="1_a8vtw"]
 [ext_resource type="Script" path="res://Scripts/InventoryManager.gd" id="2_5j2cu"]
 [ext_resource type="PackedScene" uid="uid://dbcn88xgtkshp" path="res://Escenas/Personajes/miguelito.tscn" id="2_csbrw"]
-[ext_resource type="Script" path="res://Scripts/Interactable.gd" id="2_rijmf"]
 [ext_resource type="PackedScene" uid="uid://ddbnhhajofjkw" path="res://Escenas/Personajes/chipita_seguidora.tscn" id="3_34qh6"]
+[ext_resource type="PackedScene" uid="uid://ckhl1sgngkvhd" path="res://Escenas/Personajes/Sigrid.tscn" id="4_bjhsu"]
 [ext_resource type="PackedScene" uid="uid://ecyr37wcvpst" path="res://Escenas/canvas_layer.tscn" id="4_j23ur"]
 [ext_resource type="PackedScene" uid="uid://qh76bv7y2534" path="res://Escenas/InventoryUI.tscn" id="5_gjkhy"]
 [ext_resource type="PackedScene" uid="uid://dkn8gxfmy5tm6" path="res://Escenas/label_dialogue.tscn" id="6_dp2kd"]
+[ext_resource type="PackedScene" uid="uid://d0pklwxlyct8i" path="res://Models/Interactuables/Cofre.tscn" id="9_qe0o7"]
+[ext_resource type="Script" path="res://Scripts/Cubiletrero.gd" id="10_mb4ff"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_p4rn7"]
 vertices = PackedVector3Array(-9.38201, 0.5, -9.11942, -9.38201, 0.5, 9.13058, 9.36799, 0.5, 9.13058, 9.36799, 0.5, -9.11942)
@@ -15,16 +17,16 @@ polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_tefin"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_oluom"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_k26f6"]
-size = Vector3(1, 0.981689, 1)
-
 [sub_resource type="Environment" id="Environment_njs3v"]
 background_mode = 1
 background_color = Color(7.70092e-07, 0.661235, 0.874662, 1)
 ambient_light_source = 2
-ambient_light_color = Color(0.0723334, 0.62, 0, 1)
+ambient_light_color = Color(0.686275, 0.917647, 0.988235, 0.372549)
+
+[sub_resource type="BoxMesh" id="BoxMesh_oluom"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_k26f6"]
+size = Vector3(1, 0.981689, 1)
 
 [node name="Nivel1" type="Node"]
 
@@ -43,6 +45,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.757282, 0)
 kosmo_path = NodePath("../Player")
 speed = 180.0
 
+[node name="Sigrid" parent="Personajes" instance=ExtResource("4_bjhsu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.80846, 0.754549, 0)
+kosmo_path = NodePath("../Player")
+
 [node name="Terreno" type="Node" parent="."]
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="Terreno"]
@@ -52,20 +58,6 @@ navigation_mesh = SubResource("NavigationMesh_p4rn7")
 [node name="CSGMesh3D" type="CSGMesh3D" parent="Terreno/NavigationRegion3D"]
 transform = Transform3D(9.88201, 0, 0, 0, 7.91547, 0, 0, 0, 9.61942, 0, 0, 0)
 mesh = SubResource("PlaneMesh_tefin")
-
-[node name="Letrero" type="Node3D" parent="Terreno" groups=["interactuables"]]
-transform = Transform3D(-0.00331724, 0, 1.33304, 0, 1.28745, 0, -0.304086, 0, -0.0145417, 2.64961, 0.382242, -1.62964)
-script = ExtResource("2_rijmf")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Terreno/Letrero"]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Terreno/Letrero/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -1.86265e-09, 0, 1, 0, 0.304871, 0)
-mesh = SubResource("BoxMesh_oluom")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Terreno/Letrero/StaticBody3D"]
-transform = Transform3D(1, 0, 3.72529e-09, 0, 1, 0, 0, 0, 1, 0, 0.313355, 0)
-shape = SubResource("BoxShape3D_k26f6")
 
 [node name="Iluminación" type="Node" parent="."]
 
@@ -101,3 +93,22 @@ scale = Vector2(2.0051, 2.0051)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Entorno"]
 environment = SubResource("Environment_njs3v")
+
+[node name="Interactuable" type="Node" parent="."]
+
+[node name="CofreCommon" parent="Interactuable" instance=ExtResource("9_qe0o7")]
+transform = Transform3D(0.542, 0, 0, 0, 0.542, 0, 0, 0, 0.542, -5.76845, 0.0335645, -6.45479)
+
+[node name="Cubiletrero" type="Node3D" parent="Interactuable" groups=["interactuables"]]
+transform = Transform3D(-0.0190348, 0, 1.7449, 0, 1.745, 0, -1.7449, 0, -0.0190348, 6.86302, 0.781684, -6.54142)
+script = ExtResource("10_mb4ff")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Interactuable/Cubiletrero"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Interactuable/Cubiletrero/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -1.86265e-09, 0, 1, 0, 0.304871, 0)
+mesh = SubResource("BoxMesh_oluom")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactuable/Cubiletrero/StaticBody3D"]
+transform = Transform3D(1, 0, 3.72529e-09, 0, 1, 0, 0, 0, 1, 0, 0.313355, 0)
+shape = SubResource("BoxShape3D_k26f6")

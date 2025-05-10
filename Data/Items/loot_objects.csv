@@ -1,0 +1,4 @@
+chest_id,chest_name,item_id,quantity,requires_key,dialogue
+chest_01,Cofre común 1,potion,3,FALSE,¡Encontraste 3 pociones!
+chest_02,Cofre con llave,ether,1,TRUE,La cerradura se abre con una llave misteriosa...
+chest_03,Cofre raro 1,elixir,1,FALSE,¡Encontraste 1 Élixir!
