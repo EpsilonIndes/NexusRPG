@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://bfrwvy0r1v76e"
+
+[deps]
+
+files=["res://Data/Char_stats/stats.name.translation", "res://Data/Char_stats/stats.hp.translation", "res://Data/Char_stats/stats.mp.translation", "res://Data/Char_stats/stats.atk.translation", "res://Data/Char_stats/stats.mag.translation", "res://Data/Char_stats/stats.def.translation", "res://Data/Char_stats/stats.res.translation", "res://Data/Char_stats/stats.spd.translation", "res://Data/Char_stats/stats.lck.translation", "res://Data/Char_stats/stats.fth.translation", "res://Data/Char_stats/stats.cha.translation"]
+
+source_file="res://Data/Char_stats/stats.csv"
+dest_files=["res://Data/Char_stats/stats.name.translation", "res://Data/Char_stats/stats.hp.translation", "res://Data/Char_stats/stats.mp.translation", "res://Data/Char_stats/stats.atk.translation", "res://Data/Char_stats/stats.mag.translation", "res://Data/Char_stats/stats.def.translation", "res://Data/Char_stats/stats.res.translation", "res://Data/Char_stats/stats.spd.translation", "res://Data/Char_stats/stats.lck.translation", "res://Data/Char_stats/stats.fth.translation", "res://Data/Char_stats/stats.cha.translation"]
+
+[params]
+
+compress=true
+delimiter=0

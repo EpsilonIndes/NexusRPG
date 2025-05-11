@@ -1,0 +1,7 @@
+class_id,name,hp,mp,atk,mag,def,res,spd,lck,fth,cha
+quantic_master,Maéstro cuántico,200,30,25,5,20,10,12,8,4,6
+dark_mage,Maga oscura,180,80,10,28,10,18,14,10,12,8
+lancer,Lancera,200,40,20,12,18,14,16,12,6,7
+hunter,Cazador,190,35,18,10,12,10,20,20,5,9
+cleric,Sanadora,175,60,12,24,10,20,14,10,18,10
+knight,Caballera,220,50,20,18,25,10,10,8,7,5

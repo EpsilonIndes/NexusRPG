@@ -1,11 +1,16 @@
-[gd_scene load_steps=16 format=3 uid="uid://ckhl1sgngkvhd"]
+[gd_scene load_steps=22 format=3 uid="uid://ckhl1sgngkvhd"]
 
 [ext_resource type="Script" path="res://Scripts/PersonajesScripts/SigridManager.gd" id="1_go8cu"]
 [ext_resource type="Texture2D" uid="uid://bc5m28bxdvmua" path="res://Sprites/Sigrid/SigridDown.png" id="1_wvfvn"]
 [ext_resource type="Texture2D" uid="uid://c4bgxjncxo0rg" path="res://Sprites/Sigrid/SigridUp.png" id="3_fm2nf"]
+[ext_resource type="Texture2D" uid="uid://xhshl2xvabi7" path="res://Sprites/Sigrid/SigridHor.png" id="4_o2v55"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_aefyg"]
 atlas = ExtResource("1_wvfvn")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_whwc7"]
+atlas = ExtResource("4_o2v55")
 region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_74l16"]
@@ -26,6 +31,22 @@ region = Rect2(96, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5tfji"]
 atlas = ExtResource("1_wvfvn")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bfjgm"]
+atlas = ExtResource("4_o2v55")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pt3hl"]
+atlas = ExtResource("4_o2v55")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_trhq4"]
+atlas = ExtResource("4_o2v55")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pyu7u"]
+atlas = ExtResource("4_o2v55")
 region = Rect2(64, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7u6ee"]
@@ -54,7 +75,10 @@ animations = [{
 "name": &"idle_down",
 "speed": 5.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_whwc7")
+}],
 "loop": true,
 "name": &"idle_side",
 "speed": 5.0
@@ -84,7 +108,19 @@ animations = [{
 "name": &"walk_down",
 "speed": 5.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bfjgm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pt3hl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_trhq4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pyu7u")
+}],
 "loop": true,
 "name": &"walk_side",
 "speed": 5.0
@@ -121,7 +157,7 @@ transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
 billboard = 1
 texture_filter = 0
 sprite_frames = SubResource("SpriteFrames_wfda4")
-animation = &"idle_down"
+animation = &"idle_side"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0969321, 0)

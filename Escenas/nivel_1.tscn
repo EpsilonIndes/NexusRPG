@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cjswe57kq821f"]
+[gd_scene load_steps=17 format=3 uid="uid://cjswe57kq821f"]
 
 [ext_resource type="PackedScene" uid="uid://bmocargan5l0q" path="res://Escenas/player.tscn" id="1_a8vtw"]
 [ext_resource type="Script" path="res://Scripts/InventoryManager.gd" id="2_5j2cu"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://dkn8gxfmy5tm6" path="res://Escenas/label_dialogue.tscn" id="6_dp2kd"]
 [ext_resource type="PackedScene" uid="uid://d0pklwxlyct8i" path="res://Models/Interactuables/Cofre.tscn" id="9_qe0o7"]
 [ext_resource type="Script" path="res://Scripts/Cubiletrero.gd" id="10_mb4ff"]
+[ext_resource type="Material" uid="uid://c0jjtywjdsume" path="res://Materiales/Textura_Cubiletrero.tres" id="11_fhdji"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_p4rn7"]
 vertices = PackedVector3Array(-9.38201, 0.5, -9.11942, -9.38201, 0.5, 9.13058, 9.36799, 0.5, 9.13058, 9.36799, 0.5, -9.11942)
@@ -38,7 +39,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82957, -1.41913)
 [node name="MiguelitoNPC" parent="Personajes" instance=ExtResource("2_csbrw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.779405, -4.18304)
 nombre_npc = "Miguelito"
-dialogo_texto = "Te sigo Camarada!"
+dialogo_texto = "Hola Kosmo, encontré una llave. Tómala"
 
 [node name="Chipita_Seguidora" parent="Personajes" instance=ExtResource("3_34qh6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.757282, 0)
@@ -99,14 +100,20 @@ environment = SubResource("Environment_njs3v")
 [node name="CofreCommon" parent="Interactuable" instance=ExtResource("9_qe0o7")]
 transform = Transform3D(0.542, 0, 0, 0, 0.542, 0, 0, 0, 0.542, -5.76845, 0.0335645, -6.45479)
 
+[node name="CofreCommon2" parent="Interactuable" instance=ExtResource("9_qe0o7")]
+transform = Transform3D(0.542, 0, 0, 0, 0.542, 0, 0, 0, 0.542, -3.41437, 0.0335645, -6.45479)
+loot_id = "chest_02"
+
 [node name="Cubiletrero" type="Node3D" parent="Interactuable" groups=["interactuables"]]
-transform = Transform3D(-0.0190348, 0, 1.7449, 0, 1.745, 0, -1.7449, 0, -0.0190348, 6.86302, 0.781684, -6.54142)
+transform = Transform3D(0.560523, 0.0732069, 0.201134, 0, 0.563816, -0.205212, -0.214043, 0.19171, 0.526719, 6.86302, 0.230015, -6.54142)
 script = ExtResource("10_mb4ff")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Interactuable/Cubiletrero"]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Interactuable/Cubiletrero/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, -1.86265e-09, 0, 1, 0, 0.304871, 0)
+material_override = ExtResource("11_fhdji")
+cast_shadow = 0
 mesh = SubResource("BoxMesh_oluom")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Interactuable/Cubiletrero/StaticBody3D"]

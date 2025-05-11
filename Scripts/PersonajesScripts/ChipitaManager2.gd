@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-#  			Notas: ChipitaManager2.gd          #
+#  		  Notas: ChipitaManager2.gd            #
 # Chipita debe explorar zonas cercanas cuando  #
 # kosmo esté quieto o no haya peligro.		   #
 # No se alejará demasiado.                     #
@@ -19,7 +19,7 @@ enum State {
 var state = State.FOLLOW
 
 # Lógica principal
-var last_direction = "_down" # Inicializa la dirección de la animación
+var last_direction = "_down"
 @export var kosmo_path: NodePath
 var kosmo: Node3D = null
 @onready var nav_agent = $NavigationAgent3D

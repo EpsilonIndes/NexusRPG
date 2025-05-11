@@ -17,9 +17,13 @@ func interact():
 		return
 
 	if loot_info["requires_key"].to_lower() == "true":
+
 		if !InventoryManager.has_item("key"):
 			show_dialogue("Necesitás una llave.")
 			return
+		else:
+			InventoryManager.remove_item("key", 1)
+			
 
 	var item_info = DataLoader.item_data.get(loot_info["item_id"])
 	if item_info == null:
