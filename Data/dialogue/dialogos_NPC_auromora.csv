@@ -1,0 +1,7 @@
+dialogue_id,npc,nombre,texto,condicion
+1,Anciano_1,Anciano,"Bienvenidos a Auromora, viajeros",
+2,Hombre_1,Hombre,Se dice que hay una tormenta hacia el sur de este pueblo...,
+3,joven_1,Joven,"Un día voy a salir de este pueblo y luchar contra 
+monstruos de verdad, como en las historias",
+3,joven_1,joven,¿Ustedes también están viajando para ser héroes?,
+3,joven_2,joven,¡Qué suerte tienen!,

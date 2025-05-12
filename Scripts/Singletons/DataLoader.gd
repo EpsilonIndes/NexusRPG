@@ -9,7 +9,7 @@ func _init():
 	cargar_loot()
 
 func cargar_items():
-	print("[ItemsLoader] Cargando items.csv")
+	
 	var file = FileAccess.open("res://Data/Items/items.csv", FileAccess.READ)
 	if file == null:
 		push_error("[ItemsLoader] No se pudo abrir items.csv")
@@ -32,7 +32,6 @@ func cargar_items():
 
 func cargar_loot():
 
-	print("[LootsLoader] Cargando loot_objects.csv...")
 	var file_path = "res://Data/Items/loot_objects.csv"
 	var file = FileAccess.open(file_path, FileAccess.READ)
 	
@@ -41,13 +40,11 @@ func cargar_loot():
 		return
 
 	var headers = file.get_csv_line()
-	print("[LootsLoader] Encabezados Cargados.")
 
 	while not file.eof_reached():
 		var row = file.get_csv_line()
 
 		if row.is_empty() or row.size() != headers.size():
-			print("[LootsLoader] Fila inválida, se salta.")
 			continue
 
 		var entry := {}
@@ -55,4 +52,4 @@ func cargar_loot():
 			entry[headers[i]] = row[i]
 		loot_data[entry["chest_id"]] = entry
 	
-	print("[LootsLoader] Filas leídas.")
+	print("[LootsLoader] Loots cargados exitosamente.")

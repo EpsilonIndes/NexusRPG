@@ -10,11 +10,9 @@ func add_character(pj_name: String, class_nombre: String):
         "class": class_nombre,
         "stats": stats
     }
-    print("Personaje añadido: " + pj_name, class_nombre)
 
 func get_stat(pj_name: String, stat: String) -> int:
     return CharacterStats.get_stat(pj_name, stat)
-
 
 func get_all_stats(pj_name: String) -> Dictionary:
     return CharacterStats.get_all_stats(pj_name)

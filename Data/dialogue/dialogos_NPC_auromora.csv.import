@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://dxi8itabj3eeq"
+
+[deps]
+
+files=["res://Data/dialogue/dialogos_NPC_auromora.npc.translation", "res://Data/dialogue/dialogos_NPC_auromora.nombre.translation", "res://Data/dialogue/dialogos_NPC_auromora.texto.translation", "res://Data/dialogue/dialogos_NPC_auromora.condicion.translation"]
+
+source_file="res://Data/dialogue/dialogos_NPC_auromora.csv"
+dest_files=["res://Data/dialogue/dialogos_NPC_auromora.npc.translation", "res://Data/dialogue/dialogos_NPC_auromora.nombre.translation", "res://Data/dialogue/dialogos_NPC_auromora.texto.translation", "res://Data/dialogue/dialogos_NPC_auromora.condicion.translation"]
+
+[params]
+
+compress=true
+delimiter=0

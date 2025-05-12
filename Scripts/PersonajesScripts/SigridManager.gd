@@ -37,6 +37,14 @@ func _ready():
 	else:
 		print("Sigrid no encontró a Kosmo. Típico.")
 
+	if not nav_agent.is_navigation_finished() and nav_agent.get_navigation_map() == null:
+		print("Esperando que se sincronice el mapa de navegación...")
+		return
+	
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+
 func _physics_process(delta):
 	if !kosmo:
 		print("¡Kosmo! ¡¿Dónde estás?!")
@@ -96,12 +104,18 @@ func check_state_transition():
 			state = State.RETURNING
 
 func Move_to_target(delta):
+	if nav_agent.get_navigation_map() == null or nav_agent.target_position == null:
+		return
+	
 	if nav_agent.is_navigation_finished():
 		velocity = Vector3.ZERO
 		update_animation(Vector3.ZERO)
 		return
 	
 	var next_pos = nav_agent.get_next_path_position()
+	if next_pos == Vector3.ZERO:
+		return
+	
 	var direction = (next_pos - global_position).normalized()
 	direction.y = 0
 	velocity = direction * speed * delta

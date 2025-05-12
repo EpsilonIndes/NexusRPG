@@ -6,8 +6,7 @@ var class_stats: Dictionary = {}
 func _init():
 	cargar_clases()
 
-func cargar_clases():
-	print("[StatsLoader] Cargando stats.csv...")
+func cargar_clases(): #Carga el archivo stats.csv, contiene las clases con sus stats.
 	var path = "res://Data/Char_stats/stats.csv"
 	var file = FileAccess.open(path, FileAccess.READ)
     
@@ -16,12 +15,10 @@ func cargar_clases():
 		return
 
 	var headers = file.get_csv_line()
-	print("[StatsLoader] Encabezados leídos.")
 
 	while not file.eof_reached():
 		var row = file.get_csv_line()
-		if row.is_empty() or row.size() != headers.size():
-			print("[StatsLoader] Fila inválida, se salta.")
+		if row.is_empty() or row.size() != headers.size():			
 			continue
 
 		var entry := {}
@@ -37,8 +34,8 @@ func cargar_clases():
 
 func get_class_stats(class_id: String) -> Dictionary:
 	return class_stats.get(class_id, {})
-	
-func parse_value(val: String) -> Variant:
+
+func parse_value(val: String) -> Variant: # Convierte datos string en int o float.
 	if val.is_valid_int():
 		return int(val)
 	elif val.is_valid_float():

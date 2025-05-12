@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://qh76bv7y2534"]
+[gd_scene load_steps=6 format=3 uid="uid://qh76bv7y2534"]
 
 [ext_resource type="Script" path="res://Scripts/InventoryUI.gd" id="1_yt8oo"]
+[ext_resource type="LabelSettings" uid="uid://cb4pba1oc265c" path="res://Data/Fonts/FantasyLabel.tres" id="2_nx774"]
 
 [sub_resource type="Animation" id="Animation_4rtdd"]
 resource_name = "close"
@@ -64,12 +65,6 @@ _data = {
 "open": SubResource("Animation_mwyvu")
 }
 
-[sub_resource type="LabelSettings" id="LabelSettings_otg3u"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_ur6jj"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_uao1d"]
-
 [node name="InventoryUI" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -97,9 +92,13 @@ offset_bottom = 115.0
 layout_mode = 2
 text = "Objetos"
 
-[node name="Habilidades" type="Button" parent="MainMenu/BoxBotones"]
+[node name="Estado" type="Button" parent="MainMenu/BoxBotones"]
 layout_mode = 2
 text = "Habilidades"
+
+[node name="Configuración" type="Button" parent="MainMenu/BoxBotones"]
+layout_mode = 2
+text = "Configuración"
 
 [node name="Salir" type="Button" parent="MainMenu/BoxBotones"]
 layout_mode = 2
@@ -122,15 +121,20 @@ shortcut_context = NodePath("../MainMenu/BoxBotones/Objetos")
 layout_mode = 2
 text = "Label 1
 "
-label_settings = SubResource("LabelSettings_otg3u")
+label_settings = ExtResource("2_nx774")
 
 [node name="Label2" type="Label" parent="Panel_Items"]
 layout_mode = 2
 text = "Label 1
 "
-label_settings = SubResource("LabelSettings_ur6jj")
+label_settings = ExtResource("2_nx774")
 
 [node name="Label3" type="Label" parent="Panel_Items"]
 layout_mode = 2
 text = "Label 3"
-label_settings = SubResource("LabelSettings_uao1d")
+label_settings = ExtResource("2_nx774")
+
+[node name="panel_stats" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0

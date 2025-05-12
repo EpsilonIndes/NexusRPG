@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cjswe57kq821f"]
+[gd_scene load_steps=18 format=3 uid="uid://cjswe57kq821f"]
 
 [ext_resource type="PackedScene" uid="uid://bmocargan5l0q" path="res://Escenas/player.tscn" id="1_a8vtw"]
 [ext_resource type="Script" path="res://Scripts/InventoryManager.gd" id="2_5j2cu"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://ecyr37wcvpst" path="res://Escenas/canvas_layer.tscn" id="4_j23ur"]
 [ext_resource type="PackedScene" uid="uid://qh76bv7y2534" path="res://Escenas/InventoryUI.tscn" id="5_gjkhy"]
 [ext_resource type="PackedScene" uid="uid://dkn8gxfmy5tm6" path="res://Escenas/label_dialogue.tscn" id="6_dp2kd"]
+[ext_resource type="Script" path="res://Scripts/InsatanciadorPJ.gd" id="6_onnpr"]
 [ext_resource type="PackedScene" uid="uid://d0pklwxlyct8i" path="res://Models/Interactuables/Cofre.tscn" id="9_qe0o7"]
 [ext_resource type="Script" path="res://Scripts/Cubiletrero.gd" id="10_mb4ff"]
 [ext_resource type="Material" uid="uid://c0jjtywjdsume" path="res://Materiales/Textura_Cubiletrero.tres" id="11_fhdji"]
@@ -38,8 +39,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82957, -1.41913)
 
 [node name="MiguelitoNPC" parent="Personajes" instance=ExtResource("2_csbrw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.779405, -4.18304)
-nombre_npc = "Miguelito"
-dialogo_texto = "Hola Kosmo, encontré una llave. Tómala"
 
 [node name="Chipita_Seguidora" parent="Personajes" instance=ExtResource("3_34qh6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.757282, 0)
@@ -53,7 +52,7 @@ kosmo_path = NodePath("../Player")
 [node name="Terreno" type="Node" parent="."]
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="Terreno"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 9.31323e-10, 0, 1, 0, 0, 0)
+transform = Transform3D(1, 0, 0, -1.10692e-11, 0.999929, -0.0118854, 9.31257e-10, 0.0118854, 0.999929, 0, 0, 0)
 navigation_mesh = SubResource("NavigationMesh_p4rn7")
 
 [node name="CSGMesh3D" type="CSGMesh3D" parent="Terreno/NavigationRegion3D"]
@@ -74,6 +73,9 @@ script = ExtResource("2_5j2cu")
 [node name="ItemDatabase" type="Node" parent="gameManager/InventoryManager"]
 
 [node name="DialogueSistem" type="Node" parent="gameManager"]
+
+[node name="PersonajesJugables" type="Node" parent="gameManager"]
+script = ExtResource("6_onnpr")
 
 [node name="CanvasLayer" parent="." instance=ExtResource("4_j23ur")]
 
