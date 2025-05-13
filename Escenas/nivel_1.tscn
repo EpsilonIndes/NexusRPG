@@ -52,7 +52,6 @@ kosmo_path = NodePath("../Player")
 [node name="Terreno" type="Node" parent="."]
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="Terreno"]
-transform = Transform3D(1, 0, 0, -1.10692e-11, 0.999929, -0.0118854, 9.31257e-10, 0.0118854, 0.999929, 0, 0, 0)
 navigation_mesh = SubResource("NavigationMesh_p4rn7")
 
 [node name="CSGMesh3D" type="CSGMesh3D" parent="Terreno/NavigationRegion3D"]
@@ -101,10 +100,11 @@ environment = SubResource("Environment_njs3v")
 
 [node name="CofreCommon" parent="Interactuable" instance=ExtResource("9_qe0o7")]
 transform = Transform3D(0.542, 0, 0, 0, 0.542, 0, 0, 0, 0.542, -5.76845, 0.0335645, -6.45479)
+loot_id = "cofre_gema_roja"
 
 [node name="CofreCommon2" parent="Interactuable" instance=ExtResource("9_qe0o7")]
 transform = Transform3D(0.542, 0, 0, 0, 0.542, 0, 0, 0, 0.542, -3.41437, 0.0335645, -6.45479)
-loot_id = "chest_02"
+loot_id = "cofre_vacio"
 
 [node name="Cubiletrero" type="Node3D" parent="Interactuable" groups=["interactuables"]]
 transform = Transform3D(0.560523, 0.0732069, 0.201134, 0, 0.563816, -0.205212, -0.214043, 0.19171, 0.526719, 6.86302, 0.230015, -6.54142)

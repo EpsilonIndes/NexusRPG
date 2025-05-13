@@ -1,7 +1,6 @@
 extends Node3D
 
 @export var nombre_npc: String = "Cubiletrero"
-@export var dialogo_texto: String = "Has interactuado con el Cubiletrero. Suerte++"
 
 func _physics_process(delta):
 	
@@ -9,4 +8,8 @@ func _physics_process(delta):
 	
 
 func interact():
-	UImanager.mostrar_dialogo(nombre_npc, dialogo_texto)
+	GameManager.set_estado(GameManager.EstadosDeJuego.DIALOGO)
+	UImanager.label_dialogue.mostrar_dialogo(nombre_npc, [
+		"Has interactuado con el cubiletrero",
+		"Tu suerte aumenta x2"
+	])

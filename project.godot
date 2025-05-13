@@ -17,12 +17,13 @@ config/features=PackedStringArray("4.2", "GL Compatibility")
 [autoload]
 
 DataLoader="*res://Scripts/Singletons/DataLoader.gd"
-StatsLoader="*res://Scripts/Singletons/StatsLoader.gd"
-CharacterStats="*res://Scripts/Singletons/CharacterStats.gd"
-DialogueLoader="*res://Scripts/Singletons/DialogueLoader.gd"
-GameManager="*res://Scripts/Singletons/GameManager.gd"
+ItemManager="*res://Scripts/Singletons/ItemManager.gd"
+LootManager="*res://Scripts/Singletons/LootManager.gd"
+DialogueManager="*res://Scripts/Singletons/DialogueManager.gd"
 InventoryManager="*res://Scripts/InventoryManager.gd"
 UImanager="*res://Scripts/Singletons/UImanager.gd"
+GameManager="*res://Scripts/Singletons/GameManager.gd"
+CharacterStats="*res://Scripts/Singletons/CharacterStats.gd"
 PlayableCharacters="*res://Scripts/Singletons/PersonajesScriptsInterno/PlayableCharacters.gd"
 
 [filesystem]

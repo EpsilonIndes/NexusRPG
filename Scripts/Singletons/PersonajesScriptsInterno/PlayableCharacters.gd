@@ -1,18 +1,28 @@
+#PlayableCharacters Autoload
 extends Node
 
-# Diccionario de personajes jugables
+# Diccionario de personajes jugables activos en el equipo
 var characters: Dictionary = {}
 
+# Agrega un personaje al equipo
 func add_character(pj_name: String, class_nombre: String):
-    var stats = StatsLoader.get_class_stats(class_nombre)
-    CharacterStats.set_stats(pj_name, stats)
-    characters[pj_name] = {
-        "class": class_nombre,
-        "stats": stats
-    }
+	if not DataLoader.stats.has(class_nombre):
+		push_error("[PlayableCharacters] Clase no enconrada: %s" % class_nombre)
+		return
+
+	var estadisticas = DataLoader.stats[class_nombre]
+
+	characters[pj_name] = {
+		"class": class_nombre,
+		"stats": estadisticas
+	}
 
 func get_stat(pj_name: String, stat: String) -> int:
-    return CharacterStats.get_stat(pj_name, stat)
+	if characters.has(pj_name) and characters[pj_name]["stats"].has(stat):
+		return characters[pj_name]["stats"][stat].to_int()
+	return 0
 
 func get_all_stats(pj_name: String) -> Dictionary:
-    return CharacterStats.get_all_stats(pj_name)
+	if characters.has(pj_name):
+		return characters[pj_name]["stats"]
+	return {}

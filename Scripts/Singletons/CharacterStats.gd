@@ -1,3 +1,4 @@
+# CharacterStats Autoload
 extends Node
 
 var character_stats: Dictionary = {}
