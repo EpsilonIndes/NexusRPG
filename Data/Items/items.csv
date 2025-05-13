@@ -8,4 +8,5 @@ elixir_diosito,Élixir de Diosito,item,"Cura tanto que parece milagro, excepto l
 antidoto,Antídoto,item,Cura estado de Veneno,100,common,heal_poison
 mid_potion,Recarga a medias,item,"Pócima 'Hasta Ahí Llegó Mi Presupuesto'
 Recupera la mitad del HP y de MP.",320,rare,heal_midhpmp
-elixir ,Élixir,item,Recupera por completo el HP y el MP.,1200,epic,heal_full
+elixir,Élixir,item,Recupera por completo el HP y el MP.,1200,epic,heal_full
+gema_roja,Gema roja,item,Piedra preciosa vendible a buen precio.,500,common,nothing

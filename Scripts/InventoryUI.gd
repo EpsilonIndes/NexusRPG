@@ -46,7 +46,7 @@ func _on_cerrar_pressed():
 	item_list_panel.visible = false
 
 func update_item_list():
-	# Limpiar ítems anteriores (si usás VBoxContainer)
+	# Limpiar ítems anteriores
 	for child in item_list_panel.get_children():
 		child.queue_free()
 

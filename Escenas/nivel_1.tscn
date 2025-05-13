@@ -69,10 +69,6 @@ shadow_enabled = true
 [node name="InventoryManager" type="Node" parent="gameManager"]
 script = ExtResource("2_5j2cu")
 
-[node name="ItemDatabase" type="Node" parent="gameManager/InventoryManager"]
-
-[node name="DialogueSistem" type="Node" parent="gameManager"]
-
 [node name="PersonajesJugables" type="Node" parent="gameManager"]
 script = ExtResource("6_onnpr")
 
@@ -104,7 +100,7 @@ loot_id = "cofre_gema_roja"
 
 [node name="CofreCommon2" parent="Interactuable" instance=ExtResource("9_qe0o7")]
 transform = Transform3D(0.542, 0, 0, 0, 0.542, 0, 0, 0, 0.542, -3.41437, 0.0335645, -6.45479)
-loot_id = "cofre_vacio"
+loot_id = "cofre_potion"
 
 [node name="Cubiletrero" type="Node3D" parent="Interactuable" groups=["interactuables"]]
 transform = Transform3D(0.560523, 0.0732069, 0.201134, 0, 0.563816, -0.205212, -0.214043, 0.19171, 0.526719, 6.86302, 0.230015, -6.54142)

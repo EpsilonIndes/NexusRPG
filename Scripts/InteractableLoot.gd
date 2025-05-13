@@ -3,19 +3,14 @@ extends Node3D
 
 @export var loot_id: String
 
-var abierto: bool = false
+var lootAbierto
 
 func interact():
-	if abierto:
-		print("Ya fue abierto pa.")
+	if lootAbierto:
 		return
+	
+	var fueAbierto = LootManager.abrir_loot(loot_id)
 
-	var resultado = LootManager.abrir_cofre(loot_id)
-
-	for linea in resultado:
-		if linea != "ERROR":
-			UImanager.label_dialogue.mostrar_dialogo("Cofre", [linea])
-		else:
-			push_error("Error al abrir el cofre")
-
-	abierto = true
+	if fueAbierto:
+		lootAbierto = true
+	
