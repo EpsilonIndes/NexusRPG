@@ -1,0 +1,36 @@
+[gd_scene load_steps=6 format=3 uid="uid://cpkvk4qac61ng"]
+
+[ext_resource type="Script" path="res://Scripts/NPCsDIalogos/NPCDialogo.gd" id="1_2xiy2"]
+[ext_resource type="Texture2D" uid="uid://cafr400644ocu" path="res://Sprites/NPCs Auromora/anciano_1.png" id="2_aij3d"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mmfv5"]
+atlas = ExtResource("2_aij3d")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7toud"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mmfv5")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hagel"]
+radius = 0.354462
+height = 1.13641
+
+[node name="Anciano_1" type="CharacterBody3D" groups=["interactuables"]]
+script = ExtResource("1_2xiy2")
+
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+billboard = 1
+texture_filter = 0
+sprite_frames = SubResource("SpriteFrames_7toud")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.172629, 0)
+shape = SubResource("CapsuleShape3D_hagel")

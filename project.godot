@@ -25,6 +25,7 @@ UImanager="*res://Scripts/Singletons/UImanager.gd"
 GameManager="*res://Scripts/Singletons/GameManager.gd"
 CharacterStats="*res://Scripts/Singletons/CharacterStats.gd"
 PlayableCharacters="*res://Scripts/Singletons/PersonajesScriptsInterno/PlayableCharacters.gd"
+EffectManager="*res://Scripts/Singletons/EffectManager.gd"
 
 [filesystem]
 

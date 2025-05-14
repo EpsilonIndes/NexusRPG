@@ -9,7 +9,8 @@ func start_npc_dialogue(npc_id: String):
 	var lineas := []
 
 	for key in npc_data.keys():
-		if key.begins_with("linea"):
+		if key.begins_with("texto"):
 			lineas.append(npc_data[key])
 	
 	UImanager.label_dialogue.mostrar_dialogo(npc_data.get("nombre", "???"), lineas)
+

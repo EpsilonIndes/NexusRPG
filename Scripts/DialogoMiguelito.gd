@@ -9,3 +9,5 @@ func interact():
 		"¡No puedo moverme!",
 		"Creo que pisé algo..."
 	])
+# Este script utiliza el método viejo de diálogo, funciona,
+# pero no es lo más viable si reutilizar código es lo más optimo.
