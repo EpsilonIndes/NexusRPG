@@ -79,6 +79,9 @@ func _process(delta):
 
 	#Provicional: input para añadir objetos al inventario
 	if Input.is_action_just_pressed("pocion"):
-		var iten_name = "Poción"
-		var amount = 1
-		inventory_manager.add_item(iten_name, amount)
+		var item = "Poción"
+		var cantidad = 1
+	
+		EffectManager.apply_effects(["heal_hp"], "Kosmo")
+		inventory_manager.remove_item(item, cantidad)
+		print(PlayableCharacters.characters["Kosmo"]["stats"])

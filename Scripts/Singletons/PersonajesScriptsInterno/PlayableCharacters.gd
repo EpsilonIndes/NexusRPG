@@ -1,4 +1,6 @@
 #PlayableCharacters Autoload
+# Creador de personajes!
+
 extends Node
 
 # Diccionario de personajes jugables activos en el equipo
@@ -10,9 +12,17 @@ func add_character(pj_name: String, class_nombre: String):
 		push_error("[PlayableCharacters] Clase no enconrada: %s" % class_nombre)
 		return
 
-	var estadisticas = DataLoader.stats[class_nombre]
+	var original_stats = DataLoader.stats[class_nombre]
+	var estadisticas = {}
+
+	for key in original_stats.keys():
+		if key in ["class_id", "job_name"]:
+			estadisticas[key] = original_stats[key]
+		else:
+			estadisticas[key] = int(original_stats[key]) # Cast numérico solo a Stats
 
 	characters[pj_name] = {
+		"Name": pj_name,
 		"class": class_nombre,
 		"stats": estadisticas
 	}

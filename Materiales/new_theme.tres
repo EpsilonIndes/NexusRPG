@@ -1,0 +1,6 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://hdvpdwg85rrw"]
+
+[ext_resource type="FontFile" uid="uid://b65largk8uxlk" path="res://Data/Fonts/fantasy_font.woff" id="1_07us0"]
+
+[resource]
+default_font = ExtResource("1_07us0")

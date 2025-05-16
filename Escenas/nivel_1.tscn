@@ -53,7 +53,6 @@ kosmo_path = NodePath("../Player")
 [node name="Terreno" type="Node" parent="."]
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="Terreno"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 navigation_mesh = SubResource("NavigationMesh_p4rn7")
 
 [node name="CSGMesh3D" type="CSGMesh3D" parent="Terreno/NavigationRegion3D"]
@@ -81,6 +80,7 @@ offset_left = 30.0
 offset_top = 13.0
 offset_right = 30.0
 offset_bottom = 13.0
+size_flags_vertical = 4
 
 [node name="LabelDialogue" parent="CanvasLayer" instance=ExtResource("6_dp2kd")]
 offset_left = 66.0
@@ -88,6 +88,7 @@ offset_top = 276.0
 offset_right = 562.0
 offset_bottom = 454.0
 scale = Vector2(2.0051, 2.0051)
+size_flags_vertical = 8
 
 [node name="Entorno" type="Node" parent="."]
 

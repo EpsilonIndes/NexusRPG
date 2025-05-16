@@ -1,11 +1,11 @@
-item_id,item_name,category,description,value,rarity,effect
-potion,Poción,consumible,Recupera 50 HP.,100,common,heal_50hp
-super_potion,Superpoción,consumible,Recupera 250 HP.,300,rare,heal_250hp
-ultra_potion,Ultrapoción,consumible,Recupera 500 HP.,680,rare,heal_500hp
-ether,Éter,consumible,Recupera 200 PM.,300,rare,restore_200mp
-phoenix_tail,Cola de Fénix,consumible,"Resucita un aliado, con la mitad de HP y PM",500,rare,heal_midhpmp
-elixir_diosito,Élixir de Diosito,consumible,"Cura tanto que parece milagro, excepto la muerte",670,epic,heal_states
-antidoto,Antídoto,consumible,Cura estado de Veneno,100,common,heal_poison
-mid_potion,Recarga a medias,consumible,"Pócima 'Hasta Ahí Llegó Mi Presupuesto'. Recupera la mitad del HP y de MP.",320,rare,heal_midhpmp
-elixir,Élixir,consumible,Recupera por completo el HP y el MP.,1200,epic,heal_full
-gema_roja,Gema roja,consumible,Piedra preciosa vendible a buen precio.,500,common,nothing
+item_id,item_name,item_type,description,value,rarity,effect,
+potion,Poción,consumible,Recupera 50 HP.,100,common,heal_50hp,
+super_potion,Superpoción,consumible,Recupera 250 HP.,300,rare,heal_250hp,
+ultra_potion,Ultrapoción,consumible,Recupera 500 HP.,680,rare,heal_500hp,
+ether,Éter,consumible,Recupera 200 PM.,300,rare,restore_200mp,
+phoenix_tail,Cola de Fénix,consumible,"Resucita un aliado, con la mitad de HP y PM",500,rare,heal_midhpmp,
+elixir_diosito,Élixir de Diosito,consumible,"Cura tanto que parece milagro, excepto la muerte",670,epic,heal_states,
+antidoto,Antídoto,consumible,Cura estado de Veneno,100,common,heal_poison,
+mid_potion,Recarga a medias,consumible,"Pócima 'Hasta Ahí Llegó Mi Presupuesto'. Recupera la mitad del HP y de MP.",320,rare,heal_midhpmp,
+elixir,Élixir,consumible,Recupera por completo el HP y el MP.,1200,epic,heal_full,
+gema_roja,Gema roja,consumible,Piedra preciosa vendible a buen precio.,500,common,nothing,

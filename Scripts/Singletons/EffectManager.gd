@@ -1,31 +1,46 @@
-#EffectManager.gd Autoload
+#EffectManager.gd (Autoload)
 extends Node
 
-var effects := {}
+func apply_effects(effects: Array, target_id: String) -> void:
 
-func _ready():
-	_registrar_todos_los_efectos()
+	var character = PlayableCharacters.characters.get(target_id)
+	if character == null:
+		print_debug("No se encontró al personaje con ID: %s" % target_id)
+		return
 
-func _registrar_todos_los_efectos():
-	
-	for method in get_method_list():
-		if method.name.begins_with("efecto_"):
-			var nombre_efecto = method.name.replace("efecto_", "")
-			effects[nombre_efecto] = Callable(self, method.name)
+	var stats = character.get("stats", {})
+	if stats.is_empty():
+		print_debug("No se encontraron estadísticas para %s" % target_id)
+		return
 
-# Llamada externa para aplicar un efecto
-func apply_effect(effect_name: String, target):
-	if effects.has(effect_name):
-		effects[effect_name].call(target)
-	else:
-		push_warning("EffectManager: efecto no reconocido: %s" % effect_name)
+	for effect in effects:
+		match effect:
+			"heal_hp":
+				_heal_hp(stats)
+			"heal_mp":
+				_heal_mp(stats)
+			"boost_atk":
+				_boost_stat(stats, "atk", 10)
+			_:  # efecto desconocido
+				print_debug("Efecto no reconocido: %s" % effect)
 
-									
-# === Ejemplos de efectos === #
+# Efectos #
+func _heal_hp(stats: Dictionary):
+	var max_hp = stats.get("max_hp", 100)
+	stats["hp"] = min(stats.get("hp", 0) + 50, max_hp)
 
-func efecto_heal_50hp(target):
-	if target.has_method("restore_hp"):
-		target.restore_hp(50)
-		print("%s ha recuperado 50 HP gracias a una Poción." % target.name)
-	else:
-		push_warning("Target sin método restore_hp")
+func _heal_mp(stats: Dictionary):
+	var max_mp = stats.get("max_mp", 50)
+	stats["mp"] = min(stats.get("mp", 0) + 30, max_mp)
+
+func _boost_stat(stats: Dictionary, stat_name: String, amount: int):
+	if not stats.has(stat_name):
+		print_debug("Stat no encontrada: %s" % stat_name)
+		return
+	stats[stat_name] += amount
+
+func _nerf_stat(stats: Dictionary, stat_name: String, amount: int):
+	if not stats.has(stat_name):
+		print_debug("Stat no encontrada: %s" % stat_name)
+		return
+	stats[stat_name] -= amount

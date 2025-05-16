@@ -23,19 +23,4 @@ func give_item_to_player(item_id: String, cantidad: int = 1) -> bool:
 	InventoryManager.add_item(get_item_nombre(item_id), cantidad)
 	print("Se añadió al inventario: %s x%d" % [get_item_nombre(item_id), cantidad])
 	return true
-
-# Aplicar efecto de item
-func aplicar_efecto_item(item_id: String, target) -> void:
-	if not DataLoader.items.has(item_id):
-		push_warning("[ItemManager] No se encontró el item con ID: %s" % item_id) 
-		return
-	 
-	var efecto = DataLoader.items[item_id].get("effect", "")
-	if efecto == "":
-		print("El item %s no tiene efecto definidio." % item_id)
-		return
-
-	if has_node("/root/EffectManager"):
-		EffectManager.apply_effect(efecto, target)
-	else:
-		push_error("No se encontró EffectManager como Autoload.")
+	

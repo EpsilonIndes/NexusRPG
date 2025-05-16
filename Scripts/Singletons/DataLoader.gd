@@ -9,7 +9,7 @@ var loots: Dictionary = {}
 var stats: Dictionary = {}
 var character_stats: Dictionary = {}
 
-func _ready():
+func _init():
 	load_all_data()
 
 func load_all_data():
