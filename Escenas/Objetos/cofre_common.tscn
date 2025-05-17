@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://v4paixxphw56"]
+
+[ext_resource type="PackedScene" uid="uid://c7enlay8f46sq" path="res://Models/Interactuables/cofre.glb" id="1_k73q7"]
+
+[node name="CofreCommon" instance=ExtResource("1_k73q7")]

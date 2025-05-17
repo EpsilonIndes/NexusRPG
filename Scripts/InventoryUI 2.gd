@@ -1,25 +1,39 @@
 extends Control
 
 @onready var anim_player: AnimationPlayer = $AnimationPlayer
-@onready var manager = get_tree().get_root().get_node("InventoryManager")
+@onready var manager: InventoryManager = get_tree().get_root().get_node("InventoryManager")
 
-@onready var main_menu = $MainMenu
-@onready var item_list_panel = $Panel_Items
+@onready var main_menu: Panel = $MainMenu
+@onready var item_list_panel: VBoxContainer = $Panel_Items
 @onready var popup_menu: PopupMenu = $ItemContextMenu
 
 @onready var info_popup: Panel = $ItemInfoPopup
 @onready var info_label: Label = $ItemInfoPopup/Label
 
-@onready var btn_objetos = $MainMenu/BoxBotones/Objetos
-@onready var btn_salir = $MainMenu/BoxBotones/Salir
+@onready var btn_objetos: Button = $MainMenu/BoxBotones/Objetos
+@onready var btn_estado: Button = $MainMenu/BoxBotones/Estado
+@onready var btn_salir: Button = $MainMenu/BoxBotones/Salir
 
-var is_open = false
+# Lógica del Panel ESTADO
+@onready var estado_panel: Panel = $EstadoPanel
+@onready var label_stats: Label = $EstadoPanel/Label_Stats
+@onready var face_texture = $EstadoPanel/FaceRect
+
+@onready var team: Array = []
+
+@onready var btn_anterior: Button = $EstadoPanel/izq
+@onready var btn_siguiente: Button = $EstadoPanel/der
+@onready var btn_estado_salir: Button = $EstadoPanel/Salir
+var current_index: int = 0
+
+var is_open := false
 var selected_item_id: String = ""
 
 func _ready():
 	visible = false
 	item_list_panel.visible = false
 	btn_objetos.pressed.connect(_on_objetos_pressed)
+	btn_estado.pressed.connect(_on_estado_pressed)
 	btn_salir.pressed.connect(_on_cerrar_pressed)
 	# Setear opciones del menú contextual
 	popup_menu.clear()
@@ -27,6 +41,10 @@ func _ready():
 	popup_menu.add_item("Información", 1)
 	popup_menu.add_item("Descartar", 2)
 	popup_menu.id_pressed.connect(_on_context_option_selected)
+
+	btn_anterior.pressed.connect(_on_anterior_pressed)
+	btn_siguiente.pressed.connect(_on_siguiente_pressed)
+	btn_estado_salir.pressed.connect(_on_estado_salir_pressed)
 
 func toggle_inventory():
 	if is_open:
@@ -83,7 +101,6 @@ func update_item_list():
 			popup_menu.popup()
 			)
 
-
 func _on_item_pressed(item_id: String, button_node: Button):
 	selected_item_id = item_id
 	# Posiciona el popup cerca del botón
@@ -98,8 +115,9 @@ func _on_context_option_selected(option_id: int):
 			var item = DataLoader.items.get(selected_item_id, {})
 			var effects = item.get("effect", "").split(";")
 			if effects and effects[0] != "":
-				EffectManager.apply_effects(effects, "Kosmo") # O el personaje activo
-				
+				EffectManager.apply_effects(effects, "Kosmo")
+				InventoryManager.remove_item(ItemManager.get_item_nombre(selected_item_id), 1)
+
 			else:
 				print("Este objeto no tiene efectos.")
 
@@ -123,3 +141,52 @@ func show_info_popup(text: String):
 
 func _on_item_button_pressed(item_id: String):
 	print("Seleccionaste el item:", item_id)
+
+
+# Apartado de ESTADO
+func _on_estado_pressed():
+	team = GameManager.equipo_actual.duplicate()
+	current_index = 0
+	main_menu.visible = false
+	item_list_panel.visible = false
+	estado_panel.visible = true
+	show_character_stats(team[current_index])
+
+func _on_estado_salir_pressed():
+	estado_panel.visible = false
+	main_menu.visible = true
+
+func show_character_stats(char_id: String):
+	if not PlayableCharacters.characters.has(char_id):
+		label_stats.text = "Personaje no disponible."
+		face_texture.texture = null
+		return
+	
+	
+	
+	var stats = PlayableCharacters.characters[char_id]["stats"]
+	label_stats.text = "Nombre: %s\nHP: %s\nMP: %s\nAtaque: %s\nAtaque Mágico: %s\nDefensa: %s\nVelocidad: %s\nSuerte: %s\nEspíritu: %s" % [
+		char_id,
+		stats.get("hp", "???"),
+		stats.get("mp", "???"),
+		stats.get("atk", "???"),
+		stats.get("mag", "???"),
+		stats.get("def", "???"),
+		stats.get("spd", "???"),
+		stats.get("lck", "???"),
+		stats.get("fth", "???"),		
+	]
+
+	var texture_path = PlayableCharacters.characters[char_id]["stats"]["face"]
+	if texture_path != "":
+		face_texture.texture = load(texture_path)
+	else:
+		face_texture.texture = null
+
+func _on_siguiente_pressed():
+	current_index = (current_index + 1) % team.size()
+	show_character_stats(team[current_index])
+
+func _on_anterior_pressed():
+	current_index = (current_index - 1 + team.size()) % team.size()
+	show_character_stats(team[current_index])

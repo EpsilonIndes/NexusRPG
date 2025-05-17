@@ -16,7 +16,7 @@ func add_character(pj_name: String, class_nombre: String):
 	var estadisticas = {}
 
 	for key in original_stats.keys():
-		if key in ["class_id", "job_name"]:
+		if key in ["class_id", "job_name", "face"]:
 			estadisticas[key] = original_stats[key]
 		else:
 			estadisticas[key] = int(original_stats[key]) # Cast numérico solo a Stats
