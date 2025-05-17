@@ -2,12 +2,12 @@ extends Node
 
 var items: Dictionary = {}
 
-func add_item(item_name: String, cantidad: int = 1):
-    if items.has(item_name):
-        items[item_name] += cantidad
+func add_item(item_id: String, cantidad: int = 1):
+    if items.has(item_id):
+        items[item_id] += cantidad
     else:
-        items[item_name] = cantidad
-    print("[SISTEMA] Agregado: ", item_name, " x", cantidad)
+        items[item_id] = cantidad
+    print("[SISTEMA] Agregado: ", item_id, " x", cantidad)
 
 func remove_item(item_name: String, cantidad: int = 1):
     if items.has(item_name):
@@ -16,7 +16,7 @@ func remove_item(item_name: String, cantidad: int = 1):
             items.erase(item_name)
         print("[SISTEMA] Quitado: ", cantidad, "x ", item_name)
     else:
-        print(item_name, " no está en el inventario.")
+        print(item_name, " ya no está en el inventario.")
 
 func has_item(item_name: String) -> bool:
     return items.has(item_name)

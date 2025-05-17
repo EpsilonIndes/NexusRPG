@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://qh76bv7y2534"]
 
 [ext_resource type="Theme" uid="uid://hdvpdwg85rrw" path="res://Materiales/new_theme.tres" id="1_y1ucf"]
-[ext_resource type="Script" path="res://Scripts/InventoryUI.gd" id="1_yt8oo"]
-[ext_resource type="LabelSettings" uid="uid://cb4pba1oc265c" path="res://Data/Fonts/FantasyLabel.tres" id="2_nx774"]
+[ext_resource type="Script" path="res://Scripts/InventoryUI 2.gd" id="2_afv7y"]
+[ext_resource type="LabelSettings" uid="uid://cb4pba1oc265c" path="res://Data/Fonts/FantasyLabel.tres" id="3_hone7"]
 
 [sub_resource type="Animation" id="Animation_4rtdd"]
 resource_name = "close"
@@ -74,14 +74,22 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_y1ucf")
-script = ExtResource("1_yt8oo")
+script = ExtResource("2_afv7y")
 
 [node name="MainMenu" type="Panel" parent="."]
-layout_mode = 0
-offset_left = 236.0
-offset_top = 52.0
-offset_right = 862.0
-offset_bottom = 571.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -300.0
+offset_right = 400.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
 
 [node name="BoxBotones" type="VBoxContainer" parent="MainMenu"]
 layout_mode = 0
@@ -112,34 +120,93 @@ libraries = {
 }
 
 [node name="Panel_Items" type="VBoxContainer" parent="." node_paths=PackedStringArray("shortcut_context")]
-layout_mode = 0
-offset_left = 429.0
-offset_top = 79.0
-offset_right = 743.0
-offset_bottom = 524.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.357
+anchor_top = 0.103
+anchor_right = 0.724
+anchor_bottom = 0.79
+offset_left = -0.264038
+offset_top = 0.255997
+offset_right = -0.0480347
+offset_bottom = 0.0799866
 shortcut_context = NodePath("../MainMenu/BoxBotones/Objetos")
 theme = ExtResource("1_y1ucf")
-metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="Panel_Items"]
+[node name="Label1" type="Button" parent="Panel_Items"]
 layout_mode = 2
 text = "Label 1
 "
-label_settings = ExtResource("2_nx774")
 
-[node name="Label2" type="Label" parent="Panel_Items"]
+[node name="Label2" type="Button" parent="Panel_Items"]
 layout_mode = 2
 text = "Label 1
 "
-label_settings = ExtResource("2_nx774")
 
-[node name="Label3" type="Label" parent="Panel_Items"]
+[node name="Label3" type="Button" parent="Panel_Items"]
 layout_mode = 2
 text = "Label 3"
-label_settings = ExtResource("2_nx774")
 
 [node name="panel_stats" type="VBoxContainer" parent="."]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 theme = ExtResource("1_y1ucf")
+
+[node name="ItemContextMenu" type="PopupMenu" parent="."]
+position = Vector2i(726, 0)
+item_count = 3
+item_0/text = "Usar"
+item_0/id = 0
+item_1/text = "Información"
+item_1/id = 1
+item_2/text = "Descartar"
+item_2/id = 2
+
+[node name="ItemInfoPopup" type="Panel" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 413.0
+offset_top = 423.0
+offset_right = 489.0
+offset_bottom = 470.0
+scale = Vector2(5.43412, 1.72854)
+
+[node name="Label" type="Label" parent="ItemInfoPopup"]
+layout_mode = 0
+offset_left = 2.83366
+offset_top = 2.89262
+offset_right = 29.8337
+offset_bottom = 16.8926
+scale = Vector2(0.280767, 0.783732)
+text = "label"
+label_settings = ExtResource("3_hone7")
+
+[node name="EstadoPanel" type="Panel" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -300.0
+offset_right = 400.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label_stats" type="VBoxContainer" parent="EstadoPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -7.0
+offset_right = 20.0
+offset_bottom = 7.0
+grow_horizontal = 2
+grow_vertical = 2

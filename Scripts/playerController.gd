@@ -74,14 +74,5 @@ func _process(delta):
 			else:
 				print("No se puede pa.")
 
-	if Input.is_action_just_pressed("inventario"):		
+	if Input.is_action_just_pressed("inventario"):
 		inventory_ui.toggle_inventory()
-
-	#Provicional: input para añadir objetos al inventario
-	if Input.is_action_just_pressed("pocion"):
-		var item = "Poción"
-		var cantidad = 1
-	
-		EffectManager.apply_effects(["heal_hp"], "Kosmo")
-		inventory_manager.remove_item(item, cantidad)
-		print(PlayableCharacters.characters["Kosmo"]["stats"])
