@@ -26,6 +26,11 @@ GameManager="*res://Scripts/Singletons/GameManager.gd"
 CharacterStats="*res://Scripts/Singletons/CharacterStats.gd"
 PlayableCharacters="*res://Scripts/Singletons/PersonajesScriptsInterno/PlayableCharacters.gd"
 EffectManager="*res://Scripts/Singletons/EffectManager.gd"
+PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/phantom_camera/plugin.cfg")
 
 [filesystem]
 

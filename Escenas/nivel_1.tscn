@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://cjswe57kq821f"]
+[gd_scene load_steps=23 format=3 uid="uid://cjswe57kq821f"]
 
 [ext_resource type="PackedScene" uid="uid://bmocargan5l0q" path="res://Escenas/player.tscn" id="1_a8vtw"]
 [ext_resource type="Script" path="res://Scripts/InventoryManager.gd" id="2_5j2cu"]
@@ -13,6 +13,9 @@
 [ext_resource type="Material" uid="uid://c0jjtywjdsume" path="res://Materiales/Textura_Cubiletrero.tres" id="11_fhdji"]
 [ext_resource type="PackedScene" uid="uid://7v22g42l4rov" path="res://Models/Cofre.tscn" id="13_16hig"]
 [ext_resource type="PackedScene" uid="uid://cpkvk4qac61ng" path="res://Escenas/NPCs Auromora/anciano_1.tscn" id="13_wukj4"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="14_al3wf"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="14_dex0v"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="15_6tl7n"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_p4rn7"]
 vertices = PackedVector3Array(-9.38201, 0.5, -9.11942, -9.38201, 0.5, 9.13058, 9.36799, 0.5, 9.13058, 9.36799, 0.5, -9.11942)
@@ -30,6 +33,12 @@ ambient_light_color = Color(0.686275, 0.917647, 0.988235, 0.372549)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_k26f6"]
 size = Vector3(1, 0.981689, 1)
+
+[sub_resource type="Resource" id="Resource_3eirh"]
+script = ExtResource("15_6tl7n")
+duration = 1.0
+transition = 0
+ease = 2
 
 [node name="Nivel1" type="Node"]
 
@@ -117,9 +126,28 @@ shape = SubResource("BoxShape3D_k26f6")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.609187, 0.810861, -6.32963)
 npc_id = "anciano_1"
 
-[node name="CofreCommon" parent="." instance=ExtResource("13_16hig")]
+[node name="CofreCommon" parent="Interactuable" instance=ExtResource("13_16hig")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -6.99299, 0.0375402, -7.78531)
 
-[node name="CofreCommon2" parent="." instance=ExtResource("13_16hig")]
+[node name="CofreCommon2" parent="Interactuable" instance=ExtResource("13_16hig")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -5.03499, 0.0335135, -7.78046)
 loot_id = "cofre_gema_roja"
+
+[node name="CameraManager" type="Node" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="CameraManager"]
+transform = Transform3D(1, 0, 0, 0, 0.668651, 0.743577, 0, -0.743577, 0.668651, 0, 0.82957, -1.41913)
+v_offset = -30.0
+
+[node name="PhantomCameraHost" type="Node" parent="CameraManager/Camera3D"]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("14_dex0v")
+
+[node name="PhantomCamera3D" type="Node3D" parent="CameraManager" node_paths=PackedStringArray("follow_target")]
+transform = Transform3D(1, 0, 0, 0, 0.668651, 0.743577, 0, -0.743577, 0.668651, 0, 0.82957, -1.41913)
+top_level = true
+script = ExtResource("14_al3wf")
+follow_mode = 2
+follow_target = NodePath("../../Personajes/Player")
+tween_resource = SubResource("Resource_3eirh")
