@@ -40,8 +40,38 @@ func load_csv_to_dict(path: String, key_column: String) -> Dictionary:
 	file.close()
 	return result
 
+func load_csv_grouped_by_key(path: String, key_column: String) -> Dictionary:
+	var result: Dictionary = {}
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		push_error("No se pudo abrir el archivo: " + path)
+		return result
+
+	var headers := file.get_line().strip_edges().split(",")
+
+	while not file.eof_reached():
+		var row := file.get_line().strip_edges().split(",")
+		if row.size() < 2:  # Evita líneas vacías o mal formadas
+			continue
+
+		var entry := {}
+		for i in headers.size():
+			if i < row.size():
+				entry[headers[i]] = row[i]
+			else:
+				entry[headers[i]] = ""
+				
+		var key = entry.get(key_column, "")
+		if not result.has(key):
+			result[key] = []
+
+		result[key].append(entry)
+
+	file.close()
+	return result
+
 func load_dialogues(path: String):
-	dialogues = load_csv_to_dict(path, "npc")
+	dialogues = load_csv_grouped_by_key(path, "npc_id")
 
 func load_items(path: String):
 	items = load_csv_to_dict(path, "item_id")

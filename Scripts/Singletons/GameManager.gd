@@ -16,8 +16,7 @@ func set_estado(nuevo_estado):
 func es_estado(objetivo):
 	return estado_actual == objetivo
 
-# Nuevo: lista del equipo activo (usamos los class_id)
-var equipo_actual: Array = ["Kosmo", "Sigrid", "Miguelito", "Chipita"] # Kosmo, Sigrid, Miguelito, Chipita
+var equipo_actual: Array = [] # Lista del equipo vacío, hasta que se llena al instanciarlos más adelante
 
 func agregar_personaje(class_id: String, class_nombre: String):
 	if not PlayableCharacters.characters.has(class_id):
@@ -32,3 +31,13 @@ func agregar_al_equipo(class_id: String):
 func remover_del_equipo(class_id: String):
 	equipo_actual.erase(class_id)
 
+func iniciar_combate(enemy_id: Array[String]):
+	# Cambia el estado global
+	set_estado(EstadosDeJuego.COMBATE)
+	
+	# Guarda datos necesarios para el combate
+	CombatData.jugadores = equipo_actual.duplicate()
+	CombatData.enemigos = enemy_id
+
+	# Cargar escena de batalla
+	get_tree().change_scene_to_file("res://Escenas/Battle/battle_scene.tscn")

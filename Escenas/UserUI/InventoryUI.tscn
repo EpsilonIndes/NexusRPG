@@ -1,0 +1,244 @@
+[gd_scene load_steps=7 format=3 uid="uid://qh76bv7y2534"]
+
+[ext_resource type="Theme" uid="uid://hdvpdwg85rrw" path="res://Materiales/new_theme.tres" id="1_y1ucf"]
+[ext_resource type="Script" path="res://Scripts/InventoryUI 2.gd" id="2_afv7y"]
+[ext_resource type="LabelSettings" uid="uid://cb4pba1oc265c" path="res://Data/Fonts/FantasyLabel.tres" id="3_hone7"]
+
+[sub_resource type="Animation" id="Animation_4rtdd"]
+resource_name = "close"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 0.052556),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(0.8, 0.8)]
+}
+
+[sub_resource type="Animation" id="Animation_mwyvu"]
+resource_name = "open"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 8.28212),
+"update": 0,
+"values": [Vector2(0.8, 0.8), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 0.125),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xrri4"]
+_data = {
+"close": SubResource("Animation_4rtdd"),
+"open": SubResource("Animation_mwyvu")
+}
+
+[node name="InventoryUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_y1ucf")
+script = ExtResource("2_afv7y")
+
+[node name="MainMenu" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.484
+anchor_top = 0.5
+anchor_right = 0.484
+anchor_bottom = 0.5
+offset_left = -389.568
+offset_top = -300.0
+offset_right = 410.432
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BoxBotones" type="VBoxContainer" parent="MainMenu"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 14.0
+offset_right = 162.0
+offset_bottom = 115.0
+
+[node name="Objetos" type="Button" parent="MainMenu/BoxBotones"]
+layout_mode = 2
+text = "Objetos"
+
+[node name="Estado" type="Button" parent="MainMenu/BoxBotones"]
+layout_mode = 2
+text = "Estado"
+
+[node name="Configuración" type="Button" parent="MainMenu/BoxBotones"]
+layout_mode = 2
+text = "Configuración"
+
+[node name="Salir" type="Button" parent="MainMenu/BoxBotones"]
+layout_mode = 2
+text = "Salir"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_xrri4")
+}
+
+[node name="Panel_Items" type="VBoxContainer" parent="." node_paths=PackedStringArray("shortcut_context")]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.357
+anchor_top = 0.103
+anchor_right = 0.724
+anchor_bottom = 0.79
+offset_left = -0.264038
+offset_top = 0.255997
+offset_right = -0.0480347
+offset_bottom = 0.0799866
+shortcut_context = NodePath("../MainMenu/BoxBotones/Objetos")
+theme = ExtResource("1_y1ucf")
+
+[node name="Label1" type="Button" parent="Panel_Items"]
+layout_mode = 2
+text = "Label 1
+"
+
+[node name="Label2" type="Button" parent="Panel_Items"]
+layout_mode = 2
+text = "Label 1
+"
+
+[node name="Label3" type="Button" parent="Panel_Items"]
+layout_mode = 2
+text = "Label 3"
+
+[node name="panel_stats" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme = ExtResource("1_y1ucf")
+
+[node name="ItemContextMenu" type="PopupMenu" parent="."]
+position = Vector2i(726, 0)
+item_count = 3
+item_0/text = "Usar"
+item_0/id = 0
+item_1/text = "Información"
+item_1/id = 1
+item_2/text = "Descartar"
+item_2/id = 2
+
+[node name="ItemInfoPopup" type="Panel" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 413.0
+offset_top = 423.0
+offset_right = 489.0
+offset_bottom = 470.0
+scale = Vector2(5.43412, 1.72854)
+
+[node name="Label" type="Label" parent="ItemInfoPopup"]
+layout_mode = 0
+offset_left = 2.83366
+offset_top = 2.89262
+offset_right = 29.8337
+offset_bottom = 16.8926
+scale = Vector2(0.280767, 0.783732)
+text = "label"
+label_settings = ExtResource("3_hone7")
+
+[node name="EstadoPanel" type="Panel" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -300.0
+offset_right = 400.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label_Stats" type="Label" parent="EstadoPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 49.0
+offset_top = -173.0
+offset_right = 89.0
+offset_bottom = -159.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="FaceRect" type="TextureRect" parent="EstadoPanel"]
+layout_mode = 0
+offset_left = 262.0
+offset_top = 59.0
+offset_right = 262.0
+offset_bottom = 59.0
+
+[node name="izq" type="Button" parent="EstadoPanel"]
+layout_mode = 0
+offset_left = 175.0
+offset_top = 10.0
+offset_right = 231.0
+offset_bottom = 32.0
+text = "Anterior
+"
+
+[node name="der" type="Button" parent="EstadoPanel"]
+layout_mode = 0
+offset_left = 726.0
+offset_top = 11.0
+offset_right = 786.0
+offset_bottom = 33.0
+text = "Siguiente"
+
+[node name="Salir" type="Button" parent="EstadoPanel"]
+layout_mode = 2
+offset_left = 255.0
+offset_top = 12.0
+offset_right = 288.0
+offset_bottom = 34.0
+text = "Salir"

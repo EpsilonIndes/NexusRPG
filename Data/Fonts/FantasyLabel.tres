@@ -4,5 +4,3 @@
 
 [resource]
 font = ExtResource("1_lwtp1")
-outline_size = 1
-outline_color = Color(0, 0, 0, 1)

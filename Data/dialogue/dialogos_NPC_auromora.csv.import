@@ -6,10 +6,10 @@ uid="uid://dxi8itabj3eeq"
 
 [deps]
 
-files=["res://Data/Dialogue/dialogos_NPC_auromora.nombre.translation", "res://Data/Dialogue/dialogos_NPC_auromora.texto.translation"]
+files=["res://Data/Dialogue/dialogos_NPC_auromora.nombre.translation", "res://Data/Dialogue/dialogos_NPC_auromora.linea.translation"]
 
 source_file="res://Data/Dialogue/dialogos_NPC_auromora.csv"
-dest_files=["res://Data/Dialogue/dialogos_NPC_auromora.nombre.translation", "res://Data/Dialogue/dialogos_NPC_auromora.texto.translation"]
+dest_files=["res://Data/Dialogue/dialogos_NPC_auromora.nombre.translation", "res://Data/Dialogue/dialogos_NPC_auromora.linea.translation"]
 
 [params]
 

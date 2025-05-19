@@ -5,12 +5,15 @@ func start_npc_dialogue(npc_id: String):
 		UImanager.label_dialogue.mostrar_dialogo("???", ["..."])
 		return
 
-	var npc_data = DataLoader.dialogues[npc_id]
+	var entradas = DataLoader.dialogues[npc_id]
 	var lineas := []
+	var nombre := "???"
 
-	for key in npc_data.keys():
-		if key.begins_with("texto"):
-			lineas.append(npc_data[key])
-	
-	UImanager.label_dialogue.mostrar_dialogo(npc_data.get("nombre", "???"), lineas)
+	for entrada in entradas:
+		if typeof(entrada) == TYPE_DICTIONARY:
+			lineas.append(entrada.get("linea", ""))
+			nombre = entrada.get("nombre", nombre)
 
+	UImanager.label_dialogue.mostrar_dialogo(nombre, lineas)
+
+# "res://Data/Dialogue/dialogos_NPC_auromora.csv"
