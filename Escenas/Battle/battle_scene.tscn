@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://dwfdbxtwcl5vd"]
+[gd_scene load_steps=6 format=3 uid="uid://dwfdbxtwcl5vd"]
 
 [ext_resource type="Script" path="res://Scripts/BattleMode/BattleManager.gd" id="1_tr8v8"]
+[ext_resource type="PackedScene" uid="uid://ckj2nd5m52pd2" path="res://Escenas/UserUI/battle_hud.tscn" id="2_2rhpp"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_f8uh2"]
 
@@ -18,8 +19,14 @@ ambient_light_color = Color(0.686275, 0.917647, 0.988235, 0.372549)
 [node name="BattleManager" type="Node" parent="."]
 script = ExtResource("1_tr8v8")
 
+[node name="PlayerTeam" type="Node3D" parent="BattleManager"]
+transform = Transform3D(1, 0.000827638, -0.00029216, -0.000827831, 0.999999, -0.000690804, 0.000291614, 0.000691035, 1, 3.04258, 0.321185, 0.0685774)
+
+[node name="EnemyTeam" type="Node3D" parent="BattleManager"]
+transform = Transform3D(0.999993, -0.00359736, 0.0012625, 0.00359356, 0.999989, 0.00300344, -0.00127326, -0.0029989, 0.999995, -3.56232, 0.202664, 0.270553)
+
 [node name="Terrain" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0236473, 0.128821, -0.0448775)
+transform = Transform3D(1.94899, 0, 0, 0, 1, 0, 0, 0, 1.94899, -0.569279, 0.128821, -0.0448775)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Terrain"]
 transform = Transform3D(2.46355, 0, 0, 0, 1, 0, 0, 0, 2.46355, 0.14704, 0, 0.0607901)
@@ -29,10 +36,6 @@ mesh = SubResource("PlaneMesh_f8uh2")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/MeshInstance3D/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_ne5ts")
-
-[node name="Aliados" type="Node3D" parent="."]
-
-[node name="Enemigos" type="Node3D" parent="."]
 
 [node name="Enviroment" type="Node" parent="."]
 
@@ -45,12 +48,8 @@ environment = SubResource("Environment_x34xq")
 [node name="BattleCamera" type="Node" parent="."]
 
 [node name="Camera3D" type="Camera3D" parent="BattleCamera"]
-transform = Transform3D(0.961291, -0.10574, 0.254437, -0.104312, 0.715038, 0.691259, -0.255026, -0.691042, 0.67633, 0.696299, 2.3828, 1.32779)
+transform = Transform3D(-0.981581, -0.0653425, 0.179527, 0.027843, 0.880733, 0.472795, -0.189009, 0.469084, -0.862691, 1.58293, 3.63601, -7.83696)
 
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="BattleHud" type="Control" parent="UI"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="BattleHud" parent="UI" instance=ExtResource("2_2rhpp")]

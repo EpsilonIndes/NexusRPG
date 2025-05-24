@@ -6,6 +6,8 @@ class_name Combatant
 var class_id: String = ""
 @export var es_jugador: bool
 
+var posicion_inicial: Vector3 = Vector3.ZERO
+
 var nombre: String = "???"
 var hp: int
 var hp_max: int
@@ -21,19 +23,33 @@ var esta_actuando: bool = false
 signal turno_listo(combatant: Combatant)
 signal muerte(combatant: Combatant)
 
-func _ready():
+var speed: float = 2
+
+func _physics_process(delta):
+	if es_jugador == false:
+		rotation.y = rotation.y + speed * delta
+
+
+
+
+func inicializar():
 	if es_jugador:
+		print("Inicializando jugador %s" % class_id)
 		cargar_datos_jugador()
 	else:
+		print("Inicializando enemigo %s" % class_id)
 		cargar_datos_enemigo()
-		
 
 func cargar_datos_jugador():
-	if not PlayableCharacters.characters.has(class_id):
+	if not PlayableCharacters.party_actual.has(class_id):
 		push_error("El personaje %s no está en PlayableCharacters." % class_id)
 		return
 	
-	var datos = PlayableCharacters.characters[class_id]
+	var datos = PlayableCharacters.get_stats(class_id)
+
+	if datos == null:
+		push_error("No se encontró el personaje con class_id %s en party_actual." % class_id)
+		return
 
 	nombre = datos.get("nombre", "???")
 	hp_max = datos.get("hp", 100)
@@ -45,11 +61,12 @@ func cargar_datos_jugador():
 	velocidad = datos.get("spd", 10)
 
 func cargar_datos_enemigo():
+	print("Cargando enemigo: %s" % class_id)
 	if not EnemyDatabase.enemies.has(class_id):
 		push_error("El enemigo %s no está en EnemyDatabase." % class_id)
 		return
 
-	var datos = EnemyDatabase.get_sats(class_id)
+	var datos = EnemyDatabase.get_stats(class_id)
 
 	nombre = datos.get("nombre", "???")
 	hp_max = datos.get("hp", 100)
@@ -59,6 +76,7 @@ func cargar_datos_enemigo():
 	ataque = datos.get("ataque", 10)
 	defensa = datos.get("defensa", 5)
 	velocidad = datos.get("velocidad", 10)
+
 
 
 func recibir_danio(cantidad: int):
@@ -88,3 +106,5 @@ func iniciar_turno():
 func terminar_turno():
 	esta_actuando = false
 
+func regresar_a_posicion():
+	global_transform.origin = posicion_inicial

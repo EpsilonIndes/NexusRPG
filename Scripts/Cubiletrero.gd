@@ -11,5 +11,8 @@ func interact():
 	GameManager.set_estado(GameManager.EstadosDeJuego.DIALOGO)
 	UImanager.label_dialogue.mostrar_dialogo(nombre_npc, [
 		"Has interactuado con el cubiletrero",
-		"Tu suerte aumenta x2"
+		"Iniciando prueba de combate"
 	])
+	
+	GameManager.iniciar_batalla(["Triangle", "Triangle"])
+

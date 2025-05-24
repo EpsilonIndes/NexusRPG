@@ -30,6 +30,13 @@ PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_came
 CombatData="*res://Scripts/BattleMode/CombatData.gd"
 EnemyDatabase="*res://Scripts/BattleMode/EnemyDatabase.gd"
 
+[display]
+
+window/size/viewport_width=1360
+window/size/viewport_height=780
+window/size/mode=3
+window/size/resizable=false
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/phantom_camera/plugin.cfg")

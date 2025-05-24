@@ -1,0 +1,59 @@
+[gd_scene load_steps=9 format=3 uid="uid://boebuxd27p70m"]
+
+[ext_resource type="Script" path="res://Scripts/BattleMode/Combatant.gd" id="1_hyxne"]
+[ext_resource type="Texture2D" uid="uid://c1alwew1iy2wu" path="res://Sprites/BattleSheets/Characters/MiguelitoBattler/MiguelitoBattle.png" id="2_x62oh"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2khwm"]
+atlas = ExtResource("2_x62oh")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_50sy2"]
+atlas = ExtResource("2_x62oh")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fl70o"]
+atlas = ExtResource("2_x62oh")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_buqah"]
+atlas = ExtResource("2_x62oh")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_go6nc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2khwm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_50sy2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fl70o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_buqah")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rwrg8"]
+radius = 0.415372
+height = 1.60986
+
+[node name="KosmoBattle" type="CharacterBody3D"]
+script = ExtResource("1_hyxne")
+es_jugador = true
+
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+billboard = 1
+texture_filter = 0
+sprite_frames = SubResource("SpriteFrames_go6nc")
+animation = &"idle"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00972354, -0.113946, -0.00167549)
+shape = SubResource("CapsuleShape3D_rwrg8")

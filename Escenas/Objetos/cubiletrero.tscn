@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://dioro2qfasopc"]
+
+[ext_resource type="Script" path="res://Scripts/Cubiletrero.gd" id="1_psw7w"]
+[ext_resource type="Material" uid="uid://c0jjtywjdsume" path="res://Materiales/Textura_Cubiletrero.tres" id="2_2qenb"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_oluom"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_x7h6k"]
+radius = 0.78827
+
+[node name="Cubiletrero" type="Node3D" groups=["interactuables"]]
+transform = Transform3D(0.560523, 0.0732069, 0.201134, 0, 0.563816, -0.205212, -0.214043, 0.19171, 0.526719, 6.86302, 0.230015, -6.54142)
+script = ExtResource("1_psw7w")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -1.86265e-09, 0, 1, 0, 0.304871, 0)
+material_override = ExtResource("2_2qenb")
+cast_shadow = 0
+mesh = SubResource("BoxMesh_oluom")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 3.72529e-09, 0, 1, 0, 0, 0, 1, 0, 0.313355, 0)
+shape = SubResource("SphereShape3D_x7h6k")

@@ -1,0 +1,60 @@
+[gd_scene load_steps=9 format=3 uid="uid://d1wj4ltbsjdm"]
+
+[ext_resource type="Script" path="res://Scripts/BattleMode/Combatant.gd" id="1_xj4xb"]
+[ext_resource type="Texture2D" uid="uid://bcer4lxaju3fw" path="res://Sprites/BattleSheets/Characters/ChipitaBattler/chipitaBattler.png" id="2_fnl2r"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ai5f"]
+atlas = ExtResource("2_fnl2r")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xbm7b"]
+atlas = ExtResource("2_fnl2r")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lact1"]
+atlas = ExtResource("2_fnl2r")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qckse"]
+atlas = ExtResource("2_fnl2r")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_go6nc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1ai5f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xbm7b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lact1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qckse")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rwrg8"]
+radius = 0.415372
+height = 1.60986
+
+[node name="KosmoBattle" type="CharacterBody3D"]
+script = ExtResource("1_xj4xb")
+es_jugador = true
+
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+billboard = 1
+texture_filter = 0
+sprite_frames = SubResource("SpriteFrames_go6nc")
+animation = &"idle"
+frame_progress = 0.720358
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00972354, -0.113946, -0.00167549)
+shape = SubResource("CapsuleShape3D_rwrg8")

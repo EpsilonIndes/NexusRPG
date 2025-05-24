@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://cjswe57kq821f"]
+[gd_scene load_steps=20 format=3 uid="uid://cjswe57kq821f"]
 
 [ext_resource type="PackedScene" uid="uid://bmocargan5l0q" path="res://Escenas/player.tscn" id="1_a8vtw"]
 [ext_resource type="Script" path="res://Scripts/InventoryManager.gd" id="2_5j2cu"]
@@ -9,8 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://qh76bv7y2534" path="res://Escenas/UserUI/InventoryUI.tscn" id="5_gjkhy"]
 [ext_resource type="PackedScene" uid="uid://dkn8gxfmy5tm6" path="res://Escenas/UserUI/label_dialogue.tscn" id="6_dp2kd"]
 [ext_resource type="Script" path="res://Scripts/InsatanciadorPJ.gd" id="6_onnpr"]
-[ext_resource type="Script" path="res://Scripts/Cubiletrero.gd" id="10_mb4ff"]
-[ext_resource type="Material" uid="uid://c0jjtywjdsume" path="res://Materiales/Textura_Cubiletrero.tres" id="11_fhdji"]
+[ext_resource type="PackedScene" uid="uid://dioro2qfasopc" path="res://Escenas/Objetos/cubiletrero.tscn" id="10_sf4ds"]
 [ext_resource type="PackedScene" uid="uid://7v22g42l4rov" path="res://Models/Cofre.tscn" id="13_16hig"]
 [ext_resource type="PackedScene" uid="uid://cpkvk4qac61ng" path="res://Escenas/NPCs Auromora/anciano_1.tscn" id="13_wukj4"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="14_al3wf"]
@@ -28,11 +27,6 @@ background_mode = 1
 background_color = Color(7.70092e-07, 0.661235, 0.874662, 1)
 ambient_light_source = 2
 ambient_light_color = Color(0.686275, 0.917647, 0.988235, 0.372549)
-
-[sub_resource type="BoxMesh" id="BoxMesh_oluom"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_k26f6"]
-size = Vector3(1, 0.981689, 1)
 
 [sub_resource type="Resource" id="Resource_3eirh"]
 script = ExtResource("15_6tl7n")
@@ -106,21 +100,7 @@ environment = SubResource("Environment_njs3v")
 
 [node name="Interactuable" type="Node" parent="."]
 
-[node name="Cubiletrero" type="Node3D" parent="Interactuable" groups=["interactuables"]]
-transform = Transform3D(0.560523, 0.0732069, 0.201134, 0, 0.563816, -0.205212, -0.214043, 0.19171, 0.526719, 6.86302, 0.230015, -6.54142)
-script = ExtResource("10_mb4ff")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Interactuable/Cubiletrero"]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Interactuable/Cubiletrero/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -1.86265e-09, 0, 1, 0, 0.304871, 0)
-material_override = ExtResource("11_fhdji")
-cast_shadow = 0
-mesh = SubResource("BoxMesh_oluom")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactuable/Cubiletrero/StaticBody3D"]
-transform = Transform3D(1, 0, 3.72529e-09, 0, 1, 0, 0, 0, 1, 0, 0.313355, 0)
-shape = SubResource("BoxShape3D_k26f6")
+[node name="Cubiletrero" parent="Interactuable" instance=ExtResource("10_sf4ds")]
 
 [node name="Anciano_1" parent="Interactuable" instance=ExtResource("13_wukj4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.609187, 0.810861, -6.32963)

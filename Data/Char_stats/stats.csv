@@ -1,7 +1,7 @@
-class_id,job_name,hp,max_hp,mp,max_mp,atk,mag,def,spd,lck,fth,face,
-quantic_master,Maéstro cuántico,100,200,30,30,25,5,20,12,8,4,res://Assets/Faces/kosmo.png,
-dark_mage,Maga oscura,180,180,80,80,10,28,10,14,10,12,res://Assets/Faces/chipita.png,
-lancer,Lancera,200,200,40,40,20,12,18,16,12,6,res://Assets/Faces/maya.png,
-hunter,Cazador,190,190,35,35,18,10,12,20,20,5,res://Assets/Faces/miguelito.png,
-cleric,Sanadora,175,175,60,60,12,24,10,14,10,18,res://Assets/Faces/amanda.png,
-knight,Caballera,220,220,50,50,20,18,25,10,8,7,res://Assets/Faces/sigrid.png,
+class_id,job_name,hp,max_hp,mp,max_mp,atk,mag,def,spd,lck,fth,face,in_party
+quantic_master,Maéstro cuántico,100,200,30,30,25,5,20,12,8,4,res://Assets/Faces/kosmo.png,false
+dark_mage,Maga oscura,180,180,80,80,10,28,10,14,10,12,res://Assets/Faces/chipita.png,false
+lancer,Lancera,200,200,40,40,20,12,18,16,12,6,res://Assets/Faces/maya.png,false
+hunter,Cazador,190,190,35,35,18,10,12,20,20,5,res://Assets/Faces/miguelito.png,false
+cleric,Sanadora,175,175,60,60,12,24,10,14,10,18,res://Assets/Faces/amanda.png,false
+knight,Caballera,220,220,50,50,20,18,25,10,8,7,res://Assets/Faces/sigrid.png,false

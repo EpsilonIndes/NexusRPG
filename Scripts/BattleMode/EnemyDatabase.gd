@@ -10,7 +10,7 @@ var enemies := { # Recordatorio: Crear CSV con stats enemigos
 		"defensa": 2,
 		"velocidad": 8
 	},
-	"triangulo": {
+	"Triangle": {
 		"nombre": "Triángulo Vengativo",
 		"hp": 80,
 		"mp": 10,

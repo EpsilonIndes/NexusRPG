@@ -1,0 +1,102 @@
+[gd_scene format=3 uid="uid://ckj2nd5m52pd2"]
+
+[node name="BattleHud" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Team" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Panel_pj1" type="Panel" parent="Team"]
+layout_mode = 2
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -573.0
+offset_top = -311.0
+offset_right = -453.0
+offset_bottom = -211.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1, 0.990079)
+
+[node name="Panel_pj2" type="Panel" parent="Team"]
+layout_mode = 2
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -573.0
+offset_top = -168.0
+offset_right = -453.0
+offset_bottom = -68.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1, 0.990079)
+
+[node name="Panel_pj3" type="Panel" parent="Team"]
+layout_mode = 2
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -573.0
+offset_top = -21.0
+offset_right = -453.0
+offset_bottom = 79.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1, 0.990079)
+
+[node name="Panel_pj4" type="Panel" parent="Team"]
+layout_mode = 2
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -573.0
+offset_top = 122.0
+offset_right = -453.0
+offset_bottom = 222.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1, 0.990079)
+
+[node name="Acciones" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 347.0
+offset_top = 69.0
+offset_right = 547.425
+offset_bottom = 240.0
+
+[node name="Atacar" type="Button" parent="Acciones"]
+layout_mode = 2
+text = "Atacar"
+
+[node name="Magia" type="Button" parent="Acciones"]
+layout_mode = 2
+text = "Magia"
+
+[node name="Especial" type="Button" parent="Acciones"]
+layout_mode = 2
+text = "Especial"
+
+[node name="Objeto" type="Button" parent="Acciones"]
+layout_mode = 2
+text = "Objeto"
+
+[node name="Escapar" type="Button" parent="Acciones"]
+layout_mode = 2
+text = "Escapar
+"

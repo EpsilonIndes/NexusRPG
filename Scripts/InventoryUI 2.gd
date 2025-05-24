@@ -145,12 +145,17 @@ func _on_item_button_pressed(item_id: String):
 
 # Apartado de ESTADO
 func _on_estado_pressed():
-	team = GameManager.equipo_actual.duplicate()
+	team = PlayableCharacters.get_characters()
 	current_index = 0
 	main_menu.visible = false
 	item_list_panel.visible = false
 	estado_panel.visible = true
-	show_character_stats(team[current_index])
+	if team.size() > 0:
+		show_character_stats(team[current_index])
+	else:
+		label_stats.text = "No hay personajes en el equipo."
+		face_texture.texture = null
+	
 
 func _on_estado_salir_pressed():
 	estado_panel.visible = false
@@ -161,12 +166,11 @@ func show_character_stats(char_id: String):
 		label_stats.text = "Personaje no disponible."
 		face_texture.texture = null
 		return
-	
-	
-	
+
 	var stats = PlayableCharacters.characters[char_id]["stats"]
-	label_stats.text = "Nombre: %s\nHP: %s\nMP: %s\nAtaque: %s\nAtaque Mágico: %s\nDefensa: %s\nVelocidad: %s\nSuerte: %s\nEspíritu: %s" % [
+	label_stats.text = "Nombre: %s\nClase: %s\nHP: %s\nMP: %s\nAtaque: %s\nAtaque Mágico: %s\nDefensa: %s\nVelocidad: %s\nSuerte: %s\nEspíritu: %s" % [
 		char_id,
+		stats.get("job_name", "???"),
 		stats.get("hp", "???"),
 		stats.get("mp", "???"),
 		stats.get("atk", "???"),
@@ -184,9 +188,13 @@ func show_character_stats(char_id: String):
 		face_texture.texture = null
 
 func _on_siguiente_pressed():
+	if team.size() == 0:
+		return
 	current_index = (current_index + 1) % team.size()
 	show_character_stats(team[current_index])
 
 func _on_anterior_pressed():
+	if team.size() == 0:
+		return
 	current_index = (current_index - 1 + team.size()) % team.size()
 	show_character_stats(team[current_index])

@@ -6,10 +6,10 @@ uid="uid://bfrwvy0r1v76e"
 
 [deps]
 
-files=["res://Data/Char_stats/stats.job.translation", "res://Data/Char_stats/stats.hp.translation", "res://Data/Char_stats/stats.max.translation", "res://Data/Char_stats/stats.mp.translation", "res://Data/Char_stats/stats.max.translation", "res://Data/Char_stats/stats.atk.translation", "res://Data/Char_stats/stats.mag.translation", "res://Data/Char_stats/stats.def.translation", "res://Data/Char_stats/stats.spd.translation", "res://Data/Char_stats/stats.lck.translation", "res://Data/Char_stats/stats.fth.translation", "res://Data/Char_stats/stats.face.translation"]
+files=["res://Data/Char_stats/stats.job.translation", "res://Data/Char_stats/stats.hp.translation", "res://Data/Char_stats/stats.max.translation", "res://Data/Char_stats/stats.mp.translation", "res://Data/Char_stats/stats.max.translation", "res://Data/Char_stats/stats.atk.translation", "res://Data/Char_stats/stats.mag.translation", "res://Data/Char_stats/stats.def.translation", "res://Data/Char_stats/stats.spd.translation", "res://Data/Char_stats/stats.lck.translation", "res://Data/Char_stats/stats.fth.translation", "res://Data/Char_stats/stats.face.translation", "res://Data/Char_stats/stats.id.translation"]
 
 source_file="res://Data/Char_stats/stats.csv"
-dest_files=["res://Data/Char_stats/stats.job.translation", "res://Data/Char_stats/stats.hp.translation", "res://Data/Char_stats/stats.max.translation", "res://Data/Char_stats/stats.mp.translation", "res://Data/Char_stats/stats.max.translation", "res://Data/Char_stats/stats.atk.translation", "res://Data/Char_stats/stats.mag.translation", "res://Data/Char_stats/stats.def.translation", "res://Data/Char_stats/stats.spd.translation", "res://Data/Char_stats/stats.lck.translation", "res://Data/Char_stats/stats.fth.translation", "res://Data/Char_stats/stats.face.translation"]
+dest_files=["res://Data/Char_stats/stats.job.translation", "res://Data/Char_stats/stats.hp.translation", "res://Data/Char_stats/stats.max.translation", "res://Data/Char_stats/stats.mp.translation", "res://Data/Char_stats/stats.max.translation", "res://Data/Char_stats/stats.atk.translation", "res://Data/Char_stats/stats.mag.translation", "res://Data/Char_stats/stats.def.translation", "res://Data/Char_stats/stats.spd.translation", "res://Data/Char_stats/stats.lck.translation", "res://Data/Char_stats/stats.fth.translation", "res://Data/Char_stats/stats.face.translation", "res://Data/Char_stats/stats.id.translation"]
 
 [params]
 
