@@ -42,7 +42,7 @@ ease = 2
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82957, -1.41913)
 
 [node name="MiguelitoNPC" parent="Personajes" instance=ExtResource("2_csbrw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.779405, -4.18304)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00458488, 0.74981, -4.17453)
 
 [node name="Chipita_Seguidora" parent="Personajes" instance=ExtResource("3_34qh6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.757282, 0)

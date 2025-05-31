@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dkn8gxfmy5tm6"]
 
 [ext_resource type="Script" path="res://Scripts/LabelDialogue.gd" id="1_2hgxt"]
-[ext_resource type="LabelSettings" uid="uid://cb4pba1oc265c" path="res://Data/Fonts/FantasyLabel.tres" id="2_g6c7l"]
+[ext_resource type="Theme" uid="uid://hdvpdwg85rrw" path="res://Materiales/new_theme.tres" id="1_jxwlg"]
 
 [node name="LabelDialogue" type="Control"]
 layout_mode = 3
@@ -10,57 +10,74 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -156.0
-offset_top = 90.0
+offset_left = -201.0
+offset_top = 96.0
 offset_right = 142.0
 offset_bottom = 265.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_jxwlg")
 script = ExtResource("1_2hgxt")
 
 [node name="PanelGeneral" type="Panel" parent="."]
 visible = false
 layout_mode = 1
-anchors_preset = 7
+anchors_preset = -1
 anchor_left = 0.5
-anchor_top = 1.0
+anchor_top = 1.734
 anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -246.0
-offset_top = -34.0
-offset_right = 52.0
-offset_bottom = 40.0
+anchor_bottom = 1.734
+offset_left = -334.0
+offset_top = -237.45
+offset_right = -36.0
+offset_bottom = -163.45
 grow_horizontal = 2
 grow_vertical = 0
 scale = Vector2(2.23342, 2.23342)
 
 [node name="NombrePanel" type="Panel" parent="PanelGeneral"]
 layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -59.5
-offset_right = 124.0
-offset_bottom = -37.5
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.416
+anchor_right = 0.5
+anchor_bottom = 1.451
+offset_left = -149.224
+offset_top = -131.468
+offset_right = -25.2239
+offset_bottom = -109.468
 grow_vertical = 2
 
-[node name="Nombre" type="Label" parent="PanelGeneral/NombrePanel"]
+[node name="Nombre" type="RichTextLabel" parent="PanelGeneral/NombrePanel"]
 layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -11.5
-offset_right = 79.0
-offset_bottom = 11.5
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.2
+anchor_right = 0.8
+anchor_bottom = 0.2
+offset_left = -58.418
+offset_top = -1.33605
+offset_right = 20.5819
+offset_bottom = 16.3218
+grow_horizontal = 2
 grow_vertical = 2
+bbcode_enabled = true
 text = "NombrePJ"
-label_settings = ExtResource("2_g6c7l")
+scroll_active = false
+text_direction = 1
+language = "es"
 
-[node name="Dialogo" type="Label" parent="PanelGeneral"]
-layout_mode = 0
-offset_left = 11.0
-offset_top = 9.0
-offset_right = 84.0
-offset_bottom = 32.0
+[node name="Dialogo" type="RichTextLabel" parent="PanelGeneral"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.4
+anchor_right = 1.15
+anchor_bottom = 0.8
+offset_left = -140.0
+offset_top = -22.636
+offset_right = -62.0
+offset_bottom = 0.363998
+bbcode_enabled = true
 text = "\"Diálogo\""
-label_settings = ExtResource("2_g6c7l")
+scroll_active = false

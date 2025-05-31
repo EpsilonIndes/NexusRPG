@@ -1,0 +1,20 @@
+tecnique_id,name,type,element,description,mp_cost,target,effects
+cura_lv1,Cura,Magia Blanca,Luz,Restaura una pequeña cantidad de HP.,5,Aliado,hp_heal
+cura_lv2,Cura+,Magia Blanca,Luz,Restaura una moderada cantidad de HP.,12,Aliado,hp_heal_plus
+esna,Esna,Magia Blanca,Luz,Cura estados alterados como veneno o ceguera.,8,Aliado,esna
+escudo,Escudo,Magia Blanca,Luz,Aumenta la defensa física temporalmente.,10,Aliado,shield
+piro_lv1,Piro,Magia Negra,Fuego,Inflige daño de fuego.,4,Enemigo,piro_dmg
+piro_lv2,Piro+,Magia Negra,Fuego,Inflige mayor daño de fuego.,10,Enemigo,piro_dmg_plus
+hielo,Hielo,Magia Negra,Hielo,Inflige daño de hielo.,4,Enemigo,ice_dmg
+electro,Electro,Magia Negra,Eléctrico,Inflige daño eléctrico.,4,Enemigo,electro_dmg
+bio_lv1,Bio,Magia Negra,Veneno,Inflige daño y puede envenenar al objetivo.,8,Enemigo,poison_eff
+matra_mag,Matra Mágica,Magia Azul,Neutral,Inflige daño basado en el nivel del usuario.,0,Enemigo,matra_dmg
+aliento_hielo,Aliento Gélido,Magia Azul,Hielo,Ataque de hielo aprendido de enemigos.,0,Todos los enemigos,scarcha_dmg_plus
+mental_boom,Explosión Mental,Magia Azul,Psi,Reduce el MP del objetivo.,0,Enemigo,mp_dmg
+salto,Salto,Habilidad Física,Neutral,El personaje salta y ataca al siguiente turno con gran daño.,0,Enemigo,jump_dmg
+robo,Robo,Habilidad Especial,Neutral,Intenta robar un ítem del enemigo.,0,Enemigo,heist
+lunar_dance,Danza Lunar,Habilidad Especial,Luz,Recupera HP y MP de todo el grupo con una danza mágica.,0,Grupo,lunar_heal
+kosmo_ulti,Epsilon Zero,Límite,Cuántico,"Kosmo desata la técnica definitiva heredada de su antepasado, Epsilon.",20,Todos los enemigos,quantum_ulti
+sigrid_ulti,Omnislash,Límite,Hielo,Sigrid manifiesta un haz de cortes multidimencionales.,20,Todos los enemigos,omnislash
+miguelito_ulti,Omnishot,Límite,Eléctrico,"Miguelito utiliza el rayo a su voluntad, invocando proyectiles mágicos.",22,Todos los enemigos,omnishot
+chipita_ulti,Hurricaine,Límite,Agua,Chipita invoca un huracán devastador.,50,Todos los enemigos,hurricaine

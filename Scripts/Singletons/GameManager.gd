@@ -29,6 +29,5 @@ func remover_personaje(class_id: String):
 
 func iniciar_batalla(contra_enemigos: Array[String]):
 	CombatData.jugadores = PlayableCharacters.get_party_actual()
-	#CombatData.jugadores = PlayableCharacters.get_party_actual()
 	CombatData.enemigos = contra_enemigos
 	get_tree().change_scene_to_file("res://Escenas/Battle/battle_scene.tscn")

@@ -15,4 +15,5 @@ func get_all_stats(character_name: String) -> Dictionary:
     if character_stats.has(character_name):
         return character_stats[character_name]
     return {}
-    
+
+# Script sin utilizar (Ya tenemos las stats en el CSV)

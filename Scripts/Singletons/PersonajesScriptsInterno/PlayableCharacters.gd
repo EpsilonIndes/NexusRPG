@@ -1,6 +1,5 @@
-#PlayableCharacters Autoload
-# Creador de personajes!
-
+# PlayableCharacters.gd (Autoload)
+# Este script maneja los personajes jugables del juego
 extends Node
 
 # Diccionario de personajes jugables

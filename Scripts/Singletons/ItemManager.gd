@@ -28,5 +28,4 @@ func give_item_to_player(item_id: String, cantidad: int = 1) -> bool:
 		return false
 
 	InventoryManager.add_item(get_item_nombre(item_id), cantidad)
-	print("Se añadió al inventario: %s x%d" % [get_item_nombre(item_id), cantidad])
 	return true

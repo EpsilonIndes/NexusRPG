@@ -1,20 +1,24 @@
-[gd_scene load_steps=10 format=3 uid="uid://ch12jihr8hqa8"]
+[gd_scene load_steps=11 format=3 uid="uid://ch12jihr8hqa8"]
 
 [ext_resource type="Script" path="res://Scripts/BattleMode/Combatant.gd" id="1_6jetd"]
-[ext_resource type="Texture2D" uid="uid://dtno0s2rtd06x" path="res://Sprites/BattleSheets/Characters/kosmo_battler.png" id="2_0m8d3"]
+[ext_resource type="Texture2D" uid="uid://bhnpyodj56kkk" path="res://Sprites/BattleSheets/Characters/KosmoBattler/kosmoBattler.png" id="2_wgkik"]
 [ext_resource type="Texture2D" uid="uid://drne7nnjgrtix" path="res://Sprites/BattleSheets/Characters/kosmo_attack.png" id="3_tmnhi"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_wa760"]
-atlas = ExtResource("2_0m8d3")
+[sub_resource type="AtlasTexture" id="AtlasTexture_ocfyd"]
+atlas = ExtResource("2_wgkik")
 region = Rect2(0, 0, 48, 48)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_o6aa8"]
-atlas = ExtResource("2_0m8d3")
+[sub_resource type="AtlasTexture" id="AtlasTexture_f1yvl"]
+atlas = ExtResource("2_wgkik")
 region = Rect2(48, 0, 48, 48)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_q0d5n"]
-atlas = ExtResource("2_0m8d3")
+[sub_resource type="AtlasTexture" id="AtlasTexture_wmb6i"]
+atlas = ExtResource("2_wgkik")
 region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dax55"]
+atlas = ExtResource("2_wgkik")
+region = Rect2(144, 0, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2okw8"]
 atlas = ExtResource("3_tmnhi")
@@ -23,14 +27,17 @@ region = Rect2(0, 0, 48, 48)
 [sub_resource type="SpriteFrames" id="SpriteFrames_go6nc"]
 animations = [{
 "frames": [{
-"duration": 1.5,
-"texture": SubResource("AtlasTexture_wa760")
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ocfyd")
 }, {
-"duration": 1.5,
-"texture": SubResource("AtlasTexture_o6aa8")
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f1yvl")
 }, {
-"duration": 1.5,
-"texture": SubResource("AtlasTexture_q0d5n")
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wmb6i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dax55")
 }],
 "loop": true,
 "name": &"idle",
@@ -59,9 +66,9 @@ billboard = 1
 texture_filter = 0
 sprite_frames = SubResource("SpriteFrames_go6nc")
 animation = &"idle"
-frame = 1
-frame_progress = 0.363824
+frame_progress = 0.597576
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00972354, -0.113946, -0.00167549)
+visible = false
 shape = SubResource("CapsuleShape3D_rwrg8")

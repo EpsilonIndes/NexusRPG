@@ -29,11 +29,12 @@ EffectManager="*res://Scripts/Singletons/EffectManager.gd"
 PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"
 CombatData="*res://Scripts/BattleMode/CombatData.gd"
 EnemyDatabase="*res://Scripts/BattleMode/EnemyDatabase.gd"
+SynergyDatabase="*res://Scripts/BattleMode/SynergyDatabase.gd"
 
 [display]
 
-window/size/viewport_width=1360
-window/size/viewport_height=780
+window/size/viewport_width=1280
+window/size/viewport_height=720
 window/size/mode=3
 window/size/resizable=false
 

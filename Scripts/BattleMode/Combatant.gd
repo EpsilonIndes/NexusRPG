@@ -17,20 +17,24 @@ var ataque: int
 var defensa: int
 var velocidad: int
 
-var esta_vivo: bool = true
+var esta_muerto: bool = false
 var esta_actuando: bool = false
 
 signal turno_listo(combatant: Combatant)
 signal muerte(combatant: Combatant)
 
+@onready var animated_sprite: AnimatedSprite3D = $AnimatedSprite3D if es_jugador else null
+
 var speed: float = 2
+
+func _ready():
+	if es_jugador:
+		animated_sprite.play("idle")
+
 
 func _physics_process(delta):
 	if es_jugador == false:
 		rotation.y = rotation.y + speed * delta
-
-
-
 
 func inicializar():
 	if es_jugador:
@@ -42,7 +46,7 @@ func inicializar():
 
 func cargar_datos_jugador():
 	if not PlayableCharacters.party_actual.has(class_id):
-		push_error("El personaje %s no está en PlayableCharacters." % class_id)
+		push_error("El personaje %s no está en el grupo." % class_id)
 		return
 	
 	var datos = PlayableCharacters.get_stats(class_id)
@@ -92,13 +96,13 @@ func curar(cantidad: int):
 	hp = min(hp + cantidad, hp_max)
 
 func morir():
-	esta_vivo = false
+	esta_muerto = true
 	print("%s ha sido derrotado." % nombre)
 	emit_signal("muerte", self)
 	queue_free()
 
 func iniciar_turno():
-	if not esta_vivo:
+	if esta_muerto:
 		return
 	esta_actuando = true
 	emit_signal("turno_listo", self)

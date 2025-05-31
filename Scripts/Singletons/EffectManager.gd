@@ -2,7 +2,6 @@
 extends Node
 
 func apply_effects(effects: Array, target_id: String) -> void:
-
 	var character = PlayableCharacters.characters.get(target_id)
 	if character == null:
 		print_debug("No se encontró al personaje con ID: %s" % target_id)
