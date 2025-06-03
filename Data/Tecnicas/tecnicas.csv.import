@@ -2,14 +2,14 @@
 
 importer="csv_translation"
 type="Translation"
-uid="uid://uux14xjkwqai"
+uid="uid://bjlkp03444tci"
 
 [deps]
 
-files=["res://Data/Tecnicas/tecnicas.name.translation", "res://Data/Tecnicas/tecnicas.type.translation", "res://Data/Tecnicas/tecnicas.element.translation", "res://Data/Tecnicas/tecnicas.description.translation", "res://Data/Tecnicas/tecnicas.mp.translation", "res://Data/Tecnicas/tecnicas.target.translation", "res://Data/Tecnicas/tecnicas.effects.translation"]
+files=["res://Data/Tecnicas/tecnicas.tecnique.translation", "res://Data/Tecnicas/tecnicas.rol.translation", "res://Data/Tecnicas/tecnicas.tipo.translation", "res://Data/Tecnicas/tecnicas.descripcion.translation", "res://Data/Tecnicas/tecnicas.costo.translation", "res://Data/Tecnicas/tecnicas.costo.translation", "res://Data/Tecnicas/tecnicas.especialidad.translation"]
 
 source_file="res://Data/Tecnicas/tecnicas.csv"
-dest_files=["res://Data/Tecnicas/tecnicas.name.translation", "res://Data/Tecnicas/tecnicas.type.translation", "res://Data/Tecnicas/tecnicas.element.translation", "res://Data/Tecnicas/tecnicas.description.translation", "res://Data/Tecnicas/tecnicas.mp.translation", "res://Data/Tecnicas/tecnicas.target.translation", "res://Data/Tecnicas/tecnicas.effects.translation"]
+dest_files=["res://Data/Tecnicas/tecnicas.tecnique.translation", "res://Data/Tecnicas/tecnicas.rol.translation", "res://Data/Tecnicas/tecnicas.tipo.translation", "res://Data/Tecnicas/tecnicas.descripcion.translation", "res://Data/Tecnicas/tecnicas.costo.translation", "res://Data/Tecnicas/tecnicas.costo.translation", "res://Data/Tecnicas/tecnicas.especialidad.translation"]
 
 [params]
 

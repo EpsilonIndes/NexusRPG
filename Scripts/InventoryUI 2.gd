@@ -24,6 +24,8 @@ extends Control
 @onready var btn_anterior: Button = $EstadoPanel/izq
 @onready var btn_siguiente: Button = $EstadoPanel/der
 @onready var btn_estado_salir: Button = $EstadoPanel/Salir
+@onready var character_ContextMenu: PopupMenu = $ItemContextMenu/CharacterContextMenu
+
 var current_index: int = 0
 
 var is_open := false
@@ -35,16 +37,20 @@ func _ready():
 	btn_objetos.pressed.connect(_on_objetos_pressed)
 	btn_estado.pressed.connect(_on_estado_pressed)
 	btn_salir.pressed.connect(_on_cerrar_pressed)
+	
 	# Setear opciones del menú contextual
 	popup_menu.clear()
 	popup_menu.add_item("Usar", 0)
 	popup_menu.add_item("Información", 1)
 	popup_menu.add_item("Descartar", 2)
 	popup_menu.id_pressed.connect(_on_context_option_selected)
+	character_ContextMenu.id_pressed.connect(_on_caracter_ContextMenu_pressed)
 
 	btn_anterior.pressed.connect(_on_anterior_pressed)
 	btn_siguiente.pressed.connect(_on_siguiente_pressed)
 	btn_estado_salir.pressed.connect(_on_estado_salir_pressed)
+
+	crear_listaContextualCharacter()
 
 func toggle_inventory():
 	if is_open:
@@ -111,18 +117,10 @@ func _on_item_pressed(item_id: String, button_node: Button):
 func _on_context_option_selected(option_id: int):
 	match option_id:
 		0:
-			print("Usar ", selected_item_id)
-			var item = DataLoader.items.get(selected_item_id, {})
-			var effects = item.get("effect", "").split(";")
-			if effects and effects[0] != "":
-				EffectManager.apply_effects(effects, "Kosmo")
-				InventoryManager.remove_item(ItemManager.get_item_nombre(selected_item_id), 1)
-
-			else:
-				print("Este objeto no tiene efectos.")
-
-			print(PlayableCharacters.characters["Kosmo"]["stats"])
-			update_item_list()
+			character_ContextMenu.visible = true
+			# Mover el menú contextual cerca del mouse
+			character_ContextMenu.set_position(get_global_mouse_position())
+			
 		1:
 			print("Información de", selected_item_id)
 			var item = DataLoader.items.get(selected_item_id, {})
@@ -133,15 +131,32 @@ func _on_context_option_selected(option_id: int):
 			InventoryManager.remove_item(ItemManager.get_item_nombre(selected_item_id), 1)
 			update_item_list()
 
-	selected_item_id = ""
-
 func show_info_popup(text: String):
 	info_label.text = text
 	info_popup.visible = true
 
 func _on_item_button_pressed(item_id: String):
-	print("Seleccionaste el item:", item_id)
+	print("Seleccionaste el item: ", item_id)
 
+func _on_caracter_ContextMenu_pressed(option_id: int):
+	var selected_character = character_ContextMenu.get_item_text(option_id)
+	print("Seleccionaste el personaje: ", selected_character)
+
+	if selected_character in PlayableCharacters.party_actual:
+		var item = DataLoader.items.get(selected_item_id, {})
+		var effects = item.get("effect", "").split(";")
+		
+		if effects and effects[0] != "":
+			EffectManager.apply_effects(effects, selected_character)
+			InventoryManager.remove_item(ItemManager.get_item_nombre(selected_item_id), 1)
+			update_item_list()
+		else:
+			print("Este objeto no tiene efectos.")
+	else:
+		print("El personaje seleccionado no está en el equipo.")
+	
+	character_ContextMenu.visible = false
+	selected_item_id = ""
 
 # Apartado de ESTADO
 func _on_estado_pressed():
@@ -198,3 +213,8 @@ func _on_anterior_pressed():
 		return
 	current_index = (current_index - 1 + team.size()) % team.size()
 	show_character_stats(team[current_index])
+
+func crear_listaContextualCharacter():
+	character_ContextMenu.clear()
+	for i in range(PlayableCharacters.party_actual.size()):
+		character_ContextMenu.add_item(PlayableCharacters.party_actual[i], i)

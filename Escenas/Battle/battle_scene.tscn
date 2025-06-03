@@ -29,7 +29,7 @@ transform = Transform3D(0.999993, -0.00359736, 0.0012625, 0.00359356, 0.999989, 
 transform = Transform3D(1.94899, 0, 0, 0, 1, 0, 0, 0, 1.94899, -0.569279, 0.128821, -0.0448775)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Terrain"]
-transform = Transform3D(2.46355, 0, 0, 0, 1, 0, 0, 0, 2.46355, 0.14704, 0, 0.0607901)
+transform = Transform3D(2.46355, 0, 0, 0, 1, 0, 0, 0, 3.68773, 0.14704, 0, 0.0607901)
 mesh = SubResource("PlaneMesh_f8uh2")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Terrain/MeshInstance3D"]
@@ -48,7 +48,8 @@ environment = SubResource("Environment_x34xq")
 [node name="BattleCamera" type="Node" parent="."]
 
 [node name="Camera3D" type="Camera3D" parent="BattleCamera"]
-transform = Transform3D(-0.981581, -0.0653425, 0.179527, 0.027843, 0.880733, 0.472795, -0.189009, 0.469084, -0.862691, 1.58293, 3.63601, -7.83696)
+transform = Transform3D(-4.37114e-08, -0.386325, 0.922363, 0, 0.922363, 0.386325, -1, 1.68868e-08, -4.03178e-08, 8.65693, 2.89373, 0.0402536)
+fov = 60.0
 
 [node name="UI" type="CanvasLayer" parent="."]
 

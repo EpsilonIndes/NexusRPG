@@ -1,14 +1,13 @@
-#Clase base para jugadores y enemigos
+# Clase base para jugadores y enemigos
 # Combatant.gd
 extends Node3D
 class_name Combatant
 
-var class_id: String = ""
 @export var es_jugador: bool
 
 var posicion_inicial: Vector3 = Vector3.ZERO
-
 var nombre: String = "???"
+var class_id: String = ""
 var hp: int
 var hp_max: int
 var mp: int
@@ -17,25 +16,13 @@ var ataque: int
 var defensa: int
 var velocidad: int
 
+var speed: float = 2 # Solo se utiliza para rotar los enemigos conceptuales (Eliminar luego)
+@onready var animated_sprite: AnimatedSprite3D = $AnimatedSprite3D if es_jugador else null
+
 var esta_muerto: bool = false
 var esta_actuando: bool = false
 
-signal turno_listo(combatant: Combatant)
-signal muerte(combatant: Combatant)
-
-@onready var animated_sprite: AnimatedSprite3D = $AnimatedSprite3D if es_jugador else null
-
-var speed: float = 2
-
-func _ready():
-	if es_jugador:
-		animated_sprite.play("idle")
-
-
-func _physics_process(delta):
-	if es_jugador == false:
-		rotation.y = rotation.y + speed * delta
-
+# Inicializa datos del combatiente según su tipo
 func inicializar():
 	if es_jugador:
 		print("Inicializando jugador %s" % class_id)
@@ -43,7 +30,6 @@ func inicializar():
 	else:
 		print("Inicializando enemigo %s" % class_id)
 		cargar_datos_enemigo()
-
 func cargar_datos_jugador():
 	if not PlayableCharacters.party_actual.has(class_id):
 		push_error("El personaje %s no está en el grupo." % class_id)
@@ -63,7 +49,6 @@ func cargar_datos_jugador():
 	ataque = datos.get("atk", 10)
 	defensa = datos.get("def", 5)
 	velocidad = datos.get("spd", 10)
-
 func cargar_datos_enemigo():
 	print("Cargando enemigo: %s" % class_id)
 	if not EnemyDatabase.enemies.has(class_id):
@@ -80,8 +65,15 @@ func cargar_datos_enemigo():
 	ataque = datos.get("ataque", 10)
 	defensa = datos.get("defensa", 5)
 	velocidad = datos.get("velocidad", 10)
+# # #
 
+func _ready():
+	if es_jugador:
+		animated_sprite.play("idle")
 
+func _physics_process(delta):
+	if es_jugador == false: 
+		rotation.y = rotation.y + speed * delta 
 
 func recibir_danio(cantidad: int):
 	var danio_real = max(1, cantidad - defensa)
@@ -92,20 +84,29 @@ func recibir_danio(cantidad: int):
 		morir()
 	return danio_real
 
-func curar(cantidad: int):
-	hp = min(hp + cantidad, hp_max)
-
 func morir():
 	esta_muerto = true
 	print("%s ha sido derrotado." % nombre)
-	emit_signal("muerte", self)
-	queue_free()
+	
+	if es_jugador:
+		animated_sprite.play("death")
+	else:
+		# Animación de muerte para enemigos #
+		queue_free()
 
-func iniciar_turno():
+func seleccionar_turno(): # activa el menú de acciones del jugador
 	if esta_muerto:
 		return
 	esta_actuando = true
-	emit_signal("turno_listo", self)
+
+
+	
+func realizar_accion():
+	if esta_muerto:
+		return
+	esta_actuando = true
+
+ 
 
 func terminar_turno():
 	esta_actuando = false

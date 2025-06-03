@@ -48,7 +48,7 @@ script = ExtResource("1_xj4xb")
 es_jugador = true
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0.2, 0)
 billboard = 1
 texture_filter = 0
 sprite_frames = SubResource("SpriteFrames_go6nc")

@@ -123,6 +123,7 @@ libraries = {
 }
 
 [node name="Panel_Items" type="VBoxContainer" parent="." node_paths=PackedStringArray("shortcut_context")]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.357
@@ -157,7 +158,7 @@ offset_bottom = 40.0
 theme = ExtResource("1_y1ucf")
 
 [node name="ItemContextMenu" type="PopupMenu" parent="."]
-position = Vector2i(726, 0)
+position = Vector2i(686, 0)
 item_count = 3
 item_0/text = "Usar"
 item_0/id = 0
@@ -165,6 +166,13 @@ item_1/text = "Información"
 item_1/id = 1
 item_2/text = "Descartar"
 item_2/id = 2
+
+[node name="CharacterContextMenu" type="PopupMenu" parent="ItemContextMenu"]
+item_count = 1
+item_0/text = "Usar"
+item_0/checked = true
+item_0/id = 0
+item_0/separator = true
 
 [node name="ItemInfoPopup" type="Panel" parent="."]
 visible = false
@@ -186,16 +194,17 @@ text = "label"
 label_settings = ExtResource("3_hone7")
 
 [node name="EstadoPanel" type="Panel" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -409.0
-offset_top = -300.0
-offset_right = 391.0
-offset_bottom = 300.0
+offset_left = -410.0
+offset_top = -303.0
+offset_right = 390.0
+offset_bottom = 297.0
 grow_horizontal = 2
 grow_vertical = 2
 

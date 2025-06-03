@@ -3,24 +3,20 @@
 #   El orden de turnos
 #   La lista de participantes
 #   El estado del combate
-#   La resolución de acciones y efectos
 extends Node
-
-
-signal turno_listo(combatant: Combatant) # Señal que se emite cuando un combatiente termina su turno
 
 # Posiciones base:
 var posiciones_jugadores: Array = [
-	Vector3(1, 1.1, -3.5),  # Ubicación de Kosmo
-	Vector3(-2.5, 1.1, -3), # Ubicación de Miguelito
-	Vector3(2.5, 1.1, -3), # Ubicación de Chipita
-	Vector3(-1, 1.1, -3.5)   # Ubicación de Sigrid
+	Vector3(1, 1.1, -5),  # Ubicación de Kosmo
+	Vector3(-2.5, 1.1, -4.5), # Ubicación de Miguelito
+	Vector3(2.5, 1.1, -4.5), # Ubicación de Chipita
+	Vector3(-1, 1.1, -5)   # Ubicación de Sigrid
 ]
 var posiciones_enemigos: Array = [
-	Vector3(1, 1, 3.5),
-	Vector3(-2.5, 1, 3.5),
-	Vector3(2.5, 1, 3),
-	Vector3(-1, 1, 3)
+	Vector3(1, 1, 5),
+	Vector3(-2.5, 1, 4),
+	Vector3(2.5, 1, 4),
+	Vector3(-1, 1, 5)
 ]
 
 @onready var player_team = $PlayerTeam
@@ -80,7 +76,7 @@ func ejecutar_turno():
 
 	if combatiente.es_jugador:
 		# Invocamos el menu
-		emit_signal("turno_listo", combatiente)
+			combatiente.seleccionar_turno()
 	else:
 		# IA del enemigo
 		combatiente.realizar_accion()
@@ -88,21 +84,3 @@ func ejecutar_turno():
 func siguiente_turno():
 	turno_actual += 1
 	ejecutar_turno()
-
-func usar_tecnica(tecnica_id, usuario: Combatant, objetivos: Array):
-	var tecnica = DataLoader.tecnicas.get(tecnica_id)
-	if tecnica == null:
-		push_error("Técnica %s no encontrada." % tecnica_id)
-		return
-	
-	var mp_costo = int(tecnica.get("mp_cost", 0))
-	if usuario.mp < mp_costo:
-		print("%s no tiene suficiente MP para usar %s." % [usuario.nombre, tecnica.get("name")])
-		return
-	
-	usuario.mp -= mp_costo
-
-	var efectos: Array = tecnica.get("effects", []) # Puede dar error
-	for objetivo in objetivos:
-		for efecto in efectos:
-			EffectManager.aplicar_efecto(efecto, usuario, objetivo)
