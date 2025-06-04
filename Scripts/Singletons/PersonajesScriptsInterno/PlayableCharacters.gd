@@ -1,73 +1,64 @@
 # PlayableCharacters.gd (Autoload)
-# Este script maneja los personajes jugables del juego
 extends Node
 
-# Diccionario de personajes jugables
 var characters: Dictionary = {}
-
-# Array de todos los personajes en el team actual
 var party_actual: Array = []
 
-# Agrega un personaje al sistema
-func add_character(pj_name: String, class_nombre: String):
-	if not DataLoader.stats.has(class_nombre):
-		push_error("[PlayableCharacters] Clase no encontrada: %s" % class_nombre)
+func create_character(pj_name: String, class_id: String) -> void:
+	if characters.has(pj_name):
+		push_warning("[PlayableCharacters] Ya existe un personaje con ID: %s" % pj_name)
 		return
 
-	var original_stats = DataLoader.stats[class_nombre]
-	var estadisticas = {}
+	if not DataLoader.stats.has(class_id):
+		push_error("[PlayableCharacters] Clase no encontrada: %s" % class_id)
+		return
 
-	for key in original_stats.keys():
-		if key in ["class_id", "job_name", "face", "in_party"]:
-			estadisticas[key] = original_stats[key]
-		else:
-			estadisticas[key] = int(original_stats[key]) # Cast numérico solo a Stats
+	var base_data = DataLoader.stats[class_id]
+	var stats := {}
 
-	characters[pj_name] = {
-		"Name": pj_name,
-		"class": class_nombre,
-		"stats": estadisticas
-	}
+	# Copiar solo stats reales, evitando duplicar info inutil
+	for key in base_data.keys():
+		if key != "in_party":
+			stats[key] = base_data[key] if typeof(base_data[key]) == TYPE_DICTIONARY else int(base_data[key])
 
-func get_stats(char_id: String) -> Dictionary:
-	if PlayableCharacters.characters.has(char_id):
-		return PlayableCharacters.characters[char_id].get("stats", {})
-	return {}
+	var new_char = PlayableCharacter.new(pj_name, class_id, stats)
+	characters[pj_name] = new_char
 
-# Agrega un personaje al equipo jugable
 func add_to_party(pj_name: String):
-	if characters.has(pj_name):
-		characters[pj_name]["in_party"] = true
+	var pj = get_character(pj_name)
+	if pj and not pj.in_party:
+		pj.in_party = true
 		party_actual.append(pj_name)
-	else:
-		push_error("[PlayableCharacters] Personaje no encontrado: %s" % pj_name)
-		
-# Remueve un personaje del equipo jugable
+
 func remove_from_party(pj_name: String):
-	if characters.has(pj_name):
-		characters[pj_name]["in_party"] = false
+	var pj = get_character(pj_name)
+	if pj and not pj.in_party:
+		pj.in_party = false
 		party_actual.erase(pj_name)
 
-# Devuelve el equipo actual, utilizar para iniciar combate!
-func get_party_actual() -> Array[String]:
-	var valid_party: Array[String] = []
+func get_party_actual() -> Array:
+	var valid_party: Array = []
 	for pj_name in party_actual:
-		if characters.has(pj_name) and characters[pj_name].get("in_party", false):
+		if is_in_party(pj_name):
 			valid_party.append(pj_name)
 	return valid_party
 
-# Devuelve un personaje
-func get_characters() -> Array:
-	var team := []
-	for char_id in characters.keys():
-		if characters[char_id].get("in_party", false):
-			team.append(char_id)
-	print("Personajes actuales en equipo:", team)
-	return team
+func get_character(pj_name: String) -> PlayableCharacter:
+	return characters.get(pj_name, null)
 
-# Resetea el equipo actual
+func get_stats(pj_name: String) -> Dictionary:
+	var pj = get_character(pj_name)
+	if pj != null and pj.stats != null:
+		return pj.stats
+	else:
+		return {}
+
+func is_in_party(pj_name: String) -> bool:
+	var pj = get_character(pj_name)
+	return pj != null and pj.in_party
+
 func reset_party():
 	for pj_name in party_actual:
 		if characters.has(pj_name):
-			characters[pj_name]["in_party"] = false
+			characters[pj_name].in_party = false
 	party_actual.clear()

@@ -1,5 +1,12 @@
 extends Control
 
+const FACE_TEXTURES = { "Kosmo": preload("res://Assets/Faces/kosmo.png"),
+					   	"Miguelito": preload("res://Assets/Faces/miguelito.png"),
+						"Chipita": preload("res://Assets/Faces/chipita.png"),
+						"Sigrid": preload("res://Assets/Faces/sigrid.png"),
+						"Amanda": preload("res://Assets/Faces/amanda.png"),
+						"Maya": preload("res://Assets/Faces/maya.png")}
+
 @onready var anim_player: AnimationPlayer = $AnimationPlayer
 @onready var manager: InventoryManager = get_tree().get_root().get_node("InventoryManager")
 
@@ -142,7 +149,7 @@ func _on_caracter_ContextMenu_pressed(option_id: int):
 	var selected_character = character_ContextMenu.get_item_text(option_id)
 	print("Seleccionaste el personaje: ", selected_character)
 
-	if selected_character in PlayableCharacters.party_actual:
+	if selected_character in PlayableCharacters.get_party_actual():
 		var item = DataLoader.items.get(selected_item_id, {})
 		var effects = item.get("effect", "").split(";")
 		
@@ -160,7 +167,7 @@ func _on_caracter_ContextMenu_pressed(option_id: int):
 
 # Apartado de ESTADO
 func _on_estado_pressed():
-	team = PlayableCharacters.get_characters()
+	team = PlayableCharacters.get_party_actual()
 	current_index = 0
 	main_menu.visible = false
 	item_list_panel.visible = false
@@ -177,12 +184,12 @@ func _on_estado_salir_pressed():
 	main_menu.visible = true
 
 func show_character_stats(char_id: String):
-	if not PlayableCharacters.characters.has(char_id):
+	if not PlayableCharacters.get_character(char_id):
 		label_stats.text = "Personaje no disponible."
 		face_texture.texture = null
 		return
 
-	var stats = PlayableCharacters.characters[char_id]["stats"]
+	var stats = PlayableCharacters.get_character(char_id).stats
 	label_stats.text = "Nombre: %s\nClase: %s\nHP: %s\nMP: %s\nAtaque: %s\nAtaque Mágico: %s\nDefensa: %s\nVelocidad: %s\nSuerte: %s\nEspíritu: %s" % [
 		char_id,
 		stats.get("job_name", "???"),
@@ -195,12 +202,8 @@ func show_character_stats(char_id: String):
 		stats.get("lck", "???"),
 		stats.get("fth", "???"),		
 	]
-
-	var texture_path = PlayableCharacters.characters[char_id]["stats"]["face"]
-	if texture_path != "":
-		face_texture.texture = load(texture_path)
-	else:
-		face_texture.texture = null
+	
+	face_texture.texture = FACE_TEXTURES.get(char_id, null)
 
 func _on_siguiente_pressed():
 	if team.size() == 0:
@@ -216,5 +219,6 @@ func _on_anterior_pressed():
 
 func crear_listaContextualCharacter():
 	character_ContextMenu.clear()
-	for i in range(PlayableCharacters.party_actual.size()):
-		character_ContextMenu.add_item(PlayableCharacters.party_actual[i], i)
+	var party = PlayableCharacters.get_party_actual()
+	for i in range(party.size()):
+		character_ContextMenu.add_item(party[i], i)

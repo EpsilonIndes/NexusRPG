@@ -17,7 +17,7 @@ func load_all_data():
 	load_items("res://Data/Items/items.csv")
 	load_loots("res://Data/Loot/loot_objects.csv")
 	load_stats("res://Data/Char_stats/stats.csv")
-	load_tecnicas("res://Data/Tecnicas/tecnicas.csv")
+	
 
 func load_csv_to_dict(path: String, key_column: String) -> Dictionary:
 	var result: Dictionary = {}
@@ -82,6 +82,3 @@ func load_loots(path: String):
 
 func load_stats(path: String):
 	stats = load_csv_to_dict(path, "class_id")
-
-func load_tecnicas(path: String):
-	tecnicas = load_csv_to_dict(path, "tecnique_id")

@@ -4,13 +4,13 @@
 #   La lista de participantes
 #   El estado del combate
 extends Node
-
+class_name BattleManager
 # Posiciones base:
 var posiciones_jugadores: Array = [
-	Vector3(1, 1.1, -5),  # Ubicación de Kosmo
-	Vector3(-2.5, 1.1, -4.5), # Ubicación de Miguelito
-	Vector3(2.5, 1.1, -4.5), # Ubicación de Chipita
-	Vector3(-1, 1.1, -5)   # Ubicación de Sigrid
+	Vector3(1, 1.1, -5),  		# Ubicación de Kosmo
+	Vector3(-2.5, 1.1, -4.5), 	# Ubicación de Miguelito
+	Vector3(2.5, 1.1, -4.5), 	# Ubicación de Chipita
+	Vector3(-1, 1.1, -5)   	 	# Ubicación de Sigrid
 ]
 var posiciones_enemigos: Array = [
 	Vector3(1, 1, 5),
@@ -21,6 +21,9 @@ var posiciones_enemigos: Array = [
 
 @onready var player_team = $PlayerTeam
 @onready var enemy_team = $EnemyTeam
+
+@onready var battle_camera := get_parent().get_node("Camera/BattleCamera")
+@onready var ui_overlay := get_parent().get_node("UIOverlay")
 
 var jugadores_instanciados: Array = []
 var enemigos_instanciados: Array = []
@@ -46,12 +49,15 @@ func instanciar_equipo(lista_ids: Array, contenedor: Node, es_jugador: bool): # 
 		
 		combatant.global_transform.origin = posicion_inicial
 		combatant.posicion_inicial = posicion_inicial
-
+		combatant.indice = i # Ojito
+		
 		if es_jugador:
 			jugadores_instanciados.append(combatant)
 		else:
 			enemigos_instanciados.append(combatant)
-
+		
+		combatant.inicializar()
+		
 var combatientes_ordenados: Array = []
 var turno_actual: int = 0
 
@@ -84,3 +90,14 @@ func ejecutar_turno():
 func siguiente_turno():
 	turno_actual += 1
 	ejecutar_turno()
+
+func mostrar_tecnicas_sobre(posicion_3d: Vector3, tecnicas: Array):
+	var screen_pos = battle_camera.unproject_position(posicion_3d)
+	var circulo = preload("res://Escenas/UserUI/tech_button_circle.tscn").instantiate()
+	circulo.global_position = screen_pos
+	circulo.configurar(tecnicas)
+	for child in ui_overlay.get_children():
+		if child is Node2D:
+			child.queue_free() # Limpiamos los hijos previos del overlay
+	ui_overlay.add_child(circulo)
+	

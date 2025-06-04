@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://cjswe57kq821f"]
+[gd_scene load_steps=19 format=3 uid="uid://cjswe57kq821f"]
 
 [ext_resource type="PackedScene" uid="uid://bmocargan5l0q" path="res://Escenas/player.tscn" id="1_a8vtw"]
 [ext_resource type="Script" path="res://Scripts/InventoryManager.gd" id="2_5j2cu"]
@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://ecyr37wcvpst" path="res://Escenas/UserUI/canvas_layer.tscn" id="4_j23ur"]
 [ext_resource type="PackedScene" uid="uid://qh76bv7y2534" path="res://Escenas/UserUI/InventoryUI.tscn" id="5_gjkhy"]
 [ext_resource type="PackedScene" uid="uid://dkn8gxfmy5tm6" path="res://Escenas/UserUI/label_dialogue.tscn" id="6_dp2kd"]
-[ext_resource type="Script" path="res://Scripts/InsatanciadorPJ.gd" id="6_onnpr"]
 [ext_resource type="PackedScene" uid="uid://dioro2qfasopc" path="res://Escenas/Objetos/cubiletrero.tscn" id="10_sf4ds"]
 [ext_resource type="PackedScene" uid="uid://7v22g42l4rov" path="res://Models/Cofre.tscn" id="13_16hig"]
 [ext_resource type="PackedScene" uid="uid://cpkvk4qac61ng" path="res://Escenas/NPCs Auromora/anciano_1.tscn" id="13_wukj4"]
@@ -72,9 +71,6 @@ shadow_enabled = true
 
 [node name="InventoryManager" type="Node" parent="gameManager"]
 script = ExtResource("2_5j2cu")
-
-[node name="PersonajesJugables" type="Node" parent="gameManager"]
-script = ExtResource("6_onnpr")
 
 [node name="CanvasLayer" parent="." instance=ExtResource("4_j23ur")]
 

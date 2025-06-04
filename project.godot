@@ -23,13 +23,13 @@ DialogueManager="*res://Scripts/Singletons/DialogueManager.gd"
 InventoryManager="*res://Scripts/InventoryManager.gd"
 UImanager="*res://Scripts/Singletons/UImanager.gd"
 GameManager="*res://Scripts/Singletons/GameManager.gd"
-CharacterStats="*res://Scripts/Singletons/CharacterStats.gd"
 PlayableCharacters="*res://Scripts/Singletons/PersonajesScriptsInterno/PlayableCharacters.gd"
 EffectManager="*res://Scripts/Singletons/EffectManager.gd"
 PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"
 CombatData="*res://Scripts/BattleMode/CombatData.gd"
 EnemyDatabase="*res://Scripts/BattleMode/EnemyDatabase.gd"
 SynergyDatabase="*res://Scripts/BattleMode/SynergyDatabase.gd"
+GlobalTechniqueDatabase="*res://Scripts/BattleMode/GlobalTechniqueDatabase.gd"
 
 [display]
 

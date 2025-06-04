@@ -1,7 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://dwfdbxtwcl5vd"]
+[gd_scene load_steps=10 format=3 uid="uid://dwfdbxtwcl5vd"]
 
 [ext_resource type="Script" path="res://Scripts/BattleMode/BattleManager.gd" id="1_tr8v8"]
 [ext_resource type="PackedScene" uid="uid://ckj2nd5m52pd2" path="res://Escenas/UserUI/battle_hud.tscn" id="2_2rhpp"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="2_fyboh"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="3_n6tgm"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="4_ormgq"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_f8uh2"]
 
@@ -13,6 +16,12 @@ background_mode = 1
 background_color = Color(7.70092e-07, 0.661235, 0.874662, 1)
 ambient_light_source = 2
 ambient_light_color = Color(0.686275, 0.917647, 0.988235, 0.372549)
+
+[sub_resource type="Resource" id="Resource_jhl20"]
+script = ExtResource("4_ormgq")
+duration = 1.0
+transition = 0
+ease = 2
 
 [node name="BattleTest" type="Node3D"]
 
@@ -45,12 +54,23 @@ transform = Transform3D(1, 0, 0, 0, 0.00329871, 0.999995, 0, -0.999995, 0.003298
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Enviroment"]
 environment = SubResource("Environment_x34xq")
 
-[node name="BattleCamera" type="Node" parent="."]
+[node name="Camera" type="Node" parent="."]
 
-[node name="Camera3D" type="Camera3D" parent="BattleCamera"]
-transform = Transform3D(-4.37114e-08, -0.386325, 0.922363, 0, 0.922363, 0.386325, -1, 1.68868e-08, -4.03178e-08, 8.65693, 2.89373, 0.0402536)
+[node name="BattleCamera" type="Camera3D" parent="Camera"]
+transform = Transform3D(-4.37114e-08, -0.34202, 0.939693, 0, 0.939693, 0.34202, -1, 1.49502e-08, -4.10753e-08, 10.0669, 4.41768, -0.117567)
 fov = 60.0
 
-[node name="UI" type="CanvasLayer" parent="."]
+[node name="PhantomCameraHost" type="Node" parent="Camera/BattleCamera"]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("2_fyboh")
 
-[node name="BattleHud" parent="UI" instance=ExtResource("2_2rhpp")]
+[node name="PhantomCamera3D" type="Node3D" parent="Camera"]
+transform = Transform3D(-4.37114e-08, -0.34202, 0.939693, 0, 0.939693, 0.34202, -1, 1.49502e-08, -4.10753e-08, 10.0669, 4.41768, -0.117567)
+script = ExtResource("3_n6tgm")
+priority = 1
+tween_resource = SubResource("Resource_jhl20")
+
+[node name="UIOverlay" type="CanvasLayer" parent="."]
+
+[node name="BattleHud" parent="UIOverlay" instance=ExtResource("2_2rhpp")]
