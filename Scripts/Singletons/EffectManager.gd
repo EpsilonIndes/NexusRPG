@@ -52,4 +52,3 @@ func physic_damage(stats: Dictionary, damage: int, target_id: String):
 	hp -= damage # por ahora, logica simple
 	stats["hp"] = max(hp, 0)
 	print_debug("Daño físico aplicado a %s: %d" % [target_id, damage])
-

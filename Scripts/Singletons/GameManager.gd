@@ -8,11 +8,11 @@ enum EstadosDeJuego {
 	CINEMATICA
 }
 
-var equipo_actual: Array = [
-	{ "id": "Kosmo", "class_id": "quantic_master" },
-	{ "id": "Sigrid", "class_id": "knight" },
-	{ "id": "Chipita", "class_id": "dark_mage" },
-	{ "id": "Maya", "class_id": "lancer" }
+var equipo_actual: Array[Dictionary] = [ 
+	{ "id": "Kosmo"},
+	{ "id": "Sigrid"},
+	{ "id": "Chipita"},
+	{ "id": "Maya",}
 ]
 
 var estado_actual: EstadosDeJuego = EstadosDeJuego.LIBRE
@@ -24,11 +24,16 @@ func es_estado(objetivo):
 	return estado_actual == objetivo
 
 func iniciar_batalla(contra_enemigos: Array[String]):
-	CombatData.jugadores = PlayableCharacters.get_party_actual()
-	CombatData.enemigos = contra_enemigos
+	CombatData.set_enemigos([]) 
+	CombatData.set_jugadores([]) 
+	GameManager.set_estado(GameManager.EstadosDeJuego.COMBATE)
+
+	CombatData.set_jugadores(equipo_actual)
+	CombatData.set_enemigos(contra_enemigos)
+	
 	get_tree().change_scene_to_file("res://Escenas/Battle/battle_scene.tscn")
 
 func _ready():
 	for pj in equipo_actual:
-		PlayableCharacters.create_character(pj.id, pj.class_id)
+		PlayableCharacters.create_character(pj.id) # Crea el personaje, desde el array
 		PlayableCharacters.add_to_party(pj.id)

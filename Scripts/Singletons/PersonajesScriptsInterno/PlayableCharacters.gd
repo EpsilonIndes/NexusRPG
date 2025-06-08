@@ -4,25 +4,30 @@ extends Node
 var characters: Dictionary = {}
 var party_actual: Array = []
 
-func create_character(pj_name: String, class_id: String) -> void:
-	if characters.has(pj_name):
-		push_warning("[PlayableCharacters] Ya existe un personaje con ID: %s" % pj_name)
+func create_character(pj_id: String) -> void:
+	if characters.has(pj_id):
+		push_warning("[PlayableCharacters] Ya existe un personaje con ID: %s" % pj_id)
 		return
 
-	if not DataLoader.stats.has(class_id):
-		push_error("[PlayableCharacters] Clase no encontrada: %s" % class_id)
+	if not DataLoader.stats.has(pj_id):
+		push_error("[PlayableCharacters] Clase no encontrada: %s" % pj_id)
 		return
 
-	var base_data = DataLoader.stats[class_id]
+	var data = DataLoader.stats[pj_id]
 	var stats := {}
 
 	# Copiar solo stats reales, evitando duplicar info inutil
-	for key in base_data.keys():
-		if key != "in_party":
-			stats[key] = base_data[key] if typeof(base_data[key]) == TYPE_DICTIONARY else int(base_data[key])
+	for key in data.keys():
+		if key not in ["in_party"]:
+			stats[key] = data[key]
 
-	var new_char = PlayableCharacter.new(pj_name, class_id, stats)
-	characters[pj_name] = new_char
+	var new_char = PlayableCharacter.new(
+		data["id"],
+		data["class_id"],
+		stats
+	)
+	
+	characters[pj_id] = new_char
 
 func add_to_party(pj_name: String):
 	var pj = get_character(pj_name)

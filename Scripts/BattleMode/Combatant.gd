@@ -1,128 +1,118 @@
 # Clase base para jugadores y enemigos
 # Combatant.gd
 extends Node3D
+
 class_name Combatant
 
 @export var es_jugador: bool
+@onready var battle_manager = get_parent().get_parent()
+signal turno_finalizado
 
-var posicion_inicial: Vector3 = Vector3.ZERO
-var nombre: String = "???"
-var class_id: String = ""
-var pj_id: String = ""
-var hp: int
-var hp_max: int
-var mp: int
-var mp_max: int
-var ataque: int
-var defensa: int
-var velocidad: int
-var drive: int
+# Datos base
+var id: String = ""
+var nombre: String = ""
+var hp: int = 0
+var hp_max: int	= 0
+var mp: int	= 0
+var mp_max: int	= 0
+var mag: int = 0
+var ataque: int = 0
+var defensa: int = 0
+var velocidad: int = 0
+var drive: int = 0
+
+var tecnicas: Array = []
+
+var es_aliado: bool = true
+var indice := 0
+
+var position_inicial : Vector3
+
+var tecnica_seleccionada = null
+
 
 var speed: float = 2 # Solo se utiliza para rotar los enemigos conceptuales (Eliminar luego)
+
 @onready var animated_sprite: AnimatedSprite3D = $AnimatedSprite3D if es_jugador else null
 
 var esta_muerto: bool = false
 var esta_actuando: bool = false
-var indice: int = -1 # Indice antes de instanciar
 
 func _ready():
 	if es_jugador:
 		animated_sprite.play("idle")
 
-# Inicializa datos del combatiente según su tipo
-func inicializar():
-	if es_jugador:
-		cargar_datos_jugador()
-		print("Inicializando Personaje %s" % nombre)
-	else:
-		cargar_datos_enemigo()
-		print("Inicializando enemigo %s" % nombre)
-
-func cargar_datos_jugador(): 
-	if not PlayableCharacters.characters.has(pj_id):
-		push_error("El personaje %s no está en PlayableCharacters." % pj_id)
-		return
-	
-	var datos = PlayableCharacters.characters[pj_id]
-	var stats = datos.get("stats", {})
-
-	nombre = datos.get("nombre", "???")
-	hp_max = stats.get("hp", 100)
-	hp = hp_max
-	mp_max = stats.get("mp", 20)
-	mp = mp_max
-	ataque = stats.get("atk", 10)
-	defensa = stats.get("def", 5)
-	velocidad = stats.get("spd", 10)
-
-func cargar_datos_enemigo():
-	print("Cargando enemigo: %s" % nombre)
-	if not EnemyDatabase.enemies.has(class_id):
-		push_error("El enemigo %s no está en EnemyDatabase." % class_id)
-		return
-
-	var datos = EnemyDatabase.get_stats(class_id)
-
-	nombre = datos.get("nombre", "???")
-	hp_max = datos.get("hp", 100)
-	hp = hp_max
-	mp_max = datos.get("mp", 10)
-	mp = mp_max
-	ataque = datos.get("ataque", 10)
-	defensa = datos.get("defensa", 5)
-	velocidad = datos.get("velocidad", 10)
-# # #
-	
 func _physics_process(delta):
-	if es_jugador == false: 
-		rotation.y = rotation.y + speed * delta 
+	if not es_jugador:
+		rotation.y += speed * delta
 
-func recibir_danio(cantidad: int):
-	var danio_real = max(1, cantidad - defensa)
-	hp -= danio_real
-	print("%s recibe %d de daño" % [nombre, danio_real])
-
-	if hp <= 0:
-		morir()
-	return danio_real
-
-func morir():
-	esta_muerto = true
-	print("%s ha sido derrotado." % nombre)
+# Inicializa datos del combatiente según su tipo
+func inicializar(datos: Dictionary, es_jugador_: bool) -> void:
+	id = datos.get("id", "???")
+	nombre = id
+	hp = datos.get("hp", 100)
+	hp_max = hp
+	mp = datos.get("mp", 10)
+	mp_max = mp
+	tecnicas = datos.get("tecnicas", [])
+	es_jugador = es_jugador_
+	es_aliado = es_jugador
 	
-	if es_jugador:
-		animated_sprite.play("death")
-	else:
-		# Animación de muerte para enemigos #
-		queue_free()
+	tecnicas = GlobalTechniqueDatabase.get_techniques_for(nombre)
+	
+func esta_vivo() -> bool:
+	return hp > 0
 
-func seleccionar_turno(): # activa el menú de acciones del jugador
-	if esta_muerto:
+func seleccionar_tecnica(tecnica: Dictionary, objetivo: Combatant) -> void:
+	tecnica_seleccionada = {
+		"datos": tecnica,
+		"objetivo": objetivo
+	}
+	battle_manager.cambiar_estado(battle_manager.BattleState.EJECUCION_ACCION)
+
+func ejecutar_tecnica():
+	if tecnica_seleccionada == null:
+		push_warning("No se ha seleccionado ninguna técnica.")
+		emit_signal("turno_finalizado")
 		return
-	esta_actuando = true
 	
-	var tecnicas_validas = []
+	var tecnica = tecnica_seleccionada["datos"]
+	var objetivo: Combatant = tecnica_seleccionada["objetivo"]
 
-	for t in GlobalTechniqueDatabase.get_techniques_for(nombre):
-		if int(t["costo_mana"]) <= mp and int(t["costo_drive"]) <= drive:
-			tecnicas_validas.append(t)
+	# Costos
+	mp -= tecnica.get("costo_mp", 0)
+	drive -= tecnica.get("costo_drive", 0)
 
-	var battle_manager_instance = get_parent().get_parent()
-	var posicion_3d = battle_manager_instance.posiciones_jugadores[indice]
-	battle_manager_instance.mostrar_tecnicas_sobre(posicion_3d, tecnicas_validas)
+	# Aplicar efectos
+	var efectos = tecnica.get("efectos", [])
+	for efecto_id in efectos:
+		EffectManager.apply_effects(efecto_id, objetivo.id)
+	
+	# Mostrar animación o Feedback
+	print("%s usa %s sobre %s" % [nombre, tecnica["tecnique_id"], objetivo.nombre])
 
-func realizar_accion(): # Aquí estará la IA del enemigo
-	print("%s está realizando una acción." % nombre)
-	if esta_muerto:
+	await get_tree().create_timer(0.6).timeout
+	emit_signal("turno_finalizado")
+
+func iniciar_accion():
+	# Para enemigos: Eligen automáticamente
+	if not esta_vivo():
+		emit_signal("turno_finalizado")
 		return
-	esta_actuando = true
-	# Dar un paso hacia adelante
-	global_transform.origin += Vector3(0, 0, -1) * 1.2
-	regresar_a_posicion()
-	terminar_turno()
 	
-func terminar_turno():
-	esta_actuando = false
+	# Seleccionar tecnica aleatoria
+	var tecnica = tecnicas[randi() % tecnicas.size()]
 
-func regresar_a_posicion():
-	global_transform.origin = posicion_inicial
+	# Elige objetivo valido (Jugadores vivos)
+	var posibles = battle_manager.combatientes.filter(func(c): return c.is_jugador() and c.esta_vivo())
+	if posibles.is_empty():
+		emit_signal("turno_finalizado")
+		return
+	
+	var objetivo = posibles[randi() % posibles.size()]
+	tecnica_seleccionada = {"datos": tecnica, "objetivo": objetivo}
+
+	ejecutar_tecnica()
+
+func is_jugador() -> bool:
+	return es_jugador

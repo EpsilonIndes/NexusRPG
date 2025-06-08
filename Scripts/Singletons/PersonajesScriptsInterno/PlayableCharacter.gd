@@ -1,15 +1,36 @@
 extends RefCounted
 class_name PlayableCharacter
 
-var name: String
+var id: String
 var class_id: String
 var stats: Dictionary
 var in_party: bool = false
 
-func _init(pj_name: String, class_id_: String, base_stats: Dictionary):
-	name = pj_name
-	class_id = class_id_
-	stats = base_stats.duplicate(true)
+var hp: int
+var mp: int
+var mag: int
+var ataque: int
+var defensa: int
+var velocidad: int
+
+func _init(pj_id: String, pj_class_id: String, pj_stats: Dictionary) -> void:
+	id = pj_id
+	class_id = pj_class_id
+	stats = pj_stats.duplicate(true)
 
 func get_stats() -> Dictionary:
 	return stats
+
+func get_combat_stats() -> Dictionary:
+	return {
+		"id": id,
+		"class_id": class_id,
+		"stats": stats,
+		"in_party": in_party,
+		"hp": hp,
+		"mp": mp,
+		"mag": mag,
+		"atk": ataque,
+		"def": defensa,
+		"spd": velocidad,
+	}

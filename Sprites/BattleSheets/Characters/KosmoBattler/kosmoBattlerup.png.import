@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://obww6af4fsii"
-path="res://.godot/imported/KosmoBattler.png-966c34e217b1a5745b73cf7700c7abf4.ctex"
+uid="uid://bhnpyodj56kkk"
+path="res://.godot/imported/kosmoBattlerup.png-bb30989f0379d8ee9da5feedac009c5d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/BattleSheets/Characters/KosmoBattler/KosmoBattler.png"
-dest_files=["res://.godot/imported/KosmoBattler.png-966c34e217b1a5745b73cf7700c7abf4.ctex"]
+source_file="res://Sprites/BattleSheets/Characters/KosmoBattler/kosmoBattlerup.png"
+dest_files=["res://.godot/imported/kosmoBattlerup.png-bb30989f0379d8ee9da5feedac009c5d.ctex"]
 
 [params]
 

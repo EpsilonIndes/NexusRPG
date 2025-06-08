@@ -11,9 +11,9 @@ func configurar(tecnicas: Array):
 	var total := tecnicas.size()
 
 	for t in tecnicas:
-		print("Añadiendo técnica: %s" % t["nombre"])
+		print("Añadiendo técnica: %s" % t["tecnique_id"])
 		var boton = preload("res://Escenas/UserUI/tech_button.tscn").instantiate()
-		boton.get_node("Label").text = t["nombre"]
+		boton.get_node("Label").text = t["tecnique_id"]
 		boton.position = Vector2(cos(angulo), sin(angulo)) * radio
 		add_child(boton)
 		angulo += TAU / total

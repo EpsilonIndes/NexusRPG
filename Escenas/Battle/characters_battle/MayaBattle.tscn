@@ -80,7 +80,6 @@ billboard = 1
 texture_filter = 0
 sprite_frames = SubResource("SpriteFrames_go6nc")
 animation = &"idle"
-frame_progress = 0.192561
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00972354, -0.113946, -0.00167549)

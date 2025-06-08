@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://dwfdbxtwcl5vd"]
 
-[ext_resource type="Script" path="res://Scripts/BattleMode/BattleManager.gd" id="1_tr8v8"]
+[ext_resource type="Script" path="res://Scripts/BattleMode/BattleManager.gd" id="1_yx10m"]
 [ext_resource type="PackedScene" uid="uid://ckj2nd5m52pd2" path="res://Escenas/UserUI/battle_hud.tscn" id="2_2rhpp"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="2_fyboh"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="3_n6tgm"]
@@ -26,7 +26,7 @@ ease = 2
 [node name="BattleTest" type="Node3D"]
 
 [node name="BattleManager" type="Node" parent="."]
-script = ExtResource("1_tr8v8")
+script = ExtResource("1_yx10m")
 
 [node name="PlayerTeam" type="Node3D" parent="BattleManager"]
 transform = Transform3D(1, 0.000827638, -0.00029216, -0.000827831, 0.999999, -0.000690804, 0.000291614, 0.000691035, 1, 3.04258, 0.321185, 0.0685774)

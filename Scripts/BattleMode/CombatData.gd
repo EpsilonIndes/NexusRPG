@@ -1,20 +1,16 @@
 # CombatData.gd Autoload
 extends Node
 
-var jugadores: Array[String] = []
-var enemigos: Array[String] = []
-var sinergias_activas: Dictionary = {}
+var jugadores: Array[Dictionary] = []
+var enemigos: Array[Dictionary] = []
 
-func calcular_sinergias():
-	sinergias_activas.clear()
-	for i in range(jugadores.size()):
-		for j in range(i + 1, jugadores.size()):
-			var par = [jugadores[i], jugadores[j]]
-			var clave = par[0] + "_" + par[1]
-			if SynergyDatabase.has_synergy(clave):
+func set_jugadores(nuevos_jugadores: Array[Dictionary]) -> void:
+	jugadores = nuevos_jugadores.duplicate()
 
-				sinergias_activas[clave] = SynergyDatabase[clave]
-func configurar_combate(jugadores_lista: Array, enemigos_lista: Array):
-	jugadores = jugadores_lista
-	enemigos = enemigos_lista
-	calcular_sinergias()
+func set_enemigos(ids: Array[String]) -> void:
+	var lista: Array[Dictionary] = []
+	for id in ids:
+		var datos = EnemyDatabase.enemies.get(id, {})
+		datos["id"] = id
+		lista.append(datos)
+	enemigos = lista

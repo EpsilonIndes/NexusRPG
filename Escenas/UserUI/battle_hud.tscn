@@ -69,6 +69,7 @@ grow_vertical = 2
 scale = Vector2(1, 0.990079)
 
 [node name="Acciones" type="VBoxContainer" parent="."]
+layout_mode = 0
 offset_left = 1048.0
 offset_top = 409.0
 offset_right = 1248.43
