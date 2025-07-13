@@ -6,22 +6,21 @@
 [ext_resource type="Theme" uid="uid://hdvpdwg85rrw" path="res://Materiales/new_theme.tres" id="4_g6ckj"]
 
 [node name="TechButton" type="TextureButton"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_top = -1.0
+offset_right = 64.0
+offset_bottom = 15.0
+scale = Vector2(2, 2)
 texture_normal = ExtResource("1_atyuf")
 texture_pressed = ExtResource("2_10a7b")
 texture_hover = ExtResource("3_48w82")
-texture_focused = ExtResource("3_48w82")
 
 [node name="Label" type="RichTextLabel" parent="."]
-layout_mode = 0
-offset_left = 4.0
+layout_mode = 1
+anchors_preset = -1
+offset_left = 3.0
 offset_top = 3.0
-offset_right = 86.0
-offset_bottom = 24.0
+offset_right = 89.0
+offset_bottom = 18.0
 scale = Vector2(0.674395, 0.674395)
 theme = ExtResource("4_g6ckj")
 bbcode_enabled = true

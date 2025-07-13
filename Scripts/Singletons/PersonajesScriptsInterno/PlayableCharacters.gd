@@ -3,6 +3,7 @@ extends Node
 
 var characters: Dictionary = {}
 var party_actual: Array = []
+var jugador_actual: String = "Kosmo" # Kosmo por default
 
 func create_character(pj_id: String) -> void:
 	if characters.has(pj_id):
@@ -34,12 +35,14 @@ func add_to_party(pj_name: String):
 	if pj and not pj.in_party:
 		pj.in_party = true
 		party_actual.append(pj_name)
+	PartyHandler.actualizar_personajes_party()
 
 func remove_from_party(pj_name: String):
 	var pj = get_character(pj_name)
 	if pj and not pj.in_party:
 		pj.in_party = false
 		party_actual.erase(pj_name)
+	PartyHandler.actualizar_personajes_party()
 
 func get_party_actual() -> Array:
 	var valid_party: Array = []
@@ -67,3 +70,9 @@ func reset_party():
 		if characters.has(pj_name):
 			characters[pj_name].in_party = false
 	party_actual.clear()
+
+func set_jugador_actual(id: String):
+	jugador_actual = id
+
+func get_jugador_actual() -> String:
+	return jugador_actual

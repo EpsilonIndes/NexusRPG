@@ -1,3 +1,4 @@
+# GameManager.gd
 extends Node
 
 enum EstadosDeJuego {
@@ -8,11 +9,11 @@ enum EstadosDeJuego {
 	CINEMATICA
 }
 
-var equipo_actual: Array[Dictionary] = [ 
-	{ "id": "Kosmo"},
-	{ "id": "Sigrid"},
-	{ "id": "Chipita"},
-	{ "id": "Maya",}
+var equipo_actual: Array[Dictionary] = [ # todos los pjs actuales jugables
+	{"id": "Kosmo"},
+	{"id": "Sigrid"},
+	{"id": "Maya"},
+	{"id": "Amanda"}
 ]
 
 var estado_actual: EstadosDeJuego = EstadosDeJuego.LIBRE
@@ -36,4 +37,5 @@ func iniciar_batalla(contra_enemigos: Array[String]):
 func _ready():
 	for pj in equipo_actual:
 		PlayableCharacters.create_character(pj.id) # Crea el personaje, desde el array
-		PlayableCharacters.add_to_party(pj.id)
+	PlayableCharacters.add_to_party("Kosmo")
+	PlayableCharacters.add_to_party("Sigrid")

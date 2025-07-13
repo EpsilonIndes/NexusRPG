@@ -1,6 +1,6 @@
 [gd_scene load_steps=22 format=3 uid="uid://ddbnhhajofjkw"]
 
-[ext_resource type="Script" path="res://Scripts/PersonajesScripts/ChipitaManager2.gd" id="1_x30pf"]
+[ext_resource type="Script" path="res://Scripts/PersonajesScripts/chipita.gd" id="1_tj4dh"]
 [ext_resource type="Texture2D" uid="uid://d1511sm5oiovm" path="res://Sprites/Chipita/Chipitadown.png" id="2_456t6"]
 [ext_resource type="Texture2D" uid="uid://f7gmmyvdmblt" path="res://Sprites/Chipita/ChipitaHort.png" id="3_ywbrw"]
 [ext_resource type="Texture2D" uid="uid://txuchybhndgc" path="res://Sprites/Chipita/Chipitaup.png" id="4_f2cjj"]
@@ -147,11 +147,11 @@ animations = [{
 radius = 0.29185
 height = 1.2929
 
-[node name="Chipita_Seguidora" type="CharacterBody3D"]
-script = ExtResource("1_x30pf")
+[node name="Chipita" type="CharacterBody3D"]
+script = ExtResource("1_tj4dh")
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0.0541426, 0)
 billboard = 1
 texture_filter = 0
 sprite_frames = SubResource("SpriteFrames_hi2w4")

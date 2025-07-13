@@ -1,25 +1,36 @@
-[gd_scene load_steps=19 format=3 uid="uid://cjswe57kq821f"]
+[gd_scene load_steps=25 format=3 uid="uid://cjswe57kq821f"]
 
 [ext_resource type="PackedScene" uid="uid://bmocargan5l0q" path="res://Escenas/player.tscn" id="1_a8vtw"]
 [ext_resource type="Script" path="res://Scripts/InventoryManager.gd" id="2_5j2cu"]
-[ext_resource type="PackedScene" uid="uid://dbcn88xgtkshp" path="res://Escenas/Personajes/miguelito.tscn" id="2_csbrw"]
-[ext_resource type="PackedScene" uid="uid://ddbnhhajofjkw" path="res://Escenas/Personajes/chipita_seguidora.tscn" id="3_34qh6"]
-[ext_resource type="PackedScene" uid="uid://ckhl1sgngkvhd" path="res://Escenas/Personajes/Sigrid.tscn" id="4_bjhsu"]
+[ext_resource type="PackedScene" uid="uid://dbcn88xgtkshp" path="res://Escenas/Personajes/Miguelito.tscn" id="2_csbrw"]
+[ext_resource type="PackedScene" uid="uid://baga8lrftoaue" path="res://Escenas/Personajes/Amanda.tscn" id="3_pg8q4"]
+[ext_resource type="PackedScene" uid="uid://dbkl1jxjs2dxk" path="res://Escenas/Personajes/Maya.tscn" id="4_i64u6"]
 [ext_resource type="PackedScene" uid="uid://ecyr37wcvpst" path="res://Escenas/UserUI/canvas_layer.tscn" id="4_j23ur"]
 [ext_resource type="PackedScene" uid="uid://qh76bv7y2534" path="res://Escenas/UserUI/InventoryUI.tscn" id="5_gjkhy"]
+[ext_resource type="PackedScene" uid="uid://ckhl1sgngkvhd" path="res://Escenas/Personajes/Sigrid.tscn" id="5_oduvb"]
+[ext_resource type="PackedScene" uid="uid://ddbnhhajofjkw" path="res://Escenas/Personajes/Chipita.tscn" id="6_ai0lc"]
 [ext_resource type="PackedScene" uid="uid://dkn8gxfmy5tm6" path="res://Escenas/UserUI/label_dialogue.tscn" id="6_dp2kd"]
 [ext_resource type="PackedScene" uid="uid://dioro2qfasopc" path="res://Escenas/Objetos/cubiletrero.tscn" id="10_sf4ds"]
+[ext_resource type="PackedScene" uid="uid://bodo6o8l2sybh" path="res://Escenas/NPCs Auromora/NPC_maya.tscn" id="11_5x380"]
 [ext_resource type="PackedScene" uid="uid://7v22g42l4rov" path="res://Models/Cofre.tscn" id="13_16hig"]
 [ext_resource type="PackedScene" uid="uid://cpkvk4qac61ng" path="res://Escenas/NPCs Auromora/anciano_1.tscn" id="13_wukj4"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="14_al3wf"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="14_dex0v"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="15_6tl7n"]
 
-[sub_resource type="NavigationMesh" id="NavigationMesh_p4rn7"]
-vertices = PackedVector3Array(-9.38201, 0.5, -9.11942, -9.38201, 0.5, 9.13058, 9.36799, 0.5, 9.13058, 9.36799, 0.5, -9.11942)
+[sub_resource type="NavigationMesh" id="NavigationMesh_metkf"]
+vertices = PackedVector3Array(-1.20144, 0.5, -1.2072, -1.20144, 0.5, 1.2928, 1.29856, 0.5, 1.2928, 1.29856, 0.5, -1.2072)
 polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
 
+[sub_resource type="PlaneMesh" id="PlaneMesh_l7y1v"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_p4rn7"]
+vertices = PackedVector3Array(-10.9569, 0.477779, -0.86942, -11.2069, 0.477779, 0.88058, -9.45689, 0.477779, 1.13058, -9.45689, 0.477779, -1.11942, -9.45689, 0.477779, 1.13058, 9.29311, 0.477779, 9.13058, 9.29311, 0.477779, -9.11942, -9.45689, 0.477779, -1.11942, -9.45689, 0.477779, 1.13058, -9.45689, 0.477779, 9.13058, 9.29311, 0.477779, 9.13058, 9.29311, 0.477779, -9.11942, -9.45689, 0.477779, -9.11942, -9.45689, 0.477779, -1.11942, -11.2069, 0.477779, 0.88058, -10.9569, 0.477779, -0.86942, -12.7069, 0.477779, -1.11942, -17.9569, 0.477779, -1.11942, -20.2069, 0.477779, -0.86942, -20.2069, 0.477779, 0.88058, -17.9569, 1.97778, -5.11942, -17.9569, 0.477779, -1.11942, -12.7069, 0.477779, -1.11942, -12.7069, 1.97778, -5.11942, -20.2069, 1.72778, -7.36942, -20.2069, 1.72778, -5.36942, -17.9569, 1.97778, -5.11942, -12.7069, 1.97778, -5.11942, -10.2069, 1.72778, -5.36942, -10.2069, 1.72778, -7.36942)
+polygons = [PackedInt32Array(0, 3, 1), PackedInt32Array(1, 3, 2), PackedInt32Array(7, 6, 4), PackedInt32Array(4, 6, 5), PackedInt32Array(10, 9, 8), PackedInt32Array(13, 12, 11), PackedInt32Array(15, 14, 16), PackedInt32Array(16, 14, 17), PackedInt32Array(17, 14, 18), PackedInt32Array(18, 14, 19), PackedInt32Array(23, 22, 20), PackedInt32Array(20, 22, 21), PackedInt32Array(25, 24, 26), PackedInt32Array(26, 24, 27), PackedInt32Array(27, 24, 28), PackedInt32Array(28, 24, 29)]
+
 [sub_resource type="PlaneMesh" id="PlaneMesh_tefin"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ckjgt"]
 
 [sub_resource type="Environment" id="Environment_njs3v"]
 background_mode = 1
@@ -38,19 +49,35 @@ ease = 2
 [node name="Personajes" type="Node" parent="."]
 
 [node name="Player" parent="Personajes" instance=ExtResource("1_a8vtw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82957, -1.41913)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.821939, -1.41913)
 
 [node name="MiguelitoNPC" parent="Personajes" instance=ExtResource("2_csbrw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00458488, 0.74981, -4.17453)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00458488, 0.734952, -4.17453)
 
-[node name="Chipita_Seguidora" parent="Personajes" instance=ExtResource("3_34qh6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.757282, 0)
-kosmo_path = NodePath("../Player")
-speed = 180.0
+[node name="seguidores" type="Node3D" parent="Personajes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.1795e-07, 0)
 
-[node name="Sigrid" parent="Personajes" instance=ExtResource("4_bjhsu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.80846, 0.754549, 0)
-kosmo_path = NodePath("../Player")
+[node name="Amanda" parent="Personajes/seguidores" instance=ExtResource("3_pg8q4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.57599, 5.02426, 2.02283)
+
+[node name="reservaIA" type="Node3D" parent="Personajes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -14.7377)
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="Personajes/reservaIA"]
+navigation_mesh = SubResource("NavigationMesh_metkf")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="Personajes/reservaIA/NavigationRegion3D"]
+transform = Transform3D(1.70144, 0, 0, 0, 0.999605, 0, 0, 0, 1.7072, 0, 0, 0)
+mesh = SubResource("PlaneMesh_l7y1v")
+
+[node name="Maya" parent="Personajes/reservaIA" instance=ExtResource("4_i64u6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.97046, 0.935833, -0.997995)
+
+[node name="Sigrid" parent="Personajes/reservaIA" instance=ExtResource("5_oduvb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.944998, 0)
+
+[node name="Chipita" parent="Personajes/reservaIA" instance=ExtResource("6_ai0lc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.944555, 0.751558)
 
 [node name="Terreno" type="Node" parent="."]
 
@@ -59,7 +86,23 @@ navigation_mesh = SubResource("NavigationMesh_p4rn7")
 
 [node name="CSGMesh3D" type="CSGMesh3D" parent="Terreno/NavigationRegion3D"]
 transform = Transform3D(9.88201, 0, 0, 0, 7.91547, 0, 0, 0, 9.61942, 0, 0, 0)
+use_collision = true
 mesh = SubResource("PlaneMesh_tefin")
+
+[node name="CSGMesh3D2" type="CSGMesh3D" parent="Terreno/NavigationRegion3D"]
+transform = Transform3D(5.42089, 0, 0, 0, 1, 0, 0, 0, 1.34037, -15.286, 0, 0)
+use_collision = true
+mesh = SubResource("PlaneMesh_ckjgt")
+
+[node name="CSGMesh3D4" type="CSGMesh3D" parent="Terreno/NavigationRegion3D"]
+transform = Transform3D(5.42089, 0, 0, 0, 1, 0, 0, 0, 1.34037, -15.286, 1.56895, -6.33036)
+use_collision = true
+mesh = SubResource("PlaneMesh_ckjgt")
+
+[node name="CSGMesh3D3" type="CSGMesh3D" parent="Terreno/NavigationRegion3D"]
+transform = Transform3D(-0.0203439, 0.00402426, 2.99101, 0.808681, 0.92321, 0, -1.94262, 0.384274, -0.0313229, -15.2679, 0.755961, -3.08636)
+use_collision = true
+mesh = SubResource("PlaneMesh_ckjgt")
 
 [node name="Iluminación" type="Node" parent="."]
 
@@ -109,10 +152,13 @@ transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -6.99299, 0.0375402, -7
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -5.03499, 0.0335135, -7.78046)
 loot_id = "cofre_gema_roja"
 
+[node name="Maya" parent="Interactuable" instance=ExtResource("11_5x380")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.59051, 0.783088, -6.87827)
+
 [node name="CameraManager" type="Node" parent="."]
 
 [node name="PlayerCamera" type="Camera3D" parent="CameraManager"]
-transform = Transform3D(1, 0, 0, 0, 0.668651, 0.743577, 0, -0.743577, 0.668651, 0, 0.82957, 4.58087)
+transform = Transform3D(1, 0, 0, 0, 0.668651, 0.743577, 0, -0.743577, 0.668651, 0, 0.821939, 4.58087)
 v_offset = 4.0
 
 [node name="PhantomCameraHost" type="Node" parent="CameraManager/PlayerCamera"]
@@ -121,7 +167,7 @@ process_physics_priority = 300
 script = ExtResource("14_dex0v")
 
 [node name="PhantomCamera3D" type="Node3D" parent="CameraManager" node_paths=PackedStringArray("follow_target")]
-transform = Transform3D(1, 0, 0, 0, 0.668651, 0.743577, 0, -0.743577, 0.668651, 0, 0.82957, 4.58087)
+transform = Transform3D(1, 0, 0, 0, 0.668651, 0.743577, 0, -0.743577, 0.668651, 0, 0.821939, 4.58087)
 top_level = true
 script = ExtResource("14_al3wf")
 priority = 5

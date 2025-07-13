@@ -38,7 +38,6 @@ const POS_ENEMIGOS := [
 ]
 
 func _ready():
-	
 	await get_tree().process_frame
 	inicializar_combatientes()
 	cambiar_estado(BattleState.TURNO_JUGADOR) # primer turno del jugador
@@ -92,7 +91,7 @@ func cambiar_estado(nuevo_estado: BattleState):
 func iniciar_turno_jugador():
 	combatiente_actual = obtener_siguiente_combatiente(true)
 	if combatiente_actual:
-		mostrar_tecnicas_sobre(combatiente_actual.global_transform.origin, combatiente_actual.tecnicas)
+		mostrar_tecnicas_sobre(combatiente_actual.global_transform.origin, combatiente_actual.id)
 	else:
 		cambiar_estado(BattleState.TURNO_ENEMIGO)
 
@@ -145,13 +144,18 @@ func finalizar_batalla():
 	# Limpieza, volver al mapamundi, recompensas, etc.
 	pass
 
-func mostrar_tecnicas_sobre(posicion_3d: Vector3, tecnicas: Array):
+func mostrar_tecnicas_sobre(posicion_3d: Vector3, nombre_personaje: String):
+	var tecnicas = GlobalTechniqueDatabase.get_techniques_for(nombre_personaje)
+	print("Técnicas cargadas para %s: %d" % [nombre_personaje, tecnicas])
+	for t in tecnicas:
+		print("- %s" % t["tecnique_id"])
+	
 	var screen_pos = battle_camera.unproject_position(posicion_3d)
 	var circulo = preload("res://Escenas/UserUI/tech_button_circle.tscn").instantiate()
 	circulo.global_position = screen_pos
 	circulo.configurar(tecnicas)
 
-	# Limpiar overlay viejo
+	# Limpiamos overlay viejo
 	for child in ui_overlay.get_children():
 		if child is Node2D:
 			child.queue_free()

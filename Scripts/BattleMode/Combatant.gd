@@ -106,6 +106,7 @@ func iniciar_accion():
 	# Elige objetivo valido (Jugadores vivos)
 	var posibles = battle_manager.combatientes.filter(func(c): return c.is_jugador() and c.esta_vivo())
 	if posibles.is_empty():
+
 		emit_signal("turno_finalizado")
 		return
 	

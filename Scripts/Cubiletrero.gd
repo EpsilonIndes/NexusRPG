@@ -15,4 +15,3 @@ func interact():
 	])
 	
 	GameManager.iniciar_batalla(["Triangle", "Triangle"])
-
