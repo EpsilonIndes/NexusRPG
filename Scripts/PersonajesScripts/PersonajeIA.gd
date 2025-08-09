@@ -83,6 +83,7 @@ func _return_to_kosmo(delta):
 		state = State.FOLLOW
 
 func _check_state_transition():
+
 	if state == State.FOLLOW and randf() < 0.005 and _can_explore():
 		if global_position.distance_to(kosmo.global_position) < follow_distance:
 			target_position = kosmo.global_position + _get_explore_offset()
@@ -101,7 +102,6 @@ func _check_state_transition():
 		if state == State.RETURNING and global_position.distance_to(kosmo.global_position) < follow_distance:
 			state = State.FOLLOW
 
-		
 func _move_to_target(delta):
 	if nav_agent.is_navigation_finished():
 		velocity = Vector3.ZERO

@@ -49,7 +49,7 @@ func get_party_actual() -> Array:
 	for pj_name in party_actual:
 		if is_in_party(pj_name):
 			valid_party.append(pj_name)
-	return valid_party
+	return valid_party  # [Kosmo, Sigrid, Maya...]
 
 func get_character(pj_name: String) -> PlayableCharacter:
 	return characters.get(pj_name, null)

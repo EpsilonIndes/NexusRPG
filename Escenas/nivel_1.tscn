@@ -57,9 +57,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00458488, 0.734952, -4.1745
 [node name="seguidores" type="Node3D" parent="Personajes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.1795e-07, 0)
 
-[node name="Amanda" parent="Personajes/seguidores" instance=ExtResource("3_pg8q4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.57599, 5.02426, 2.02283)
-
 [node name="reservaIA" type="Node3D" parent="Personajes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -14.7377)
 
@@ -69,6 +66,9 @@ navigation_mesh = SubResource("NavigationMesh_metkf")
 [node name="CSGMesh3D" type="CSGMesh3D" parent="Personajes/reservaIA/NavigationRegion3D"]
 transform = Transform3D(1.70144, 0, 0, 0, 0.999605, 0, 0, 0, 1.7072, 0, 0, 0)
 mesh = SubResource("PlaneMesh_l7y1v")
+
+[node name="Amanda" parent="Personajes/reservaIA" instance=ExtResource("3_pg8q4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.66418, 0.842737, 0.147961)
 
 [node name="Maya" parent="Personajes/reservaIA" instance=ExtResource("4_i64u6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.97046, 0.935833, -0.997995)

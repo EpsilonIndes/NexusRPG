@@ -4,7 +4,7 @@ extends CharacterBody3D
 func interact():
 	DialogueManager.start_npc_dialogue(npc_id)
 	PlayableCharacters.add_to_party("Maya")
-	PlayableCharacters.add_to_party("Amanda")
-	PartyHandler.actualizar_personajes_party()
-
+	PlayableCharacters.remove_from_party("Sigrid")
+	print(PlayableCharacters.get_party_actual())
 	queue_free()
+	

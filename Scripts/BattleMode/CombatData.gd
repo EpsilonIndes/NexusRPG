@@ -1,4 +1,5 @@
 # CombatData.gd Autoload
+# Este script setea personajes y enemigos... no es tán util
 extends Node
 
 var jugadores: Array[Dictionary] = []
