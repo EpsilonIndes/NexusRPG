@@ -1,48 +1,48 @@
 [gd_scene load_steps=17 format=3 uid="uid://ch12jihr8hqa8"]
 
-[ext_resource type="Script" path="res://Scripts/BattleMode/Combatant.gd" id="1_6jetd"]
-[ext_resource type="Texture2D" uid="uid://obww6af4fsii" path="res://Sprites/BattleSheets/Characters/KosmoBattler/KosmoBattler.png" id="2_l3lkx"]
-[ext_resource type="Texture2D" uid="uid://bhnpyodj56kkk" path="res://Sprites/BattleSheets/Characters/KosmoBattler/kosmoBattlerup.png" id="3_2w1oy"]
-[ext_resource type="Texture2D" uid="uid://drne7nnjgrtix" path="res://Sprites/BattleSheets/Characters/kosmo_attack.png" id="3_tmnhi"]
+[ext_resource type="Script" path="res://Scripts/BattleMode/Combatant.gd" id="1_2drho"]
+[ext_resource type="Texture2D" uid="uid://obww6af4fsii" path="res://Sprites/BattleSheets/Characters/KosmoBattler/KosmoBattler.png" id="2_nau5q"]
+[ext_resource type="Texture2D" uid="uid://bhnpyodj56kkk" path="res://Sprites/BattleSheets/Characters/KosmoBattler/kosmoBattlerup.png" id="3_04di2"]
+[ext_resource type="Texture2D" uid="uid://drne7nnjgrtix" path="res://Sprites/BattleSheets/Characters/kosmo_attack.png" id="4_y633o"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xijvy"]
-atlas = ExtResource("2_l3lkx")
+atlas = ExtResource("2_nau5q")
 region = Rect2(0, 0, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_oa5n0"]
-atlas = ExtResource("2_l3lkx")
+atlas = ExtResource("2_nau5q")
 region = Rect2(48, 0, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_sa6ha"]
-atlas = ExtResource("2_l3lkx")
+atlas = ExtResource("2_nau5q")
 region = Rect2(96, 0, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5m3ym"]
-atlas = ExtResource("2_l3lkx")
+atlas = ExtResource("2_nau5q")
 region = Rect2(144, 0, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7wn23"]
-atlas = ExtResource("2_l3lkx")
+atlas = ExtResource("2_nau5q")
 region = Rect2(192, 0, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_j473c"]
-atlas = ExtResource("3_2w1oy")
+atlas = ExtResource("3_04di2")
 region = Rect2(0, 0, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fm677"]
-atlas = ExtResource("3_2w1oy")
+atlas = ExtResource("3_04di2")
 region = Rect2(48, 0, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_v1x5a"]
-atlas = ExtResource("3_2w1oy")
+atlas = ExtResource("3_04di2")
 region = Rect2(96, 0, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_edhrr"]
-atlas = ExtResource("3_2w1oy")
+atlas = ExtResource("3_04di2")
 region = Rect2(144, 0, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2okw8"]
-atlas = ExtResource("3_tmnhi")
+atlas = ExtResource("4_y633o")
 region = Rect2(0, 0, 48, 48)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_go6nc"]
@@ -97,8 +97,8 @@ animations = [{
 radius = 0.415372
 height = 1.60986
 
-[node name="KosmoBattle" type="CharacterBody3D"]
-script = ExtResource("1_6jetd")
+[node name="AstroBattle" type="CharacterBody3D"]
+script = ExtResource("1_2drho")
 es_jugador = true
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]

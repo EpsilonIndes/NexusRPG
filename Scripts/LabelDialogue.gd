@@ -1,6 +1,6 @@
 extends Control
 
-@onready var kosmo_rayCast = $"../../Personajes/Player/RayCast3D"
+@onready var astro_rayCast = $"../../Personajes/Player/RayCast3D"
 
 var lineas_dialogo: Array = []
 var indice_dialogo: int = 0

@@ -8,9 +8,9 @@ func _custom_ready():
 	pj_nombre = "Sigrid"
 	usa_flip_x = true
 	if kosmo:
-		print("%s localizó a Kosmo. No es que le importe ni nada..." % pj_nombre)
+		print("%s localizó a Astro. No es que le importe ni nada..." % pj_nombre)
 	else:
-		print("Sigrid no encontró a Kosmo. Típico.")
+		print("Sigrid no encontró a Astro. Típico.")
 
 func _can_explore() -> bool:
 	return randf() < 0.7 and not esta_observando

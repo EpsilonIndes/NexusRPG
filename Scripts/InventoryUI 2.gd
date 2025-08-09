@@ -1,6 +1,6 @@
 extends Control
 
-const FACE_TEXTURES = { "Kosmo": preload("res://Assets/Faces/kosmo.png"),
+const FACE_TEXTURES = { "Astro": preload("res://Assets/Faces/Astro.png"),
 					   	"Miguelito": preload("res://Assets/Faces/miguelito.png"),
 						"Chipita": preload("res://Assets/Faces/chipita.png"),
 						"Sigrid": preload("res://Assets/Faces/sigrid.png"),

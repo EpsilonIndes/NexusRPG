@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bf22rglwwq4b3"
-path="res://.godot/imported/kosmo.png-fe9e1017890485fb0671ec65dc3f4770.ctex"
+path="res://.godot/imported/Astro.png-e416d8ca87b48021750404b2b330163e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Faces/kosmo.png"
-dest_files=["res://.godot/imported/kosmo.png-fe9e1017890485fb0671ec65dc3f4770.ctex"]
+source_file="res://Assets/Faces/Astro.png"
+dest_files=["res://.godot/imported/Astro.png-e416d8ca87b48021750404b2b330163e.ctex"]
 
 [params]
 

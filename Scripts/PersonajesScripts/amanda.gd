@@ -8,7 +8,7 @@ func _custom_ready():
 	pj_nombre = "Amanda"
 	usa_flip_x = false
 	if kosmo:
-		print("%s encontró a Kosmo." % pj_nombre)
+		print("%s encontró a Astro." % pj_nombre)
 
 func _can_explore() -> bool:
 	return randf() < 0.7 and not esta_observando

@@ -3,7 +3,7 @@ extends Node
 
 var characters: Dictionary = {}
 var party_actual: Array = []
-var jugador_actual: String = "Kosmo" # Kosmo por default
+var jugador_actual: String = "Astro" # Astro por default
 
 func create_character(pj_id: String) -> void:
 	if characters.has(pj_id):
@@ -49,7 +49,7 @@ func get_party_actual() -> Array:
 	for pj_name in party_actual:
 		if is_in_party(pj_name):
 			valid_party.append(pj_name)
-	return valid_party  # [Kosmo, Sigrid, Maya...]
+	return valid_party  # [Astro, Sigrid, Maya...]
 
 func get_character(pj_name: String) -> PlayableCharacter:
 	return characters.get(pj_name, null)

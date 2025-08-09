@@ -72,12 +72,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.66418, 0.842737, 0.147961)
 
 [node name="Maya" parent="Personajes/reservaIA" instance=ExtResource("4_i64u6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.97046, 0.935833, -0.997995)
+pj_nombre = "Maya"
 
 [node name="Sigrid" parent="Personajes/reservaIA" instance=ExtResource("5_oduvb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.944998, 0)
+pj_nombre = "Sigrid"
 
 [node name="Chipita" parent="Personajes/reservaIA" instance=ExtResource("6_ai0lc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.944555, 0.751558)
+pj_nombre = "Chipita"
 
 [node name="Terreno" type="Node" parent="."]
 

@@ -10,7 +10,7 @@ enum EstadosDeJuego {
 }
 
 var equipo_actual: Array[Dictionary] = [ # todos los pjs actuales jugables
-	{"id": "Kosmo"},
+	{"id": "Astro"},
 	{"id": "Sigrid"},
 	{"id": "Maya"},
 	{"id": "Amanda"},
@@ -37,7 +37,7 @@ func iniciar_batalla(contra_enemigos: Array[String]):
 func _ready():
 	for pj in equipo_actual:
 		PlayableCharacters.create_character(pj.id) # Crea el personaje, desde el array
-	PlayableCharacters.add_to_party("Kosmo")
+	PlayableCharacters.add_to_party("Astro")
 
 # Funcion para retornar un array de diccionarios con el equipo actual de 4 personajes
 func get_team_instanciar() -> Array[Dictionary]:
@@ -50,4 +50,4 @@ func get_team_instanciar() -> Array[Dictionary]:
 			break
 
 	print("Equipo a instanciar:", team)
-	return team # [{"id": "Kosmo"}, {"id": "Sigrid"}]
+	return team # [{"id": "Astro"}, {"id": "Sigrid"}]

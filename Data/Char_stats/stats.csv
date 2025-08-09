@@ -1,5 +1,5 @@
 id,class_id,job_name,hp,max_hp,mp,max_mp,atk,mag,def,spd,lck,fth,face
-Kosmo,quantic_master,Maéstro cuántico,100,200,30,30,25,5,20,12,8,4,res://Assets/Faces/kosmo.png
+Astro,quantic_master,Maéstro cuántico,100,200,30,30,25,5,20,12,8,4,res://Assets/Faces/kosmo.png
 Chipita,dark_mage,Maga oscura,180,180,80,80,10,28,10,14,10,12,res://Assets/Faces/chipita.png
 Maya,lancer,Lancera,200,200,40,40,20,12,18,16,12,6,res://Assets/Faces/maya.png
 Miguelito,hunter,Cazador,100,190,35,35,18,10,12,20,20,5,res://Assets/Faces/miguelito.png

@@ -1,11 +1,11 @@
 personaje,tecnique_id,rol_combo,tipo_dano,descripcion,costo_drive,costo_mana,especialidad
-Kosmo,Golpe Previsor,opener,físico,"Inicia combo, mejora evasión",0,0,puños
-Kosmo,Doble Impacto,linker,físico,"Dos golpes, gana Drive si acierta ambos",0,0,puños
-Kosmo,Ciclón de Puños,linker,físico,"Ataque multi-target, conecta fácilmente",0,0,puños
-Kosmo,Puño Cósmico,finisher,físico,"Gran daño, escala con combo",0,0,puños
-Kosmo,Counter Drive,finisher,físico,Devuelve daño si fue atacado,0,0,puños
-Kosmo,Impulso Instintivo,support,pasivo,Activa miniturno si evade,0,0,puños
-Kosmo,Ritmo de Batalla,support,pasivo,Gana ataque si conecta dos linkers,0,0,puños
+Astro,Golpe Previsor,opener,físico,"Inicia combo, mejora evasión",0,0,puños
+Astro,Doble Impacto,linker,físico,"Dos golpes, gana Drive si acierta ambos",0,0,puños
+Astro,Ciclón de Puños,linker,físico,"Ataque multi-target, conecta fácilmente",0,0,puños
+Astro,Puño Cósmico,finisher,físico,"Gran daño, escala con combo",0,0,puños
+Astro,Counter Drive,finisher,físico,Devuelve daño si fue atacado,0,0,puños
+Astro,Impulso Instintivo,support,pasivo,Activa miniturno si evade,0,0,puños
+Astro,Ritmo de Batalla,support,pasivo,Gana ataque si conecta dos linkers,0,0,puños
 Sigrid,Corte Preemptivo,opener,físico,Va primero si el enemigo no está alerta,0,0,espadas
 Sigrid,Viento Cortante,linker,físico,Daño + Desbalance,0,0,espadas
 Sigrid,Danza de Acero,linker,físico,Rebota entre enemigos,0,0,espadas

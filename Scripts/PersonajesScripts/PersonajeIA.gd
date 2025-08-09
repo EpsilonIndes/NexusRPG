@@ -28,7 +28,7 @@ func _ready():
 	await get_tree().process_frame
 	asignar_kosmo()
 	if kosmo == null:
-		print("%s no encontró a Kosmo" % pj_nombre)
+		print("%s no encontró a Astro" % pj_nombre)
 		return
 		
 	_custom_ready()  # Llamada a método virtual para personalización
