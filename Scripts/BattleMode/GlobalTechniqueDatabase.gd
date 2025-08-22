@@ -7,9 +7,9 @@ func _ready():
 	var file = FileAccess.open("res://Data/Tecnicas/tecnicas.csv", FileAccess.READ)
 	file.get_line() # Leer encabecados y descartarlos
 	while not file.eof_reached(): # Mientras el archivo no se haya terminado
-		if file.get_line().strip_edges() == "": # Evitar líneas vacías
-			continue
-		var line = file.get_line()
+		var line = file.get_line().strip_edges()
+		if line == "":
+			continue # Saltar lineas vacias
 		var values = line.split(",")
 		tecnica_data.append({
 			"personaje": values[0],

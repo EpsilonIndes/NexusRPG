@@ -150,7 +150,8 @@ func asignar_kosmo():
 	var escena = get_tree().get_current_scene()
 	kosmo = buscar_player(escena)
 	if kosmo == null:
-		push_warning("%s no encontró a Kosmo automáticamente" % pj_nombre)
+		push_warning("%s no encontró a Astro automáticamente" % pj_nombre)
+
 func buscar_player(nodo: Node) -> Node3D:
 	if nodo.name == "Player":
 		return nodo

@@ -124,6 +124,7 @@ func _on_item_pressed(item_id: String, button_node: Button):
 func _on_context_option_selected(option_id: int):
 	match option_id:
 		0:
+			crear_listaContextualCharacter()
 			character_ContextMenu.visible = true
 			# Mover el menú contextual cerca del mouse
 			character_ContextMenu.set_position(get_global_mouse_position())
@@ -178,7 +179,6 @@ func _on_estado_pressed():
 		label_stats.text = "No hay personajes en el equipo."
 		face_texture.texture = null
 	
-
 func _on_estado_salir_pressed():
 	estado_panel.visible = false
 	main_menu.visible = true
@@ -220,5 +220,6 @@ func _on_anterior_pressed():
 func crear_listaContextualCharacter():
 	character_ContextMenu.clear()
 	var party = PlayableCharacters.get_party_actual()
+	print("Party actual:", party)
 	for i in range(party.size()):
 		character_ContextMenu.add_item(party[i], i)

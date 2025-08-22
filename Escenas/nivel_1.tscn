@@ -50,6 +50,7 @@ ease = 2
 
 [node name="Player" parent="Personajes" instance=ExtResource("1_a8vtw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.821939, -1.41913)
+speed = 220.0
 
 [node name="MiguelitoNPC" parent="Personajes" instance=ExtResource("2_csbrw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00458488, 0.734952, -4.17453)

@@ -1,3 +1,5 @@
+# TechButtonCircle.gd
+# Este script se encarga de crear botones de técnicas alrededor de un punto central
 extends Node2D
 
 var radio := 100.0
