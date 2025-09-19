@@ -1,15 +1,58 @@
-# Godot 4+ project
+# ==========================
+# Godot 4+ project ignores
+# ==========================
+
+# Local project config
 .godot/
+
+# Import cache
 *.import
+
+# UID files (Godot 4+)
+*.uid
+
+# Temporary files
 *.tmp
 *.log
 
-# UID files
-*.uid
+# Export templates
+*.exe
+*.apk
+*.xcodeproj
+*.ipa
+*.app
+
+# Scenes / Assets backups
+*.bak
+*.old
+*.swp
 
 # OS-specific
 .DS_Store
 Thumbs.db
+desktop.ini
 
-# VSCode
+# ==========================
+# VSCode specific
+# ==========================
 .vscode/
+
+# ==========================
+# Optional: Linux / macOS
+# ==========================
+*.so
+*.dylib
+
+# ==========================
+# Optional: Windows
+# ==========================
+*.dll
+*.pdb
+*.lib
+
+# ==========================
+# Optional: Compressed / Archive files
+# ==========================
+*.zip
+*.tar.gz
+*.rar
