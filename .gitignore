@@ -1,2 +1,15 @@
-# Godot 4+ specific ignores
+# Godot 4+ project
 .godot/
+*.import
+*.tmp
+*.log
+
+# UID files
+*.uid
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# VSCode
+.vscode/

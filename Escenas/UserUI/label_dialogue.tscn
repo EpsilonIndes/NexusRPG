@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dkn8gxfmy5tm6"]
 
-[ext_resource type="Script" path="res://Scripts/LabelDialogue.gd" id="1_2hgxt"]
+[ext_resource type="Script" uid="uid://daj35s8livwb" path="res://Scripts/LabelDialogue.gd" id="1_2hgxt"]
 [ext_resource type="Theme" uid="uid://hdvpdwg85rrw" path="res://Materiales/new_theme.tres" id="1_jxwlg"]
 
 [node name="LabelDialogue" type="Control"]

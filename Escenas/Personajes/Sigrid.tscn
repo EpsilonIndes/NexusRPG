@@ -1,6 +1,6 @@
 [gd_scene load_steps=22 format=3 uid="uid://ckhl1sgngkvhd"]
 
-[ext_resource type="Script" path="res://Scripts/PersonajesScripts/sigrid.gd" id="1_jue5u"]
+[ext_resource type="Script" uid="uid://1jy6j213wnq7" path="res://Scripts/PersonajesScripts/sigrid.gd" id="1_jue5u"]
 [ext_resource type="Texture2D" uid="uid://bc5m28bxdvmua" path="res://Sprites/Sigrid/SigridDown.png" id="1_wvfvn"]
 [ext_resource type="Texture2D" uid="uid://c4bgxjncxo0rg" path="res://Sprites/Sigrid/SigridUp.png" id="3_fm2nf"]
 [ext_resource type="Texture2D" uid="uid://xhshl2xvabi7" path="res://Sprites/Sigrid/SigridHor.png" id="4_o2v55"]

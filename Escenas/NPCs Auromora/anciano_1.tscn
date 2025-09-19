@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://cpkvk4qac61ng"]
 
-[ext_resource type="Script" path="res://Scripts/NPCsDIalogos/NPCDialogo.gd" id="1_2xiy2"]
+[ext_resource type="Script" uid="uid://3bqh2q0ynetu" path="res://Scripts/NPCsDIalogos/NPCDialogo.gd" id="1_2xiy2"]
 [ext_resource type="Texture2D" uid="uid://cafr400644ocu" path="res://Sprites/NPCs Auromora/anciano_1.png" id="2_aij3d"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mmfv5"]

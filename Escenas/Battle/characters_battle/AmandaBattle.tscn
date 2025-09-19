@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://b0y1ovvdtsm6t"]
 
-[ext_resource type="Script" path="res://Scripts/BattleMode/Combatant.gd" id="1_xrshl"]
+[ext_resource type="Script" uid="uid://b5c0lok6v80jr" path="res://Scripts/BattleMode/Combatant.gd" id="1_xrshl"]
 [ext_resource type="Texture2D" uid="uid://r60ibke2i23r" path="res://Sprites/BattleSheets/Characters/Amanda/AmandaBattler.png" id="2_er6bu"]
 [ext_resource type="Texture2D" uid="uid://drne7nnjgrtix" path="res://Sprites/BattleSheets/Characters/kosmo_attack.png" id="3_c7b1l"]
 

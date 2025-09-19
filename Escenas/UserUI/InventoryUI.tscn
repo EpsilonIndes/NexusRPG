@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://qh76bv7y2534"]
 
 [ext_resource type="Theme" uid="uid://hdvpdwg85rrw" path="res://Materiales/new_theme.tres" id="1_y1ucf"]
-[ext_resource type="Script" path="res://Scripts/InventoryUI 2.gd" id="2_afv7y"]
+[ext_resource type="Script" uid="uid://bu4dlxuuomdam" path="res://Scripts/InventoryUI 2.gd" id="2_afv7y"]
 [ext_resource type="LabelSettings" uid="uid://cb4pba1oc265c" path="res://Data/Fonts/FantasyLabel.tres" id="3_hone7"]
 
 [sub_resource type="Animation" id="Animation_4rtdd"]
@@ -62,8 +62,8 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_xrri4"]
 _data = {
-"close": SubResource("Animation_4rtdd"),
-"open": SubResource("Animation_mwyvu")
+&"close": SubResource("Animation_4rtdd"),
+&"open": SubResource("Animation_mwyvu")
 }
 
 [node name="InventoryUI" type="Control"]

@@ -6,7 +6,6 @@ func actualizar_personajes_party():
 	var reservas = escena.get_node("Personajes/reservaIA")
 	var contenedor = escena.get_node("Personajes/seguidores")
 	var jugador = escena.get_node("Personajes/Player")
-	var jugador_altura = jugador.global_position.y
 
 	var party = PlayableCharacters.get_party_actual()
 	var total = party.size()
@@ -26,14 +25,13 @@ func actualizar_personajes_party():
 			personaje.visible = true
 			personaje.set_process(true)
 			personaje.set_process_input(true)
-			
-			# Posicionar alrededor de Kosmo a la misma altura
-			var pos_offset = get_posicion_circular(jugador.global_position, index, total)
-			pos_offset.y = jugador_altura
-			personaje.global_position = pos_offset
+			personaje.set_physics_process(false) # Desactivo física temporal
+
+			# Posicionar en diferido para no pelear con el frame actual
+			call_deferred("_posicionar_personaje", personaje, jugador.global_position, index, total)
 			index += 1
 		else:
-			#Hibernar
+			# Hibernar
 			personaje.reparent(reservas)
 			personaje.visible = false
 			personaje.set_physics_process(false)
@@ -41,10 +39,41 @@ func actualizar_personajes_party():
 			personaje.set_process_input(false)
 
 			# Lo mandamos fuera del rango, pero dentro del NavigationRegion3D
-			personaje.global_position = Vector3(-50, jugador_altura, -5)
+			personaje.global_position = Vector3(-50, jugador.global_position.y, -5)
+
+
+# --------------------------
+# Helpers
+# --------------------------
+
+func _posicionar_personaje(personaje: CharacterBody3D, base: Vector3, index: int, total: int):
+	var pos_offset = get_posicion_circular(base, index, total)
+	pos_offset = snap_to_floor(pos_offset)
+
+	# Fijar posicion mientras fisica esta desactivada
+	personaje.global_position = pos_offset
+	personaje.velocity = Vector3.ZERO
+
+	# Activar fisica al siguiente frame
+	await get_tree().process_frame
+	personaje.set_physics_process(true)
+
 
 
 func get_posicion_circular(base: Vector3, index: int, total: int, radio: float = 2.0) -> Vector3:
 	var angle = TAU * float(index) / float(total)
 	var offset = Vector3(cos(angle), 0, sin(angle)) * radio
 	return base + offset # Esto distribuye N personajes en un circulo alrededor de un punto
+
+
+func snap_to_floor(pos: Vector3) -> Vector3:
+	var space = get_viewport().get_world_3d().direct_space_state
+	var query = PhysicsRayQueryParameters3D.create(
+		pos + Vector3.UP * 2, 
+		pos + Vector3.DOWN * 5
+	)
+	var result = space.intersect_ray(query)
+
+	if result.has("position"):
+		pos.y = result["position"].y
+	return pos

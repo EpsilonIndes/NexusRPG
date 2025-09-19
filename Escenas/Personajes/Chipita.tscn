@@ -1,6 +1,6 @@
 [gd_scene load_steps=22 format=3 uid="uid://ddbnhhajofjkw"]
 
-[ext_resource type="Script" path="res://Scripts/PersonajesScripts/chipita.gd" id="1_tj4dh"]
+[ext_resource type="Script" uid="uid://y6klugyrpbxs" path="res://Scripts/PersonajesScripts/chipita.gd" id="1_tj4dh"]
 [ext_resource type="Texture2D" uid="uid://d1511sm5oiovm" path="res://Sprites/Chipita/Chipitadown.png" id="2_456t6"]
 [ext_resource type="Texture2D" uid="uid://f7gmmyvdmblt" path="res://Sprites/Chipita/ChipitaHort.png" id="3_ywbrw"]
 [ext_resource type="Texture2D" uid="uid://txuchybhndgc" path="res://Sprites/Chipita/Chipitaup.png" id="4_f2cjj"]

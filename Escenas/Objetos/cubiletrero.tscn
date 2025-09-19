@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dioro2qfasopc"]
 
-[ext_resource type="Script" path="res://Scripts/Cubiletrero.gd" id="1_psw7w"]
+[ext_resource type="Script" uid="uid://dh5a4hjqbsvj3" path="res://Scripts/Cubiletrero.gd" id="1_psw7w"]
 [ext_resource type="Material" uid="uid://c0jjtywjdsume" path="res://Materiales/Textura_Cubiletrero.tres" id="2_2qenb"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_oluom"]

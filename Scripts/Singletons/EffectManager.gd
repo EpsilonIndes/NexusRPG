@@ -28,7 +28,7 @@ func apply_effects(effects: Array, target_id: String) -> void:
 # Efectos tanto de items como de habilidades 
 func _heal_hp(stats: Dictionary): # Poción básica
 	var max_hp = stats.get("max_hp", 100)
-	stats["hp"] = min(stats.get("hp", 0) + 50, max_hp)
+	stats["hp"] = min(stats.get("hp", 1) + 50, max_hp)
 
 func _heal_mp(stats: Dictionary): # Éter
 	var max_mp = stats.get("max_mp", 50)

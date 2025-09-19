@@ -1,6 +1,6 @@
 [gd_scene load_steps=28 format=3 uid="uid://baga8lrftoaue"]
 
-[ext_resource type="Script" path="res://Scripts/PersonajesScripts/amanda.gd" id="1_5nqpv"]
+[ext_resource type="Script" uid="uid://dwxndkhdixu1v" path="res://Scripts/PersonajesScripts/amanda.gd" id="1_5nqpv"]
 [ext_resource type="Texture2D" uid="uid://d4go7f23i6l2o" path="res://Sprites/Amanda/amanda_der.png" id="2_f885y"]
 [ext_resource type="Texture2D" uid="uid://ckkxf3rxky8o2" path="res://Sprites/Amanda/amanda_down.png" id="3_4nx4n"]
 [ext_resource type="Texture2D" uid="uid://cnh8hcgced8jp" path="res://Sprites/Amanda/amanda_izq.png" id="4_8446y"]

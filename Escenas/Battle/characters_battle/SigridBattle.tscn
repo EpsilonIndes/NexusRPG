@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=3 uid="uid://c1564n2bv30dg"]
 
-[ext_resource type="Script" path="res://Scripts/BattleMode/Combatant.gd" id="1_o5dnh"]
+[ext_resource type="Script" uid="uid://b5c0lok6v80jr" path="res://Scripts/BattleMode/Combatant.gd" id="1_o5dnh"]
 [ext_resource type="Texture2D" uid="uid://dna6tjvraq7s3" path="res://Sprites/BattleSheets/Characters/Sigrid/sigridBattler.png" id="2_hk0dy"]
 [ext_resource type="Texture2D" uid="uid://drne7nnjgrtix" path="res://Sprites/BattleSheets/Characters/kosmo_attack.png" id="3_7n5tv"]
 

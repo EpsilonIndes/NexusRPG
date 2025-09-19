@@ -54,7 +54,7 @@ func update_sprite(move_vector: Vector3) -> void:
 			last_direction = "_left" if move_vector.x < 0 else "_right"
 			animated_sprite.play("walk" + last_direction)
 	else:
-		last_direction = "_down" if move_vector.z > 0 else "_up" 
+		last_direction = "_down" if move_vector.z > 0 else "_up"
 		animated_sprite.flip_h = false
 		animated_sprite.play("walk" + last_direction)
 

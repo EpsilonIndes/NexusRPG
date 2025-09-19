@@ -1,6 +1,6 @@
 [gd_scene load_steps=22 format=3 uid="uid://dbkl1jxjs2dxk"]
 
-[ext_resource type="Script" path="res://Scripts/PersonajesScripts/maya.gd" id="1_xnl0d"]
+[ext_resource type="Script" uid="uid://bd2eifnhv1blk" path="res://Scripts/PersonajesScripts/maya.gd" id="1_xnl0d"]
 [ext_resource type="Texture2D" uid="uid://cs74wllanum8f" path="res://Sprites/Maya/maya_down.png" id="2_48uto"]
 [ext_resource type="Texture2D" uid="uid://pwa744d1makl" path="res://Sprites/Maya/maya_side.png" id="3_o6n5i"]
 [ext_resource type="Texture2D" uid="uid://ccn3vngrlk2ta" path="res://Sprites/Maya/maya_up.png" id="4_3i16k"]

@@ -1,17 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://bodo6o8l2sybh"]
+[gd_scene load_steps=6 format=3 uid="uid://xlhfyi07xx0d"]
 
-[ext_resource type="Script" uid="uid://ct01m1fk2w2nv" path="res://Scripts/NPCsDIalogos/NPCMayaRecluta.gd" id="1_hb4fr"]
-[ext_resource type="Texture2D" uid="uid://cs74wllanum8f" path="res://Sprites/Maya/maya_down.png" id="2_p6hic"]
+[ext_resource type="Script" uid="uid://ct01m1fk2w2nv" path="res://Scripts/NPCsDIalogos/NPCMayaRecluta.gd" id="1_0mvpi"]
+[ext_resource type="Texture2D" uid="uid://ckkxf3rxky8o2" path="res://Sprites/Amanda/amanda_down.png" id="2_0mvpi"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_k8p63"]
-atlas = ExtResource("2_p6hic")
+[sub_resource type="AtlasTexture" id="AtlasTexture_ibmry"]
+atlas = ExtResource("2_0mvpi")
 region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_tu427"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_k8p63")
+"texture": SubResource("AtlasTexture_ibmry")
 }],
 "loop": true,
 "name": &"default",
@@ -22,9 +22,9 @@ animations = [{
 radius = 0.303653
 height = 1.31188
 
-[node name="Maya" type="CharacterBody3D" groups=["interactuables"]]
-script = ExtResource("1_hb4fr")
-npc_id = "maya_npc_1"
+[node name="Amanda_npc" type="CharacterBody3D" groups=["interactuables"]]
+script = ExtResource("1_0mvpi")
+npc_id = "amanda_npc_1"
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)

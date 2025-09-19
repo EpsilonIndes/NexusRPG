@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://d1wj4ltbsjdm"]
 
-[ext_resource type="Script" path="res://Scripts/BattleMode/Combatant.gd" id="1_xj4xb"]
+[ext_resource type="Script" uid="uid://b5c0lok6v80jr" path="res://Scripts/BattleMode/Combatant.gd" id="1_xj4xb"]
 [ext_resource type="Texture2D" uid="uid://bcer4lxaju3fw" path="res://Sprites/BattleSheets/Characters/ChipitaBattler/chipitaBattler.png" id="2_fnl2r"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1ai5f"]

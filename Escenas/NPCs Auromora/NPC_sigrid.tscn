@@ -1,0 +1,37 @@
+[gd_scene load_steps=6 format=3 uid="uid://cdarkppno1gsm"]
+
+[ext_resource type="Script" uid="uid://ct01m1fk2w2nv" path="res://Scripts/NPCsDIalogos/NPCMayaRecluta.gd" id="1_gymj2"]
+[ext_resource type="Texture2D" uid="uid://bc5m28bxdvmua" path="res://Sprites/Sigrid/SigridDown.png" id="2_gymj2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w27to"]
+atlas = ExtResource("2_gymj2")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tu427"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w27to")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_y33gn"]
+radius = 0.303653
+height = 1.31188
+
+[node name="Sigrid_npc" type="CharacterBody3D" groups=["interactuables"]]
+script = ExtResource("1_gymj2")
+npc_id = "sigrid_npc_1"
+
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+billboard = 1
+texture_filter = 0
+sprite_frames = SubResource("SpriteFrames_tu427")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.048190236, 0)
+shape = SubResource("CapsuleShape3D_y33gn")
