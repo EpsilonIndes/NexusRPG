@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://b7c56in6tdjsb"]
+
+[ext_resource type="AudioStream" uid="uid://ch4t56txfhy64" path="res://Sounds/Music/Liminal Space Ambience — empty tense loop.wav" id="1_kiqvn"]
+
+[node name="Sonido Ambiental" type="Node3D"]
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("1_kiqvn")
+autoplay = true
+bus = &"Music"

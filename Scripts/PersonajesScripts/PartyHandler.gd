@@ -42,9 +42,7 @@ func actualizar_personajes_party():
 			personaje.global_position = Vector3(-50, jugador.global_position.y, -5)
 
 
-# --------------------------
-# Helpers
-# --------------------------
+# Helpers #
 
 func _posicionar_personaje(personaje: CharacterBody3D, base: Vector3, index: int, total: int):
 	var pos_offset = get_posicion_circular(base, index, total)

@@ -1,39 +1,39 @@
-personaje,tecnique_id,rol_combo,tipo_dano,descripcion,costo_drive,costo_mana,score_value
-Astro,Golpe Previsor,opener,físico,"Inicia combo, mejora evasión",0,0,100
-Astro,Doble Impacto,linker,físico,"Dos golpes, gana Drive si acierta ambos",0,0,120
-Astro,Ciclón de Puños,linker,físico,"Ataque multi-target, conecta fácilmente",0,0,200
-Astro,Puño Cósmico,finisher,físico,"Gran daño, escala con combo",0,0,300
-Astro,Counter Drive,finisher,físico,Devuelve daño si fue atacado,0,0,500
-Astro,Impulso Instintivo,support,pasivo,Activa miniturno si evade,0,0,200
-Astro,Ritmo de Batalla,support,pasivo,Gana ataque si conecta dos linkers,0,0,puños
-Sigrid,Corte Preemptivo,opener,físico,Va primero si el enemigo no está alerta,0,0,espadas
-Sigrid,Viento Cortante,linker,físico,Daño + Desbalance,0,0,espadas
-Sigrid,Danza de Acero,linker,físico,Rebota entre enemigos,0,0,espadas
-Sigrid,Lamento Invernal,finisher,mágico,Daño mágico tipo hielo,0,0,espadas
-Sigrid,Destino Sellado,finisher,físico,Crítico si el enemigo tiene estado,0,0,espadas
-Sigrid,Finta,support,pasivo,Esquiva y contraataca,0,0,espadas
-Sigrid,Reflejo Frío,support,pasivo,Gana velocidad si no recibe daño,0,0,espadas
-Miguelito,Disparo de Aviso,opener,físico,Marca al enemigo,0,0,ballesta
-Miguelito,Flecha Encadenada,linker,físico,Extiende combo si el enemigo está marcado,0,0,ballesta
-Miguelito,Tiro de Rebote,linker,físico,Ataca a dos enemigos,0,0,ballesta
-Miguelito,Letalidad Cazada,finisher,físico,Más daño por efectos negativos,0,0,ballesta
-Miguelito,Observador,support,pasivo,Gana miniturno si un aliado inicia combo,0,0,ballesta
-Miguelito,Carga Silenciosa,support,pasivo,Recupera Drive si no ataca,0,0,ballesta
-Chipita,Burbuja Concentrada,opener,mágico,Reduce defensa mágica del enemigo,0,0,agua
-Chipita,Ráfaga Húmeda,linker,mágico,Ralentiza enemigos,0,0,agua
-Chipita,Espejismo Acuático,linker,mágico,Crea imagen para evasión,0,0,agua
-Chipita,Marea Ascendente,finisher,mágico,Daño a todos + interrumpe turnos,0,0,agua
-Chipita,Canalizar Agua,support,pasivo,Recupera Drive a aliados,0,0,agua
-Chipita,Reacción Fluida,support,pasivo,Miniturno si aliado usa técnica mágica,0,0,agua
-Maya,Carga Estelar,opener,físico,Abre línea de ataque recta,0,0,lanza
-Maya,Golpe Ascendente,linker,físico,Lanza al enemigo al aire,0,0,lanza
-Maya,Estocada Rápida,linker,físico,Conecta por velocidad,0,0,lanza
-Maya,Columna Ígnea,finisher,mágico,Gran daño si enemigo está en el aire,0,0,lanza
-Maya,Rastro de Ceniza,support,pasivo,Deja fuego en el terreno,0,0,lanza
-Maya,Llama Reforzada,support,pasivo,Mejora finisher si usó 2 linkers distintos,0,0,lanza
-Amanda,Resonancia Mental,opener,mágico,Predice acción enemiga,0,0,luz
-Amanda,Ondas Resonantes,linker,mágico,Gana Drive extra si se usa tras Chipita,0,0,luz
-Amanda,Eco de Luz,linker,mágico,Duplica efectos anteriores,0,0,luz
-Amanda,Sello de Armonía,finisher,mágico,Cura aliados y resetea soporte Drive,0,0,luz
-Amanda,Mente Expandida,support,pasivo,Permite usar técnica adicional,0,0,luz
-Amanda,Drive Coral,support,pasivo,Aumenta puntaje si otro usa finisher,0,0,luz
+personaje,tecnique_id,rol_combo,descripcion,costo_drive,score_value,arma,effect,target_scope
+Astro,Golpe Previsor,opener,"Inicia combo, mejora evasión",0,100,guantes,damage:0.5; boost:spd:0.2,SINGLE_ENEMY
+Astro,Doble Impacto,linker,"Dos golpes, gana Drive si acierta ambos",0,120,guantes,damage:0.5,RANDOM_ENEMY
+Astro,Ciclón de Puños,linker,"Ataque multi-target, conecta fácilmente",0,200,guantes,damage:0.5,RANDOM_ENEMY
+Astro,Puño Cósmico,finisher,"Gran daño, escala con combo",0,300,guantes,damage:0.5,SINGLE_ENEMY
+Astro,Counter Drive,finisher,"Devuelve daño si fue atacado",0,500,guantes,damage:0.5,RANDOM_ENEMY
+Astro,Impulso Instintivo,support,"Activa miniturno si evade",0,200,guantes,damage:0.5,SELF
+Astro,Ritmo de Batalla,support,"Gana ataque si conecta dos linkers",0,100,guantes,damage:0.5,SELF
+Sigrid,Corte Preemptivo,opener,"Va primero si el enemigo no está alerta",0,100,espadas,damage:0.5,SINGLE_ENEMY
+Sigrid,Viento Cortante,linker,"Daño + Desbalance",0,200,espadas,damage:0.5,SINGLE_ENEMY
+Sigrid,Danza de Acero,linker,"Rebota entre enemigos",0,400,espadas,damage:0.5,RANDOM_ENEMY
+Sigrid,Lamento Invernal,finisher,"Daño mágico tipo hielo",0,500,espadas,damage:0.5,SINGLE_ENEMY
+Sigrid,Destino Sellado,finisher,"Crítico si el enemigo tiene estado",0,500,espadas,damage:0.5,SINGLE_ENEMY
+Sigrid,Finta,support,"Esquiva y contraataca",0,100,espadas,damage;damage:0.5,SINGLE_ENEMY
+Sigrid,Reflejo Frío,support,"Gana velocidad si no recibe daño",0,150,espadas,boost_stat:0.5,SELF
+Miguelito,Disparo de Aviso,opener,"Marca al enemigo",0,0,ballesta,damage:0.5,SINGLE_ENEMY
+Miguelito,Flecha Encadenada,linker,"Extiende combo si el enemigo está marcado",0,0,ballesta,damage:0.5,RANDOM_ENEMY
+Miguelito,Tiro de Rebote,linker,"Ataca a dos enemigos",0,0,ballesta,damage:0.5,RANDOM_ENEMY:2
+Miguelito,Letalidad Cazada,finisher,"Más daño por efectos negativos",0,0,ballesta,damage:0.5,SINGLE_ENEMY
+Miguelito,Observador,support,"Gana miniturno si un aliado inicia combo",0,0,ballesta,damage:0.5,SELF
+Miguelito,Carga Silenciosa,support,"Recupera Drive si no ataca",0,0,ballesta,damage:0.5,SELF
+Chipita,Burbuja Concentrada,opener,"Reduce defensa mágica del enemigo",0,0,baston,damage:0.3;nerf:def:0.2,SINGLE_ENEMY
+Chipita,Ráfaga Húmeda,linker,"Ralentiza enemigos",0,0,baston,damage:0.5;nerf:spd,RANDOM_ENEMY
+Chipita,Espejismo Acuático,linker,"Crea imagen para evasión",0,0,baston,damage:0.5,SELF
+Chipita,Marea Ascendente,finisher,"Daño a todos + interrumpe turnos",0,0,baston,damage:0.5,ALL_ENEMIES
+Chipita,Canalizar Agua,support,"Recupera Drive a aliados",0,0,baston,damage:0.5,ALL_ALLIES
+Chipita,Reacción Fluida,support,"Miniturno si aliado usa técnica mágica",0,0,baston,damage:0.5,SELF
+Maya,Carga Estelar,opener,"Abre línea de ataque recta",0,0,lanza,damage:0.5,SINGLE_ENEMY
+Maya,Golpe Ascendente,linker,"Lanza al enemigo al aire",0,0,lanza,damage:0.5,SINGLE_ENEMY
+Maya,Estocada Rápida,linker,"Conecta por velocidad",0,0,lanza,damage:0.5,SINGLE_ENEMY
+Maya,Columna Ígnea,finisher,"Gran daño si enemigo está en el aire",0,0,lanza,damage:0.5,SINGLE_ENEMY
+Maya,Rastro de Ceniza,support,"Deja fuego en el terreno",0,0,lanza,damage:0.5,ALL_ENEMIES
+Maya,Llama Reforzada,support,"Mejora finisher si usó 2 linkers distintos",0,0,lanza,damage:0.5,SELF
+Amanda,Resonancia Mental,opener,"Predice acción enemiga",0,0,guantes_pesados,damage:0.5,SINGLE_ENEMY
+Amanda,Ondas Resonantes,linker,"Gana Drive extra si se usa tras Chipita",0,0,guantes_pesados,damage:0.5,SELF
+Amanda,Eco de Luz,linker,"Duplica efectos anteriores",0,0,guantes_pesados,damage:0.5,SELF
+Amanda,Sello de Armonía,finisher,"Cura aliados y resetea soporte Drive",0,0,guantes_pesados,damage:0.5,ALL_ALLIES
+Amanda,Mente Expandida,support,"Permite usar técnica adicional",0,0,guantes_pesados,damage:0.5,SELF
+Amanda,Drive Coral,support,"Aumenta puntaje si otro usa finisher",0,0,guantes_pesados,damage:0.5,SELF

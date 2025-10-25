@@ -152,17 +152,28 @@ func _on_caracter_ContextMenu_pressed(option_id: int):
 
 	if selected_character in PlayableCharacters.get_party_actual():
 		var item = DataLoader.items.get(selected_item_id, {})
-		var effects = item.get("effect", "").split(";")
+		var raw_effects = item.get("effect", "").strip_edges()
 		
-		if effects and effects[0] != "":
-			EffectManager.apply_effects(effects, selected_character)
-			InventoryManager.remove_item(ItemManager.get_item_nombre(selected_item_id), 1)
-			update_item_list()
-		else:
+		if raw_effects == "":
 			print("Este objeto no tiene efectos.")
+			return
+
+		# dividir efectos por ";"
+		var effects_array = raw_effects.split(";")
+		var clean_effects = []
+		
+		for e in effects_array:
+			var parts = e.strip_edges().split(":")
+			if parts.size() >= 1:
+				clean_effects.append(parts)
+
+		print("Efectos parseados: ", clean_effects)
+		EffectManager.apply_effects(clean_effects, selected_character)
+		InventoryManager.remove_item(ItemManager.get_item_nombre(selected_item_id), 1)
+		update_item_list()
 	else:
 		print("El personaje seleccionado no está en el equipo.")
-	
+
 	character_ContextMenu.visible = false
 	selected_item_id = ""
 
@@ -190,17 +201,16 @@ func show_character_stats(char_id: String):
 		return
 
 	var stats = PlayableCharacters.get_character(char_id).stats
-	label_stats.text = "Nombre: %s\nClase: %s\nHP: %s\nMP: %s\nAtaque: %s\nAtaque Mágico: %s\nDefensa: %s\nVelocidad: %s\nSuerte: %s\nEspíritu: %s" % [
+	label_stats.text = "Nombre: %s\nClase: %s\nHP: %s\nDP: %s\nAtaque: %s\nDefensa: %s\nVelocidad: %s\nSuerte: %s\nInteligencia: %s" % [
 		char_id,
 		stats.get("job_name", "???"),
 		stats.get("hp", "???"),
-		stats.get("mp", "???"),
+		stats.get("dp", "???"),
 		stats.get("atk", "???"),
-		stats.get("mag", "???"),
 		stats.get("def", "???"),
 		stats.get("spd", "???"),
 		stats.get("lck", "???"),
-		stats.get("fth", "???"),		
+		stats.get("wis", "???"),
 	]
 	
 	face_texture.texture = FACE_TEXTURES.get(char_id, null)

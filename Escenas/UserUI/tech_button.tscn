@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://4ixxtwt3osa"]
+[gd_scene load_steps=6 format=3 uid="uid://4ixxtwt3osa"]
 
-[ext_resource type="Texture2D" uid="uid://m7ia2dj8quqo" path="res://Sprites/BattleSheets/BattleUI/TechniqueBtn_abajo_normal.png" id="1_atyuf"]
-[ext_resource type="Texture2D" uid="uid://h5wvlbhmjjgv" path="res://Sprites/BattleSheets/BattleUI/TechniqueBtn_abajo_pressed.png" id="2_10a7b"]
-[ext_resource type="Texture2D" uid="uid://depy58tn34lvi" path="res://Sprites/BattleSheets/BattleUI/TechniqueBtn_abajo_resalted.png" id="3_48w82"]
+[ext_resource type="Texture2D" uid="uid://83j8rlw7lrfn" path="res://Sprites/UIX/BB_tech_normal.png" id="1_27n53"]
+[ext_resource type="Texture2D" uid="uid://du3xx1ryc7jg0" path="res://Sprites/UIX/BB_tech_pressedl.png" id="2_oaamv"]
+[ext_resource type="Texture2D" uid="uid://cruwnih26m840" path="res://Sprites/UIX/BB_tech_hover.png" id="3_tps1x"]
+[ext_resource type="Script" uid="uid://ba2oegam2tyj8" path="res://Scripts/BattleMode/tech_button.gd" id="4_27n53"]
 [ext_resource type="Theme" uid="uid://hdvpdwg85rrw" path="res://Materiales/new_theme.tres" id="4_g6ckj"]
 
 [node name="TechButton" type="TextureButton"]
@@ -10,9 +11,11 @@ offset_top = -1.0
 offset_right = 64.0
 offset_bottom = 15.0
 scale = Vector2(2, 2)
-texture_normal = ExtResource("1_atyuf")
-texture_pressed = ExtResource("2_10a7b")
-texture_hover = ExtResource("3_48w82")
+texture_normal = ExtResource("1_27n53")
+texture_pressed = ExtResource("2_oaamv")
+texture_hover = ExtResource("3_tps1x")
+stretch_mode = 0
+script = ExtResource("4_27n53")
 
 [node name="Label" type="RichTextLabel" parent="."]
 layout_mode = 1

@@ -7,11 +7,13 @@ var stats: Dictionary
 var in_party: bool = false
 
 var hp: int
-var mp: int
-var mag: int
+var dp: int
 var ataque: int
 var defensa: int
 var velocidad: int
+var suerte: int
+var inteligencia: int
+
 
 func _init(pj_id: String, pj_class_id: String, pj_stats: Dictionary) -> void:
 	id = pj_id
@@ -28,9 +30,10 @@ func get_combat_stats() -> Dictionary:
 		"stats": stats,
 		"in_party": in_party,
 		"hp": hp,
-		"mp": mp,
-		"mag": mag,
+		"dp": dp,
 		"atk": ataque,
 		"def": defensa,
 		"spd": velocidad,
+		"lck": suerte,
+		"wis": inteligencia,
 	}

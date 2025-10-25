@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://cjswe57kq821f"]
+[gd_scene load_steps=35 format=3 uid="uid://cjswe57kq821f"]
 
 [ext_resource type="PackedScene" uid="uid://bmocargan5l0q" path="res://Escenas/player.tscn" id="1_a8vtw"]
 [ext_resource type="Script" uid="uid://dpb427vjhtg17" path="res://Scripts/InventoryManager.gd" id="2_5j2cu"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://dkn8gxfmy5tm6" path="res://Escenas/UserUI/label_dialogue.tscn" id="6_dp2kd"]
 [ext_resource type="PackedScene" uid="uid://dioro2qfasopc" path="res://Escenas/Objetos/cubiletrero.tscn" id="10_sf4ds"]
 [ext_resource type="PackedScene" uid="uid://bodo6o8l2sybh" path="res://Escenas/NPCs Auromora/NPC_maya.tscn" id="11_5x380"]
+[ext_resource type="PackedScene" uid="uid://b7c56in6tdjsb" path="res://Escenas/Sonido/sonido_ambiental.tscn" id="11_cqkqw"]
 [ext_resource type="PackedScene" uid="uid://7v22g42l4rov" path="res://Models/Cofre.tscn" id="13_16hig"]
 [ext_resource type="PackedScene" uid="uid://cpkvk4qac61ng" path="res://Escenas/NPCs Auromora/anciano_1.tscn" id="13_wukj4"]
 [ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="14_al3wf"]
@@ -19,6 +20,7 @@
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="15_6tl7n"]
 [ext_resource type="PackedScene" uid="uid://cdarkppno1gsm" path="res://Escenas/NPCs Auromora/NPC_sigrid.tscn" id="18_7vly3"]
 [ext_resource type="PackedScene" uid="uid://xlhfyi07xx0d" path="res://Escenas/NPCs Auromora/NPC_amanda.tscn" id="19_x6jwr"]
+[ext_resource type="PackedScene" uid="uid://dfpg65sjlmgcs" path="res://Temporal/mega_amanda.tscn" id="20_x6jwr"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_metkf"]
 vertices = PackedVector3Array(-1.58781, 0.414183, -1.58328, -1.58781, 0.414183, 1.66672, 1.66219, 0.414183, 1.66672, 1.66219, 0.414183, -1.58328)
@@ -27,8 +29,8 @@ polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
 [sub_resource type="BoxMesh" id="BoxMesh_ahksf"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_p4rn7"]
-vertices = PackedVector3Array(-17.3535, 0.485074, -1.57044, -19.8535, 0.235074, -1.32044, -19.8535, 0.235074, 1.17956, -12.1035, 0.235074, 1.17956, -12.1035, 0.235074, -1.32044, -15.8535, 0.485074, -1.57044, -15.8535, 2.48507, -6.57044, -17.6035, 2.48507, -10.8204, -17.4963, 2.48507, -6.85615, -12.8535, 2.48507, -6.82044, -12.8535, 2.48507, -10.8204, -9.85348, 0.235074, 1.42956, -9.85348, 0.235074, -1.57044, 9.64652, 0.235074, 10.1796, 9.64652, 0.235074, -10.3204, -9.85348, 0.235074, 10.1796, -9.85348, 0.235074, -10.3204)
-polygons = [PackedInt32Array(0, 5, 1), PackedInt32Array(1, 5, 2), PackedInt32Array(2, 5, 4), PackedInt32Array(2, 4, 3), PackedInt32Array(7, 6, 8), PackedInt32Array(8, 6, 0), PackedInt32Array(0, 6, 5), PackedInt32Array(9, 6, 10), PackedInt32Array(10, 6, 7), PackedInt32Array(4, 12, 3), PackedInt32Array(3, 12, 11), PackedInt32Array(12, 14, 11), PackedInt32Array(11, 14, 13), PackedInt32Array(13, 15, 11), PackedInt32Array(12, 16, 14)]
+vertices = PackedVector3Array(-17.6035, 0.485075, -1.5704403, -19.8535, 0.235075, -1.3204403, -19.8535, 0.235075, 1.1795597, -12.6035, 0.235075, 1.1795597, -12.6035, 0.235075, -1.3204403, -15.3535, 0.485075, -1.5704403, -15.3535, 2.485075, -6.5704403, -17.6035, 2.485075, -10.82044, -17.6035, 2.485075, -6.8561544, -12.8535, 2.485075, -6.8204403, -12.8535, 2.485075, -10.82044, -10.1035, 0.235075, 1.1795597, -9.8535, 0.235075, -1.5704403, 9.6465, 0.235075, -10.32044, -9.8535, 0.235075, -10.32044, 9.6465, 0.235075, 1.9295597, -9.8535, 0.235075, 1.9295597)
+polygons = [PackedInt32Array(1, 0, 2), PackedInt32Array(2, 0, 5), PackedInt32Array(2, 5, 4), PackedInt32Array(2, 4, 3), PackedInt32Array(7, 6, 8), PackedInt32Array(8, 6, 5), PackedInt32Array(8, 5, 0), PackedInt32Array(9, 6, 10), PackedInt32Array(10, 6, 7), PackedInt32Array(3, 4, 11), PackedInt32Array(11, 4, 12), PackedInt32Array(14, 13, 12), PackedInt32Array(12, 13, 15), PackedInt32Array(11, 12, 16), PackedInt32Array(16, 12, 15)]
 
 [sub_resource type="BoxMesh" id="BoxMesh_buq5b"]
 
@@ -81,14 +83,17 @@ mesh = SubResource("BoxMesh_ahksf")
 
 [node name="Amanda" parent="Personajes/reservaIA" instance=ExtResource("3_pg8q4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.66418, 0.842737, 0.147961)
+formation_offset = Vector3(0, 0, 1)
 
 [node name="Maya" parent="Personajes/reservaIA" instance=ExtResource("4_i64u6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.97046, 0.935833, -0.997995)
 pj_nombre = "Maya"
+formation_offset = Vector3(0, 0, 2)
 
 [node name="Sigrid" parent="Personajes/reservaIA" instance=ExtResource("5_oduvb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.944998, 0)
 pj_nombre = "Sigrid"
+formation_offset = Vector3(0, 0, -1)
 
 [node name="Chipita" parent="Personajes/reservaIA" instance=ExtResource("6_ai0lc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.944555, 0.751558)
@@ -100,7 +105,7 @@ pj_nombre = "Chipita"
 navigation_mesh = SubResource("NavigationMesh_p4rn7")
 
 [node name="CSGMesh3D" type="CSGMesh3D" parent="Terreno/NavigationRegion3D"]
-transform = Transform3D(20.5017, 0, 0, 0, 1.4777, 0, 0, 0, 21.5692, 0, -0.821309, 0)
+transform = Transform3D(20.5017, 0, 0, 0, 1.4777, 0, 0, 0, 13.261513, 0, -0.821309, -4.1043987)
 use_collision = true
 mesh = SubResource("BoxMesh_buq5b")
 
@@ -130,7 +135,7 @@ mesh = SubResource("BoxMesh_x6jwr")
 shape = SubResource("BoxShape3D_cqkqw")
 
 [node name="CSGMesh3D3" type="CSGMesh3D" parent="Terreno/NavigationRegion3D"]
-transform = Transform3D(2.25324, 0, 0, 0, 0.390699, -2.24287, 0, 0.166526, 5.26215, -16.5887, 0.755961, -4.01554)
+transform = Transform3D(2.9431393, 0, 0, 0, 0.390699, -2.24287, 0, 0.166526, 5.26215, -16.536951, 0.7559609, -4.012187)
 use_collision = true
 mesh = SubResource("BoxMesh_cqkqw")
 
@@ -172,6 +177,9 @@ size_flags_vertical = 4
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Entorno"]
 environment = SubResource("Environment_njs3v")
 
+[node name="Sonido Ambiental" parent="Entorno" instance=ExtResource("11_cqkqw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.557146, 0, -3.7993143)
+
 [node name="Interactuable" type="Node" parent="."]
 
 [node name="Cubiletrero" parent="Interactuable" instance=ExtResource("10_sf4ds")]
@@ -181,10 +189,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.609187, 0.810861, -6.32963
 npc_id = "anciano_1"
 
 [node name="CofreCommon" parent="Interactuable" instance=ExtResource("13_16hig")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -6.99299, 0.0375402, -7.78531)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -6.99299, -0.05, -7.78531)
 
 [node name="CofreCommon2" parent="Interactuable" instance=ExtResource("13_16hig")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -5.03499, 0.0335135, -7.78046)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -5.03499, -0.05, -7.78046)
 loot_id = "cofre_gema_roja"
 
 [node name="Maya" parent="Interactuable" instance=ExtResource("11_5x380")]
@@ -221,3 +229,6 @@ follow_target = NodePath("../../Personajes/Player")
 tween_resource = SubResource("Resource_3eirh")
 follow_offset = Vector3(0, 0, 6)
 follow_damping = true
+
+[node name="MegaAmanda" parent="." instance=ExtResource("20_x6jwr")]
+transform = Transform3D(2.7144485, 0.122224264, -0.73938274, -0.13396275, 2.8126836, -0.026855914, 0.73734635, 0.06106134, 2.717066, -19.574352, 1.0757523, -0.47419012)
