@@ -7,4 +7,3 @@
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("1_kiqvn")
 autoplay = true
-bus = &"Music"

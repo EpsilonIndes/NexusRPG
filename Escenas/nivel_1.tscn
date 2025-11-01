@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://cjswe57kq821f"]
+[gd_scene load_steps=34 format=3 uid="uid://cjswe57kq821f"]
 
 [ext_resource type="PackedScene" uid="uid://bmocargan5l0q" path="res://Escenas/player.tscn" id="1_a8vtw"]
 [ext_resource type="Script" uid="uid://dpb427vjhtg17" path="res://Scripts/InventoryManager.gd" id="2_5j2cu"]
@@ -20,7 +20,6 @@
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="15_6tl7n"]
 [ext_resource type="PackedScene" uid="uid://cdarkppno1gsm" path="res://Escenas/NPCs Auromora/NPC_sigrid.tscn" id="18_7vly3"]
 [ext_resource type="PackedScene" uid="uid://xlhfyi07xx0d" path="res://Escenas/NPCs Auromora/NPC_amanda.tscn" id="19_x6jwr"]
-[ext_resource type="PackedScene" uid="uid://dfpg65sjlmgcs" path="res://Temporal/mega_amanda.tscn" id="20_x6jwr"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_metkf"]
 vertices = PackedVector3Array(-1.58781, 0.414183, -1.58328, -1.58781, 0.414183, 1.66672, 1.66219, 0.414183, 1.66672, 1.66219, 0.414183, -1.58328)
@@ -229,6 +228,3 @@ follow_target = NodePath("../../Personajes/Player")
 tween_resource = SubResource("Resource_3eirh")
 follow_offset = Vector3(0, 0, 6)
 follow_damping = true
-
-[node name="MegaAmanda" parent="." instance=ExtResource("20_x6jwr")]
-transform = Transform3D(2.7144485, 0.122224264, -0.73938274, -0.13396275, 2.8126836, -0.026855914, 0.73734635, 0.06106134, 2.717066, -19.574352, 1.0757523, -0.47419012)
