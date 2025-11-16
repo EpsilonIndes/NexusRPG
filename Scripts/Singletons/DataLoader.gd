@@ -17,7 +17,6 @@ func load_all_data():
 	load_items("res://Data/Items/items.csv")
 	load_loots("res://Data/Loot/loot_objects.csv")
 	load_stats("res://Data/Char_stats/stats.csv")
-	
 
 func load_csv_to_dict(path: String, key_column: String) -> Dictionary:
 	var result: Dictionary = {}
@@ -87,12 +86,58 @@ func load_stats_to_dict(path: String, key_column: String) -> Dictionary:
 
 		var entry: Dictionary = {}
 		for i in headers.size():
+			var header_name = headers[i]
 			var value = row[i]
-			if value.is_valid_float():
-				entry[headers[i]] = float(value)
-			else:
-				entry[headers[i]] = value
 
+			if header_name == "effect":
+				entry[header_name] = EffectParser.parse_effect_string(value)
+			
+			elif value.is_valid_float():
+				entry[header_name] = float(value)
+			
+			else: entry[header_name] = value
+
+		result[entry[key_column]] = entry
+
+	file.close()
+	return result
+
+func load_items_to_dict(path: String, key_column: String) -> Dictionary:
+	var result: Dictionary = {}
+	var file := FileAccess.open(path, FileAccess.READ)
+
+	if file == null:
+		push_error("No se pudo abrir el archivo: " + path)
+		return result
+
+	var headers := file.get_line().strip_edges().split(",")
+
+	while not file.eof_reached():
+		var row := file.get_line().strip_edges().split(",")
+
+		# evitar líneas vacías o corruptas
+		if row.size() != headers.size():
+			continue
+
+		var entry: Dictionary = {}
+
+		for i in headers.size():
+			var header_name = headers[i]
+			var raw_value = row[i].strip_edges()
+
+			# 1) Efectos → parser especial
+			if header_name == "effect":
+				entry[header_name] = EffectParser.parse_effect_string(raw_value)
+
+			# 2) Número → guardado como float
+			elif raw_value.is_valid_float():
+				entry[header_name] = float(raw_value)
+
+			# 3) String normal
+			else:
+				entry[header_name] = raw_value
+
+		# Usar la columna clave para indexar el diccionario
 		result[entry[key_column]] = entry
 
 	file.close()
@@ -102,7 +147,7 @@ func load_dialogues(path: String):
 	dialogues = load_csv_grouped_by_key(path, "npc_id")
 
 func load_items(path: String):
-	items = load_csv_to_dict(path, "item_id")
+	items = load_items_to_dict(path, "item_id")
 
 func load_loots(path: String):
 	loots = load_csv_to_dict(path, "loot_id")

@@ -60,7 +60,7 @@ script = ExtResource("15_6tl7n")
 
 [node name="Personajes" type="Node" parent="."]
 
-[node name="Player" parent="Personajes" instance=ExtResource("1_a8vtw")]
+[node name="Player" parent="Personajes" groups=["equipo"] instance=ExtResource("1_a8vtw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.821939, -1.41913)
 speed = 220.0
 
@@ -80,21 +80,21 @@ navigation_mesh = SubResource("NavigationMesh_metkf")
 transform = Transform3D(4.17562, 0, 0, 0, 0.999605, 0, 0, 0, 4.16655, 0, -0.336015, 0)
 mesh = SubResource("BoxMesh_ahksf")
 
-[node name="Amanda" parent="Personajes/reservaIA" instance=ExtResource("3_pg8q4")]
+[node name="Amanda" parent="Personajes/reservaIA" groups=["equipo"] instance=ExtResource("3_pg8q4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.66418, 0.842737, 0.147961)
-formation_offset = Vector3(0, 0, 1)
+formation_offset = Vector3(-1, 0, -1)
 
-[node name="Maya" parent="Personajes/reservaIA" instance=ExtResource("4_i64u6")]
+[node name="Maya" parent="Personajes/reservaIA" groups=["equipo"] instance=ExtResource("4_i64u6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.97046, 0.935833, -0.997995)
 pj_nombre = "Maya"
 formation_offset = Vector3(0, 0, 2)
 
-[node name="Sigrid" parent="Personajes/reservaIA" instance=ExtResource("5_oduvb")]
+[node name="Sigrid" parent="Personajes/reservaIA" groups=["equipo"] instance=ExtResource("5_oduvb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.944998, 0)
 pj_nombre = "Sigrid"
 formation_offset = Vector3(0, 0, -1)
 
-[node name="Chipita" parent="Personajes/reservaIA" instance=ExtResource("6_ai0lc")]
+[node name="Chipita" parent="Personajes/reservaIA" groups=["equipo"] instance=ExtResource("6_ai0lc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.944555, 0.751558)
 pj_nombre = "Chipita"
 

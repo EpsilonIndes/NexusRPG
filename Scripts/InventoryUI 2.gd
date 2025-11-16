@@ -9,7 +9,6 @@ const FACE_TEXTURES = { "Astro": preload("res://Assets/Faces/Astro.png"),
 
 @onready var anim_player: AnimationPlayer = $AnimationPlayer
 @onready var manager: InventoryManager = get_tree().get_root().get_node("InventoryManager")
-
 @onready var main_menu: Panel = $MainMenu
 @onready var item_list_panel: VBoxContainer = $Panel_Items
 @onready var popup_menu: PopupMenu = $ItemContextMenu
@@ -152,23 +151,14 @@ func _on_caracter_ContextMenu_pressed(option_id: int):
 
 	if selected_character in PlayableCharacters.get_party_actual():
 		var item = DataLoader.items.get(selected_item_id, {})
-		var raw_effects = item.get("effect", "").strip_edges()
-		
-		if raw_effects == "":
-			print("Este objeto no tiene efectos.")
+		var effects = item.get("effect", [])
+
+		if effects.is_empty():
+			print("Este objeto no tiene efectos")
 			return
-
-		# dividir efectos por ";"
-		var effects_array = raw_effects.split(";")
-		var clean_effects = []
 		
-		for e in effects_array:
-			var parts = e.strip_edges().split(":")
-			if parts.size() >= 1:
-				clean_effects.append(parts)
-
-		print("Efectos parseados: ", clean_effects)
-		EffectManager.apply_effects(clean_effects, selected_character)
+		print("Efectos parseados desde el DataLoader: ", effects)
+		EffectManager.apply_effects(effects, selected_character)
 		InventoryManager.remove_item(ItemManager.get_item_nombre(selected_item_id), 1)
 		update_item_list()
 	else:

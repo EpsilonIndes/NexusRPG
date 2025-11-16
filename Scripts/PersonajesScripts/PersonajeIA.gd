@@ -20,6 +20,10 @@ var vertical_velocity: float = 0.0
 var max_fall_speed: float = 1.0
 var last_direction: String = "_down"
 
+var update_timer: float = 0.0
+var update_interval: float = 0.25
+var min_position_change: float = 0.1
+
 @onready var nav_agent: NavigationAgent3D = $NavigationAgent3D
 @onready var anim_sprite: AnimatedSprite3D = $AnimatedSprite3D
 
@@ -45,6 +49,7 @@ func _physics_process(delta):
 			_return_to_kosmo(delta)
 	
 	_check_state_transition()
+	_evitar_colision_equipo()
 
 # Personalizacion y asignación
 func _custom_ready():
@@ -68,29 +73,55 @@ func buscar_player(nodo: Node) -> Node3D:
 
 
 # -- Comportamientos base --
+#func _follow_kosmo(delta):
+#	var dist = global_position.distance_to(kosmo.global_position)
+#
+#	# Direccion virtual del jugador
+#	var forward_dir: Vector3
+#	if "look_direction" in kosmo:
+#		forward_dir = kosmo.look_direction.normalized()
+#	else:
+#		forward_dir = Vector3(forward_dir.z, 0, -forward_dir.x).normalized()
+#
+#	var right_dir = Vector3(forward_dir.z, 0, -forward_dir.x).normalized()
+#
+#	var rotated_offset = right_dir * formation_offset.x + forward_dir * formation_offset.z
+#	
+#	var target_pos = kosmo.global_position + rotated_offset
+#
+#	# Si está muy lejos, pasa a RETURNING
+#	if dist > max_distance_from_kosmo:
+#		state = State.RETURNING
+#		return
+
 func _follow_kosmo(delta):
 	var dist = global_position.distance_to(kosmo.global_position)
 
-	# Direccion virtual del jugador
+	# Dirección virtual del jugador (basada en su look_direction)
 	var forward_dir: Vector3
 	if "look_direction" in kosmo:
 		forward_dir = kosmo.look_direction.normalized()
 	else:
-		forward_dir = Vector3(forward_dir.z, 0, -forward_dir.x).normalized()
+		forward_dir = Vector3(0, 0, 1)
 
 	var right_dir = Vector3(forward_dir.z, 0, -forward_dir.x).normalized()
+	var desired_target = kosmo.global_position + (right_dir * formation_offset.x) + (forward_dir * formation_offset.z)
 
-	var rotated_offset = right_dir * formation_offset.x + forward_dir * formation_offset.z
-	
-	var target_pos = kosmo.global_position + rotated_offset
+	update_timer -= delta
+	if update_timer <= 0.0:
+		update_timer = update_interval
+		if target_position.distance_to(desired_target) > min_position_change:
+			target_position = desired_target
 
-	# Si está muy lejos, pasa a RETURNING
+	# Delay de reacción
+	var reaction_speed = 5.0
+	nav_agent.target_position = nav_agent.target_position.lerp(target_position, delta * reaction_speed)
+
+	# Si se aleja demasiado, vuelve directamente
 	if dist > max_distance_from_kosmo:
 		state = State.RETURNING
 		return
-
-	# Actualizamos el objetivo de navegación
-	nav_agent.target_position = target_pos
+		
 	_move_to_target(delta)
 
 func _return_to_kosmo(delta):
@@ -148,3 +179,32 @@ func _update_animation(move_vector: Vector3):
 		last_direction = "_down" if move_vector.z > 0 else "_up"
 		anim_sprite.play("walk" + last_direction)
 		anim_sprite.flip_h = false
+
+
+func _evitar_colision_equipo() -> void:
+	var empuje_total := Vector3.ZERO
+	var personajes = get_tree().get_nodes_in_group("equipo")
+	
+	for otro in personajes:
+		if otro == self: 
+			continue
+		if not otro is CharacterBody3D:
+			continue
+		
+		var diff = global_position - otro.global_position
+		var dist = diff.length()
+		if dist == 0:
+			continue
+		
+		var min_dist = 1.0
+		if dist < min_dist:
+			var fuerza = (min_dist - dist) * 0.4 # fuerza base del empuje
+
+			if otro.name == "Player":
+				fuerza *= 2.0 
+
+			empuje_total += diff.normalized() * fuerza
+
+	if empuje_total != Vector3.ZERO:
+		var destino = global_position + empuje_total
+		global_position = global_position.lerp(destino, 0.5)

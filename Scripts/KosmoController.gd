@@ -32,7 +32,6 @@ func _physics_process(delta):
 
 	update_sprite(move_vector)
 	update_raycast(move_vector)
-	handle_inputs()
 
 # --- MOVIMIENTO ---
 func handle_movement(move_vector: Vector3, delta: float) -> void:
@@ -94,15 +93,12 @@ func update_raycast(move_vector: Vector3) -> void:
 		raycast.target_position = raycast_direction
 
 # --- INPUTS ESPECIALES ---
-func handle_inputs() -> void:
-	if Input.is_action_just_pressed("accion"):
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("accion"):
 		try_interact()
 
-	if Input.is_action_just_pressed("inventario"):
+	if event.is_action_pressed("inventario"):
 		inventory_ui.toggle_inventory()
-	
-	if Input.is_action_just_pressed("objeto"):
-		EffectManager.apply_effects("heal_hp", "Astro")
 
 # --- INTERACCIONES ---
 func try_interact() -> void:

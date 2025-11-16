@@ -1,5 +1,5 @@
 personaje,tecnique_id,rol_combo,descripcion,costo_drive,score_value,arma,effect,target_scope
-Astro,Golpe Previsor,opener,"Inicia combo, mejora evasión",0,100,guantes,damage:0.5; boost:spd:0.2,SINGLE_ENEMY
+Astro,Golpe Previsor,opener,"Inicia combo, mejora evasión",0,100,guantes,damage:0.5;boost:spd:0.2,SINGLE_ENEMY
 Astro,Doble Impacto,linker,"Dos golpes, gana Drive si acierta ambos",0,120,guantes,damage:0.5,RANDOM_ENEMY
 Astro,Ciclón de Puños,linker,"Ataque multi-target, conecta fácilmente",0,200,guantes,damage:0.5,RANDOM_ENEMY
 Astro,Puño Cósmico,finisher,"Gran daño, escala con combo",0,300,guantes,damage:0.5,SINGLE_ENEMY
