@@ -27,12 +27,21 @@ func es_estado(objetivo):
 	return estado_actual == objetivo
 
 func iniciar_batalla(contra_enemigos: Array[String]):
-	GameManager.set_estado(GameManager.EstadosDeJuego.COMBATE)
-
-	CombatData.set_jugadores(get_team_instanciar())
-	CombatData.set_enemigos(contra_enemigos)
-	
+	set_estado(EstadosDeJuego.COMBATE)
 	get_tree().change_scene_to_file("res://Escenas/Battle/battle_scene.tscn")
+
+	# Esperar que termine su _ready()
+	await get_tree().tree_changed
+	
+	# IMPORTANTE: esperar un frame para que la escena cargue
+	await get_tree().process_frame
+
+	var scene = get_tree().current_scene
+	var jugadores_instanciar = get_team_instanciar()
+
+	var bm := scene.get_node("BattleManager")
+	bm.start_battle(jugadores_instanciar, contra_enemigos)
+
 
 func _ready():
 	for pj in equipo_actual:

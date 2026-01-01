@@ -6,10 +6,10 @@ uid="uid://bjlkp03444tci"
 
 [deps]
 
-files=["res://Data/Tecnicas/tecnicas.tecnique.translation", "res://Data/Tecnicas/tecnicas.rol.translation", "res://Data/Tecnicas/tecnicas.descripcion.translation", "res://Data/Tecnicas/tecnicas.costo.translation", "res://Data/Tecnicas/tecnicas.score.translation", "res://Data/Tecnicas/tecnicas.arma.translation", "res://Data/Tecnicas/tecnicas.effect.translation", "res://Data/Tecnicas/tecnicas.target.translation"]
+files=["res://Data/Tecnicas/tecnicas.tecnique.translation", "res://Data/Tecnicas/tecnicas.nombre.translation", "res://Data/Tecnicas/tecnicas.rol.translation", "res://Data/Tecnicas/tecnicas.descripcion.translation", "res://Data/Tecnicas/tecnicas.costo.translation", "res://Data/Tecnicas/tecnicas.score.translation", "res://Data/Tecnicas/tecnicas.arma.translation", "res://Data/Tecnicas/tecnicas.effect.translation", "res://Data/Tecnicas/tecnicas.target.translation"]
 
 source_file="res://Data/Tecnicas/tecnicas.csv"
-dest_files=["res://Data/Tecnicas/tecnicas.tecnique.translation", "res://Data/Tecnicas/tecnicas.rol.translation", "res://Data/Tecnicas/tecnicas.descripcion.translation", "res://Data/Tecnicas/tecnicas.costo.translation", "res://Data/Tecnicas/tecnicas.score.translation", "res://Data/Tecnicas/tecnicas.arma.translation", "res://Data/Tecnicas/tecnicas.effect.translation", "res://Data/Tecnicas/tecnicas.target.translation"]
+dest_files=["res://Data/Tecnicas/tecnicas.tecnique.translation", "res://Data/Tecnicas/tecnicas.nombre.translation", "res://Data/Tecnicas/tecnicas.rol.translation", "res://Data/Tecnicas/tecnicas.descripcion.translation", "res://Data/Tecnicas/tecnicas.costo.translation", "res://Data/Tecnicas/tecnicas.score.translation", "res://Data/Tecnicas/tecnicas.arma.translation", "res://Data/Tecnicas/tecnicas.effect.translation", "res://Data/Tecnicas/tecnicas.target.translation"]
 
 [params]
 

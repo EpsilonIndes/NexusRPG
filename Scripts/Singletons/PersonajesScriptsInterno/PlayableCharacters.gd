@@ -39,7 +39,7 @@ func add_to_party(pj_name: String):
 
 func remove_from_party(pj_name: String):
 	var pj = get_character(pj_name)
-	if pj and not pj.in_party:
+	if pj and pj.in_party:
 		pj.in_party = false
 		party_actual.erase(pj_name)
 	PartyHandler.actualizar_personajes_party()

@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://v1xnmqnpibk8"]
+[gd_scene load_steps=5 format=3 uid="uid://v1xnmqnpibk8"]
 
-[ext_resource type="Script" uid="uid://b5c0lok6v80jr" path="res://Scripts/BattleMode/Combatant.gd" id="1_alv85"]
+[ext_resource type="Script" uid="uid://dw27ee6mb6xpi" path="res://Scripts/BattleMode/PjExtendCombatant/EnemyCombatant.gd" id="1_84go8"]
+[ext_resource type="Material" uid="uid://b2dtp04cmhis5" path="res://Materiales/textura_enemigo_triangle.tres" id="2_221ol"]
 
 [sub_resource type="PrismMesh" id="PrismMesh_d1lcy"]
 
@@ -8,10 +9,11 @@
 data = PackedVector3Array(0, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0, 0.5, 0.5, 0, 0.5, -0.5, 0.5, -0.5, 0.5, 0, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0, 0.5, -0.5, 0, 0.5, 0.5, -0.5, -0.5, -0.5, 0, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
 
 [node name="Triangle" type="Node3D"]
-script = ExtResource("1_alv85")
+script = ExtResource("1_84go8")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("PrismMesh_d1lcy")
+surface_material_override/0 = ExtResource("2_221ol")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
 

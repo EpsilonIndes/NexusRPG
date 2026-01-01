@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://boebuxd27p70m"]
 
-[ext_resource type="Script" uid="uid://b5c0lok6v80jr" path="res://Scripts/BattleMode/Combatant.gd" id="1_hyxne"]
+[ext_resource type="Script" uid="uid://c2yprryibqyen" path="res://Scripts/BattleMode/PjExtendCombatant/PlayerCombatant.gd" id="1_0jclc"]
 [ext_resource type="Texture2D" uid="uid://c1alwew1iy2wu" path="res://Sprites/BattleSheets/Characters/MiguelitoBattler/MiguelitoBattle.png" id="2_x62oh"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2khwm"]
@@ -44,7 +44,7 @@ radius = 0.415372
 height = 1.60986
 
 [node name="KosmoBattle" type="CharacterBody3D"]
-script = ExtResource("1_hyxne")
+script = ExtResource("1_0jclc")
 es_jugador = true
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]

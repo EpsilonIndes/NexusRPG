@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=3 uid="uid://c1564n2bv30dg"]
 
-[ext_resource type="Script" uid="uid://b5c0lok6v80jr" path="res://Scripts/BattleMode/Combatant.gd" id="1_o5dnh"]
+[ext_resource type="Script" uid="uid://c2yprryibqyen" path="res://Scripts/BattleMode/PjExtendCombatant/PlayerCombatant.gd" id="1_4xr06"]
 [ext_resource type="Texture2D" uid="uid://dna6tjvraq7s3" path="res://Sprites/BattleSheets/Characters/Sigrid/sigridBattler.png" id="2_hk0dy"]
 [ext_resource type="Texture2D" uid="uid://drne7nnjgrtix" path="res://Sprites/BattleSheets/Characters/kosmo_attack.png" id="3_7n5tv"]
 
@@ -64,7 +64,7 @@ radius = 0.415372
 height = 1.60986
 
 [node name="SigridBattle" type="CharacterBody3D"]
-script = ExtResource("1_o5dnh")
+script = ExtResource("1_4xr06")
 es_jugador = true
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]

@@ -14,9 +14,11 @@ var enemies := { # Recordatorio: Crear CSV con stats enemigos
 		"nombre": "Triángulo Vengativo",
 		"hp": 80,
 		"mp": 10,
-		"ataque": 12,
-		"defensa": 4,
-		"velocidad": 10
+		"atk": 12,
+		"def": 4,
+		"spd": 10,
+		"lck": 5,
+		"wis": 10,
 	},
 	"esfera_roja": {
 		"nombre": "Esfera Roja",

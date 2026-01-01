@@ -17,6 +17,7 @@ func load_all_data():
 	load_items("res://Data/Items/items.csv")
 	load_loots("res://Data/Loot/loot_objects.csv")
 	load_stats("res://Data/Char_stats/stats.csv")
+	load_tecnicas("res://Data/Tecnicas/tecnicas.csv")
 
 func load_csv_to_dict(path: String, key_column: String) -> Dictionary:
 	var result: Dictionary = {}
@@ -143,6 +144,37 @@ func load_items_to_dict(path: String, key_column: String) -> Dictionary:
 	file.close()
 	return result
 
+func load_techs_to_dict(path: String, key_column: String) -> Dictionary:
+	var result: Dictionary = {}
+	var csv_rows = CsvReader.read_csv(path)
+	if csv_rows.is_empty():
+		return result
+	
+	var headers = csv_rows[0] # primera fila = header
+
+	for r in range(1, csv_rows.size()):
+		var row = csv_rows[r]
+		if row.size() != headers.size():
+			print("fila inválida en CSV:", row)
+			continue
+		
+		var entry: Dictionary = {}
+		for i in headers.size():
+			var header_name = headers[i]
+			var value = row[i]
+
+			if header_name == "effect":
+				entry[header_name] = EffectParser.parse_effect_string(value)
+			elif value.is_valid_float():
+				entry[header_name] = float(value)
+			else:
+				entry[header_name] = value
+			
+		result[entry[key_column]] = entry
+	
+	return result
+	
+
 func load_dialogues(path: String):
 	dialogues = load_csv_grouped_by_key(path, "npc_id")
 
@@ -154,3 +186,6 @@ func load_loots(path: String):
 
 func load_stats(path: String):
 	stats = load_stats_to_dict(path, "id")
+
+func load_tecnicas(path: String):
+	tecnicas = load_techs_to_dict(path, "tecnique_id")

@@ -158,7 +158,7 @@ func _on_caracter_ContextMenu_pressed(option_id: int):
 			return
 		
 		print("Efectos parseados desde el DataLoader: ", effects)
-		EffectManager.apply_effects(effects, selected_character)
+		#EffectManager.apply_effects(effects, selected_character, selected_character)
 		InventoryManager.remove_item(ItemManager.get_item_nombre(selected_item_id), 1)
 		update_item_list()
 	else:

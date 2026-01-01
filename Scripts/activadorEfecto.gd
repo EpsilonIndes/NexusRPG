@@ -2,9 +2,10 @@ extends Node
 
 
 @onready var curacion_test: Array = [ 
-    ["heal_hp", "100"] 
+	["heal_hp", "100"] 
 ]
 
 func _input(event: InputEvent) -> void:
-    if event.is_action_pressed("pocion"):
-        EffectManager.apply_effects(curacion_test, "Astro")
+	if event.is_action_pressed("pocion"):
+		#EffectManager.apply_effects(curacion_test,)
+		print("Sin arreglar tema Combatant/PlayableCharacters, ahora aplicamos para Combatant")

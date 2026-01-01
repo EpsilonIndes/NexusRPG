@@ -1,5 +1,5 @@
 # TechButtonCircle.gd
-# Este script se encarga de crear botones de técnicas alrededor de un punto central
+# Crea un círculo de botones para seleccionar técnicas
 extends Node2D
 
 var radio := 120.0
@@ -10,29 +10,47 @@ func configurar(tecnicas_ids: Array):
 	for child in get_children():
 		child.queue_free()
 
-	var angulo := 0.0
-	var total := tecnicas_ids.size()
+	if tecnicas_ids.is_empty():
+		push_warning("No se recibieron técnicas para mostrar en el círculo.")
+		return
 
-	for tecnica_id in tecnicas_ids:
-		var stats = GlobalTechniqueDatabase.get_tecnica_stats(tecnica_id)
+	var total := tecnicas_ids.size()
+	var angulo := 0.0
+
+	for t in tecnicas_ids:
+		# Extraer el ID
+		var tecnica_id = t["id"]
+		if tecnica_id == "":
+			push_error("Técnica sin ID interno en el array")
+			continue
+
+		# Obtenemos stats desde GlobalTechniqueDatabase
+		var stats: Dictionary = GlobalTechniqueDatabase.get_tecnica_stats(tecnica_id)
 		if stats.is_empty():
 			push_error("No se encontraron stats para la técnica: %s" % tecnica_id)
 			continue
 
-		print("Añadiendo técnica: %s" % tecnica_id)
+		# Nombre para el UI
+		var nombre_visible = stats.get("nombre_tech", tecnica_id)
+		print("Añadiendo técncia:", nombre_visible)
 
 		# Crear botón
 		var boton = preload("res://Escenas/UserUI/tech_button.tscn").instantiate()
-		boton.get_node("Label").text = tecnica_id
-		boton.position = Vector2(cos(angulo), sin(angulo)) * radio
-		
-		# Guardar info extra dentro del botón (Para tooltips o al hacer click)
+		boton.get_node("Label").text = nombre_visible
+		boton.position = Vector2(cos(angulo), sin(angulo)) * radio # Posición circular
+
+		# Guardar info dentro del botón
 		boton.set("tecnica_id", tecnica_id)
 		boton.set("tecnica_stats", stats)
-		
-		boton.tecnica_seleccionada.connect(
-			Callable(battle_manager, "_on_tecnica_seleccionada")
-		)
+
+		# Evento
+		if boton.has_signal("tecnica_seleccionada"):
+			boton.tecnica_seleccionada.connect(
+				Callable(battle_manager, "_on_tecnica_seleccionada")
+			)
+		else:
+			push_error("El botón no tiene la señal 'tecnica_seleccionada'.")
 
 		add_child(boton)
+
 		angulo += TAU / total

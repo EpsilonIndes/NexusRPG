@@ -1,94 +1,116 @@
 #EffectManager.gd (Autoload)
 extends Node
 
-
-func apply_effects(effects: Array, target_id: String) -> void:
-	var character = PlayableCharacters.get_character(target_id)
-	if character == null:
-		print_debug("No se encontró al personaje con ID: %s" % target_id)
+func apply_effects(effects: Array, target: Combatant, atacante: Combatant) -> void:
+	if effects.is_empty():
+		print("apply_effects llamado con array vacío")
 		return
-
-	var stats = character.get_stats()
-	if stats.is_empty():
-		print_debug("No se encontraron estadísticas para %s" % target_id)
-		return
-
-	# effects ya viene parseado desde el DataLoader:
-	# [ ["damage", 0.5], ["boost", "spd", 0.2] ]
-
 	for efecto in effects:
-		if not (efecto is Array):
-			print_debug("Formato de efecto inválido: %s" % str(efecto))
-			continue
 		if efecto.size() < 2:
-			print_debug("efecto_incompleto: %s" % str(efecto))
+			print("Efecto mal formado: %s" % efecto)
 			continue
-		
-		var effect_name = efecto[0]
-		var value = efecto[1]
 
-		# Tercer valor adicional (boost/nerf)
-		var extra_param
-		if efecto.size() > 2:
-			extra_param = efecto[2]
-		else:
-			extra_param = null
+		var tipo = efecto[0]
 
-	# Aplicar efecto
-		match effect_name:
+		match tipo:
+			
+			#-------------------------------------------------
+			# EFECTOS INSTANTÁNEOS
+			#-------------------------------------------------
 			"damage":
-				_dmg(stats, target_id, float(value))
+				var mult = float(efecto[1])
+				var atk_base = atacante.ataque
+				var dmg = int((atk_base * mult) - target.defensa)
+				print(
+					"ATK atacante:", atacante.ataque,
+					"| MULT:", mult,
+					"| DEF target:", target.defensa
+				)
+
+				print("aplicando %s de daño a %s" % [float(dmg), target.nombre])
+				target.recibir_danio(dmg)
+			
 			"heal_hp":
-				_heal_hp(stats, target_id, float(value))
-			"heal_dp":
-				_heal_dp(stats, target_id, float(value))
+				var mult = float(efecto[1])
+				var heal = int(atacante.wis * mult)
+				print(
+					"Espíritu del Caster: ", atacante.wis,
+					" | MULT: ", mult
+				)
+
+				print("aplicando %s de curación a %s" % [float(heal), target.nombre])
+				target.curar_hp(heal)
+
 			"boost":
-				if extra_param != null:
-					_boost_stat(stats, extra_param, float(value), target_id)
+				var stat = efecto[1]
+				var mult = float(efecto[2])
+				var cantidad = int(target.get(stat) * mult)
+				target.modificar_stat(stat, cantidad)
+
 			"nerf":
-				if extra_param != null:
-					_nerf_stat(stats, extra_param, float(value), target_id)
-			"revive":
-				_heal_hp(stats, target_id, float(value))
-				_heal_dp(stats, target_id, float(value))
-			_:  # efecto desconocido
-				print_debug("Efecto no reconocido: %s" % str(effect_name))
+				var stat = efecto[1]
+				var mult = float(efecto[2])
+				var cantidad = -int(target.get(stat) * mult)
+				target.modificar_stat(stat, cantidad)
 
-# Efectos tanto de items como de habilidades
-func _dmg(stats: Dictionary, target_id: String, mult: float) -> void:
-	var hp = stats.get("hp", 100)
-	var atk = stats.get("atk", 10)
-	var final_damage = int(atk * mult)
-	final_damage = min(final_damage, hp)
-	stats["hp"] = max(hp - final_damage, 0)
-	print_debug("Daño aplicado a %s: %d (mult: %.2f) | HP restante: %d" % [target_id, final_damage, mult, stats["hp"]])
+			#----------------------
+			# EFECTOS PERSISTENTES
+			# Formato en CSV:
+			# 	persist:buff:atk:0.02:3	
+			#	persist:dot:5:3
+			# efecto = ["persist", "buff", "atk", "0.2", "3"]
+			#----------------------------------------------
+			"persist":
+				_registrar_efecto_persistente(efecto, target)
+			
+			#-----------------------------------------
+			# DEFAULT
+			#-----------------------------------------
+			_:
+				print("Efecto desconocido: %s" % tipo)
 
-func _heal_hp(stats: Dictionary, target_id: String, mult: float) -> void: # Poción básica
-	var max_hp = stats.get("max_hp", 100)
-	var base_heal = stats.get("wis", 5)
-	var heal = int(base_heal * mult)
-	stats["hp"] = min(stats.get("hp", 0) + heal, max_hp)
-	print_debug("%s recupera %d HP (mult: %.2f) | HP actual: %d" % [target_id, heal, mult, stats["hp"]])
-
-func _heal_dp(stats: Dictionary, target_id: String, mult: float) -> void:
-	var max_dp = stats.get("max_dp", 50)
-	var base_recover = stats.get("wis", 5)
-	var recover = int(base_recover * mult)
-	stats["dp"] = min(stats.get("dp", 0) + recover, max_dp)
-	print_debug("%s recupera %d PD (mult: %.2f) | PD actual: %d" % [target_id, recover, mult, stats["dp"]])
-
-func _boost_stat(stats: Dictionary, stat_name: String, mult: float, target_id: String) -> void:
-	if not stats.has(stat_name):
-		print_debug("Stat no encontrada: %s" % stat_name)
+func _registrar_efecto_persistente(efecto: Array, target: Combatant) -> void:
+	if efecto.size() < 3:
+		print("Efecto persistente mal formado: %s" % efecto)
 		return
-	var boost = int(stats[stat_name] * mult)
-	stats[stat_name] += boost
-	print_debug("%s aumenta %s en %d (mult: %.2f) | Nuevo valor: %d" % [target_id, stat_name, boost, mult, stats[stat_name]])
+	
+	var subtipo = efecto[1]
+	var args = efecto.slice(2, efecto.size())
 
-func _nerf_stat(stats: Dictionary, stat_name: String, mult: float, target_id: String) -> void:
-	if not stats.has(stat_name):
-		print_debug("Stat no encontrada: %s" % stat_name)
-		return
-	var nerf = int(stats[stat_name] * mult)
-	stats[stat_name] = max(0, stats[stat_name] - nerf)
-	print_debug("%s reduce %s en %d (mult: %.2f) | Nuevo valor: %d" % [target_id, stat_name, nerf, mult, stats[stat_name]])
+	# Cada efecto activo es un diccionario:
+	var efecto_dic = {
+		"id": "persist_" + subtipo,
+		"subtipo": subtipo,
+		"args": args,
+		"duracion": int(args[-1]),  # Ultimo parámetro = duracion en turnos
+
+		# Se define el comportamiento por tick
+		"tick": func(combatant: Combatant):
+			match subtipo:
+
+				# Daño por turno: persist:dot:cantidad:duracion
+				"dot":
+					var dmg = int(args[0])
+					combatant.recibir_danio(dmg)
+				
+				# Buff/nerf temporal
+				# persist:buff:atk:0.2:3
+				"buff":
+					var stat = args[0]
+					var mult = float(args[1])
+					var cant = int(combatant.get(stat) * mult)
+					combatant.modificar_stat(stat, cant)
+				
+				"debuff":
+					var stat = args[0]
+					var mult = float(args[1])
+					var cant = -int(combatant.get(stat) * mult)
+					combatant.modificar_stat(stat, cant)
+				
+				_:
+					print("Subtipo persistente desconocido: %s" % subtipo)
+
+	}
+
+	print("Registrando efecto persistente en %s: %s" % [target.nombre, efecto_dic["id"]])
+	target.agregar_efecto(efecto_dic)

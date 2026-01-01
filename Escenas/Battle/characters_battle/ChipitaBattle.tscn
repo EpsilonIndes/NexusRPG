@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://d1wj4ltbsjdm"]
 
-[ext_resource type="Script" uid="uid://b5c0lok6v80jr" path="res://Scripts/BattleMode/Combatant.gd" id="1_xj4xb"]
+[ext_resource type="Script" uid="uid://c2yprryibqyen" path="res://Scripts/BattleMode/PjExtendCombatant/PlayerCombatant.gd" id="1_bt1st"]
 [ext_resource type="Texture2D" uid="uid://bcer4lxaju3fw" path="res://Sprites/BattleSheets/Characters/ChipitaBattler/chipitaBattler.png" id="2_fnl2r"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1ai5f"]
@@ -44,7 +44,7 @@ radius = 0.415372
 height = 1.60986
 
 [node name="KosmoBattle" type="CharacterBody3D"]
-script = ExtResource("1_xj4xb")
+script = ExtResource("1_bt1st")
 es_jugador = true
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
