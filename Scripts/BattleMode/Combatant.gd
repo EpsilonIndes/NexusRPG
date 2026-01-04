@@ -7,6 +7,7 @@ signal turno_finalizado
 var battle_manager: Node = null
 @export var es_jugador: bool = false
 
+
 # Efectos activos: { id:String, duracion:int, args:[], tick:Callable?, on_apply:Callable?, on_expire:Callable? }
 var efectos_activos := [] # cada elemento será {id, duracion, data}
 
@@ -24,6 +25,7 @@ var suerte := 0
 var espiritu := 0
 var drive := 0
 var tecnicas: Array = []
+var display_name: String = ""
 
 
 # Pa la práctica de Tweens:
@@ -38,9 +40,28 @@ var esta_muerto := false
 var position_inicial: Vector3 = Vector3.ZERO
 var indice: int = -1
 
+# Shaders
+#@onready var mesh: MeshInstance3D = $Model/MeshInstance3D
+#var highlight_material: ShaderMaterial
+#var original_material: Material
+
 func _ready() -> void:
 	if not es_jugador:
 		start_levitation()
+
+#	if mesh == null:
+#		return	
+#	original_material = mesh.get_active_material(0)
+#	if original_material == null:
+#		return
+#	if original_material is ShaderMaterial:
+#		highlight_material = original_material.duplicate()
+#	else:
+#		push_warning("El material original no es ShaderMaterial")
+#		return
+#	mesh.set_surface_override_material(0, highlight_material)
+
+	
 
 func _physics_process(delta: float) -> void:
 	if not es_jugador and not esta_muerto:
@@ -49,6 +70,8 @@ func _physics_process(delta: float) -> void:
 #--------------------------------------------------------------------------------------
 # Inicialización
 #--------------------------------------------------------------------------------------
+
+
 func inicializar(datos: Dictionary, es_jugador_: bool, battle_manager_: Node) -> void:
 	es_jugador = es_jugador_
 	battle_manager = battle_manager_
@@ -290,3 +313,16 @@ func start_levitation():
 		base_y,
 		1.2
 	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+
+# Shaders
+#func set_target_highlight(active: bool) -> void:
+#	if highlight_material == null:
+#		return
+##	if not highlight_material.shader:
+#		return
+#
+#	var target := 1.0 if active else 0.0
+#	var tween := create_tween()
+#	tween.tween_property(highlight_material, "shader_parameter/strength", target, 0.2)
+#	print("Highlight:", active, "->", display_name)

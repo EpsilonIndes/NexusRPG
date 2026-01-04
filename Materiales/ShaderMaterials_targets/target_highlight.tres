@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://d0uab10rmgrvm"]
+
+[ext_resource type="Shader" uid="uid://bm0eyducl5pq5" path="res://Scripts/Shaders/target_highlight.gdshader" id="1_0dupo"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_0dupo")
+shader_parameter/highlight_active = false
+shader_parameter/highlight_color = Color(1, 0.2, 0.2, 1)
+shader_parameter/intensity = 1.2

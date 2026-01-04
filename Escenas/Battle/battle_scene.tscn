@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://dwfdbxtwcl5vd"]
+[gd_scene load_steps=11 format=3 uid="uid://dwfdbxtwcl5vd"]
 
 [ext_resource type="Script" uid="uid://dmi1n3jxy6l2" path="res://Scripts/BattleMode/BattleManager2.gd" id="1_54c5x"]
-[ext_resource type="PackedScene" uid="uid://ckj2nd5m52pd2" path="res://Escenas/UserUI/battle_hud.tscn" id="2_2rhpp"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="2_fyboh"]
 [ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="3_n6tgm"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="4_ormgq"]
+[ext_resource type="Script" uid="uid://peo05mmkyn4t" path="res://Scripts/UI/UiOverlay.gd" id="5_l5hoi"]
+[ext_resource type="PackedScene" uid="uid://gvt6yjw3ptg0" path="res://Escenas/Battle/battle_ui/target_selector.tscn" id="6_lu3wa"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_f8uh2"]
 
@@ -21,6 +22,7 @@ ambient_light_color = Color(0.686275, 0.917647, 0.988235, 0.372549)
 script = ExtResource("4_ormgq")
 
 [node name="BattleTest" type="Node3D"]
+transform = Transform3D(1.3977716, 0, 0, 0, 1, 0, 0, 0, 1.0173402, 0, 0, 0)
 
 [node name="BattleManager" type="Node" parent="."]
 script = ExtResource("1_54c5x")
@@ -69,5 +71,8 @@ priority = 1
 tween_resource = SubResource("Resource_jhl20")
 
 [node name="UIOverlay" type="CanvasLayer" parent="."]
+script = ExtResource("5_l5hoi")
 
-[node name="BattleHud" parent="UIOverlay" instance=ExtResource("2_2rhpp")]
+[node name="TargetSelector" parent="UIOverlay" instance=ExtResource("6_lu3wa")]
+
+[node name="TechniqueOverlay" type="CanvasLayer" parent="UIOverlay"]

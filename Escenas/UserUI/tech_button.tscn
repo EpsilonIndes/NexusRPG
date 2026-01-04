@@ -7,14 +7,14 @@
 [ext_resource type="Theme" uid="uid://hdvpdwg85rrw" path="res://Materiales/new_theme.tres" id="4_g6ckj"]
 
 [node name="TechButton" type="TextureButton"]
-offset_top = -1.0
+custom_minimum_size = Vector2(63, 18)
 offset_right = 64.0
-offset_bottom = 15.0
+offset_bottom = 18.0
 scale = Vector2(2, 2)
 texture_normal = ExtResource("1_27n53")
 texture_pressed = ExtResource("2_oaamv")
 texture_hover = ExtResource("3_tps1x")
-stretch_mode = 0
+stretch_mode = 3
 script = ExtResource("4_27n53")
 
 [node name="Label" type="RichTextLabel" parent="."]
@@ -25,6 +25,7 @@ offset_top = 3.0
 offset_right = 89.0
 offset_bottom = 18.0
 scale = Vector2(0.674395, 0.674395)
+mouse_filter = 2
 theme = ExtResource("4_g6ckj")
 bbcode_enabled = true
 text = "Technique"

@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://ch12jihr8hqa8"]
+[gd_scene load_steps=18 format=3 uid="uid://ch12jihr8hqa8"]
 
 [ext_resource type="Script" uid="uid://c2yprryibqyen" path="res://Scripts/BattleMode/PjExtendCombatant/PlayerCombatant.gd" id="1_hbj44"]
 [ext_resource type="Texture2D" uid="uid://obww6af4fsii" path="res://Sprites/BattleSheets/Characters/KosmoBattler/KosmoBattler.png" id="2_nau5q"]
@@ -97,6 +97,8 @@ animations = [{
 radius = 0.415372
 height = 1.60986
 
+[sub_resource type="PrismMesh" id="PrismMesh_hbj44"]
+
 [node name="AstroBattle" type="CharacterBody3D"]
 script = ExtResource("1_hbj44")
 es_jugador = true
@@ -113,3 +115,10 @@ frame_progress = 0.435565
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00972354, -0.113946, -0.00167549)
 visible = false
 shape = SubResource("CapsuleShape3D_rwrg8")
+
+[node name="Model" type="MeshInstance3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(0.415, 0, 0, 0, 0.415, 0, 0, 0, 0.415, 0, 2.04549, 0)
+mesh = SubResource("PrismMesh_hbj44")
+skeleton = NodePath("../..")

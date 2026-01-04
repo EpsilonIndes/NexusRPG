@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://cbu212lkttk8o"]
+
+[ext_resource type="Script" uid="uid://dw27ee6mb6xpi" path="res://Scripts/BattleMode/PjExtendCombatant/EnemyCombatant.gd" id="1_uyxcx"]
+[ext_resource type="Material" uid="uid://1ng466f3q4qq" path="res://Materiales/textura_enemigo_circulo.tres" id="2_lkaag"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_wtg2j"]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_ymj2k"]
+data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
+
+[node name="Slime" type="Node3D"]
+script = ExtResource("1_uyxcx")
+
+[node name="Model" type="MeshInstance3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Model"]
+mesh = SubResource("SphereMesh_wtg2j")
+skeleton = NodePath("../..")
+surface_material_override/0 = ExtResource("2_lkaag")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Model/MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Model/MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_ymj2k")

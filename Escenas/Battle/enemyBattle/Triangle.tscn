@@ -11,11 +11,14 @@ data = PackedVector3Array(0, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0, 0.5, 
 [node name="Triangle" type="Node3D"]
 script = ExtResource("1_84go8")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="Model" type="MeshInstance3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Model"]
 mesh = SubResource("PrismMesh_d1lcy")
+skeleton = NodePath("../..")
 surface_material_override/0 = ExtResource("2_221ol")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+[node name="StaticBody3D" type="StaticBody3D" parent="Model/MeshInstance3D"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Model/MeshInstance3D/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_vcnjc")

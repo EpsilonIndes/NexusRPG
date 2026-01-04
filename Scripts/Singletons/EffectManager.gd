@@ -42,6 +42,7 @@ func apply_effects(effects: Array, target: Combatant, atacante: Combatant) -> vo
 				target.curar_hp(heal)
 
 			"boost":
+				print_debug("Lista recibida: %s" % [str(efecto)]) # boost:spd:0.5
 				var stat = efecto[1]
 				var mult = float(efecto[2])
 				var cantidad = int(target.get(stat) * mult)

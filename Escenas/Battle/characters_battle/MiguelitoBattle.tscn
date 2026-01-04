@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://boebuxd27p70m"]
+[gd_scene load_steps=10 format=3 uid="uid://boebuxd27p70m"]
 
 [ext_resource type="Script" uid="uid://c2yprryibqyen" path="res://Scripts/BattleMode/PjExtendCombatant/PlayerCombatant.gd" id="1_0jclc"]
 [ext_resource type="Texture2D" uid="uid://c1alwew1iy2wu" path="res://Sprites/BattleSheets/Characters/MiguelitoBattler/MiguelitoBattle.png" id="2_x62oh"]
@@ -43,6 +43,8 @@ animations = [{
 radius = 0.415372
 height = 1.60986
 
+[sub_resource type="PrismMesh" id="PrismMesh_0jclc"]
+
 [node name="KosmoBattle" type="CharacterBody3D"]
 script = ExtResource("1_0jclc")
 es_jugador = true
@@ -57,3 +59,10 @@ animation = &"idle"
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00972354, -0.113946, -0.00167549)
 shape = SubResource("CapsuleShape3D_rwrg8")
+
+[node name="Model" type="MeshInstance3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(0.415, 0, 0, 0, 0.415, 0, 0, 0, 0.415, 0, 2.04549, 0)
+mesh = SubResource("PrismMesh_0jclc")
+skeleton = NodePath("../..")

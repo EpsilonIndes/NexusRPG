@@ -54,3 +54,8 @@ func configurar(tecnicas_ids: Array):
 		add_child(boton)
 
 		angulo += TAU / total
+
+# Limpiar interfaz cuando se abra el selector de objetivos
+func limpiar():
+	for child in get_children():
+		child.queue_free()

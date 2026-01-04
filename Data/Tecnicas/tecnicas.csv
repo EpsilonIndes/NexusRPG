@@ -1,11 +1,11 @@
 personaje,tecnique_id,nombre_tech,rol_combo,descripcion,costo_drive,score_value,arma,effect,target_scope
-Astro,astro_01,Golpe Previsor,opener,"Inicia combo, mejora evasión",0,100,guantes,damage:0.5;boost:spd:0.2,SINGLE_ENEMY
-Astro,astro_02,Doble Impacto,linker,"Dos golpes, gana Drive si acierta ambos",0,120,guantes,damage:10,RANDOM_ENEMY
+Astro,astro_01,Golpe Previsor,opener,"Inicia combo, mejora evasión",0,100,guantes,damage:0.5;nerf:velocidad:0.2,SINGLE_ENEMY
+Astro,astro_02,Doble Impacto,linker,"Dos golpes, gana Drive si acierta ambos",0,120,guantes,damage:10,SINGLE_ENEMY
 Astro,astro_03,Ciclón de Puños,linker,"Ataque multi-target, conecta fácilmente",0,200,guantes,damage:0.5,RANDOM_ENEMY
 Astro,astro_04,Puño Cósmico,finisher,"Gran daño, escala con combo",0,300,guantes,damage:0.5,SINGLE_ENEMY
 Astro,astro_05,Counter Drive,finisher,"Devuelve daño si fue atacado",0,500,guantes,damage:0.5,RANDOM_ENEMY
-Astro,astro_06,Impulso Instintivo,support,"Activa miniturno si evade",0,200,guantes,boost:atk:0.5,SELF
-Astro,astro_07,Ritmo de Batalla,support,"Gana ataque si conecta dos linkers",0,100,guantes,damage:0.5,SELF
+Astro,astro_06,Impulso Instintivo,support,"Activa miniturno si evade",0,200,guantes,boost:ataque:0.5,SELF
+Astro,astro_07,Ritmo de Batalla,support,"Gana ataque si conecta dos linkers",0,100,guantes,boost:velocidad:0.5,SELF
 Sigrid,sigrid_01,Corte Preemptivo,opener,"Va primero si el enemigo no está alerta",0,100,espadas,damage:0.5,SINGLE_ENEMY
 Sigrid,sigrid_02,Viento Cortante,linker,"Daño + Desbalance",0,200,espadas,damage:0.5,SINGLE_ENEMY
 Sigrid,sigrid_03,Danza de Acero,linker,"Rebota entre enemigos",0,400,espadas,damage:0.5,RANDOM_ENEMY
@@ -13,6 +13,7 @@ Sigrid,sigrid_04,Lamento Invernal,finisher,"Daño mágico tipo hielo",0,500,espa
 Sigrid,sigrid_05,Destino Sellado,finisher,"Crítico si el enemigo tiene estado",0,500,espadas,damage:0.5,SINGLE_ENEMY
 Sigrid,sigrid_06,Finta,support,"Esquiva y contraataca",0,100,espadas,damage:0.5,SINGLE_ENEMY
 Sigrid,sigrid_07,Reflejo Frío,support,"Gana velocidad si no recibe daño",0,150,espadas,boost_stat:0.5,SELF
+Sigrid,sigrid_08,Muro de Acero,support,"Aumenta la defensa por tres turnos",350,150,espadas,persist:buff:def:2.0:3,ALL_ALLIES
 Miguelito,miguelito_01,Disparo de Aviso,opener,"Marca al enemigo",0,0,ballesta,damage:0.5,SINGLE_ENEMY
 Miguelito,miguelito_02,Flecha Encadenada,linker,"Extiende combo si el enemigo está marcado",0,0,ballesta,damage:0.5,RANDOM_ENEMY
 Miguelito,miguelito_03,Tiro de Rebote,linker,"Ataca a dos enemigos",0,0,ballesta,damage:0.5,RANDOM_ENEMY:2

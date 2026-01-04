@@ -5,6 +5,7 @@ enum BattleState {
 	INICIO,
 	TURNO_JUGADOR,
 	SELECCION_ACCION,
+	SELECCION_OBJETIVO,
 	EJECUCION_ACCION,
 	TURNO_ENEMIGO,
 	CHEQUEAR_FINAL,
@@ -26,6 +27,7 @@ var estado_actual: BattleState = BattleState.INICIO
 var combatientes: Array = []
 var combatiente_actual: Node = null
 var indice_turno: int = 0
+var enemy_type_counter: Dictionary = {}
 
 # Tech seleccionada (dict de tech)
 var tecnica_actual: Dictionary = {}
@@ -40,6 +42,7 @@ var repeticion_continua: int = 0
 @onready var enemy_team = $EnemyTeam
 @onready var battle_camera = get_parent().get_node("Camera/BattleCamera")
 @onready var ui_overlay = get_parent().get_node("UIOverlay")
+@onready var tecnique_overlay = ui_overlay.get_node("TechniqueOverlay")
 
 const POS_JUGADORES := [
 	Vector3(1, 1.1, -5),  	
@@ -77,36 +80,67 @@ func start_battle(jugadores: Array, enemigos: Array) -> void:
 # Instancia escenas de cada combatiente (escenas individuales por ID)
 # --------------------
 func instanciar_equipo(lista: Array, contenedor: Node, es_jugador: bool) -> void:
+	if not es_jugador:
+		enemy_type_counter.clear()
+	
 	for i in range(lista.size()):
 		var entrada = lista[i]
 
 		# --- Obtener ID del combatiente ---
-		var id: String
-		if es_jugador:
-			id = entrada.get("id", "") if typeof(entrada) == TYPE_DICTIONARY else str(entrada)
+		var id: String = ""
+		
+		if typeof(entrada) == TYPE_DICTIONARY:
+			id = str(entrada.get("id", ""))
 		else:
 			id = str(entrada)
 
-		# --- Path a escena correspondiente ---
-		var path := "res://Escenas/Battle/characters_battle/%sBattle.tscn" % id \
-			if es_jugador \
-			else "res://Escenas/Battle/enemyBattle/%s.tscn" % id
+		if id == "":
+			push_error("Entrada de combatiente inválida: %s" % str(entrada))
+			continue
+		
 
-		var escena = load(path)
+		# --- Path a escena correspondiente ---
+		var path: String
+		if es_jugador:
+			path = "res://Escenas/Battle/characters_battle/%sBattle.tscn" % id
+		else:
+			path = "res://Escenas/Battle/enemyBattle/%s.tscn" % id
+
+		var escena: PackedScene = load(path)
 		if escena == null:
 			push_error("No se pudo cargar la escena de batalla para '%s'" % id)
 			continue
 
+		# --- Instanciar ---
 		var combatant: Combatant = escena.instantiate()
+		combatant.name = id
+
+		# --- Nombre visible ---
+		if not es_jugador:
+			# Contador para enemigos repetidos
+			var base_name := id.capitalize() # triangle -> Triangle
+
+			if not enemy_type_counter.has(base_name):
+				enemy_type_counter[base_name] = 0
+			
+			var index: int = enemy_type_counter[base_name]
+			enemy_type_counter[base_name] += 1
+
+			var letter := String.chr(65 + index) # A, B, C...
+			combatant.display_name = "%s %s" % [base_name, letter]
+		else:
+			combatant.display_name = id.capitalize()
 
 		# --- Agregar al árbol ---
 		contenedor.add_child(combatant)
 		combatientes.append(combatant)
 
 		# --- Posición segura ---
-		var pos: Vector3 = (POS_JUGADORES[i] if i < POS_JUGADORES.size() else POS_JUGADORES[-1]) \
-			if es_jugador \
-			else (POS_ENEMIGOS[i] if i < POS_ENEMIGOS.size() else POS_ENEMIGOS[-1])
+		var pos: Vector3
+		if es_jugador:
+			pos = POS_JUGADORES[i] if i < POS_JUGADORES.size() else POS_JUGADORES.back()
+		else:
+			pos = POS_ENEMIGOS[i] if i < POS_ENEMIGOS.size() else POS_ENEMIGOS.back()
 
 		combatant.global_transform.origin = pos
 		combatant.position_inicial = pos
@@ -114,15 +148,20 @@ func instanciar_equipo(lista: Array, contenedor: Node, es_jugador: bool) -> void
 		combatant.es_jugador = es_jugador
 
 		# --- Armar datos para inicializar ---
-		var datos_dict: Dictionary = entrada.duplicate() if typeof(entrada) == TYPE_DICTIONARY \
-			else {"id": id, "nombre": id}
+		var datos_dict: Dictionary
+		if typeof(entrada) == TYPE_DICTIONARY:
+			datos_dict = entrada.duplicate()
+		else:
+			datos_dict = {
+				"id": id, 
+				"nombre": combatant.display_name
+			}
 
 		# --- Inicializar combatiente ---
 		if combatant.has_method("inicializar"):
 			combatant.inicializar(datos_dict, es_jugador, self)
 		else:
-			push_warning("%s no tiene método inicializar()" % id)
-
+			push_warning("%s no tiene método inicializar()" % combatant.name)
 
 # -----------------------
 # Máquina de estados
@@ -137,6 +176,10 @@ func cambiar_estado(nuevo_estado: BattleState) -> void:
 		BattleState.SELECCION_ACCION:
 			print("Selecciona acción!")
 			seleccionar_accion()
+		BattleState.SELECCION_OBJETIVO:
+			print("Selecciona objetivo!")
+			# El control TOTAL es del TargetSelector
+			pass
 		BattleState.EJECUCION_ACCION:
 			print("Ejecutando acción!")
 			ejecutar_accion()
@@ -166,7 +209,9 @@ func iniciar_turno_jugador():
 				return
 		
 		# Mostrar técnicas y pasar a selección
+		
 		mostrar_tecnicas_sobre(combatiente_actual.global_transform.origin)
+		ui_overlay.set_tecnicas_interactivas(true)
 		cambiar_estado(BattleState.SELECCION_ACCION)
 	else:
 		# No quedan jugadores válidos en este ciclo
@@ -207,12 +252,15 @@ func ejecutar_accion() -> void:
 func iniciar_turno_enemigo() -> void:
 	combatiente_actual = obtener_siguiente_combatiente(false)
 
+	if combatiente_actual == null:
+		finalizar_turno()
+
 	if combatiente_actual.esta_vivo():
 		# Procesar efectos activos antes de que el enemigo actúe
 		if combatiente_actual.has_method("procesar_efectos_activos"):
 			combatiente_actual.procesar_efectos_activos()
 			if not combatiente_actual.esta_vivo():
-				iniciar_turno_enemigo()
+				chequear_si_termina()
 				return
 		
 		# Conectar señal y pedir que inicie su acción (La acción emitirá turno_finalizado)
@@ -272,10 +320,7 @@ func chequear_si_termina():
 		cambiar_estado(BattleState.FINAL)
 		return
 
-	
-	
-	
-	
+
 	# Si terminó el ciclo entero, reseteamos el índice SOLO acá
 	if indice_turno >= combatientes.size():
 		indice_turno = 0
@@ -291,20 +336,6 @@ func chequear_si_termina():
 		cambiar_estado(BattleState.TURNO_ENEMIGO)
 		return
 
-
-#	if indice_turno >= combatientes.size():
-#		indice_turno = 0
-#	
-#	var siguiente = combatientes[indice_turno]
-#	indice_turno += 1
-#
-#	if siguiente.esta_vivo():
-#		if siguiente.es_jugador:
-#			combatiente_actual = siguiente
-#			cambiar_estado(BattleState.TURNO_JUGADOR)
-#		else:
-#			combatiente_actual = siguiente
-#			cambiar_estado(BattleState.TURNO_ENEMIGO)
 
 func finalizar_batalla() -> void:
 	print("Finalizando Batalla...")
@@ -326,7 +357,6 @@ func mostrar_tecnicas_sobre(posicion_3d: Vector3) -> void:
 		return
 	
 	var tecnicas_data := GlobalTechniqueDatabase.get_visible_techniques_for(char_id)
-	print("Tecnicas visibles: ", tecnicas_data)
 
 	var screen_pos = battle_camera.unproject_position(posicion_3d)
 	var circulo = preload("res://Escenas/UserUI/tech_button_circle.tscn").instantiate()
@@ -335,10 +365,10 @@ func mostrar_tecnicas_sobre(posicion_3d: Vector3) -> void:
 	circulo.battle_manager = self
 	circulo.configurar(tecnicas_data)
 
-	for c in ui_overlay.get_children():
+	for c in tecnique_overlay.get_children():
 		c.queue_free()
 	
-	ui_overlay.add_child(circulo)
+	tecnique_overlay.add_child(circulo)
 
 
 # Llamada desde UI cuando el jugador selecciona una técnica
@@ -357,12 +387,12 @@ func _on_tecnica_seleccionada(tec_id: String) -> void:
 	var candidatos = _candidatos_por_scope(scope)
 
 	# Si la técnica requiere SINGLE y hay varios candidatos -> pedir selección de objetivo (UI)
-	if (scope == "SINGLE_ENEMY" or scope == "SINGLE_ALLY") and candidatos.size() > 1 and combatiente_actual.es_jugador:
+	if (scope == "SINGLE_ENEMY" or scope == "SINGLE_ALLY") and candidatos.size() >= 1 and combatiente_actual.es_jugador:
 		# Intentamos usar un target selector de la UI si existe
 		if ui_overlay.has_method("open_target_selector"):
-			ui_overlay.call("open_target_selector", candidatos, Callable(self, "_on_target_selected"))
-			# Cambiamos estado a selección (UI manejará callback)
-			cambiar_estado(BattleState.SELECCION_ACCION)
+			ui_overlay.set_tecnicas_interactivas(false)
+			ui_overlay.open_target_selector(candidatos, Callable(self, "_on_target_selected"))
+			cambiar_estado(BattleState.SELECCION_OBJETIVO)
 			return
 		else:
 			# Fallback: seleccionar el primero
@@ -386,27 +416,19 @@ func _on_tecnica_seleccionada(tec_id: String) -> void:
 func _on_target_selected(target: Combatant) -> void:
 	objetivos_actuales = [target]
 	# asignar técnica y continuar
-	combatiente_actual.seleccionar_tecnica(tecnica_actual, target)
+	combatiente_actual.seleccionar_tecnica(tecnica_actual, objetivos_actuales)
 	if estado_actual != BattleState.EJECUCION_ACCION:
 		cambiar_estado(BattleState.EJECUCION_ACCION)
 
 
 func _candidatos_por_scope(scope: String) -> Array:
-	var aliados = combatientes.filter(func(c): return c.es_jugador and c.esta_vivo())
-	var enemigos = combatientes.filter(func(c): return not c.es_jugador and c.esta_vivo())
+	var aliados = combatientes.filter(func(c): return c is Combatant and c.es_jugador and c.esta_vivo())
+	var enemigos = combatientes.filter(func(c): return c is Combatant and not c.es_jugador and c.esta_vivo())
 
 	match scope:
-		"ALL_ENEMIES":
+		"ALL_ENEMIES", "SINGLE_ENEMY", "RANDOM_ENEMY":
 			return enemigos
-		"ALL_ALLIES":
-			return aliados
-		"SINGLE_ENEMY":
-			return enemigos
-		"SINGLE_ALLY":
-			return aliados
-		"RANDOM_ENEMY":
-			return enemigos
-		"RANDOM_ALLY":
+		"ALL_ALLIES", "SINGLE_ALLY", "RANDOM_ALLY":
 			return aliados
 		"SELF":
 			return [combatiente_actual]

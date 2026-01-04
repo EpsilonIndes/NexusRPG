@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cuisi38gc8bg5"]
+[gd_scene load_steps=14 format=3 uid="uid://cuisi38gc8bg5"]
 
 [ext_resource type="Script" uid="uid://c2yprryibqyen" path="res://Scripts/BattleMode/PjExtendCombatant/PlayerCombatant.gd" id="1_xrtcc"]
 [ext_resource type="Texture2D" uid="uid://dicmsdebafuu1" path="res://Sprites/BattleSheets/Characters/MayaBattler/MayaBattler.png" id="2_timx0"]
@@ -70,6 +70,8 @@ animations = [{
 radius = 0.415372
 height = 1.60986
 
+[sub_resource type="PrismMesh" id="PrismMesh_xrtcc"]
+
 [node name="MayaBattle" type="CharacterBody3D"]
 script = ExtResource("1_xrtcc")
 es_jugador = true
@@ -85,3 +87,10 @@ animation = &"idle"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00972354, -0.113946, -0.00167549)
 visible = false
 shape = SubResource("CapsuleShape3D_rwrg8")
+
+[node name="Model" type="MeshInstance3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(0.415, 0, 0, 0, 0.415, 0, 0, 0, 0.415, 0, 2.04549, 0)
+mesh = SubResource("PrismMesh_xrtcc")
+skeleton = NodePath("../..")

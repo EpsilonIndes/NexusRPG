@@ -2,13 +2,15 @@
 extends Node
 
 var enemies := { # Recordatorio: Crear CSV con stats enemigos
-	"slime": {
-		"nombre": "Slime Azul",
+	"Slime": {
+		"nombre": "Slime Celeste",
 		"hp": 50,
 		"mp": 0,
-		"ataque": 6,
-		"defensa": 2,
-		"velocidad": 8
+		"atk": 8,
+		"def": 2,
+		"spd": 4,
+		"lck": 5,
+		"wis": 10,
 	},
 	"Triangle": {
 		"nombre": "Triángulo Vengativo",
@@ -20,7 +22,7 @@ var enemies := { # Recordatorio: Crear CSV con stats enemigos
 		"lck": 5,
 		"wis": 10,
 	},
-	"esfera_roja": {
+	"Esfera_roja": {
 		"nombre": "Esfera Roja",
 		"hp": 60,
 		"mp": 5,

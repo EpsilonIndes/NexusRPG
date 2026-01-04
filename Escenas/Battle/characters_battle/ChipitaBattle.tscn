@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://d1wj4ltbsjdm"]
+[gd_scene load_steps=10 format=3 uid="uid://d1wj4ltbsjdm"]
 
 [ext_resource type="Script" uid="uid://c2yprryibqyen" path="res://Scripts/BattleMode/PjExtendCombatant/PlayerCombatant.gd" id="1_bt1st"]
 [ext_resource type="Texture2D" uid="uid://bcer4lxaju3fw" path="res://Sprites/BattleSheets/Characters/ChipitaBattler/chipitaBattler.png" id="2_fnl2r"]
@@ -43,6 +43,8 @@ animations = [{
 radius = 0.415372
 height = 1.60986
 
+[sub_resource type="PrismMesh" id="PrismMesh_bt1st"]
+
 [node name="KosmoBattle" type="CharacterBody3D"]
 script = ExtResource("1_bt1st")
 es_jugador = true
@@ -59,3 +61,10 @@ frame_progress = 0.915948
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00972354, -0.113946, -0.00167549)
 visible = false
 shape = SubResource("CapsuleShape3D_rwrg8")
+
+[node name="Model" type="MeshInstance3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(0.415, 0, 0, 0, 0.415, 0, 0, 0, 0.415, 0, 2.04549, 0)
+mesh = SubResource("PrismMesh_bt1st")
+skeleton = NodePath("../..")
