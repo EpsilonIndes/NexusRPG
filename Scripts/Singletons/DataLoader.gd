@@ -9,6 +9,12 @@ var loots: Dictionary = {}
 var stats: Dictionary = {}
 var tecnicas: Dictionary = {}
 
+const BOOL_COLUMNS := [
+	"allow_target_switch",
+	"can_switch_targets",
+	"is_interruptible"
+]
+
 func _init():
 	load_all_data()
 
@@ -165,6 +171,9 @@ func load_techs_to_dict(path: String, key_column: String) -> Dictionary:
 
 			if header_name == "effect":
 				entry[header_name] = EffectParser.parse_effect_string(value)
+			elif header_name in BOOL_COLUMNS:
+				entry[header_name] = EffectParser.parse_effect_bool(value)
+				
 			elif value.is_valid_float():
 				entry[header_name] = float(value)
 			else:

@@ -384,30 +384,43 @@ func _on_tecnica_seleccionada(tec_id: String) -> void:
 		return
 
 	var scope = tecnica_actual.get("target_scope", "SINGLE_ENEMY")
-	var candidatos = _candidatos_por_scope(scope)
+	
+	var enemigos := _candidatos_por_scope("SINGLE_ENEMY")
+	var aliados := _candidatos_por_scope("SINGLE_ALLY")
 
-	# Si la técnica requiere SINGLE y hay varios candidatos -> pedir selección de objetivo (UI)
-	if (scope == "SINGLE_ENEMY" or scope == "SINGLE_ALLY") and candidatos.size() >= 1 and combatiente_actual.es_jugador:
+	# Diccionario completo de targets
+	var targets_data : Dictionary = {
+		"enemies": enemigos,
+		"allies": aliados,
+		"default_group": "allies" if scope == "SINGLE_ALLY" else "enemies",
+		"allow_switch": tecnica_actual.get("allow_target_switch", false)
+	}
+
+	# Casos que requieren selección manual de objetivo
+	if scope in ["SINGLE_ENEMY", "SINGLE_ALLY"] and combatiente_actual.es_jugador:
 		# Intentamos usar un target selector de la UI si existe
 		if ui_overlay.has_method("open_target_selector"):
 			ui_overlay.set_tecnicas_interactivas(false)
-			ui_overlay.open_target_selector(candidatos, Callable(self, "_on_target_selected"))
+			ui_overlay.open_target_selector(targets_data, Callable(self, "_on_target_selected"))
 			cambiar_estado(BattleState.SELECCION_OBJETIVO)
 			return
 		else:
-			# Fallback: seleccionar el primero
-			objetivos_actuales = [candidatos[0]]
-	else:
-		# Otros scopes o enemigos -> Obtener objetivos directos
-		objetivos_actuales = _map_scope_a_objetivos(scope, candidatos)
+			# fallback seguro
+			var fallback_group = targets_data["default_group"]
+			var fallback_targets = targets_data[fallback_group]
+			if fallback_targets.size() > 0:
+				objetivos_actuales = [fallback_targets[0]]
 	
-	# Finalmente, asignamos la técnica al combatant y dejamos que ejecute
-	# Usamos la API del Combatant para manejar la ejecución (que emitirá turno_finalizado)
-	combatiente_actual.seleccionar_tecnica(tecnica_actual, objetivos_actuales)
-	# La llamada a selecciona_tecnica dentro del Combatant ya pedirá cambiar estado a EJECUTAR_ACCION
-	# Si por flujo no lo hace, forzamos:
-	if estado_actual != BattleState.EJECUCION_ACCION:
-		cambiar_estado(BattleState.EJECUCION_ACCION)
+	else:
+		# Otros scopes (ALL / RANDOM / SELF)
+		var candidatos = _candidatos_por_scope(scope)
+		objetivos_actuales = _map_scope_a_objetivos(scope, candidatos)
+
+	# Ejecutar directamente si no hubo selector
+	if objetivos_actuales.size() > 0:
+		combatiente_actual.seleccionar_tecnica(tecnica_actual, objetivos_actuales)
+		if estado_actual != BattleState.EJECUCION_ACCION:
+			cambiar_estado(BattleState.EJECUCION_ACCION)
 
 	
 # Callback que la UI de selección de objetivo debe llamar:
@@ -491,3 +504,50 @@ func actualizar_drive_score() -> void:
 	
 	drive_score += base
 	ultima_tecnica_usada = id
+
+# Descontinuado, sin uso:
+func _on_tecnica_seleccionada_descontinuado(tec_id: String) -> void:
+	if combatiente_actual == null:
+		push_warning("No hay combatiente actual al seleccionar técnica")
+		return
+	
+	tecnica_actual = GlobalTechniqueDatabase.get_tecnica_stats(tec_id)
+	if tecnica_actual.is_empty():
+		push_warning("Técnica %s no encontrada" % tec_id)
+		return
+
+	var scope = tecnica_actual.get("target_scope", "SINGLE_ENEMY")
+	var candidatos = _candidatos_por_scope(scope)
+
+	# Si la técnica requiere SINGLE y hay varios candidatos enemigos -> pedir selección de objetivo (UI)
+	if (scope == "SINGLE_ENEMY") and candidatos.size() >= 1 and combatiente_actual.es_jugador:
+		# Intentamos usar un target selector de la UI si existe
+		if ui_overlay.has_method("open_target_selector"):
+			ui_overlay.set_tecnicas_interactivas(false)
+			ui_overlay.open_target_selector(candidatos, Callable(self, "_on_target_selected"))
+			cambiar_estado(BattleState.SELECCION_OBJETIVO)
+			return
+		else:
+			# Fallback: seleccionar el primero
+			objetivos_actuales = [candidatos[0]]
+	# Si la técnica requiere SINGLE y hay varios candidatos aliados -> pedir seleccion de objetivo (UI)
+	elif (scope == "SINGLE_ALLY") and candidatos.size() >= 1 and combatiente_actual.es_jugador:
+		# Intentamos usar un target selector de la Ui pero para aliados
+		if ui_overlay.has_method("open_allytarget_selector"):
+			ui_overlay.set_tecnicas_interactivas(false)
+			ui_overlay.open_allytarget_selector(candidatos, Callable(self, "_on_target_selected"))
+			cambiar_estado(BattleState.SELECCION_OBJETIVO)
+			return
+		else:
+			objetivos_actuales = [candidatos[0]]
+	else:
+		# Otros scopes o enemigos -> Obtener objetivos directos
+		objetivos_actuales = _map_scope_a_objetivos(scope, candidatos)
+	
+	# Finalmente, asignamos la técnica al combatant y dejamos que ejecute
+	# Usamos la API del Combatant para manejar la ejecución (que emitirá turno_finalizado)
+	combatiente_actual.seleccionar_tecnica(tecnica_actual, objetivos_actuales)
+	# La llamada a selecciona_tecnica dentro del Combatant ya pedirá cambiar estado a EJECUTAR_ACCION
+	# Si por flujo no lo hace, forzamos:
+	if estado_actual != BattleState.EJECUCION_ACCION:
+		cambiar_estado(BattleState.EJECUCION_ACCION)

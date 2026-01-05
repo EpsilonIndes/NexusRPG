@@ -8,7 +8,7 @@ var tecnica_obtenida: Dictionary = {
 	"Miguelito": ["mig_01", "mig_02", "mig_03"],
 	"Maya": ["maya_01", "maya_02", "maya_05"],
 	"Sigrid": ["sigrid_01", "sigrid_02", "sigrid_03"],
-	"Amanda": ["amanda_01", "amanda_02", "amanda_03"],
+	"Amanda": ["amanda_01", "amanda_04", "amanda_03"],
 	"Lucinara": ["lucinara_01", "lucinara_02", "lucinara_03", "lucinara_04"]
 } # Técnicas obtenidas (algunas por defecto)
 
@@ -39,7 +39,7 @@ func get_tecnica_stats(tech_id: String) -> Dictionary:
 
 	# Unificamos el contrato con Combatant / EffectManager
 	tecnica["efectos"] = get_effects(tech_id)
-
+	
 	return tecnica
 
 # Efectos parseados listos para EffectManager

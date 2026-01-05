@@ -32,9 +32,9 @@ func apply_effects(effects: Array, target: Combatant, atacante: Combatant) -> vo
 			
 			"heal_hp":
 				var mult = float(efecto[1])
-				var heal = int(atacante.wis * mult)
+				var heal = int(atacante.espiritu * mult)
 				print(
-					"Espíritu del Caster: ", atacante.wis,
+					"Espíritu del Caster: ", atacante.espiritu,
 					" | MULT: ", mult
 				)
 
@@ -42,7 +42,7 @@ func apply_effects(effects: Array, target: Combatant, atacante: Combatant) -> vo
 				target.curar_hp(heal)
 
 			"boost":
-				print_debug("Lista recibida: %s" % [str(efecto)]) # boost:spd:0.5
+				print_debug("Lista recibida: %s" % [str(efecto)]) # boost:velocidad:0.5
 				var stat = efecto[1]
 				var mult = float(efecto[2])
 				var cantidad = int(target.get(stat) * mult)
@@ -57,9 +57,9 @@ func apply_effects(effects: Array, target: Combatant, atacante: Combatant) -> vo
 			#----------------------
 			# EFECTOS PERSISTENTES
 			# Formato en CSV:
-			# 	persist:buff:atk:0.02:3	
+			# 	persist:buff:ataque:0.2:3
 			#	persist:dot:5:3
-			# efecto = ["persist", "buff", "atk", "0.2", "3"]
+			# efecto = ["persist", "buff", "ataque", "0.2", "3"]
 			#----------------------------------------------
 			"persist":
 				_registrar_efecto_persistente(efecto, target)
@@ -95,7 +95,7 @@ func _registrar_efecto_persistente(efecto: Array, target: Combatant) -> void:
 					combatant.recibir_danio(dmg)
 				
 				# Buff/nerf temporal
-				# persist:buff:atk:0.2:3
+				# persist:buff:ataque:0.2:3
 				"buff":
 					var stat = args[0]
 					var mult = float(args[1])
