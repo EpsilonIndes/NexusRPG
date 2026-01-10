@@ -1,6 +1,6 @@
 [gd_scene load_steps=22 format=3 uid="uid://dbcn88xgtkshp"]
 
-[ext_resource type="Script" uid="uid://3bqh2q0ynetu" path="res://Scripts/NPCsDIalogos/NPCDialogo.gd" id="1_nifts"]
+[ext_resource type="Script" uid="uid://c65rmjnae6yl0" path="res://Scripts/NPCsDIalogos/miguelito_npc.gd" id="1_k8arq"]
 [ext_resource type="Texture2D" uid="uid://6tdjdbax0khp" path="res://Sprites/miguelito/miguelitoder.png" id="2_eviuu"]
 [ext_resource type="Texture2D" uid="uid://cg0u2v30puvmx" path="res://Sprites/miguelito/Miguelitoabajosheet.png" id="3_l045p"]
 [ext_resource type="Texture2D" uid="uid://cx0vng0gfayta" path="res://Sprites/miguelito/miguelitoizq.png" id="4_7kgx3"]
@@ -148,7 +148,7 @@ radius = 0.386952
 height = 1.34857
 
 [node name="Miguelito" type="CharacterBody3D" groups=["interactuables"]]
-script = ExtResource("1_nifts")
+script = ExtResource("1_k8arq")
 npc_id = "miguelito_1"
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
@@ -163,3 +163,6 @@ animation = &"idle_down"
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0606673, 0)
 shape = SubResource("CapsuleShape3D_i1s18")
+
+[node name="DialogueAnchor" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.94409657, 0)

@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://xlhfyi07xx0d"]
 
-[ext_resource type="Script" uid="uid://ct01m1fk2w2nv" path="res://Scripts/NPCsDIalogos/NPCMayaRecluta.gd" id="1_0mvpi"]
+[ext_resource type="Script" uid="uid://bghi1rpbtqhfu" path="res://Scripts/UI/npc_amanda.gd" id="1_0mvpi"]
 [ext_resource type="Texture2D" uid="uid://ckkxf3rxky8o2" path="res://Sprites/Amanda/amanda_down.png" id="2_0mvpi"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ibmry"]
@@ -24,7 +24,6 @@ height = 1.31188
 
 [node name="Amanda_npc" type="CharacterBody3D" groups=["interactuables"]]
 script = ExtResource("1_0mvpi")
-npc_id = "amanda_npc_1"
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
@@ -34,3 +33,6 @@ sprite_frames = SubResource("SpriteFrames_tu427")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_y33gn")
+
+[node name="DialogueAnchor" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.69557905, 0)

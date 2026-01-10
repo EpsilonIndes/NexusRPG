@@ -65,14 +65,15 @@ func _process(delta):
 	move_and_slide()
 	
 	if Input.is_action_just_pressed("accion"):
-		if raycast.is_colliding():
+		_try_interact()
+
+	if Input.is_action_just_pressed("inventario"):
+		inventory_ui.toggle_inventory()
+
+func _try_interact():
+	if raycast.is_colliding():
 			var collider = raycast.get_collider()
 			if collider.is_in_group("interactuables"):
 				collider.interact()
 			elif collider.get_parent().is_in_group("interactuables"):
 				collider.get_parent().interact()
-			else:
-				print("No se puede pa.")
-
-	if Input.is_action_just_pressed("inventario"):
-		inventory_ui.toggle_inventory()

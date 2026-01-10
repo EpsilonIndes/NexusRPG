@@ -35,3 +35,6 @@ sprite_frames = SubResource("SpriteFrames_tu427")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.048190236, 0)
 shape = SubResource("CapsuleShape3D_y33gn")
+
+[node name="DialogueAnchor" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.94409657, 0)

@@ -1,19 +1,34 @@
+#DialogueManager.gd (Autoload)
 extends Node
 
-func start_npc_dialogue(npc_id: String):
+func start_dialogue_async(npc_id: String, bubble, npc: NpcBase) -> void:
+	_run_dialogue(npc_id, bubble, npc)
+
+func _run_dialogue(npc_id: String, bubble: SpeechBubble, npc: NpcBase) -> void:
+	await bubble.initialized
+	bubble.appear()
+
 	if not DataLoader.dialogues.has(npc_id):
-		UImanager.label_dialogue.mostrar_dialogo("???", ["..."])
-		return
+		bubble.set_text("...")
+		await esperar_input()
+	else:
+		var entradas = DataLoader.dialogues[npc_id]
+		for entrada in entradas:
+			bubble.set_text(entrada["linea"])
+			await bubble.type_text()
+			await esperar_input()
 
-	var entradas = DataLoader.dialogues[npc_id]
-	var lineas := []
-	var nombre := "???"
+		
+	GameManager.set_estado(GameManager.EstadosDeJuego.LIBRE)
+	
+	bubble.queue_free()
+	npc.on_dialogue_finished()
 
-	for entrada in entradas:
-		if typeof(entrada) == TYPE_DICTIONARY:
-			lineas.append(entrada.get("linea", ""))
-			nombre = entrada.get("nombre", nombre)
+func esperar_input():
+	while true:
+		await get_tree().process_frame
+		if Input.is_action_just_pressed("accion"):
+			break
 
-	UImanager.label_dialogue.mostrar_dialogo(nombre, lineas)
 
 # "res://Data/Dialogue/dialogos_NPC_auromora.csv"

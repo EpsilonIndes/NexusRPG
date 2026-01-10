@@ -196,15 +196,12 @@ loot_id = "cofre_gema_roja"
 
 [node name="Maya" parent="Interactuable" instance=ExtResource("11_5x380")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.59051, 0.783088, -6.87827)
-npc_name = "Maya"
 
 [node name="Sigrid_npc" parent="Interactuable" instance=ExtResource("18_7vly3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.489412, 2.867685, -8.371642)
-npc_name = "Sigrid"
 
 [node name="Amanda_npc" parent="Interactuable" instance=ExtResource("19_x6jwr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.452143, 0.717541, -7.2336907)
-npc_name = "Amanda"
 
 [node name="CameraManager" type="Node" parent="."]
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://cpkvk4qac61ng"]
 
-[ext_resource type="Script" uid="uid://3bqh2q0ynetu" path="res://Scripts/NPCsDIalogos/NPCDialogo.gd" id="1_2xiy2"]
+[ext_resource type="Script" uid="uid://boj77wcn6e1wm" path="res://Scripts/NPCsDIalogos/_npc.gd" id="1_ta1us"]
 [ext_resource type="Texture2D" uid="uid://cafr400644ocu" path="res://Sprites/NPCs Auromora/anciano_1.png" id="2_aij3d"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mmfv5"]
@@ -23,7 +23,8 @@ radius = 0.354462
 height = 1.13641
 
 [node name="Anciano_1" type="CharacterBody3D" groups=["interactuables"]]
-script = ExtResource("1_2xiy2")
+script = ExtResource("1_ta1us")
+npc_id = "anciano_1"
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
@@ -34,3 +35,6 @@ sprite_frames = SubResource("SpriteFrames_7toud")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.172629, 0)
 shape = SubResource("CapsuleShape3D_hagel")
+
+[node name="DialogueAnchor" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.94409657, 0)
