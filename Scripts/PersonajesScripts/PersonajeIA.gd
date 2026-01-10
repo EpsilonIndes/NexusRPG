@@ -1,23 +1,28 @@
 class_name PersonajeIA
 extends CharacterBody3D
 
-enum State {FOLLOW, RETURNING}
+enum State { FOLLOW, RETURNING }
 var state = State.FOLLOW
 
 # Cosas configurables
 @export var pj_nombre: String = "???"
 @export var speed: float = 3.0
-@export var follow_distance: float = 2.0
+@export var follow_distance: float = 1.8
 @export var max_distance_from_kosmo: float = 8.0
-@export var usa_flip_x: bool
+@export var usa_flip_x: bool 
+
+var follow_enabled := true
+
 @export var formation_offset: Vector3 = Vector3.ZERO
 
 var kosmo_path: NodePath = NodePath("Player")
 var kosmo: Node3D
 var target_position: Vector3
+
 var gravity: float = -9.8
 var vertical_velocity: float = 0.0
 var max_fall_speed: float = 1.0
+
 var last_direction: String = "_down"
 
 var update_timer: float = 0.0
@@ -39,6 +44,9 @@ func _ready():
 	anim_sprite.play("idle_down")
 
 func _physics_process(delta):
+	if not follow_enabled:
+		return
+		
 	if kosmo == null:
 		return
 	
@@ -93,6 +101,10 @@ func buscar_player(nodo: Node) -> Node3D:
 #	if dist > max_distance_from_kosmo:
 #		state = State.RETURNING
 #		return
+
+func set_follow_enabled(value: bool) -> void:
+	follow_enabled = value
+
 
 func _follow_kosmo(delta):
 	var dist = global_position.distance_to(kosmo.global_position)

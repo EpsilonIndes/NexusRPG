@@ -76,3 +76,18 @@ func set_jugador_actual(id: String):
 
 func get_jugador_actual() -> String:
 	return jugador_actual
+
+
+# Prueba Nuevo sistema de spawn
+# PlayableCharacters.gd
+var spawn_override: Dictionary = {} # pj_id -> Vector3
+
+func set_spawn_override(pj_id: String, pos: Vector3) -> void:
+	spawn_override[pj_id] = pos
+
+func consume_spawn_override(pj_id: String) -> Vector3:
+	if spawn_override.has(pj_id):
+		var pos = spawn_override[pj_id]
+		spawn_override.erase(pj_id)
+		return pos
+	return Vector3.ZERO

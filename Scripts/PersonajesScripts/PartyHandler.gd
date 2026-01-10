@@ -27,9 +27,29 @@ func actualizar_personajes_party():
 			personaje.set_process_input(true)
 			personaje.set_physics_process(false) # Desactivo física temporal
 
-			# Posicionar en diferido para no pelear con el frame actual
-			call_deferred("_posicionar_personaje", personaje, jugador.global_position, index, total)
-			index += 1
+			# 👉 Intentamos usar spawn narrativo (DialogueAnchor)
+			var override_pos = PlayableCharacters.consume_spawn_override(pj_id)
+			if override_pos != Vector3.ZERO:
+				# Aparece exactamente donde estaba el NPC
+				var spawn_pos = override_pos + Vector3.DOWN * 1.5
+				personaje.global_position = snap_to_floor(spawn_pos)
+				personaje.velocity = Vector3.ZERO
+
+				# Reactivamos física al siguiente frame
+				await get_tree().process_frame
+				personaje.set_physics_process(true)
+
+				_freeze_follow(personaje, 1.0)
+			else:
+				# Comportamiento normal: círculo alrededor del player
+				call_deferred(
+					"_posicionar_personaje",
+					personaje,
+					jugador.global_position,
+					index,
+					total
+				)
+				index += 1
 		else:
 			# Hibernar
 			personaje.reparent(reservas)
@@ -40,6 +60,7 @@ func actualizar_personajes_party():
 
 			# Lo mandamos fuera del rango, pero dentro del NavigationRegion3D
 			personaje.global_position = Vector3(-50, jugador.global_position.y, -5)
+
 
 
 # Helpers #
@@ -75,3 +96,12 @@ func snap_to_floor(pos: Vector3) -> Vector3:
 	if result.has("position"):
 		pos.y = result["position"].y
 	return pos
+
+func _freeze_follow(personaje: Node, tiempo: float) -> void:
+	#personaje.look_at(jugador.global_position, Vector3.UP)
+	if not personaje.has_method("set_follow_enabled"):
+		return
+
+	personaje.set_follow_enabled(false)
+	await get_tree().create_timer(tiempo).timeout
+	personaje.set_follow_enabled(true)

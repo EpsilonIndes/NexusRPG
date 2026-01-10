@@ -5,6 +5,10 @@ class_name NpcBase
 @export var bubble_offset := Vector3(0, 2.4, 0)
 @export var dialogue_id := ""
 
+# Para sprites (temporal, reemplazar luego con animación de rotación):
+@onready var animated_sprite = $AnimatedSprite3D
+@onready var dialogue_anchor = $DialogueAnchor
+
 var bubble_instance: SpeechBubble = null
 
 func interact():
@@ -23,7 +27,11 @@ func interact():
 		bubble_instance,
 		self
 	)
+	in_dialogue()
 
 # 🔹 Hook — sobrescribible
 func on_dialogue_finished():
+	pass
+
+func in_dialogue():
 	pass
