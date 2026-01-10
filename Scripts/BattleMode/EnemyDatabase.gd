@@ -1,40 +1,35 @@
 # EnemyDatabase.gd
 extends Node
 
-var enemies := { # Recordatorio: Crear CSV con stats enemigos
-	"Slime": {
-		"nombre": "Slime Celeste",
-		"hp": 50,
-		"mp": 0,
-		"atk": 8,
-		"def": 2,
-		"spd": 4,
-		"lck": 5,
-		"wis": 10,
-	},
-	"Triangle": {
-		"nombre": "Triángulo Vengativo",
-		"hp": 80,
-		"mp": 10,
-		"atk": 12,
-		"def": 4,
-		"spd": 10,
-		"lck": 5,
-		"wis": 10,
-	},
-	"Esfera_roja": {
-		"nombre": "Esfera Roja",
-		"hp": 60,
-		"mp": 5,
-		"ataque": 10,
-		"defensa": 3,
-		"velocidad": 11
-	}
-}
+func has_enemy(enemy_id: String) -> bool:
+	return DataLoader.enemigos.has(enemy_id)
+
+func get_data(enemy_id: String) -> Dictionary:
+	if not has_enemy(enemy_id):
+		push_error("Enemy no encontrado: %s" % enemy_id)
+		return {}
+	return DataLoader.enemigos[enemy_id]
 
 func get_stats(enemy_id: String) -> Dictionary:
-	if enemies.has(enemy_id):
-		return enemies[enemy_id]
-	else:
-		push_error("Enemy ID no encontrado: %s" % enemy_id)
+	var e = get_data(enemy_id)
+	if e.is_empty():
 		return {}
+
+	return {
+		"id": enemy_id,
+		"nombre": e.nombre,
+		"tipo": e.tipo,
+		"hp": e.hp,
+		"mp": e.mp,
+		"atk": e.atk,
+		"def": e.def,
+		"spd": e.spd,
+		"lck": e.lck,
+		"wis": e.wis,
+		"exp": e.exp,
+		"class_id": e.class_id
+	}
+
+func get_exp(enemy_id: String) -> int:
+	var e = get_data(enemy_id)
+	return e.exp if e.has("exp") else 0

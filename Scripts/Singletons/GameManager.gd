@@ -40,6 +40,11 @@ func iniciar_batalla(contra_enemigos: Array[String]):
 	var jugadores_instanciar = get_team_instanciar()
 
 	var bm := scene.get_node("BattleManager")
+	
+	# Conectar señal de finalización
+	if not bm.is_connected("battle_finished", Callable(self, "_on_battle_finished")):
+		bm.connect("battle_finished", Callable(self, "_on_battle_finished"))
+	
 	bm.start_battle(jugadores_instanciar, contra_enemigos)
 
 
@@ -60,3 +65,12 @@ func get_team_instanciar() -> Array[Dictionary]:
 
 	print("Equipo a instanciar:", team)
 	return team # [{"id": "Astro"}, {"id": "Sigrid"}]
+
+func _on_battle_finished(result: Dictionary) -> void:
+	print("Resultado de batalla recibido: ", result)
+
+	var rewards = BattleResultProcessor.procesar_batalla(result)
+	print("[GameManager] Recompensas calculadas: ", rewards)
+
+	set_estado(EstadosDeJuego.LIBRE)
+	get_tree().change_scene_to_file("res://Escenas/nivel_1.tscn")

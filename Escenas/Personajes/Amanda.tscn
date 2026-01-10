@@ -196,6 +196,7 @@ height = 1.27608
 [node name="Amanda" type="CharacterBody3D"]
 script = ExtResource("1_5nqpv")
 pj_nombre = "Amanda"
+usa_flip_x = false
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 
@@ -204,8 +205,7 @@ transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0.146699, 0)
 billboard = 1
 texture_filter = 0
 sprite_frames = SubResource("SpriteFrames_wfda4")
-animation = &"walk_left"
-frame_progress = 0.122051
+animation = &"idle_down"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_xejmx")

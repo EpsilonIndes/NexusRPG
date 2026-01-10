@@ -2,177 +2,159 @@ class_name PersonajeIA
 extends CharacterBody3D
 
 enum State { FOLLOW, RETURNING }
-var state = State.FOLLOW
+var state := State.FOLLOW
 
-# Cosas configurables
 @export var pj_nombre: String = "???"
 @export var speed: float = 3.0
 @export var follow_distance: float = 1.8
 @export var max_distance_from_kosmo: float = 8.0
-@export var usa_flip_x: bool 
+@export var follow_delay: float = 0.6
+@export var usa_flip_x: bool = true
 
 var follow_enabled := true
 
-@export var formation_offset: Vector3 = Vector3.ZERO
-
-var kosmo_path: NodePath = NodePath("Player")
 var kosmo: Node3D
 var target_position: Vector3
 
-var gravity: float = -9.8
-var vertical_velocity: float = 0.0
-var max_fall_speed: float = 1.0
+var gravity := -9.8
+var vertical_velocity := 0.0
+var max_fall_speed := 1.0
 
-var last_direction: String = "_down"
+var last_direction := "_down"
 
-var update_timer: float = 0.0
-var update_interval: float = 0.25
-var min_position_change: float = 0.1
+var update_timer := 0.0
+var update_interval := 0.25
 
 @onready var nav_agent: NavigationAgent3D = $NavigationAgent3D
 @onready var anim_sprite: AnimatedSprite3D = $AnimatedSprite3D
 
+
+# ----------------------------------------------------
+# Ready
+# ----------------------------------------------------
 func _ready():
 	await get_tree().process_frame
 	asignar_kosmo()
+
+	await get_tree().physics_frame 
+
 	if kosmo == null:
-		print("%s no encontró a Astro" % pj_nombre)
+		push_warning("%s no encontró a Astro" % pj_nombre)
 		return
 
-	target_position = global_position
-	_custom_ready()  # Llamada a método virtual para personalización
+	target_position = kosmo.global_position
+	nav_agent.target_position = target_position
+
+	
 	anim_sprite.play("idle_down")
 
+
+# ----------------------------------------------------
+# Physics
+# ----------------------------------------------------
 func _physics_process(delta):
-	if not follow_enabled:
+	if not follow_enabled or kosmo == null:
 		return
-		
-	if kosmo == null:
-		return
-	
+
 	match state:
 		State.FOLLOW:
 			_follow_kosmo(delta)
 		State.RETURNING:
 			_return_to_kosmo(delta)
-	
-	_check_state_transition()
+
 	_evitar_colision_equipo()
 
-# Personalizacion y asignación
-func _custom_ready():
-	pass
 
-func asignar_kosmo():
-	var escena = get_tree().get_current_scene()
-	kosmo = buscar_player(escena)
-	if kosmo == null:
-		push_warning("%s no encontró a Astro automáticamente" % pj_nombre)
-
-func buscar_player(nodo: Node) -> Node3D:
-	if nodo.name == "Player":
-		return nodo
-	for hijo in nodo.get_children():
-		if hijo is Node:
-			var resultado = buscar_player(hijo)
-			if resultado != null:
-				return resultado
-	return null
-
-
-# -- Comportamientos base --
-#func _follow_kosmo(delta):
-#	var dist = global_position.distance_to(kosmo.global_position)
-#
-#	# Direccion virtual del jugador
-#	var forward_dir: Vector3
-#	if "look_direction" in kosmo:
-#		forward_dir = kosmo.look_direction.normalized()
-#	else:
-#		forward_dir = Vector3(forward_dir.z, 0, -forward_dir.x).normalized()
-#
-#	var right_dir = Vector3(forward_dir.z, 0, -forward_dir.x).normalized()
-#
-#	var rotated_offset = right_dir * formation_offset.x + forward_dir * formation_offset.z
-#	
-#	var target_pos = kosmo.global_position + rotated_offset
-#
-#	# Si está muy lejos, pasa a RETURNING
-#	if dist > max_distance_from_kosmo:
-#		state = State.RETURNING
-#		return
-
-func set_follow_enabled(value: bool) -> void:
-	follow_enabled = value
-
-
+# ----------------------------------------------------
+# Follow behavior
+# ----------------------------------------------------
 func _follow_kosmo(delta):
 	var dist = global_position.distance_to(kosmo.global_position)
+	# Target deseado: posición del player (sin rotación)
+	var desired_target := kosmo.global_position
 
-	# Dirección virtual del jugador (basada en su look_direction)
-	var forward_dir: Vector3
-	if "look_direction" in kosmo:
-		forward_dir = kosmo.look_direction.normalized()
-	else:
-		forward_dir = Vector3(0, 0, 1)
+	var smooth_factor := 6.0
+	target_position = target_position.lerp(
+		desired_target,
+		delta * smooth_factor
+	)
 
-	var right_dir = Vector3(forward_dir.z, 0, -forward_dir.x).normalized()
-	var desired_target = kosmo.global_position + (right_dir * formation_offset.x) + (forward_dir * formation_offset.z)
+	nav_agent.target_position = target_position
 
-	update_timer -= delta
-	if update_timer <= 0.0:
-		update_timer = update_interval
-		if target_position.distance_to(desired_target) > min_position_change:
-			target_position = desired_target
-
-	# Delay de reacción
-	var reaction_speed = 5.0
-	nav_agent.target_position = nav_agent.target_position.lerp(target_position, delta * reaction_speed)
-
-	# Si se aleja demasiado, vuelve directamente
-	if dist > max_distance_from_kosmo:
+	# Si está demasiado lejos → modo recuperación
+	if dist > max_distance_from_kosmo * 1.2:
 		state = State.RETURNING
 		return
-		
+
 	_move_to_target(delta)
 
+
+# ----------------------------------------------------
+# Returning behavior
+# ----------------------------------------------------
 func _return_to_kosmo(delta):
 	nav_agent.target_position = kosmo.global_position
 	_move_to_target(delta)
 
-	if global_position.distance_to(kosmo.global_position) < follow_distance:
+	if global_position.distance_to(kosmo.global_position) <= follow_distance:
 		state = State.FOLLOW
 
-func _check_state_transition():
-	if state == State.RETURNING and global_position.distance_to(kosmo.global_position) < follow_distance:
-		state = State.FOLLOW
 
-# Movimiento y animaciones
-
+# ----------------------------------------------------
+# Movement
+# ----------------------------------------------------
 func _move_to_target(delta):
+	var dist_to_target = global_position.distance_to(target_position)
+
+	# Si ya está lo suficientemente cerca → se frena suave
+	if dist_to_target < follow_distance * 0.7:
+		velocity = velocity.lerp(Vector3.ZERO, delta * 4)
+
+		move_and_slide()
+		_update_animation(Vector3.ZERO)
+		return
+
+	nav_agent.target_position = target_position
+
 	if nav_agent.is_navigation_finished():
 		velocity = velocity.lerp(Vector3.ZERO, delta * 8)
 		move_and_slide()
 		_update_animation(Vector3.ZERO)
 		return
-	
+
 	var next_pos = nav_agent.get_next_path_position()
 	var dir = (next_pos - global_position).normalized()
+
 	var horizontal_velocity = Vector3(dir.x, 0, dir.z) * speed
 
-	# Gravedad (solo si no esta en el piso)
+	# Variación sutil para evitar movimiento robótico
+	horizontal_velocity *= randf_range(0.95, 1.05)
+
+	# Gravedad
 	if not is_on_floor():
-		vertical_velocity += clamp(vertical_velocity + gravity * delta, -max_fall_speed, max_fall_speed)
+		vertical_velocity = clamp(
+			vertical_velocity + gravity * delta,
+			-max_fall_speed,
+			max_fall_speed
+		)
 	else:
 		vertical_velocity = 0.0
-	
+
 	velocity.x = horizontal_velocity.x
 	velocity.z = horizontal_velocity.z
 	velocity.y = vertical_velocity
 
+	var min_speed := 0.15
+	if horizontal_velocity.length() < min_speed:
+		horizontal_velocity = horizontal_velocity.normalized() * min_speed
+
 	move_and_slide()
 	_update_animation(horizontal_velocity)
-	
+
+
+# ----------------------------------------------------
+# Animation
+# ----------------------------------------------------
 func _update_animation(move_vector: Vector3):
 	if move_vector.length() < 0.1:
 		anim_sprite.play("idle" + last_direction)
@@ -186,37 +168,53 @@ func _update_animation(move_vector: Vector3):
 		else:
 			last_direction = "_left" if move_vector.x < 0 else "_right"
 			anim_sprite.play("walk" + last_direction)
-
 	else:
 		last_direction = "_down" if move_vector.z > 0 else "_up"
-		anim_sprite.play("walk" + last_direction)
 		anim_sprite.flip_h = false
+		anim_sprite.play("walk" + last_direction)
 
-
-func _evitar_colision_equipo() -> void:
+# ----------------------------------------------------
+# Team collision avoidance
+# ----------------------------------------------------
+func _evitar_colision_equipo():
 	var empuje_total := Vector3.ZERO
 	var personajes = get_tree().get_nodes_in_group("equipo")
-	
+
 	for otro in personajes:
-		if otro == self: 
+		if otro == self or not otro is CharacterBody3D:
 			continue
-		if not otro is CharacterBody3D:
-			continue
-		
+
 		var diff = global_position - otro.global_position
 		var dist = diff.length()
 		if dist == 0:
 			continue
-		
-		var min_dist = 1.0
+
+		var min_dist := 1.0
 		if dist < min_dist:
-			var fuerza = (min_dist - dist) * 0.4 # fuerza base del empuje
-
+			var fuerza = (min_dist - dist) * 0.4
 			if otro.name == "Player":
-				fuerza *= 2.0 
-
+				fuerza *= 2.0
 			empuje_total += diff.normalized() * fuerza
 
 	if empuje_total != Vector3.ZERO:
-		var destino = global_position + empuje_total
-		global_position = global_position.lerp(destino, 0.5)
+		global_position = global_position.lerp(
+			global_position + empuje_total,
+			0.5
+		)
+
+
+# ----------------------------------------------------
+# Utils
+# ----------------------------------------------------
+func asignar_kosmo():
+	var escena = get_tree().get_current_scene()
+	kosmo = _buscar_player(escena)
+
+func _buscar_player(nodo: Node) -> Node3D:
+	if nodo.name == "Player":
+		return nodo
+	for hijo in nodo.get_children():
+		var resultado = _buscar_player(hijo)
+		if resultado != null:
+			return resultado
+	return null

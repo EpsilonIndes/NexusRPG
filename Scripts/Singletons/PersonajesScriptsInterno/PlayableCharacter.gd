@@ -20,6 +20,36 @@ func _init(pj_id: String, pj_class_id: String, pj_stats: Dictionary) -> void:
 	class_id = pj_class_id
 	stats = pj_stats.duplicate(true)
 
+# Experiencia y Nivel
+func gain_exp(amount: int) -> void:
+	if amount <= 0:
+		return
+
+	# Aplicar bonus del Drive
+	if not stats.has("exp_actual"):
+		stats["exp_actual"] = 0
+	if not stats.has("exp_para_siguiente"):
+		stats["exp_para_siguiente"] = 100 # fallback
+	
+	stats["exp_actual"] += amount
+	print("[%s] ganó %d EXP! Total: %d" % [id, amount, stats["exp_actual"]])
+
+	while stats["exp_actual"] >= stats["exp_para_siguiente"]:
+		stats["exp_actual"] -= stats["exp_para_siguiente"]
+		_level_up()
+
+func _level_up() -> void:
+	# Subir stats, aumentar exp apra siguiente nivel, etc
+	stats["nivel"] = stats.get("nivel", 1) +1
+	stats["exp_para_siguiente"] = int(stats["exp_para_siguiente"] * 1.2)
+	# bonus de stats:
+	stats["hp"] += 5
+	stats["atk"] += 2
+	stats["def"] += 2
+	stats["spd"] += 1
+	print("[%s] subió al nivel %d!" % [id, stats["nivel"]])
+
+
 func get_stats() -> Dictionary:
 	return stats
 

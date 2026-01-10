@@ -22,6 +22,17 @@ enum TargetScope {
 	SELF
 }
 
+# Resultados de batalla
+var enemigos_derrotados: Array[String] = []
+var jugadores_participantes: Array[String] = []
+
+var battle_stats := {
+	"turns": 0,
+	"technique_used": {}
+}
+
+signal battle_finished(result: Dictionary)
+
 # Estado
 var estado_actual: BattleState = BattleState.INICIO
 var combatientes: Array = []
@@ -75,6 +86,11 @@ func start_battle(jugadores: Array, enemigos: Array) -> void:
 	instanciar_equipo(enemigos, enemy_team, false)
 
 	cambiar_estado(BattleState.TURNO_JUGADOR)
+
+	battle_stats = {
+	"turns": 0,
+	"techniques_used": {}
+	}
 
 # --------------------
 # Instancia escenas de cada combatiente (escenas individuales por ID)
@@ -339,6 +355,19 @@ func chequear_si_termina():
 
 func finalizar_batalla() -> void:
 	print("Finalizando Batalla...")
+
+	var victoria := combatientes.any(func(c): return c.es_jugador and c.esta_vivo())
+
+	var battle_result = _construir_battle_result(victoria)
+	emit_signal("battle_finished", battle_result)
+
+	#Limpieza interna
+	enemigos_derrotados.clear()
+	jugadores_participantes.clear()
+	battle_stats = {
+		"turns": 0,
+		"techniques_used": {}
+	}
 	
 	# Volver al mapa, recompensas y demás
 
@@ -433,7 +462,6 @@ func _on_target_selected(target: Combatant) -> void:
 	if estado_actual != BattleState.EJECUCION_ACCION:
 		cambiar_estado(BattleState.EJECUCION_ACCION)
 
-
 func _candidatos_por_scope(scope: String) -> Array:
 	var aliados = combatientes.filter(func(c): return c is Combatant and c.es_jugador and c.esta_vivo())
 	var enemigos = combatientes.filter(func(c): return c is Combatant and not c.es_jugador and c.esta_vivo())
@@ -448,7 +476,6 @@ func _candidatos_por_scope(scope: String) -> Array:
 		_:
 			push_warning("Scope desconocido: %s" % scope)
 			return []
-
 # Mapea candidatos según scope (maneja RANDOM y ALL -> listas convertidas)
 func _map_scope_a_objetivos(scope: String, candidatos: Array) -> Array:
 	match scope:
@@ -474,6 +501,11 @@ func _map_scope_a_objetivos(scope: String, candidatos: Array) -> Array:
 # Callback cuando un combatante emitió turno_finalizado
 #-------------------------------
 func _on_combatant_turn_finished() -> void:
+	# para resultados:
+	if combatiente_actual != null and combatiente_actual.es_jugador:
+		if not jugadores_participantes.has(combatiente_actual.id):
+			jugadores_participantes.append(combatiente_actual.id)
+	
 	# desconectar al current si corresponde
 	if combatiente_actual != null and combatiente_actual.is_connected("turno_finalizado", Callable(self, "_on_combatant_turn_finished")):
 		combatiente_actual.disconnect("turno_finalizado", Callable(self, "_on_combatant_turn_finished"))
@@ -504,6 +536,16 @@ func actualizar_drive_score() -> void:
 	
 	drive_score += base
 	ultima_tecnica_usada = id
+
+	# para resultados:
+	if id != "":
+		if not battle_stats.has("techniques_used"):
+			battle_stats["techniques_used"] = {}
+		
+		battle_stats["techniques_used"][id] = battle_stats["techniques_used"].get(id, 0) + 1
+
+
+
 
 # Descontinuado, sin uso:
 func _on_tecnica_seleccionada_descontinuado(tec_id: String) -> void:
@@ -551,3 +593,18 @@ func _on_tecnica_seleccionada_descontinuado(tec_id: String) -> void:
 	# Si por flujo no lo hace, forzamos:
 	if estado_actual != BattleState.EJECUCION_ACCION:
 		cambiar_estado(BattleState.EJECUCION_ACCION)
+
+# para resultados
+# enemigos derrotados:
+func registrar_enemigos_derrotado(enemigo: Combatant) -> void:
+	if enemigo != null and not enemigos_derrotados.has(enemigo.id):
+		enemigos_derrotados.append(enemigo.id)
+
+func _construir_battle_result(victoria: bool) -> Dictionary:
+	return {
+		"victoria": victoria,
+		"drive_score": drive_score,
+		"enemigos_derrotados": enemigos_derrotados.duplicate(),
+		"jugadores": jugadores_participantes.duplicate(),
+		"stats": battle_stats.duplicate()
+	}

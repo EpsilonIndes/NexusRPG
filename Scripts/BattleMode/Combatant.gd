@@ -94,7 +94,7 @@ func inicializar(datos: Dictionary, es_jugador_: bool, battle_manager_: Node) ->
 		mp_max = stats.max_dp
 		mp = mp_max
 	else:
-		var stats = EnemyDatabase.enemies.get(id, {})
+		var stats = EnemyDatabase.get_stats(id)
 		ataque = stats.atk
 		defensa = stats.def
 		velocidad = stats.spd
@@ -130,6 +130,10 @@ func recibir_danio(cantidad: int) -> void:
 		_on_muerte()
 
 func _on_muerte() -> void:
+
+	# para resultados:
+	battle_manager.registrar_enemigos_derrotado(self)
+
 	levitation_tween.pause()
 	print("%s ha caído en batalla." % nombre)
 	# reproducir anim de muerte si corresponde

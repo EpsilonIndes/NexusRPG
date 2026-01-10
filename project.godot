@@ -35,6 +35,7 @@ EnemyDatabase="*res://Scripts/BattleMode/EnemyDatabase.gd"
 SynergyDatabase="*res://Scripts/BattleMode/SynergyDatabase.gd"
 GlobalTechniqueDatabase="*res://Scripts/BattleMode/GlobalTechniqueDatabase.gd"
 PartyHandler="*res://Scripts/PersonajesScripts/PartyHandler.gd"
+BattleResultProcessor="*res://Scripts/BattleMode/BattleResultProcessor.gd"
 
 [display]
 

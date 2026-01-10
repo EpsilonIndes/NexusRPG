@@ -8,6 +8,7 @@ var items: Dictionary = {}
 var loots: Dictionary = {}
 var stats: Dictionary = {}
 var tecnicas: Dictionary = {}
+var enemigos: Dictionary = {}
 
 const BOOL_COLUMNS := [
 	"allow_target_switch",
@@ -24,6 +25,7 @@ func load_all_data():
 	load_loots("res://Data/Loot/loot_objects.csv")
 	load_stats("res://Data/Char_stats/stats.csv")
 	load_tecnicas("res://Data/Tecnicas/tecnicas.csv")
+	load_enemy_stats("res://Data/Enemy_stats/stats_enemigos.csv")
 
 func load_csv_to_dict(path: String, key_column: String) -> Dictionary:
 	var result: Dictionary = {}
@@ -195,6 +197,7 @@ func load_loots(path: String):
 
 func load_stats(path: String):
 	stats = load_stats_to_dict(path, "id")
-
 func load_tecnicas(path: String):
 	tecnicas = load_techs_to_dict(path, "tecnique_id")
+func load_enemy_stats(path: String):
+	enemigos = load_stats_to_dict(path, "id")
