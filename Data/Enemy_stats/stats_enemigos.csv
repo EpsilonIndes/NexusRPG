@@ -1,4 +1,4 @@
 id,nombre,tipo,hp,mp,atk,def,spd,lck,wis,exp,class_id
-Slime,Slime Celeste,trash,50,0,8,2,4,5,10,10,C001
-Triangle,Triángulo Vengativo,trash,80,10,12,4,10,5,10,20,C002
+Slime,Slime Celeste,trash,50,0,8,2,4,5,10,400,C001
+Triangle,Triángulo Vengativo,trash,80,10,12,4,10,5,10,200,C002
 Esfera_roja,Esfera Roja,elite,60,5,10,3,11,4,8,25,C003

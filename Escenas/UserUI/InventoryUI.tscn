@@ -119,7 +119,7 @@ text = "Salir"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_xrri4")
+&"": SubResource("AnimationLibrary_xrri4")
 }
 
 [node name="Panel_Items" type="VBoxContainer" parent="." node_paths=PackedStringArray("shortcut_context")]
@@ -247,7 +247,7 @@ offset_bottom = 33.0
 text = "Siguiente"
 
 [node name="Salir" type="Button" parent="EstadoPanel"]
-layout_mode = 2
+layout_mode = 0
 offset_left = 181.0
 offset_top = 44.0
 offset_right = 214.0

@@ -191,9 +191,12 @@ func show_character_stats(char_id: String):
 		return
 
 	var stats = PlayableCharacters.get_character(char_id).stats
-	label_stats.text = "Nombre: %s\nClase: %s\nHP: %s\nDP: %s\nAtaque: %s\nDefensa: %s\nVelocidad: %s\nSuerte: %s\nInteligencia: %s" % [
+	label_stats.text = "Nombre: %s\nClase: %s\nLV: %s\nXP: %s\nXP prox LV: %s\nHP: %s\nDP: %s\nAtaque: %s\nDefensa: %s\nVelocidad: %s\nSuerte: %s\nInteligencia: %s" % [
 		char_id,
 		stats.get("job_name", "???"),
+		stats.get("nivel", "???"),
+		stats.get("exp_actual", "???"),
+		stats.get("exp_para_siguiente", "???"),
 		stats.get("hp", "???"),
 		stats.get("dp", "???"),
 		stats.get("atk", "???"),

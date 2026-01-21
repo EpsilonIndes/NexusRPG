@@ -1,0 +1,155 @@
+# InventoryUI.gd (En Nodo)
+extends Control
+
+@onready var anim: AnimationPlayer = $AnimationPlayer
+
+@onready var panel_main: Panel = $MainMenu
+@onready var panel_items: Panel = $ItemsPanel
+@onready var panel_info: Panel = $ItemInfoPopup
+
+@onready var item_list: VBoxContainer = $ItemsPanel/Scroll/Vbox
+@onready var info_label: Label = $ItemInfoPopup/Label
+@onready var categories := $MainMenu/Categories.get_children()
+
+@onready var main_menu := $"../MainMenuUI"
+
+@onready var category_buttons := {
+	"conumible": $MainMenu/Categories/Consumibles,
+	"equipo": $MainMenu/Categories/Equipo,
+	"clave": $MainMenu/Categories/Clave,
+}
+
+@onready var btn_salir: Button = $MainMenu/Categories2/Salir
+
+@onready var item_context: PopupMenu = $ItemContextMenu
+@onready var character_context: PopupMenu = $ItemContextMenu/CharacterContextMenu
+
+var current_category := "consumible"
+var selected_item_id := ""
+var is_open := false
+
+const FACE_TEXTURES = { "Astro": preload("res://Assets/Faces/Astro.png"),
+					   	"Miguelito": preload("res://Assets/Faces/miguelito.png"),
+						"Chipita": preload("res://Assets/Faces/chipita.png"),
+						"Sigrid": preload("res://Assets/Faces/sigrid.png"),
+						"Amanda": preload("res://Assets/Faces/amanda.png"),
+						"Maya": preload("res://Assets/Faces/maya.png")}
+
+func _ready():
+	visible = false
+	panel_items.visible = false
+
+	anim.animation_finished.connect(_on_animation_finished)
+	InventoryManager.inventory_changed.connect(_on_inventory_changed)
+	for cat in category_buttons.keys():
+		category_buttons[cat].pressed.connect(_on_category_selected.bind(cat))
+	
+	btn_salir.pressed.connect(_on_salir_pressed)
+
+	item_context.clear()
+	item_context.add_item("Usar", 0)
+	item_context.add_item("Información", 1)
+	item_context.add_item("Descartar", 2)
+	item_context.id_pressed.connect(_on_item_action)
+
+	character_context.id_pressed.connect(_on_character_selected)
+
+func toggle():
+	is_open = !is_open
+	
+	if is_open:
+		visible = true
+		panel_items.visible = true
+		categories[0].grab_focus()
+		GameManager.push_ui()
+		anim.play("open")
+		refresh_items()
+	else:
+		anim.play("close")
+		main_menu.toggle()
+		GameManager.pop_ui()
+
+
+func refresh_items() -> void:
+	for c in item_list.get_children():
+		c.queue_free()
+	
+	for item_name in InventoryManager.items.keys():
+		var item_id = ItemManager.get_item_id(item_name)
+		if item_id == "":
+			continue
+		
+		if ItemManager.get_item_tipo(item_id) != current_category:
+			continue
+		
+		var btn := Button.new()
+		btn.text = "%s x%s" % [item_name, InventoryManager.items[item_name]]
+		btn.pressed.connect(_on_item_pressed.bind(item_id))
+		item_list.add_child(btn)
+
+func _on_category_selected(category: String):
+	current_category = category
+
+	for cat in category_buttons.keys():
+		category_buttons[cat].disabled = (cat == category)
+
+	refresh_items()
+
+func _on_item_pressed(item_id: String):
+	selected_item_id = item_id
+	item_context.set_position(get_global_mouse_position())
+	item_context.popup()
+
+func _on_item_action(action_id: int):
+	match action_id:
+		0:
+			_open_character_menu()
+		1:
+			_show_item_info()
+		2:
+			_discard_item()
+
+func _open_character_menu():
+	character_context.clear()
+	var party = PlayableCharacters.get_party_actual()
+	for i in range(party.size()):
+		character_context.add_item(party[i], i)
+	character_context.set_position(get_global_mouse_position())
+	character_context.popup()
+
+func _on_character_selected(index: int):
+	var char_id = character_context.get_item_text(index)
+
+	var context = "battle" if GameManager.is_in_battle() else "world"
+	ItemManager.use_item(selected_item_id, char_id, context)
+
+	refresh_items()
+	selected_item_id = ""
+
+func _show_item_info():
+	var item = DataLoader.items.get(selected_item_id, {})
+	info_label.text = item.get("description", "Sin descripción")
+	info_label.set_position(get_global_mouse_position())
+	panel_info.visible = true
+
+func _discard_item():
+	InventoryManager.remove_item(
+		ItemManager.get_item_nombre(selected_item_id),
+		1
+	)
+	refresh_items()
+
+func _on_inventory_changed():
+	if not is_open:
+		return
+	
+	refresh_items()
+
+func _on_salir_pressed():
+	toggle()
+	
+
+func _on_animation_finished(anim_name: String) -> void:
+	if anim_name == "close":
+		visible = false
+		panel_items.visible = false

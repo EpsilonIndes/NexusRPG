@@ -8,12 +8,15 @@
 
 [node name="TechButton" type="TextureButton"]
 custom_minimum_size = Vector2(63, 18)
-offset_right = 64.0
-offset_bottom = 18.0
+offset_left = -1.0
+offset_top = -1.0
+offset_right = 63.0
+offset_bottom = 17.0
 scale = Vector2(2, 2)
 texture_normal = ExtResource("1_27n53")
 texture_pressed = ExtResource("2_oaamv")
 texture_hover = ExtResource("3_tps1x")
+texture_focused = ExtResource("3_tps1x")
 stretch_mode = 3
 script = ExtResource("4_27n53")
 

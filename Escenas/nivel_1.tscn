@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://cjswe57kq821f"]
+[gd_scene load_steps=37 format=3 uid="uid://cjswe57kq821f"]
 
 [ext_resource type="PackedScene" uid="uid://bmocargan5l0q" path="res://Escenas/player.tscn" id="1_a8vtw"]
 [ext_resource type="Script" uid="uid://dpb427vjhtg17" path="res://Scripts/InventoryManager.gd" id="2_5j2cu"]
@@ -6,13 +6,16 @@
 [ext_resource type="PackedScene" uid="uid://baga8lrftoaue" path="res://Escenas/Personajes/Amanda.tscn" id="3_pg8q4"]
 [ext_resource type="PackedScene" uid="uid://dbkl1jxjs2dxk" path="res://Escenas/Personajes/Maya.tscn" id="4_i64u6"]
 [ext_resource type="PackedScene" uid="uid://ecyr37wcvpst" path="res://Escenas/UserUI/canvas_layer.tscn" id="4_j23ur"]
-[ext_resource type="PackedScene" uid="uid://qh76bv7y2534" path="res://Escenas/UserUI/InventoryUI.tscn" id="5_gjkhy"]
 [ext_resource type="PackedScene" uid="uid://ckhl1sgngkvhd" path="res://Escenas/Personajes/Sigrid.tscn" id="5_oduvb"]
 [ext_resource type="PackedScene" uid="uid://ddbnhhajofjkw" path="res://Escenas/Personajes/Chipita.tscn" id="6_ai0lc"]
 [ext_resource type="PackedScene" uid="uid://dkn8gxfmy5tm6" path="res://Escenas/UserUI/label_dialogue.tscn" id="6_dp2kd"]
 [ext_resource type="PackedScene" uid="uid://dioro2qfasopc" path="res://Escenas/Objetos/cubiletrero.tscn" id="10_sf4ds"]
+[ext_resource type="PackedScene" uid="uid://32tsodv1b27v" path="res://Escenas/UserUI/inventory_ui2.tscn" id="10_x6jwr"]
 [ext_resource type="PackedScene" uid="uid://bodo6o8l2sybh" path="res://Escenas/NPCs Auromora/NPC_maya.tscn" id="11_5x380"]
 [ext_resource type="PackedScene" uid="uid://b7c56in6tdjsb" path="res://Escenas/Sonido/sonido_ambiental.tscn" id="11_cqkqw"]
+[ext_resource type="PackedScene" uid="uid://cvaq71wq2o5yd" path="res://Escenas/UserUI/main_menu_ui.tscn" id="11_lotfc"]
+[ext_resource type="PackedScene" uid="uid://uu6q5hosvtu6" path="res://Escenas/UserUI/opciones_ui.tscn" id="12_lotfc"]
+[ext_resource type="PackedScene" uid="uid://cakpnjvtgcato" path="res://Escenas/UserUI/estadisticas_ui.tscn" id="13_2nfd4"]
 [ext_resource type="PackedScene" uid="uid://7v22g42l4rov" path="res://Models/Cofre.tscn" id="13_16hig"]
 [ext_resource type="PackedScene" uid="uid://cpkvk4qac61ng" path="res://Escenas/NPCs Auromora/anciano_1.tscn" id="13_wukj4"]
 [ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="14_al3wf"]
@@ -153,13 +156,6 @@ script = ExtResource("2_5j2cu")
 
 [node name="CanvasLayer" parent="." instance=ExtResource("4_j23ur")]
 
-[node name="InventoryUI" parent="CanvasLayer" instance=ExtResource("5_gjkhy")]
-offset_left = 2.0
-offset_top = 2.0
-offset_right = 2.0
-offset_bottom = 2.0
-size_flags_vertical = 4
-
 [node name="LabelDialogue" parent="CanvasLayer" instance=ExtResource("6_dp2kd")]
 offset_left = -333.0
 offset_top = 10.0
@@ -167,6 +163,16 @@ offset_right = 118.0
 offset_bottom = 188.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
+
+[node name="InventoryUI" parent="CanvasLayer" instance=ExtResource("10_x6jwr")]
+
+[node name="MainMenuUI" parent="CanvasLayer" instance=ExtResource("11_lotfc")]
+
+[node name="OpcionesUI" parent="CanvasLayer" instance=ExtResource("12_lotfc")]
+visible = false
+
+[node name="EstadisticasUI" parent="CanvasLayer" instance=ExtResource("13_2nfd4")]
+visible = false
 
 [node name="Entorno" type="Node" parent="."]
 

@@ -9,6 +9,8 @@ enum EstadosDeJuego {
 	CINEMATICA
 }
 
+var in_battle = false
+
 var equipo_actual: Array[Dictionary] = [ # todos los pjs actuales jugables
 	{"id": "Astro"},
 	{"id": "Sigrid"},
@@ -17,6 +19,8 @@ var equipo_actual: Array[Dictionary] = [ # todos los pjs actuales jugables
 	{"id": "Miguelito"},
 	{"id": "Chipita"},
 ]
+
+var ui_lock_count := 0
 
 var estado_actual: EstadosDeJuego = EstadosDeJuego.LIBRE
 
@@ -27,6 +31,8 @@ func es_estado(objetivo):
 	return estado_actual == objetivo
 
 func iniciar_batalla(contra_enemigos: Array[String]):
+	in_battle = true
+
 	set_estado(EstadosDeJuego.COMBATE)
 	get_tree().change_scene_to_file("res://Escenas/Battle/battle_scene.tscn")
 
@@ -67,6 +73,7 @@ func get_team_instanciar() -> Array[Dictionary]:
 	return team # [{"id": "Astro"}, {"id": "Sigrid"}]
 
 func _on_battle_finished(result: Dictionary) -> void:
+	in_battle = false
 	print("Resultado de batalla recibido: ", result)
 
 	var rewards = BattleResultProcessor.procesar_batalla(result)
@@ -74,3 +81,16 @@ func _on_battle_finished(result: Dictionary) -> void:
 
 	set_estado(EstadosDeJuego.LIBRE)
 	get_tree().change_scene_to_file("res://Escenas/nivel_1.tscn")
+
+func is_in_battle() -> bool:
+	return in_battle
+
+
+func push_ui() -> void:
+	ui_lock_count += 1
+	estado_actual = EstadosDeJuego.MENU
+
+func pop_ui() -> void:
+	ui_lock_count = max(ui_lock_count - 1, 0)
+	if ui_lock_count == 0:
+		estado_actual = EstadosDeJuego.LIBRE

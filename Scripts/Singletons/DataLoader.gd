@@ -132,6 +132,7 @@ func load_items_to_dict(path: String, key_column: String) -> Dictionary:
 
 		for i in headers.size():
 			var header_name = headers[i]
+
 			var raw_value = row[i].strip_edges()
 
 			# 1) Efectos → parser especial
@@ -145,7 +146,7 @@ func load_items_to_dict(path: String, key_column: String) -> Dictionary:
 			# 3) String normal
 			else:
 				entry[header_name] = raw_value
-
+			
 		# Usar la columna clave para indexar el diccionario
 		result[entry[key_column]] = entry
 

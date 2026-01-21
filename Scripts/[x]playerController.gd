@@ -67,8 +67,8 @@ func _process(delta):
 	if Input.is_action_just_pressed("accion"):
 		_try_interact()
 
-	if Input.is_action_just_pressed("inventario"):
-		inventory_ui.toggle_inventory()
+	#if Input.is_action_just_pressed("inventario"):
+	#	inventory_ui.toggle_inventory()
 
 func _try_interact():
 	if raycast.is_colliding():

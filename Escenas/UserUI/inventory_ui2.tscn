@@ -1,0 +1,201 @@
+[gd_scene load_steps=6 format=3 uid="uid://32tsodv1b27v"]
+
+[ext_resource type="Script" uid="uid://cv5tgmeffhbfw" path="res://Scripts/SistemaItems/InventoryUI.gd" id="1_mjo0e"]
+
+[sub_resource type="Animation" id="Animation_mjo0e"]
+resource_name = "open"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.23325787, 3.138337),
+"update": 0,
+"values": [Vector2(1.2, 1.2), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.43333334, 1),
+"transitions": PackedFloat32Array(1, 15.999994, 0.63728034, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(0.45, 0.7066667, 1, 0.42745098), Color(1, 1, 1, 0.38039216), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_bg7x6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_c0g8x"]
+resource_name = "close"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.23325787, 3.138337),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.2, 1.2)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.43333334, 1),
+"transitions": PackedFloat32Array(1, 15.999994, 0.63728034, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0.94237024, 0.5412355, 0.73813665, 0.42745098), Color(1, 1, 1, 0.38039216), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bg7x6"]
+_data = {
+&"RESET": SubResource("Animation_bg7x6"),
+&"close": SubResource("Animation_c0g8x"),
+&"open": SubResource("Animation_mjo0e")
+}
+
+[node name="InventoryUI" type="Control"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_mjo0e")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_bg7x6")
+}
+
+[node name="MainMenu" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -368.0
+offset_top = -231.5
+offset_right = 368.0
+offset_bottom = 231.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Categories" type="HBoxContainer" parent="MainMenu"]
+layout_mode = 0
+offset_left = 434.0
+offset_top = 5.0
+offset_right = 662.0
+offset_bottom = 45.0
+scale = Vector2(1.1783869, 1.1783869)
+alignment = 1
+
+[node name="Consumibles" type="Button" parent="MainMenu/Categories"]
+layout_mode = 2
+text = "Consumibles"
+
+[node name="Equipo" type="Button" parent="MainMenu/Categories"]
+layout_mode = 2
+text = "Equipo"
+
+[node name="Clave" type="Button" parent="MainMenu/Categories"]
+layout_mode = 2
+text = "Clave"
+
+[node name="Categories2" type="HBoxContainer" parent="MainMenu"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 5.5
+offset_right = 248.0
+offset_bottom = 45.5
+scale = Vector2(1.1783869, 1.1783869)
+
+[node name="Salir" type="Button" parent="MainMenu/Categories2"]
+layout_mode = 2
+text = "Regresar"
+
+[node name="ItemsPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -349.25372
+offset_top = -167.16423
+offset_right = 348.74615
+offset_bottom = 263.51776
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1, 0.8799997)
+
+[node name="Scroll" type="ScrollContainer" parent="ItemsPanel"]
+layout_mode = 0
+offset_right = 693.735
+offset_bottom = 430.682
+
+[node name="Vbox" type="VBoxContainer" parent="ItemsPanel/Scroll"]
+layout_mode = 2
+
+[node name="ItemInfoPopup" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="ItemInfoPopup"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="ItemContextMenu" type="PopupMenu" parent="."]
+oversampling_override = 1.0
+visible = true
+
+[node name="CharacterContextMenu" type="PopupMenu" parent="ItemContextMenu"]
+oversampling_override = 1.0
+visible = true

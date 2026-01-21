@@ -403,6 +403,12 @@ func mostrar_tecnicas_sobre(posicion_3d: Vector3) -> void:
 # Llamada desde UI cuando el jugador selecciona una técnica
 # (La UI debe llamar a este método)
 func _on_tecnica_seleccionada(tec_id: String) -> void:
+	if estado_actual == BattleState.SELECCION_OBJETIVO:
+		print("[BattleManager] estado: SELECCION_OBJETIVO, retornando...")
+		return
+	
+	get_viewport().set_input_as_handled() # Añadido ahorita <--
+
 	if combatiente_actual == null:
 		push_warning("No hay combatiente actual al seleccionar técnica")
 		return
@@ -430,8 +436,11 @@ func _on_tecnica_seleccionada(tec_id: String) -> void:
 		# Intentamos usar un target selector de la UI si existe
 		if ui_overlay.has_method("open_target_selector"):
 			ui_overlay.set_tecnicas_interactivas(false)
-			ui_overlay.open_target_selector(targets_data, Callable(self, "_on_target_selected"))
 			cambiar_estado(BattleState.SELECCION_OBJETIVO)
+
+			await get_tree().process_frame
+
+			ui_overlay.open_target_selector(targets_data, Callable(self, "_on_target_selected"))
 			return
 		else:
 			# fallback seguro
@@ -456,9 +465,16 @@ func _on_tecnica_seleccionada(tec_id: String) -> void:
 # ui_overlay.open_target_selector(candidatos, callback)
 # callback recibirá un nodo Combatant
 func _on_target_selected(target: Combatant) -> void:
+	print("[BattleManager] Objetivo confirmado: ", target.nombre)
+
 	objetivos_actuales = [target]
+
+	if ui_overlay:
+		ui_overlay.set_tecnicas_interactivas(true)
+	
 	# asignar técnica y continuar
 	combatiente_actual.seleccionar_tecnica(tecnica_actual, objetivos_actuales)
+	
 	if estado_actual != BattleState.EJECUCION_ACCION:
 		cambiar_estado(BattleState.EJECUCION_ACCION)
 
@@ -545,55 +561,6 @@ func actualizar_drive_score() -> void:
 		battle_stats["techniques_used"][id] = battle_stats["techniques_used"].get(id, 0) + 1
 
 
-
-
-# Descontinuado, sin uso:
-func _on_tecnica_seleccionada_descontinuado(tec_id: String) -> void:
-	if combatiente_actual == null:
-		push_warning("No hay combatiente actual al seleccionar técnica")
-		return
-	
-	tecnica_actual = GlobalTechniqueDatabase.get_tecnica_stats(tec_id)
-	if tecnica_actual.is_empty():
-		push_warning("Técnica %s no encontrada" % tec_id)
-		return
-
-	var scope = tecnica_actual.get("target_scope", "SINGLE_ENEMY")
-	var candidatos = _candidatos_por_scope(scope)
-
-	# Si la técnica requiere SINGLE y hay varios candidatos enemigos -> pedir selección de objetivo (UI)
-	if (scope == "SINGLE_ENEMY") and candidatos.size() >= 1 and combatiente_actual.es_jugador:
-		# Intentamos usar un target selector de la UI si existe
-		if ui_overlay.has_method("open_target_selector"):
-			ui_overlay.set_tecnicas_interactivas(false)
-			ui_overlay.open_target_selector(candidatos, Callable(self, "_on_target_selected"))
-			cambiar_estado(BattleState.SELECCION_OBJETIVO)
-			return
-		else:
-			# Fallback: seleccionar el primero
-			objetivos_actuales = [candidatos[0]]
-	# Si la técnica requiere SINGLE y hay varios candidatos aliados -> pedir seleccion de objetivo (UI)
-	elif (scope == "SINGLE_ALLY") and candidatos.size() >= 1 and combatiente_actual.es_jugador:
-		# Intentamos usar un target selector de la Ui pero para aliados
-		if ui_overlay.has_method("open_allytarget_selector"):
-			ui_overlay.set_tecnicas_interactivas(false)
-			ui_overlay.open_allytarget_selector(candidatos, Callable(self, "_on_target_selected"))
-			cambiar_estado(BattleState.SELECCION_OBJETIVO)
-			return
-		else:
-			objetivos_actuales = [candidatos[0]]
-	else:
-		# Otros scopes o enemigos -> Obtener objetivos directos
-		objetivos_actuales = _map_scope_a_objetivos(scope, candidatos)
-	
-	# Finalmente, asignamos la técnica al combatant y dejamos que ejecute
-	# Usamos la API del Combatant para manejar la ejecución (que emitirá turno_finalizado)
-	combatiente_actual.seleccionar_tecnica(tecnica_actual, objetivos_actuales)
-	# La llamada a selecciona_tecnica dentro del Combatant ya pedirá cambiar estado a EJECUTAR_ACCION
-	# Si por flujo no lo hace, forzamos:
-	if estado_actual != BattleState.EJECUCION_ACCION:
-		cambiar_estado(BattleState.EJECUCION_ACCION)
-
 # para resultados
 # enemigos derrotados:
 func registrar_enemigos_derrotado(enemigo: Combatant) -> void:
@@ -608,3 +575,6 @@ func _construir_battle_result(victoria: bool) -> Dictionary:
 		"jugadores": jugadores_participantes.duplicate(),
 		"stats": battle_stats.duplicate()
 	}
+
+func get_combatant():
+	return combatiente_actual

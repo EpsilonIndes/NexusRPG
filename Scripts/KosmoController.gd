@@ -97,8 +97,8 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("accion"):
 		try_interact()
 
-	if event.is_action_pressed("inventario"):
-		inventory_ui.toggle_inventory()
+#	if event.is_action_pressed("menu"):
+#		inventory_ui.toggle_inventory()
 
 # --- INTERACCIONES ---
 func try_interact() -> void:

@@ -53,6 +53,7 @@ func _level_up() -> void:
 func get_stats() -> Dictionary:
 	return stats
 
+# Para el menú de estadísticas duras
 func get_combat_stats() -> Dictionary:
 	return {
 		"id": id,

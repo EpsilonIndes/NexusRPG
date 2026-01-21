@@ -58,7 +58,11 @@ func _calcular_exp(result: Dictionary, rewards: Dictionary) -> void:
 			rewards["exp"][pj_id] = exp_por_jugador
 
 func _calcular_drops(result: Dictionary, rewards: Dictionary) -> void:
-	pass
+	for drop in result.drops:
+		ItemManager.give_item_to_player(
+			drop.item_id,
+			drop.amount
+		)
 
 func _calcular_bonus_drive(result: Dictionary, rewards: Dictionary) -> void:
 	pass

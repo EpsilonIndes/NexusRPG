@@ -19,7 +19,7 @@ func _run_dialogue(npc_id: String, bubble: SpeechBubble, npc: NpcBase) -> void:
 			await esperar_input()
 
 		
-	GameManager.set_estado(GameManager.EstadosDeJuego.LIBRE)
+	GameManager.pop_ui()
 	
 	bubble.queue_free()
 	npc.on_dialogue_finished()

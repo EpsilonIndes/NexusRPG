@@ -11,7 +11,14 @@ var index_actual: int = 0
 var callback: Callable
 var activo: bool = false
 
+@onready var ui_overlay = get_parent()
+
 func open(targets_data: Dictionary, _callback: Callable) -> void:
+	if activo:
+		push_warning("TargetSelector ya estaba activo, ignorando open() duplicado")
+		return
+	
+	ui_overlay.set_tecnicas_interactivas(false)
 	print("Abriendo selector de objetivos")
 
 	targets.enemies = targets_data.get("enemies", [])
@@ -29,27 +36,37 @@ func open(targets_data: Dictionary, _callback: Callable) -> void:
 	_resaltar_actual()
 
 
-func _unhandled_input(event: InputEvent) -> void:
+func close() -> void:
+	_quitar_resaltado_actual()
+	visible = false
+	activo = false
+	targets.enemies.clear()
+	targets.allies.clear()
+	callback = Callable()
+	set_process_input(false)
+
+
+func _input(event: InputEvent) -> void:
 	if not activo:
 		return
 	
 	if event.is_action_pressed("derecha") or event.is_action_pressed("abajo"):
-		_mover(1)
 		get_viewport().set_input_as_handled()
+		_mover(1)
 
 	elif event.is_action_pressed("izquierda") or event.is_action_pressed("arriba"):
-		_mover(-1)
 		get_viewport().set_input_as_handled()
+		_mover(-1)
 
 	elif event.is_action_pressed("accion"):
 		print("ACCION apretado")
-		_confirmar()
 		get_viewport().set_input_as_handled()
+		_confirmar()
 
 	elif event.is_action_pressed("cancelar"):
-		_cancelar()
 		get_viewport().set_input_as_handled()
-	
+		_cancelar()
+
 	elif event.is_action_pressed("cambiar_grupo"):
 		_alternar_grupo()
 	
@@ -70,12 +87,20 @@ func _confirmar() -> void:
 	if lista.is_empty():
 		push_error("No hay objetivos para confirmar")
 		return
+	
+	var target = lista[index_actual]
+	
 	if callback.is_valid():
-		callback.call(lista[index_actual])
+		callback.call(target)
+	else: 
+		print("[TargetSelector] Callback Inválido")
+		return
+	
 	close()
 
 func _cancelar() -> void:
 	print("Seleccion de objetivo cancelado")
+	ui_overlay.set_tecnicas_interactivas(true)
 	close()
 
 
@@ -102,16 +127,8 @@ func _quitar_resaltado_actual() -> void:
 func _on_target_chosen(target: Combatant) -> void:
 	print("Objetivo elegido:", target.nombre)
 	callback.call(target)
+	ui_overlay.set_tecnicas_interactivas(true)
 	close()
-
-func close() -> void:
-	_quitar_resaltado_actual()
-	visible = false
-	activo = false
-	targets.enemies.clear()
-	targets.allies.clear()
-	callback = Callable()
-	set_process_input(false)
 
 
 func _alternar_grupo() -> void:
