@@ -10,6 +10,8 @@ enum EstadosDeJuego {
 }
 
 var in_battle = false
+@onready var player = get_tree().get_current_scene().get_node("Personajes/Player")
+@onready var cont_seguidores = get_tree().get_current_scene().get_node("Personajes/seguidores")
 
 var equipo_actual: Array[Dictionary] = [ # todos los pjs actuales jugables
 	{"id": "Astro"},
@@ -34,6 +36,10 @@ func iniciar_batalla(contra_enemigos: Array[String]):
 	in_battle = true
 
 	set_estado(EstadosDeJuego.COMBATE)
+	
+	WorldStateManager.capture_player(player)
+	WorldStateManager.capture_followers(cont_seguidores)
+
 	get_tree().change_scene_to_file("res://Escenas/Battle/battle_scene.tscn")
 
 	# Esperar que termine su _ready()

@@ -38,9 +38,11 @@ const FACE_TEXTURES = { "Astro": preload("res://Assets/Faces/Astro.png"),
 func _ready():
 	visible = false
 	panel_items.visible = false
+	panel_info.visible = false
+	item_context.hide()
+	character_context.hide()
 
 	anim.animation_finished.connect(_on_animation_finished)
-	InventoryManager.inventory_changed.connect(_on_inventory_changed)
 	for cat in category_buttons.keys():
 		category_buttons[cat].pressed.connect(_on_category_selected.bind(cat))
 	
@@ -65,6 +67,10 @@ func toggle():
 		anim.play("open")
 		refresh_items()
 	else:
+		item_context.hide()
+		character_context.hide()
+		panel_info.visible = false
+
 		anim.play("close")
 		main_menu.toggle()
 		GameManager.pop_ui()
@@ -153,3 +159,7 @@ func _on_animation_finished(anim_name: String) -> void:
 	if anim_name == "close":
 		visible = false
 		panel_items.visible = false
+		item_context.hide()
+		character_context.hide()
+		panel_info.visible = false
+		

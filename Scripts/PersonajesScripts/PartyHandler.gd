@@ -27,7 +27,7 @@ func actualizar_personajes_party():
 			personaje.set_process_input(true)
 			personaje.set_physics_process(false) # Desactivo física temporal
 
-			# 👉 Intentamos usar spawn narrativo (DialogueAnchor)
+			# Intentamos usar spawn narrativo (DialogueAnchor)
 			var override_pos = PlayableCharacters.consume_spawn_override(pj_id)
 			if override_pos != Vector3.ZERO:
 				# Aparece exactamente donde estaba el NPC
