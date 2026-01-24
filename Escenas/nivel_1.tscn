@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://cjswe57kq821f"]
+[gd_scene load_steps=39 format=3 uid="uid://cjswe57kq821f"]
 
 [ext_resource type="PackedScene" uid="uid://bmocargan5l0q" path="res://Escenas/player.tscn" id="1_a8vtw"]
 [ext_resource type="Script" uid="uid://dpb427vjhtg17" path="res://Scripts/InventoryManager.gd" id="2_5j2cu"]
@@ -23,6 +23,7 @@
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="15_6tl7n"]
 [ext_resource type="Script" uid="uid://cq8p0ssv6jhso" path="res://Scripts/para_nodo/world.gd" id="17_v6mq6"]
 [ext_resource type="PackedScene" uid="uid://cdarkppno1gsm" path="res://Escenas/NPCs Auromora/NPC_sigrid.tscn" id="18_7vly3"]
+[ext_resource type="Script" uid="uid://bve60yr50c5sg" path="res://Scripts/Mundo/Interactuables/ChestCommon.gd" id="18_mo6bs"]
 [ext_resource type="PackedScene" uid="uid://xlhfyi07xx0d" path="res://Escenas/NPCs Auromora/NPC_amanda.tscn" id="19_x6jwr"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_metkf"]
@@ -192,10 +193,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.609187, 0.810861, -6.32963
 
 [node name="CofreCommon" parent="Interactuable" instance=ExtResource("13_16hig")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -6.99299, -0.05, -7.78531)
+script = ExtResource("18_mo6bs")
+loot_id = ""
+world_flag_id = "chest_auromora_1"
 
 [node name="CofreCommon2" parent="Interactuable" instance=ExtResource("13_16hig")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -5.03499, -0.05, -7.78046)
-loot_id = "cofre_gema_roja"
+loot_id = "mimic_1"
+world_flag_id = "m_chest_1_auromora"
 
 [node name="Maya" parent="Interactuable" instance=ExtResource("11_5x380")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.59051, 0.783088, -6.87827)

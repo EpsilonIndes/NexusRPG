@@ -2,3 +2,4 @@ id,nombre,tipo,hp,mp,atk,def,spd,lck,wis,exp,class_id,drop_table
 Slime,Slime Celeste,trash,50,0,8,2,4,5,10,400,C001,slime_basic
 Triangle,Triángulo Vengativo,trash,80,10,12,4,10,5,10,200,C002,triangle_basic
 Esfera_roja,Esfera Roja,elite,60,5,10,3,11,4,8,25,C003,elite_basic
+Mimic,Mímico,elite,100,40,20,10,11,4,5,3,C002,

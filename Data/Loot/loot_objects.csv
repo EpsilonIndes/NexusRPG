@@ -2,3 +2,4 @@ loot_id,item_id,quantity,requires_key,dialogue_1,dialogue_2,dialogue_3
 cofre_gema_roja,gema_roja,1,FALSE,¡Encontraste una gema roja!,Está fría al tacto...,¿Será mágica?
 cofre_monedas,oro,50,FALSE,Has encontrado un puñado de monedas,,¡Qué suerte!
 cofre_potion,potion,1,FALSE,¡Encontraste una poción!,,
+mimic_1,potion,1,FALSE,¡Es un Cofre Trampa!,,

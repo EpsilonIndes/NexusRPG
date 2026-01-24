@@ -40,6 +40,7 @@ GlobalTechniqueDatabase="*res://Scripts/BattleMode/GlobalTechniqueDatabase.gd"
 PartyHandler="*res://Scripts/PersonajesScripts/PartyHandler.gd"
 DropDatabase="*res://Scripts/SistemaItems/DropDatabase.gd"
 BattleResultProcessor="*res://Scripts/BattleMode/BattleResultProcessor.gd"
+WorldFlags="*res://Scripts/Singletons/WorldFlags.gd"
 
 [display]
 

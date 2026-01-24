@@ -2,5 +2,7 @@ enemy_id,item_id,chance,min,max
 Slime,slime_gel,60,1,2
 Slime,potion,20,1,1
 Triangle,metal_raro,10,1,1
-Elite,superpotion,40,1,2
+Elite,super_potion,40,1,2
 Elite,cristal_drive,25,1,1
+Mimic,super_potion,50,1,2
+Mimic,ether,70,1,3
