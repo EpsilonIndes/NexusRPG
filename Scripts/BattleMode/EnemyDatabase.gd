@@ -33,3 +33,6 @@ func get_stats(enemy_id: String) -> Dictionary:
 func get_exp(enemy_id: String) -> int:
 	var e = get_data(enemy_id)
 	return e.exp if e.has("exp") else 0
+
+func get_drop_table(enemy_id: String) -> String:
+	return get_data(enemy_id).get("drop_table", "")

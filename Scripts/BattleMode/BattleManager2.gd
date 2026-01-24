@@ -356,6 +356,12 @@ func chequear_si_termina():
 func finalizar_batalla() -> void:
 	print("Finalizando Batalla...")
 
+	"""
+	La función any() devuelve true si 
+	los elementos coinciden, se debe 
+	usar una función Lambda/anónima [func(c)]
+	
+	"""
 	var victoria := combatientes.any(func(c): return c.es_jugador and c.esta_vivo())
 
 	var battle_result = _construir_battle_result(victoria)
@@ -368,7 +374,7 @@ func finalizar_batalla() -> void:
 		"turns": 0,
 		"techniques_used": {}
 	}
-	
+
 	# Volver al mapa, recompensas y demás
 
 # -----------------------
@@ -440,7 +446,7 @@ func _on_tecnica_seleccionada(tec_id: String) -> void:
 
 			await get_tree().process_frame
 
-			ui_overlay.open_target_selector(targets_data, Callable(self, "_on_target_selected"))
+			ui_overlay.open_target_selector(targets_data, Callable(self, "_on_target_selected"), Callable(self, "_on_cancel_selection_target"))
 			return
 		else:
 			# fallback seguro
@@ -459,7 +465,6 @@ func _on_tecnica_seleccionada(tec_id: String) -> void:
 		combatiente_actual.seleccionar_tecnica(tecnica_actual, objetivos_actuales)
 		if estado_actual != BattleState.EJECUCION_ACCION:
 			cambiar_estado(BattleState.EJECUCION_ACCION)
-
 	
 # Callback que la UI de selección de objetivo debe llamar:
 # ui_overlay.open_target_selector(candidatos, callback)
@@ -477,6 +482,10 @@ func _on_target_selected(target: Combatant) -> void:
 	
 	if estado_actual != BattleState.EJECUCION_ACCION:
 		cambiar_estado(BattleState.EJECUCION_ACCION)
+
+func _on_cancel_selection_target() -> void:
+	print("[BattleMaager] Cancelado selector de objetivos")
+	estado_actual = BattleState.SELECCION_ACCION
 
 func _candidatos_por_scope(scope: String) -> Array:
 	var aliados = combatientes.filter(func(c): return c is Combatant and c.es_jugador and c.esta_vivo())

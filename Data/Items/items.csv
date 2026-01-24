@@ -9,3 +9,5 @@ antidoto,Antídoto,consumible,Cura estado de Veneno,100,common,heal_poison
 mid_potion,Recarga a medias,consumible,"Pócima 'Hasta ahí llegó mi Presupuesto'. Recupera la mitad del HP y de MP.",320,rare,heal_midhpmp
 elixir,Élixir,consumible,Recupera por completo el HP y el MP.,1200,epic,heal_full
 gema_roja,Gema roja,clave,Piedra preciosa vendible a buen precio.,500,common,sellable
+metal_raro, Metal raro,clave,metal extraído de un Triangle,2000,rare,sellable
+slime_gel, Gel de Slime,clave,Gel expulsado de las entrañas de un Slime,20,common,sellable

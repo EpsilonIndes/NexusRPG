@@ -2,6 +2,19 @@
 extends Combatant
 class_name EnemyCombatant
 
+# Shaders
+@onready var body: MeshInstance3D = $Model/MeshInstance3D
+@onready var outline: MeshInstance3D = $Model/Outline
+var highlight_material: ShaderMaterial
+
+
+func _ready():
+	outline.visible = false
+	
+	highlight_material = outline.material_override.duplicate()
+	outline.material_override = highlight_material
+
+
 
 # -------------------------------------------------------
 #  INICIALIZACIÓN
@@ -51,3 +64,8 @@ func iniciar_accion():
 	}
 
 	battle_manager.ejecutar_accion(action)
+
+# Shaders
+func set_target_highlight(active: bool) -> void:
+	outline.visible = active
+	highlight_material.set_shader_parameter("highlight", active)

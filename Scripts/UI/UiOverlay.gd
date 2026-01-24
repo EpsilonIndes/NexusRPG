@@ -11,7 +11,7 @@ extends CanvasLayer
 # y el Callback:
 	# Callable(self, "_on_target_selected")
 
-func open_target_selector(targets_data: Dictionary, callback: Callable) -> void: # targets_data: Dictionary, el callback
+func open_target_selector(targets_data: Dictionary, callback: Callable, cancel_callback: Callable) -> void: # targets_data: Dictionary, el callback
 	print("Targets recibidos: ", targets_data)
 	
 	set_tecnicas_interactivas(false)
@@ -25,7 +25,7 @@ func open_target_selector(targets_data: Dictionary, callback: Callable) -> void:
 		return
 	
 	target_selector.visible = true
-	target_selector.open(targets_data, callback)
+	target_selector.open(targets_data, callback, cancel_callback)
 
 func set_tecnicas_interactivas(valor: bool) -> void:
 	if technique_overlay and technique_overlay.has_method("set_interactive"):

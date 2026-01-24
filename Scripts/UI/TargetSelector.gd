@@ -9,11 +9,12 @@ var grupo_actual: String = "enemies"
 var allow_switch: bool = false
 var index_actual: int = 0
 var callback: Callable
+var cancel_callback: Callable
 var activo: bool = false
 
 @onready var ui_overlay = get_parent()
 
-func open(targets_data: Dictionary, _callback: Callable) -> void:
+func open(targets_data: Dictionary, _callback: Callable, _cancel_callback: Callable) -> void:
 	if activo:
 		push_warning("TargetSelector ya estaba activo, ignorando open() duplicado")
 		return
@@ -27,6 +28,7 @@ func open(targets_data: Dictionary, _callback: Callable) -> void:
 	allow_switch = targets_data.allow_switch
 
 	callback = _callback
+	cancel_callback = _cancel_callback
 	index_actual = 0
 	activo = true
 	visible = true
@@ -101,6 +103,10 @@ func _confirmar() -> void:
 func _cancelar() -> void:
 	print("Seleccion de objetivo cancelado")
 	ui_overlay.set_tecnicas_interactivas(true)
+	
+	if cancel_callback.is_valid():
+		cancel_callback.call()
+	
 	close()
 
 

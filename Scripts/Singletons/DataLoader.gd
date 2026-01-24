@@ -9,6 +9,7 @@ var loots: Dictionary = {}
 var stats: Dictionary = {}
 var tecnicas: Dictionary = {}
 var enemigos: Dictionary = {}
+var drops: Dictionary = {}
 
 const BOOL_COLUMNS := [
 	"allow_target_switch",
@@ -26,6 +27,7 @@ func load_all_data():
 	load_stats("res://Data/Char_stats/stats.csv")
 	load_tecnicas("res://Data/Tecnicas/tecnicas.csv")
 	load_enemy_stats("res://Data/Enemy_stats/stats_enemigos.csv")
+	load_enemy_drops("res://Data/Loot/drop_tables.csv")
 
 func load_csv_to_dict(path: String, key_column: String) -> Dictionary:
 	var result: Dictionary = {}
@@ -186,6 +188,33 @@ func load_techs_to_dict(path: String, key_column: String) -> Dictionary:
 	
 	return result
 	
+func load_csv_grouped(path: String, key_column: String) -> Dictionary:
+	var result := {}
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		return result
+
+	var headers := file.get_line().strip_edges().split(",")
+
+	while not file.eof_reached():
+		var row := file.get_line().strip_edges().split(",")
+		if row.size() != headers.size():
+			continue
+
+		var entry := {}
+		for i in headers.size():
+			entry[headers[i]] = row[i]
+
+		var key = entry[key_column]
+		if not result.has(key):
+			result[key] = []
+
+		result[key].append(entry)
+
+	file.close()
+	return result
+
+
 
 func load_dialogues(path: String):
 	dialogues = load_csv_grouped_by_key(path, "npc_id")
@@ -202,3 +231,5 @@ func load_tecnicas(path: String):
 	tecnicas = load_techs_to_dict(path, "tecnique_id")
 func load_enemy_stats(path: String):
 	enemigos = load_stats_to_dict(path, "id")
+func load_enemy_drops(path: String):
+	drops = load_csv_grouped(path, "enemy_id")

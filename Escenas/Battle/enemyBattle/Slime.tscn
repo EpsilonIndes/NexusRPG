@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://cbu212lkttk8o"]
+[gd_scene load_steps=6 format=3 uid="uid://cbu212lkttk8o"]
 
 [ext_resource type="Script" uid="uid://dw27ee6mb6xpi" path="res://Scripts/BattleMode/PjExtendCombatant/EnemyCombatant.gd" id="1_uyxcx"]
+[ext_resource type="Material" uid="uid://dngphssgf382m" path="res://Materiales/target_highlight_material.tres" id="2_7aem1"]
 [ext_resource type="Material" uid="uid://1ng466f3q4qq" path="res://Materiales/textura_enemigo_circulo.tres" id="2_lkaag"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_wtg2j"]
@@ -21,4 +22,15 @@ surface_material_override/0 = ExtResource("2_lkaag")
 [node name="StaticBody3D" type="StaticBody3D" parent="Model/MeshInstance3D"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Model/MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_ymj2k")
+
+[node name="Outline" type="MeshInstance3D" parent="Model"]
+material_override = ExtResource("2_7aem1")
+mesh = SubResource("SphereMesh_wtg2j")
+skeleton = NodePath("../..")
+surface_material_override/0 = ExtResource("2_lkaag")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Model/Outline"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Model/Outline/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_ymj2k")

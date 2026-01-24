@@ -40,27 +40,14 @@ var esta_muerto := false
 var position_inicial: Vector3 = Vector3.ZERO
 var indice: int = -1
 
-# Shaders
-#@onready var mesh: MeshInstance3D = $Model/MeshInstance3D
-#var highlight_material: ShaderMaterial
-#var original_material: Material
+
+
 
 func _ready() -> void:
 	if not es_jugador:
 		start_levitation()
 
-#	if mesh == null:
-#		return	
-#	original_material = mesh.get_active_material(0)
-#	if original_material == null:
-#		return
-#	if original_material is ShaderMaterial:
-#		highlight_material = original_material.duplicate()
-#	else:
-#		push_warning("El material original no es ShaderMaterial")
-#		return
-#	mesh.set_surface_override_material(0, highlight_material)
-
+	
 	
 
 func _physics_process(delta: float) -> void:
@@ -134,7 +121,7 @@ func _on_muerte() -> void:
 	# para resultados:
 	battle_manager.registrar_enemigos_derrotado(self)
 
-	levitation_tween.pause()
+	#levitation_tween.pause()
 	print("%s ha caído en batalla." % nombre)
 	# reproducir anim de muerte si corresponde
 	if animated_sprite and "death" in animated_sprite.sprite_frames.get_animation_names():
@@ -317,16 +304,3 @@ func start_levitation():
 		base_y,
 		1.2
 	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-
-
-# Shaders
-#func set_target_highlight(active: bool) -> void:
-#	if highlight_material == null:
-#		return
-##	if not highlight_material.shader:
-#		return
-#
-#	var target := 1.0 if active else 0.0
-#	var tween := create_tween()
-#	tween.tween_property(highlight_material, "shader_parameter/strength", target, 0.2)
-#	print("Highlight:", active, "->", display_name)

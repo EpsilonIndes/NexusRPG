@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dngphssgf382m"]
+
+[ext_resource type="Shader" uid="uid://bbsc84lpvuxim" path="res://Materiales/ShaderMaterials_targets/target_highlight.gdshader" id="1_fmyuh"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_fmyuh")
+shader_parameter/highlight = false
+shader_parameter/outline_color = Color(1, 1, 0.2, 1)
+shader_parameter/outline_size = 0.04
