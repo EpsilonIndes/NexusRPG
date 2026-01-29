@@ -47,7 +47,7 @@ func restore_player(player: Node3D) -> void:
 		player.global_rotation = snapshot["player_rotation"]
 	
 	# Limpiar snapshot
-	snapshot.clear()
+	clear_snapshot()
 
 func restore_followers(seguidores: Node3D):
 	if not snapshot.has("followers"):
@@ -61,3 +61,8 @@ func restore_followers(seguidores: Node3D):
 				child.global_position = saved["position"]
 				child.global_rotation = saved["rotation"]
 				break
+	
+	clear_snapshot()
+
+func clear_snapshot() -> void:
+	snapshot.clear()

@@ -14,7 +14,7 @@ extends Control
 @onready var main_menu := $"../MainMenuUI"
 
 @onready var category_buttons := {
-	"conumible": $MainMenu/Categories/Consumibles,
+	"consumible": $MainMenu/Categories/Consumibles,
 	"equipo": $MainMenu/Categories/Equipo,
 	"clave": $MainMenu/Categories/Clave,
 }
@@ -24,16 +24,10 @@ extends Control
 @onready var item_context: PopupMenu = $ItemContextMenu
 @onready var character_context: PopupMenu = $ItemContextMenu/CharacterContextMenu
 
+
 var current_category := "consumible"
 var selected_item_id := ""
 var is_open := false
-
-const FACE_TEXTURES = { "Astro": preload("res://Assets/Faces/Astro.png"),
-					   	"Miguelito": preload("res://Assets/Faces/miguelito.png"),
-						"Chipita": preload("res://Assets/Faces/chipita.png"),
-						"Sigrid": preload("res://Assets/Faces/sigrid.png"),
-						"Amanda": preload("res://Assets/Faces/amanda.png"),
-						"Maya": preload("res://Assets/Faces/maya.png")}
 
 func _ready():
 	visible = false
@@ -50,8 +44,7 @@ func _ready():
 
 	item_context.clear()
 	item_context.add_item("Usar", 0)
-	item_context.add_item("Información", 1)
-	item_context.add_item("Descartar", 2)
+	item_context.add_item("Descartar", 1)
 	item_context.id_pressed.connect(_on_item_action)
 
 	character_context.id_pressed.connect(_on_character_selected)
@@ -62,6 +55,7 @@ func toggle():
 	if is_open:
 		visible = true
 		panel_items.visible = true
+		panel_info.visible = true
 		categories[0].grab_focus()
 		GameManager.push_ui()
 		anim.play("open")
@@ -84,13 +78,16 @@ func refresh_items() -> void:
 		var item_id = ItemManager.get_item_id(item_name)
 		if item_id == "":
 			continue
-		
+
 		if ItemManager.get_item_tipo(item_id) != current_category:
 			continue
 		
 		var btn := Button.new()
 		btn.text = "%s x%s" % [item_name, InventoryManager.items[item_name]]
 		btn.pressed.connect(_on_item_pressed.bind(item_id))
+		btn.focus_entered.connect(_on_item_focused.bind(item_id))
+		btn.mouse_entered.connect(_on_item_focused.bind(item_id))
+
 		item_list.add_child(btn)
 
 func _on_category_selected(category: String):
@@ -99,12 +96,19 @@ func _on_category_selected(category: String):
 	for cat in category_buttons.keys():
 		category_buttons[cat].disabled = (cat == category)
 
+	selected_item_id = ""
 	refresh_items()
 
 func _on_item_pressed(item_id: String):
 	selected_item_id = item_id
 	item_context.set_position(get_global_mouse_position())
 	item_context.popup()
+
+func _on_item_focused(item_id: String):
+	selected_item_id = item_id
+
+	var item = DataLoader.items.get(item_id, {})
+	info_label.text = item.get("description", "Sin descripción")
 
 func _on_item_action(action_id: int):
 	match action_id:
@@ -135,8 +139,9 @@ func _on_character_selected(index: int):
 func _show_item_info():
 	var item = DataLoader.items.get(selected_item_id, {})
 	info_label.text = item.get("description", "Sin descripción")
-	info_label.set_position(get_global_mouse_position())
 	panel_info.visible = true
+	
+	#info_label.set_position(get_global_mouse_position())
 
 func _discard_item():
 	InventoryManager.remove_item(
@@ -152,9 +157,9 @@ func _on_inventory_changed():
 	refresh_items()
 
 func _on_salir_pressed():
+	main_menu.inventario_abierto = false
 	toggle()
 	
-
 func _on_animation_finished(anim_name: String) -> void:
 	if anim_name == "close":
 		visible = false

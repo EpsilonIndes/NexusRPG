@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://cjswe57kq821f"]
+[gd_scene load_steps=41 format=3 uid="uid://cjswe57kq821f"]
 
 [ext_resource type="PackedScene" uid="uid://bmocargan5l0q" path="res://Escenas/player.tscn" id="1_a8vtw"]
 [ext_resource type="Script" uid="uid://dpb427vjhtg17" path="res://Scripts/InventoryManager.gd" id="2_5j2cu"]
@@ -9,6 +9,8 @@
 [ext_resource type="PackedScene" uid="uid://ckhl1sgngkvhd" path="res://Escenas/Personajes/Sigrid.tscn" id="5_oduvb"]
 [ext_resource type="PackedScene" uid="uid://ddbnhhajofjkw" path="res://Escenas/Personajes/Chipita.tscn" id="6_ai0lc"]
 [ext_resource type="PackedScene" uid="uid://dkn8gxfmy5tm6" path="res://Escenas/UserUI/label_dialogue.tscn" id="6_dp2kd"]
+[ext_resource type="PackedScene" uid="uid://dhfemvdo74v03" path="res://Escenas/UserUI/party_sumary_ui.tscn" id="9_nkr7g"]
+[ext_resource type="PackedScene" uid="uid://brmhxiplj1nln" path="res://Escenas/UserUI/party_character_slot.tscn" id="10_pjnot"]
 [ext_resource type="PackedScene" uid="uid://dioro2qfasopc" path="res://Escenas/Objetos/cubiletrero.tscn" id="10_sf4ds"]
 [ext_resource type="PackedScene" uid="uid://32tsodv1b27v" path="res://Escenas/UserUI/inventory_ui2.tscn" id="10_x6jwr"]
 [ext_resource type="PackedScene" uid="uid://bodo6o8l2sybh" path="res://Escenas/NPCs Auromora/NPC_maya.tscn" id="11_5x380"]
@@ -158,6 +160,11 @@ script = ExtResource("2_5j2cu")
 
 [node name="CanvasLayer" parent="." instance=ExtResource("4_j23ur")]
 
+[node name="PartySumaryUI" parent="CanvasLayer" instance=ExtResource("9_nkr7g")]
+offset_right = -293.0
+offset_bottom = -147.0
+character_slot_scene = ExtResource("10_pjnot")
+
 [node name="LabelDialogue" parent="CanvasLayer" instance=ExtResource("6_dp2kd")]
 offset_left = -333.0
 offset_top = 10.0
@@ -194,7 +201,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.609187, 0.810861, -6.32963
 [node name="CofreCommon" parent="Interactuable" instance=ExtResource("13_16hig")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -6.99299, -0.05, -7.78531)
 script = ExtResource("18_mo6bs")
-loot_id = ""
 world_flag_id = "chest_auromora_1"
 
 [node name="CofreCommon2" parent="Interactuable" instance=ExtResource("13_16hig")]

@@ -10,8 +10,7 @@ enum EstadosDeJuego {
 }
 
 var in_battle = false
-@onready var player = get_tree().get_current_scene().get_node("Personajes/Player")
-@onready var cont_seguidores = get_tree().get_current_scene().get_node("Personajes/seguidores")
+
 
 var equipo_actual: Array[Dictionary] = [ # todos los pjs actuales jugables
 	{"id": "Astro"},
@@ -33,6 +32,11 @@ func es_estado(objetivo):
 	return estado_actual == objetivo
 
 func iniciar_batalla(contra_enemigos: Array[String]):
+	var player = get_tree().get_current_scene().get_node("Personajes/Player")
+	var cont_seguidores = get_tree().get_current_scene().get_node("Personajes/seguidores")
+	if not is_instance_valid(player):
+		push_error("[GameManager] Player inválido al iniciar batalla")
+
 	in_battle = true
 
 	set_estado(EstadosDeJuego.COMBATE)

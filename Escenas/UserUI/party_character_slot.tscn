@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=3 uid="uid://brmhxiplj1nln"]
+
+[ext_resource type="Script" uid="uid://cik2hbp5lv3lt" path="res://Scripts/SistemaItems/PartyCharacterSlot.gd" id="1_46emv"]
+[ext_resource type="Texture2D" uid="uid://bf22rglwwq4b3" path="res://Assets/Faces/Astro.png" id="2_pqwjk"]
+
+[node name="PartyCharacterSlot" type="HBoxContainer"]
+custom_minimum_size = Vector2(120, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_46emv")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/separation = 8
+
+[node name="Face" type="TextureRect" parent="VBoxContainer"]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+texture = ExtResource("2_pqwjk")
+stretch_mode = 4
+
+[node name="Name" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Astro"
+
+[node name="HP" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "HP: 100/200"
+
+[node name="Level" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "LV: 20"
+
+[node name="NextLevel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "EXP: 0/1000"

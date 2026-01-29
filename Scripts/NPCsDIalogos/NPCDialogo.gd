@@ -4,6 +4,7 @@ class_name NpcBase
 @export var npc_id: String
 @export var bubble_offset := Vector3(0, 2.4, 0)
 @export var dialogue_id := ""
+@export var world_flag_id: String
 
 # Para sprites (temporal, reemplazar luego con animación de rotación):
 @onready var animated_sprite = $AnimatedSprite3D
@@ -12,6 +13,7 @@ class_name NpcBase
 var bubble_instance: SpeechBubble = null
 
 func interact():
+
 	if bubble_instance:
 		return
 

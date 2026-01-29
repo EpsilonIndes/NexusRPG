@@ -63,7 +63,6 @@ _data = {
 }
 
 [node name="MainMenuUI" type="Control"]
-modulate = Color(1, 1, 1, 0)
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -72,7 +71,6 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.5, 0.5)
 size_flags_horizontal = 4
 script = ExtResource("1_fs65w")
 
