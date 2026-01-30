@@ -161,7 +161,6 @@ script = ExtResource("2_5j2cu")
 [node name="CanvasLayer" parent="." instance=ExtResource("4_j23ur")]
 
 [node name="PartySumaryUI" parent="CanvasLayer" instance=ExtResource("9_nkr7g")]
-offset_right = -293.0
 offset_bottom = -147.0
 character_slot_scene = ExtResource("10_pjnot")
 

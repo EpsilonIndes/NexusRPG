@@ -339,6 +339,7 @@ func chequear_si_termina():
 
 	# Si terminó el ciclo entero, reseteamos el índice SOLO acá
 	if indice_turno >= combatientes.size():
+		ordenar_combatientes_por_velocidad()
 		indice_turno = 0
 	
 	# Dejamos que el flujo normal decide quién sigue
@@ -587,3 +588,10 @@ func _construir_battle_result(victoria: bool) -> Dictionary:
 
 func get_combatant():
 	return combatiente_actual
+
+func ordenar_combatientes_por_velocidad() -> void:
+	combatientes.sort_custom(func(a, b):
+		if a.velocidad == b.velocidad:
+			return a.indice < b.indice # desempate estable
+		return a.velocidad > b.velocidad
+	)
