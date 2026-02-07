@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://ch1ck3gove8rn"]
+
+[ext_resource type="Texture2D" uid="uid://dnxq3qaruinq0" path="res://Assets/Faces/miguelito.png" id="1_da52v"]
+
+[node name="CharacterSlot" type="Button"]
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("1_da52v")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="LevelLabel" type="Label" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2

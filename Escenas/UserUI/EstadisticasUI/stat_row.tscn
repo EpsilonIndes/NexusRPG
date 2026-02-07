@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://xjhmw7mxco1t"]
+
+[node name="StatRow" type="HBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="StatName" type="Label" parent="."]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="."]
+layout_mode = 2
+
+[node name="StatValue" type="Label" parent="."]
+layout_mode = 2

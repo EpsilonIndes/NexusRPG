@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://cafdxkjd6ygsi"]
+
+[node name="BreakdownRow" type="HBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SourceLabel" type="Label" parent="."]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="."]
+layout_mode = 2
+
+[node name="ValueLabel" type="Label" parent="."]
+layout_mode = 2

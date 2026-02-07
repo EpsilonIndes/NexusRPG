@@ -2,8 +2,133 @@
 
 [node name="EstadisticasUI" type="Control"]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -368.0
+offset_top = -231.5
+offset_right = 368.0
+offset_bottom = 231.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -370.0
+offset_top = -232.0
+offset_right = 370.0
+offset_bottom = 232.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RootContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -278.0
+offset_top = -203.0
+offset_right = 278.0
+offset_bottom = 203.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LeftPanel" type="PanelContainer" parent="RootContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.8
+
+[node name="LeftMargin" type="MarginContainer" parent="RootContainer/LeftPanel"]
+layout_mode = 2
+
+[node name="PartyList" type="VBoxContainer" parent="RootContainer/LeftPanel/LeftMargin"]
+layout_mode = 2
+
+[node name="CenterPanel" type="PanelContainer" parent="RootContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+size_flags_stretch_ratio = 2.0
+
+[node name="CenterMargin" type="MarginContainer" parent="RootContainer/CenterPanel"]
+layout_mode = 2
+
+[node name="CenterContent" type="VBoxContainer" parent="RootContainer/CenterPanel/CenterMargin"]
+layout_mode = 2
+
+[node name="Header" type="HBoxContainer" parent="RootContainer/CenterPanel/CenterMargin/CenterContent"]
+layout_mode = 2
+
+[node name="Portait" type="TextureRect" parent="RootContainer/CenterPanel/CenterMargin/CenterContent/Header"]
+layout_mode = 2
+
+[node name="Headerinfo" type="VBoxContainer" parent="RootContainer/CenterPanel/CenterMargin/CenterContent/Header"]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="RootContainer/CenterPanel/CenterMargin/CenterContent/Header/Headerinfo"]
+layout_mode = 2
+
+[node name="RoleLabel" type="Label" parent="RootContainer/CenterPanel/CenterMargin/CenterContent/Header/Headerinfo"]
+layout_mode = 2
+
+[node name="LevelLabel" type="Label" parent="RootContainer/CenterPanel/CenterMargin/CenterContent/Header/Headerinfo"]
+layout_mode = 2
+
+[node name="Separator" type="HSeparator" parent="RootContainer/CenterPanel/CenterMargin/CenterContent"]
+layout_mode = 2
+
+[node name="CoreStats" type="GridContainer" parent="RootContainer/CenterPanel/CenterMargin/CenterContent"]
+layout_mode = 2
+
+[node name="Separator2" type="HSeparator" parent="RootContainer/CenterPanel/CenterMargin/CenterContent"]
+layout_mode = 2
+
+[node name="DeriverStats" type="GridContainer" parent="RootContainer/CenterPanel/CenterMargin/CenterContent"]
+layout_mode = 2
+
+[node name="RightPanel" type="PanelContainer" parent="RootContainer"]
+layout_mode = 2
+size_flags_stretch_ratio = 1.2
+
+[node name="RightMargin" type="MarginContainer" parent="RootContainer/RightPanel"]
+layout_mode = 2
+
+[node name="RightContent" type="VBoxContainer" parent="RootContainer/RightPanel/RightMargin"]
+layout_mode = 2
+
+[node name="ContextTitle" type="Label" parent="RootContainer/RightPanel/RightMargin/RightContent"]
+layout_mode = 2
+
+[node name="Separator" type="HSeparator" parent="RootContainer/RightPanel/RightMargin/RightContent"]
+layout_mode = 2
+
+[node name="BreakdownList" type="VBoxContainer" parent="RootContainer/RightPanel/RightMargin/RightContent"]
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = -353.0
+offset_top = -220.0
+offset_right = -276.0
+offset_bottom = -189.0
+text = "Regresar"
