@@ -70,7 +70,78 @@ func apply_effects(effects: Array, target: Combatant, atacante: Combatant) -> vo
 			_:
 				print("Efecto desconocido: %s" % tipo)
 
+
+
 func _registrar_efecto_persistente(efecto: Array, target: Combatant) -> void:
+	var subtipo = efecto[1]
+	var args := efecto.slice(2, efecto.size())
+
+	match subtipo:
+
+		#---------------------------------
+		# DOT
+		# persist:dot:5:2
+		#---------------------------------
+		"dot":
+			if args.size() < 2:
+				print("DOT mal formado:", efecto)
+				return
+
+			var dmg := int(args[0])
+			var duracion := int(args[1])
+			var tier := int(args[2]) if args.size() > 2 else 1
+
+			var efecto_dic := {
+				"id": "dot",
+				"subtipo": "dot",
+				"tier": tier,
+				"duracion": duracion,
+
+				"tick": func(c):
+					c.recibir_danio(dmg)
+			}
+
+			print("Registrando DOT:", efecto_dic)
+			target.agregar_efecto(efecto_dic)
+
+		#---------------------------------
+		# BUFF / DEBUFF
+		#---------------------------------
+		"buff", "debuff":
+			if args.size() < 3:
+				print("Buff/Debuff persistente mal formado:", efecto)
+				return
+
+			var stat := String(args[0])
+			var mult := float(args[1])
+			var duracion := int(args[2])
+			var tier := int(args[3]) if args.size() > 3 else 1
+
+			var valor := int(target.get(stat) * mult)
+			if subtipo == "debuff":
+				valor = -valor
+
+			var efecto_dic := {
+				"id": stat,
+				"subtipo": subtipo,
+				"tier": tier,
+				"stat": stat,
+				"valor": valor,
+				"duracion": duracion,
+
+				"on_apply": func(c):
+					c.modificar_stat(stat, valor),
+
+				"on_expire": func(c):
+					c.modificar_stat(stat, -valor)
+			}
+
+			print("Registrando Buff/Debuff:", efecto_dic)
+			target.agregar_efecto(efecto_dic)
+
+
+
+func _registrar_efecto_persistente_viejo(efecto: Array, target: Combatant) -> void:
 	if efecto.size() < 3:
 		print("Efecto persistente mal formado: %s" % efecto)
 		return
@@ -83,7 +154,7 @@ func _registrar_efecto_persistente(efecto: Array, target: Combatant) -> void:
 		"id": "persist_" + subtipo,
 		"subtipo": subtipo,
 		"args": args,
-		"duracion": int(args[-1]),  # Ultimo parámetro = duracion en turnos
+		"duracion": int(args[-1]),  # Ultimo parámetro es la duracion en turnos
 
 		# Se define el comportamiento por tick
 		"tick": func(combatant: Combatant):
@@ -112,6 +183,6 @@ func _registrar_efecto_persistente(efecto: Array, target: Combatant) -> void:
 					print("Subtipo persistente desconocido: %s" % subtipo)
 
 	}
-
-	print("Registrando efecto persistente en %s: %s" % [target.nombre, efecto_dic["id"]])
 	target.agregar_efecto(efecto_dic)
+	print("Registrando efecto persistente en %s: %s" % [target.nombre, efecto_dic["id"]])
+	

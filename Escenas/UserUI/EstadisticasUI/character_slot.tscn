@@ -1,25 +1,53 @@
-[gd_scene load_steps=2 format=3 uid="uid://ch1ck3gove8rn"]
+[gd_scene load_steps=5 format=3 uid="uid://ch1ck3gove8rn"]
 
 [ext_resource type="Texture2D" uid="uid://dnxq3qaruinq0" path="res://Assets/Faces/miguelito.png" id="1_da52v"]
+[ext_resource type="FontFile" uid="uid://b65largk8uxlk" path="res://Data/Fonts/fantasy_font.woff" id="1_dg1ll"]
+[ext_resource type="Script" uid="uid://ba6wy6j30efu6" path="res://Scripts/menu_ui/character_slot.gd" id="1_yuog2"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jtjkt"]
 
 [node name="CharacterSlot" type="Button"]
-offset_right = 8.0
-offset_bottom = 8.0
+custom_minimum_size = Vector2(240, 140)
+offset_right = 240.0
+offset_bottom = 140.0
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("1_dg1ll")
+theme_override_styles/normal = SubResource("StyleBoxTexture_jtjkt")
+script = ExtResource("1_yuog2")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
-[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 texture = ExtResource("1_da52v")
+stretch_mode = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
+alignment = 1
 
-[node name="NameLabel" type="Label" parent="HBoxContainer/VBoxContainer"]
+[node name="NameLabel" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
+text = "Miguelito"
 
-[node name="LevelLabel" type="Label" parent="HBoxContainer/VBoxContainer"]
+[node name="LevelLabel" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2

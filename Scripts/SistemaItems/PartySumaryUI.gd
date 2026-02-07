@@ -1,9 +1,9 @@
 # PartySumaryUI.gd (En nodo)
 extends Control
 
-@onready var container: HBoxContainer = $Panel/HBoxContainer
+@onready var container: HBoxContainer = $AnimWrapper/Panel/HBoxContainer
 @export var character_slot_scene: PackedScene
-
+var anim_name: String = "close"
 
 
 func refresh() -> void:

@@ -152,30 +152,61 @@ func modificar_stat(stat: String, cantidad: int) -> void:
 #--------------------------
 # Efectos persistentes
 #--------------------------
-func agregar_efecto(efecto: Dictionary) -> void:
+
+func agregar_efecto(nuevo: Dictionary) -> void:
+	for e in efectos_activos:
+		if e.id == nuevo.id:
+			if nuevo.tier > e.tier:
+				if e.has("on_expire") and e.on_expire is Callable:
+					e.on_expire.call(self)
+
+				efectos_activos.erase(e)
+
+				if nuevo.has("on_apply") and nuevo.on_apply is Callable:
+					nuevo.on_apply.call(self)
+				
+				efectos_activos.append(nuevo)
+			else:
+				e.duracion = max(e.duracion, nuevo.duracion)
+			return
+	
+	if nuevo.has("on_apply") and nuevo.on_apply is Callable:
+		nuevo.on_apply.call(self)
+
+	efectos_activos.append(nuevo)
+	print("registrado efecto %s en %s (dur: %s)" % [nuevo.get("id","?"), nombre, nuevo.get("duracion", "?")])
+
+func agregar_efecto_viejo(efecto: Dictionary) -> void:
 	efectos_activos.append(efecto)
 	if efecto.has("on_apply") and typeof(efecto.on_apply) == TYPE_CALLABLE:
 		efecto.on_apply.call(self)
 	print("registrado efecto %s en %s (dur: %s)" % [efecto.get("id","?"), nombre, efecto.get("duracion", "?")])
 
-func procesar_efectos_activos() -> void:
-	for e in efectos_activos:
-		if e.has("tick") and typeof(e.tick) == TYPE_CALLABLE:
-			e.tick.call(self)
 
-	# Reducir duración y recolectar expirados
+func procesar_efectos_activos() -> void:
 	var expirados := []
+
 	for e in efectos_activos:
+		if typeof(e) != TYPE_DICTIONARY:
+			push_warning("[Combatant] Efecto corrupto detectado: %s" % e)
+			return
+	
+		# Tick
+		if e.has("tick") and e.tick is Callable:
+			e.tick.call(self)
+		
+		# Duración
 		if e.has("duracion"):
 			e.duracion -= 1
 			if e.duracion <= 0:
-				expirados.append(exp)
+				expirados.append(e)
 	
-	# Ejecutar on_expire y remover
+	# Expirar
 	for ex in expirados:
-		if ex.has("on_expire") and typeof(ex.on_expire) == TYPE_CALLABLE:
+		if ex.has("on_expire") and ex.on_expire is Callable:
 			ex.on_expire.call(self)
 		efectos_activos.erase(ex)
+
 
 #--------------------
 # Selección / ejecución de técnicas (API usada por BattleManager)

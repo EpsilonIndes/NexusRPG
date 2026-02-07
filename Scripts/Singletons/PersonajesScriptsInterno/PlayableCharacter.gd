@@ -14,7 +14,6 @@ var velocidad: int
 var suerte: int
 var inteligencia: int
 
-
 func _init(pj_id: String, pj_class_id: String, pj_stats: Dictionary) -> void:
 	id = pj_id
 	class_id = pj_class_id
@@ -39,6 +38,21 @@ func gain_exp(amount: int) -> void:
 		_level_up()
 
 func _level_up() -> void:
+	stats["nivel"] = stats.get("nivel", 1) +1
+	stats["exp_para_siguiente"] = int(stats["exp_para_siguiente"] * 1.2)
+
+	for stat in ["hp", "atk", "def", "spd"]:
+		var base = stats.get("base_" + stat, 0)
+		var growth = stats.get("growth_" + stat, 1.0)
+		stats[stat] += int(base * growth)
+	
+	print("[%s] subió al nivel %d" % [id, stats["nivel"]])
+
+
+
+
+
+func _level_up_viejo() -> void:
 	# Subir stats, aumentar exp apra siguiente nivel, etc
 	stats["nivel"] = stats.get("nivel", 1) +1
 	stats["exp_para_siguiente"] = int(stats["exp_para_siguiente"] * 1.2)

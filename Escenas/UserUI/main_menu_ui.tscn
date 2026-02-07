@@ -1,9 +1,18 @@
-[gd_scene load_steps=5 format=3 uid="uid://cvaq71wq2o5yd"]
+[gd_scene load_steps=7 format=3 uid="uid://cvaq71wq2o5yd"]
 
 [ext_resource type="Script" uid="uid://jwq06myo2n8v" path="res://Scripts/SistemaItems/MainMenuUI.gd" id="1_fs65w"]
 
+[sub_resource type="InputEventKey" id="InputEventKey_fs65w"]
+device = -1
+keycode = 88
+unicode = 88
+
+[sub_resource type="Shortcut" id="Shortcut_rts76"]
+events = [SubResource("InputEventKey_fs65w")]
+
 [sub_resource type="Animation" id="Animation_rts76"]
 resource_name = "close"
+length = 0.6
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -11,10 +20,10 @@ tracks/0/path = NodePath(".:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
+"times": PackedFloat32Array(0, 0.6),
 "transitions": PackedFloat32Array(0.16493826, 0.24148417),
 "update": 0,
-"values": [Vector2(1, 1), Vector2(0.5, 0.5)]
+"values": [Vector2(1, 1), Vector2(0.8, 0.8)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -23,14 +32,15 @@ tracks/1/path = NodePath(".:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.56666666, 1),
-"transitions": PackedFloat32Array(1, 15.999994, 0.63728034, 1),
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 0.34151012),
 "update": 0,
-"values": [Color(1, 1, 1, 1), Color(0.7248519, 0.63459486, 0.91991407, 0.42745098), Color(1, 1, 1, 0.38039216), Color(1, 1, 1, 0)]
+"values": [Color(1, 1, 1, 1), Color(1, 0, 0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_fs65w"]
 resource_name = "open"
+length = 0.6
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -38,10 +48,10 @@ tracks/0/path = NodePath(".:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
+"times": PackedFloat32Array(0, 0.6),
 "transitions": PackedFloat32Array(0.23325787, 3.138337),
 "update": 0,
-"values": [Vector2(0.335, 0.335), Vector2(1, 1)]
+"values": [Vector2(0.8, 0.8), Vector2(1, 1)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -50,10 +60,10 @@ tracks/1/path = NodePath(".:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.43333334, 1),
-"transitions": PackedFloat32Array(1, 15.999994, 0.63728034, 1),
+"times": PackedFloat32Array(0, 0.43333334),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 0), Color(0.25478375, 0.79684794, 0.6154592, 0.42745098), Color(1, 1, 1, 0.38039216), Color(1, 1, 1, 1)]
+"values": [Color(0.060000002, 1, 0.7963333, 0), Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_rts76"]
@@ -81,9 +91,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -368.0
+offset_left = -406.0
 offset_top = -231.5
-offset_right = 368.0
+offset_right = 406.0
 offset_bottom = 231.5
 grow_horizontal = 2
 grow_vertical = 2
@@ -110,6 +120,7 @@ text = "Opciones
 
 [node name="Salir" type="Button" parent="Panel/VBoxContainer"]
 layout_mode = 2
+shortcut = SubResource("Shortcut_rts76")
 text = "Salir
 "
 

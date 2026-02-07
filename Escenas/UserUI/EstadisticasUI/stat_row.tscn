@@ -1,14 +1,52 @@
-[gd_scene format=3 uid="uid://xjhmw7mxco1t"]
+[gd_scene load_steps=2 format=3 uid="uid://xjhmw7mxco1t"]
 
-[node name="StatRow" type="HBoxContainer"]
-offset_right = 40.0
+[ext_resource type="Script" uid="uid://dba70b73fdqps" path="res://Scripts/menu_ui/StatRow.gd" id="1_5882o"]
+
+[node name="StatRow" type="Button"]
+custom_minimum_size = Vector2(153, 60)
+offset_right = 113.0
 offset_bottom = 40.0
+mouse_filter = 1
+script = ExtResource("1_5882o")
 
 [node name="StatName" type="Label" parent="."]
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 6.0
+offset_top = -11.5
+offset_right = 37.0
+offset_bottom = 11.5
+grow_vertical = 2
+text = "Stat"
 
 [node name="Spacer" type="Control" parent="."]
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -9.5
+offset_top = -30.0
+offset_right = 9.5
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="StatValue" type="Label" parent="."]
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -33.0
+offset_top = -11.0
+offset_right = -14.0
+offset_bottom = 12.0
+grow_horizontal = 0
+grow_vertical = 2
+text = "10"
+horizontal_alignment = 2

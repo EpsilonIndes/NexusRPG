@@ -1,6 +1,8 @@
 # InventoryUI.gd (En Nodo)
 extends Control
 
+signal closed
+
 @onready var anim: AnimationPlayer = $AnimationPlayer
 
 @onready var panel_main: Panel = $MainMenu
@@ -40,7 +42,7 @@ func _ready():
 	for cat in category_buttons.keys():
 		category_buttons[cat].pressed.connect(_on_category_selected.bind(cat))
 	
-	btn_salir.pressed.connect(_on_salir_pressed)
+	btn_salir.pressed.connect(close)
 
 	item_context.clear()
 	item_context.add_item("Usar", 0)
@@ -49,25 +51,36 @@ func _ready():
 
 	character_context.id_pressed.connect(_on_character_selected)
 
-func toggle():
-	is_open = !is_open
-	
-	if is_open:
-		visible = true
-		panel_items.visible = true
-		panel_info.visible = true
-		categories[0].grab_focus()
-		GameManager.push_ui()
-		anim.play("open")
-		refresh_items()
-	else:
-		item_context.hide()
-		character_context.hide()
-		panel_info.visible = false
+func open() -> void:
+	is_open = true
+	visible = true
+	set_process_unhandled_input(true)
 
-		anim.play("close")
-		main_menu.toggle()
-		GameManager.pop_ui()
+	panel_items.visible = true
+	panel_info.visible = true
+	categories[0].grab_focus()
+	GameManager.push_ui()
+	anim.play("open")
+	refresh_items()
+
+func close():
+	is_open = false
+	set_process_unhandled_input(false)
+
+	item_context.hide()
+	character_context.hide()
+	panel_info.visible = false
+	anim.play("close")
+	GameManager.pop_ui()
+	emit_signal("closed")
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not is_open:
+		return
+
+	if event.is_action_pressed("ui_cancel"):
+		close()
+		get_viewport().set_input_as_handled()
 
 
 func refresh_items() -> void:
@@ -155,10 +168,6 @@ func _on_inventory_changed():
 		return
 	
 	refresh_items()
-
-func _on_salir_pressed():
-	main_menu.inventario_abierto = false
-	toggle()
 	
 func _on_animation_finished(anim_name: String) -> void:
 	if anim_name == "close":

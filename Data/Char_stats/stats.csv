@@ -1,7 +1,7 @@
-id,class_id,job_name,hp,max_hp,dp,max_dp,atk,def,spd,lck,wis,exp_actual,exp_para_siguiente,face,nivel
-Astro,quantic_master,Maéstro cuántico,100,200,30,30,25,20,12,8,4,0,500,res://Assets/Faces/Astro.png,5
-Chipita,dark_mage,Maga oscura,180,180,80,80,10,10,14,10,12,0,500,res://Assets/Faces/chipita.png,3
-Maya,lancer,Lancera,200,200,40,40,20,12,16,12,6,0,500,res://Assets/Faces/maya.png,2
-Miguelito,hunter,Cazador,100,190,35,35,18,10,20,20,5,0,500,res://Assets/Faces/miguelito.png,2
-Amanda,cleric,Sanadora,175,175,60,60,12,24,14,10,18,0,500,res://Assets/Faces/amanda.png,2
-Sigrid,knight,Caballera,200,220,50,50,20,18,10,8,7,0,500,res://Assets/Faces/sigrid.png,2
+id,class_id,job_name,hp,max_hp,dp,max_dp,atk,def,spd,lck,wis,exp_actual,exp_para_siguiente,face,nivel,crit_rate,crit_dmg,evasion,precision,base_hp,base_atk,base_def,base_spd,growth_hp,growth_atk,growth_def,growth_spd
+Astro,quantic_master,Maéstro cuántico,100,200,30,30,25,20,12,8,4,0,500,res://Assets/Faces/Astro.png,5,5,2,5,1,1.0,0.8,1.0,1.1,1.2,2.0,1.2,2.0
+Chipita,dark_mage,Maga oscura,180,180,80,80,10,10,14,10,12,0,500,res://Assets/Faces/chipita.png,3,5,2,5,1,1.0,0.8,1.0,1.1,1.2,2.0,1.2,2.0
+Maya,lancer,Lancera,200,200,40,40,20,12,16,12,6,0,500,res://Assets/Faces/maya.png,2,5,2,5,1,1.0,0.8,1.0,1.1,1.2,2.0,1.2,2.0
+Miguelito,hunter,Cazador,100,190,35,35,18,10,20,20,5,0,500,res://Assets/Faces/miguelito.png,2,5,2,5,2,1.0,0.8,1.0,1.1,1.2,2.0,1.2,2.0
+Amanda,cleric,Sanadora,175,175,60,60,12,24,14,10,18,0,500,res://Assets/Faces/amanda.png,2,5,2,5,1,1.0,0.8,1.0,1.1,1.2,2.0,1.2,2.0
+Sigrid,knight,Caballera,200,220,50,50,20,18,10,8,7,0,500,res://Assets/Faces/sigrid.png,2,5,2,5,1,1.0,0.8,1.0,1.1,1.2,2.0,1.2,2.0

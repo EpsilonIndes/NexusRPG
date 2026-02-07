@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://cakpnjvtgcato"]
+[gd_scene load_steps=2 format=3 uid="uid://cakpnjvtgcato"]
+
+[ext_resource type="Script" uid="uid://c5wa5nha3ql82" path="res://Scripts/menu_ui/EstadisticasUI.gd" id="1_dgup6"]
 
 [node name="EstadisticasUI" type="Control"]
 layout_mode = 3
@@ -9,22 +11,24 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_dgup6")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -368.0
-offset_top = -231.5
-offset_right = 368.0
-offset_bottom = 231.5
+offset_left = -547.0
+offset_top = -231.0
+offset_right = 553.0
+offset_bottom = 232.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Background" type="TextureRect" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -40,31 +44,34 @@ grow_vertical = 2
 
 [node name="RootContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -278.0
-offset_top = -203.0
-offset_right = 278.0
-offset_bottom = 203.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 16
 
 [node name="LeftPanel" type="PanelContainer" parent="RootContainer"]
+custom_minimum_size = Vector2(220, 370)
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 3
 size_flags_vertical = 4
 size_flags_stretch_ratio = 0.8
 
 [node name="LeftMargin" type="MarginContainer" parent="RootContainer/LeftPanel"]
 layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 
 [node name="PartyList" type="VBoxContainer" parent="RootContainer/LeftPanel/LeftMargin"]
 layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
 
 [node name="CenterPanel" type="PanelContainer" parent="RootContainer"]
+custom_minimum_size = Vector2(480, 370)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -72,6 +79,10 @@ size_flags_stretch_ratio = 2.0
 
 [node name="CenterMargin" type="MarginContainer" parent="RootContainer/CenterPanel"]
 layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 
 [node name="CenterContent" type="VBoxContainer" parent="RootContainer/CenterPanel/CenterMargin"]
 layout_mode = 2
@@ -79,39 +90,50 @@ layout_mode = 2
 [node name="Header" type="HBoxContainer" parent="RootContainer/CenterPanel/CenterMargin/CenterContent"]
 layout_mode = 2
 
-[node name="Portait" type="TextureRect" parent="RootContainer/CenterPanel/CenterMargin/CenterContent/Header"]
-layout_mode = 2
-
 [node name="Headerinfo" type="VBoxContainer" parent="RootContainer/CenterPanel/CenterMargin/CenterContent/Header"]
 layout_mode = 2
 
 [node name="NameLabel" type="Label" parent="RootContainer/CenterPanel/CenterMargin/CenterContent/Header/Headerinfo"]
 layout_mode = 2
+text = "Maya"
 
 [node name="RoleLabel" type="Label" parent="RootContainer/CenterPanel/CenterMargin/CenterContent/Header/Headerinfo"]
 layout_mode = 2
+text = "Lancera"
 
 [node name="LevelLabel" type="Label" parent="RootContainer/CenterPanel/CenterMargin/CenterContent/Header/Headerinfo"]
 layout_mode = 2
+text = "5"
 
 [node name="Separator" type="HSeparator" parent="RootContainer/CenterPanel/CenterMargin/CenterContent"]
 layout_mode = 2
 
 [node name="CoreStats" type="GridContainer" parent="RootContainer/CenterPanel/CenterMargin/CenterContent"]
 layout_mode = 2
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 6
+columns = 3
 
 [node name="Separator2" type="HSeparator" parent="RootContainer/CenterPanel/CenterMargin/CenterContent"]
 layout_mode = 2
 
 [node name="DeriverStats" type="GridContainer" parent="RootContainer/CenterPanel/CenterMargin/CenterContent"]
 layout_mode = 2
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 6
+columns = 3
 
 [node name="RightPanel" type="PanelContainer" parent="RootContainer"]
+custom_minimum_size = Vector2(320, 370)
 layout_mode = 2
 size_flags_stretch_ratio = 1.2
 
 [node name="RightMargin" type="MarginContainer" parent="RootContainer/RightPanel"]
 layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 
 [node name="RightContent" type="VBoxContainer" parent="RootContainer/RightPanel/RightMargin"]
 layout_mode = 2
@@ -127,8 +149,8 @@ layout_mode = 2
 
 [node name="BackButton" type="Button" parent="."]
 layout_mode = 0
-offset_left = -353.0
-offset_top = -220.0
-offset_right = -276.0
-offset_bottom = -189.0
+offset_left = -527.0
+offset_top = -223.0
+offset_right = -450.0
+offset_bottom = -192.0
 text = "Regresar"

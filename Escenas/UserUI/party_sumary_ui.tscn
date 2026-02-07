@@ -1,23 +1,120 @@
-[gd_scene load_steps=2 format=3 uid="uid://dhfemvdo74v03"]
+[gd_scene load_steps=6 format=3 uid="uid://dhfemvdo74v03"]
 
 [ext_resource type="Script" uid="uid://bhfv7s4j4gkfu" path="res://Scripts/SistemaItems/PartySumaryUI.gd" id="1_qck4k"]
 
+[sub_resource type="Animation" id="Animation_0fejh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimWrapper:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimWrapper:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_qnxrc"]
+resource_name = "close"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimWrapper:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(0.11265628, 0.17677684),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(0.8, 0.8)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimWrapper:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_qck4k"]
+resource_name = "open"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimWrapper:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.30000004, 0.7999667),
+"transitions": PackedFloat32Array(0.24148421, 3.2490094),
+"update": 0,
+"values": [Vector2(0.8, 0.8), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimWrapper:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.26666668, 0.8),
+"transitions": PackedFloat32Array(1.5157161, 0.11662923),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qnxrc"]
+_data = {
+&"RESET": SubResource("Animation_0fejh"),
+&"close": SubResource("Animation_qnxrc"),
+&"open": SubResource("Animation_qck4k")
+}
+
 [node name="PartySumaryUI" type="Control"]
 z_index = 1
-custom_minimum_size = Vector2(400, 300)
+custom_minimum_size = Vector2(600, 400)
 layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_qck4k")
+
+[node name="AnimWrapper" type="Control" parent="."]
+custom_minimum_size = Vector2(600, 400)
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 427.0
-offset_top = 143.0
-offset_right = -293.0
-offset_bottom = -117.0
+offset_left = 402.0
+offset_top = 148.0
+offset_right = 402.0
+offset_bottom = 148.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_qck4k")
+pivot_offset = Vector2(0, 200)
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="Panel" parent="AnimWrapper"]
+custom_minimum_size = Vector2(600, 400)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -25,7 +122,15 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
-layout_mode = 0
-offset_right = 557.0
-offset_bottom = 457.0
+[node name="HBoxContainer" type="HBoxContainer" parent="AnimWrapper/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_qnxrc")
+}
