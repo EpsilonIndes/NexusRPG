@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://bpv7eb65dq13u"]
+
+[node name="OptionRow_Slider" type="HBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+metadata/_edit_use_anchors_ = true
+
+[node name="Label_Name" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Volumen Música"
+
+[node name="Slider" type="HSlider" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label_Value" type="Label" parent="."]
+layout_mode = 2
+text = "100"
+horizontal_alignment = 2

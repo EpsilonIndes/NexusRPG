@@ -1,0 +1,101 @@
+[gd_scene format=3 uid="uid://uu6q5hosvtu6"]
+
+[node name="OpcionesUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dimmer" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(570, 320)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -285.0
+offset_top = -160.0
+offset_right = 285.0
+offset_bottom = 160.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0.53333336, 1)
+
+[node name="PanelRoot" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 355.0
+offset_top = 200.0
+offset_right = 925.0
+offset_bottom = 520.0
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelRoot"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxMain" type="VBoxContainer" parent="PanelRoot/MarginContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="PanelRoot/MarginContainer/VBoxMain"]
+layout_mode = 2
+text = "Opciones"
+
+[node name="Tabs" type="TabContainer" parent="PanelRoot/MarginContainer/VBoxMain"]
+layout_mode = 2
+current_tab = 0
+
+[node name="Audio" type="ScrollContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="AudioOptions" type="VBoxContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Audio"]
+layout_mode = 2
+
+[node name="Video" type="ScrollContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="VideoOptions" type="VBoxContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Video"]
+layout_mode = 2
+
+[node name="Gameplay" type="ScrollContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="GameplayOptions" type="VBoxContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Gameplay"]
+layout_mode = 2
+
+[node name="Controls" type="ScrollContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 3
+
+[node name="ControlsOptions" type="VBoxContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Controls"]
+layout_mode = 2
+
+[node name="BottomBar" type="HBoxContainer" parent="PanelRoot/MarginContainer/VBoxMain"]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="ResetButton" type="Button" parent="PanelRoot/MarginContainer/VBoxMain/BottomBar"]
+layout_mode = 2
+text = "Reset"
+
+[node name="Spacer" type="Control" parent="PanelRoot/MarginContainer/VBoxMain/BottomBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ApplyButton" type="Button" parent="PanelRoot/MarginContainer/VBoxMain/BottomBar"]
+layout_mode = 2
+text = "Apply"
+
+[node name="AcceptButton" type="Button" parent="PanelRoot/MarginContainer/VBoxMain/BottomBar"]
+layout_mode = 2
+text = "Accept"
