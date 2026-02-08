@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3 uid="uid://c2aabb8mr1jxx"]
+
+[ext_resource type="Script" uid="uid://714ki4yr4p65" path="res://Scripts/ConfiguracionUI/option_row_video.gd" id="1_gccls"]
+
+[node name="OptionRow_checkbox" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1204.0
+offset_bottom = -696.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gccls")
+
+[node name="Label_Tittle" type="Label" parent="."]
+layout_mode = 2
+text = "Texto"
+
+[node name="Spacer" type="Control" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control" type="CheckBox" parent="."]
+layout_mode = 2

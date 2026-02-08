@@ -1,26 +1,35 @@
-[gd_scene format=3 uid="uid://bpv7eb65dq13u"]
+[gd_scene load_steps=2 format=3 uid="uid://bpv7eb65dq13u"]
+
+[ext_resource type="Script" uid="uid://b2hx8ehhps48k" path="res://Scripts/ConfiguracionUI/option_row_slider.gd" id="1_fbybw"]
 
 [node name="OptionRow_Slider" type="HBoxContainer"]
 custom_minimum_size = Vector2(0, 40)
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_right = 372.0
+offset_bottom = 40.0
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
-metadata/_edit_use_anchors_ = true
+script = ExtResource("1_fbybw")
 
 [node name="Label_Name" type="Label" parent="."]
+custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
-size_flags_horizontal = 3
-text = "Volumen Música"
+size_flags_horizontal = 0
+text = "Master"
 
 [node name="Slider" type="HSlider" parent="."]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 4
 
 [node name="Label_Value" type="Label" parent="."]
+custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 text = "100"
 horizontal_alignment = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+expand_mode = 5
+stretch_mode = 5

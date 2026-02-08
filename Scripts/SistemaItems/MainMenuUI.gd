@@ -10,6 +10,7 @@ extends Control
 
 @onready var inv_btn := $Panel/VBoxContainer/Inventario
 @onready var stats_btn := $Panel/VBoxContainer/Estadisticas
+@onready var opciones_btn := $Panel/VBoxContainer/Opciones
 @onready var salir_btn := $Panel/VBoxContainer/Salir
 
 @onready var anim := $AnimationPlayer
@@ -27,11 +28,12 @@ func _ready() -> void:
 
 	inv_btn.pressed.connect(_on_inventario_pressed)
 	stats_btn.pressed.connect(_on_estadisticas_pressed)
+	opciones_btn.pressed.connect(_on_opciones_pressed)
 	salir_btn.pressed.connect(close)
 
 	inventory_ui.closed.connect(_on_child_ui_closed)
 	estadisticas_ui.closed.connect(_on_child_ui_closed)
-
+	opciones_ui.closed.connect(_on_child_ui_closed)
 
 func open():
 	if is_open:
@@ -90,6 +92,9 @@ func _on_animation_finished(anim_name: String) -> void:
 		visible = false
 		party_sumary.visible = false
 
+func _on_opciones_pressed() -> void:
+	opciones_ui.open()
+	close()
 
 func _on_child_ui_closed():
 	open()
