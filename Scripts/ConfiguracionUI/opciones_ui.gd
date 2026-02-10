@@ -91,11 +91,9 @@ func _setup_all_option_rows():
 	accept_button.focus_neighbor_left = apply_button.get_path()
 
 func _hook_dirty_from_row(row):
-	if row.has_node("Slider"):
-		var slider = row.get_node("Slider")
-		
-		if not slider.value_changed.is_connected(_on_any_option_changed):
-			slider.value_changed.connect(_on_any_option_changed)
+	if row.has_signal("value_changed"):
+		if not row.value_changed.is_connected(_on_any_option_changed):
+			row.value_changed.connect(_on_any_option_changed)
 
 
 """
@@ -123,7 +121,8 @@ func _cancel():
 """
 Botones
 """
-func _on_any_option_changed(_v: float):
+func _on_any_option_changed():
+	print("DIRTY!")
 	_dirty = true
 	apply_button.disabled = false
 

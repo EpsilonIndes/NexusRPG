@@ -1,4 +1,4 @@
-"(Autoload)"
+#(Autoload)
 
 extends Node
 

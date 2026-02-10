@@ -17,6 +17,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ppsam")
@@ -101,6 +103,11 @@ layout_mode = 2
 layout_mode = 2
 category = "video"
 key = "resolution"
+
+[node name="OptionRow_option_button2" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Video/VideoOptions" instance=ExtResource("3_fwgtp")]
+layout_mode = 2
+category = "video"
+key = "display_mode"
 
 [node name="OptionRow_checkbox2" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Video/VideoOptions" instance=ExtResource("3_4n6ux")]
 layout_mode = 2
