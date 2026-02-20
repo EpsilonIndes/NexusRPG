@@ -10,6 +10,7 @@ offset_right = -1204.0
 offset_bottom = -696.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_gccls")
 
 [node name="Label_Tittle" type="Label" parent="."]

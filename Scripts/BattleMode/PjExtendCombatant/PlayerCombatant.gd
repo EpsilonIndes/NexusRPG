@@ -71,6 +71,7 @@ func ejecutar_tecnica():
 # -------------------------------------------------------
 #  ANIMACIÓN AL RECIBIR DAÑO
 # -------------------------------------------------------
+"""
 func recibir_danio(cantidad: int):
 	hp -= cantidad
 	if hp <= 0:
@@ -78,4 +79,4 @@ func recibir_danio(cantidad: int):
 		anim_muerte()
 	else:
 		anim_danio()
-
+"""

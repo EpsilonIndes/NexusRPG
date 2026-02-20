@@ -65,9 +65,15 @@ func iniciar_batalla(contra_enemigos: Array[String]):
 
 
 func _ready():
+	DataLoader.init_data()
+	await get_tree().physics_frame
+	
 	for pj in equipo_actual:
 		PlayableCharacters.create_character(pj.id) # Crea el personaje, desde el array
 	PlayableCharacters.add_to_party("Astro")
+
+	
+	
 
 # Funcion para retornar un array de diccionarios con el equipo actual de 4 personajes
 func get_team_instanciar() -> Array[Dictionary]:

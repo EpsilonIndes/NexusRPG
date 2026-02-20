@@ -7,6 +7,7 @@ signal turno_finalizado
 var battle_manager: Node = null
 @export var es_jugador: bool = false
 
+@onready var damage_anchor: Node3D = $DamageAnchor
 
 # Efectos activos: { id:String, duracion:int, args:[], tick:Callable?, on_apply:Callable?, on_expire:Callable? }
 var efectos_activos := [] # cada elemento será {id, duracion, data}
@@ -101,13 +102,17 @@ func inicializar(datos: Dictionary, es_jugador_: bool, battle_manager_: Node) ->
 func esta_vivo() -> bool:
 	return hp > 0
 
-func recibir_danio(cantidad: int) -> void:
+
+func recibir_danio(cantidad: int, tipo: String, rol_combo: String = "", critico: bool = false) -> void:
 	if cantidad <= 0:
 		print("Salud reducida a 0! ", nombre)
 		return
 
 	hp = max(0, hp - cantidad)
 	print("%s recibe %d de daño | HP: %d/%d" % [nombre, cantidad, hp, hp_max])
+	
+	mostrar_numero_danio(cantidad, tipo, critico, rol_combo)
+
 	# Animacion de daño
 	if animated_sprite and "hit" in animated_sprite.sprite_frames.get_animation_names():
 		animated_sprite.play("hit")
@@ -116,8 +121,28 @@ func recibir_danio(cantidad: int) -> void:
 		esta_muerto = true
 		_on_muerte()
 
-func _on_muerte() -> void:
 
+""" Para restaurar si algo sale mal alv:
+func recibir_danio(cantidad: int) -> void:
+	if cantidad <= 0:
+		print("Salud reducida a 0! ", nombre)
+		return
+
+	hp = max(0, hp - cantidad)
+	print("%s recibe %d de daño | HP: %d/%d" % [nombre, cantidad, hp, hp_max])
+	
+	mostrar_numero_danio(cantidad)
+
+	# Animacion de daño
+	if animated_sprite and "hit" in animated_sprite.sprite_frames.get_animation_names():
+		animated_sprite.play("hit")
+
+	if hp <= 0 and not esta_muerto:
+		esta_muerto = true
+		_on_muerte()
+"""
+
+func _on_muerte() -> void:
 	# para resultados:
 	battle_manager.registrar_enemigos_derrotado(self)
 
@@ -134,6 +159,7 @@ func curar_hp(cantidad: int) -> void:
 		return
 	hp = min(hp + cantidad, hp_max)
 	print("%s recupera %d HP | HP: %d/%d" % [nombre, cantidad, hp, hp_max])
+	mostrar_numero_danio(cantidad, "heal", false, "")
 
 func modificar_stat(stat: String, cantidad: int) -> void:
 	var allowed := ["hp", "hp_max", "dp", "mp_max", "ataque", "defensa", "velocidad", "drive"]
@@ -148,6 +174,8 @@ func modificar_stat(stat: String, cantidad: int) -> void:
 	self.set(stat, current + cantidad)
 	print("%s modifica %s por %+d | Nuevo valor: %d" %
 		[nombre, stat, cantidad, self.get(stat)])
+	
+	mostrar_numero_danio(cantidad, "buff", false, "")
 
 #--------------------------
 # Efectos persistentes
@@ -165,6 +193,7 @@ func agregar_efecto(nuevo: Dictionary) -> void:
 				if nuevo.has("on_apply") and nuevo.on_apply is Callable:
 					nuevo.on_apply.call(self)
 				
+
 				efectos_activos.append(nuevo)
 			else:
 				e.duracion = max(e.duracion, nuevo.duracion)
@@ -174,6 +203,10 @@ func agregar_efecto(nuevo: Dictionary) -> void:
 		nuevo.on_apply.call(self)
 
 	efectos_activos.append(nuevo)
+	
+	if nuevo.has("visual_tipo"):
+		mostrar_feedback_estado(nuevo)
+	
 	print("registrado efecto %s en %s (dur: %s)" % [nuevo.get("id","?"), nombre, nuevo.get("duracion", "?")])
 
 func agregar_efecto_viejo(efecto: Dictionary) -> void:
@@ -261,7 +294,7 @@ func ejecutar_tecnica():
 	for t in objetivos:
 		if t == null:
 			continue
-		EffectManager.apply_effects(efectos, t, self)
+		EffectManager.apply_effects(efectos, t, self, tecnica)
 		# Si el objetivo murió, ver log y update
 		if not t.esta_vivo():
 			print("%s ha muerto tras recibir efectos." % t.nombre)
@@ -335,3 +368,27 @@ func start_levitation():
 		base_y,
 		1.2
 	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+
+# ----------------
+# Feedback visual
+# ----------------
+
+func mostrar_numero_danio(valor: int, tipo: String = "normal", critico: bool = false, rol_combo: String = "") -> void:
+	var damage_scene = preload("res://Escenas/Battle/DamageText/damage_number.tscn")
+	var damage_instance = damage_scene.instantiate()
+
+	damage_anchor.add_child(damage_instance)
+	damage_instance.position = Vector3.ZERO
+	damage_instance.setup(valor, tipo, rol_combo, critico)
+
+
+func mostrar_feedback_estado(efecto: Dictionary):
+	var tipo = efecto.get("visual_tipo", "")
+	var valor = efecto.get("visual_valor", 0)
+
+	match tipo:
+		"buff":
+			mostrar_numero_danio(valor, "buff", false, "")
+		"debuff":
+			mostrar_numero_danio(abs(valor), "debuff", false, "")

@@ -1,7 +1,7 @@
 #EffectManager.gd (Autoload)
 extends Node
 
-func apply_effects(effects: Array, target: Combatant, atacante: Combatant) -> void:
+func apply_effects(effects: Array, target: Combatant, atacante: Combatant, tecnica: Dictionary) -> void:
 	if effects.is_empty():
 		print("apply_effects llamado con array vacío")
 		return
@@ -21,14 +21,12 @@ func apply_effects(effects: Array, target: Combatant, atacante: Combatant) -> vo
 				var mult = float(efecto[1])
 				var atk_base = atacante.ataque
 				var dmg = int((atk_base * mult) - target.defensa)
-				print(
-					"ATK atacante:", atacante.ataque,
-					"| MULT:", mult,
-					"| DEF target:", target.defensa
-				)
+
+				var tipo_dano = tecnica.get("tipo_dano", "normal")
+				var rol_combo = tecnica.get("rol_combo", "support")
 
 				print("aplicando %s de daño a %s" % [float(dmg), target.nombre])
-				target.recibir_danio(dmg)
+				target.recibir_danio(dmg, tipo_dano, rol_combo, false)
 			
 			"heal_hp":
 				var mult = float(efecto[1])
@@ -98,7 +96,7 @@ func _registrar_efecto_persistente(efecto: Array, target: Combatant) -> void:
 				"duracion": duracion,
 
 				"tick": func(c):
-					c.recibir_danio(dmg)
+					c.recibir_danio(dmg, "dot", "", false)
 			}
 
 			print("Registrando DOT:", efecto_dic)
@@ -129,6 +127,9 @@ func _registrar_efecto_persistente(efecto: Array, target: Combatant) -> void:
 				"valor": valor,
 				"duracion": duracion,
 
+				"visual_tipo": subtipo,
+				"visual_valor": valor,
+				
 				"on_apply": func(c):
 					c.modificar_stat(stat, valor),
 
@@ -141,6 +142,7 @@ func _registrar_efecto_persistente(efecto: Array, target: Combatant) -> void:
 
 
 
+"""
 func _registrar_efecto_persistente_viejo(efecto: Array, target: Combatant) -> void:
 	if efecto.size() < 3:
 		print("Efecto persistente mal formado: %s" % efecto)
@@ -186,3 +188,4 @@ func _registrar_efecto_persistente_viejo(efecto: Array, target: Combatant) -> vo
 	target.agregar_efecto(efecto_dic)
 	print("Registrando efecto persistente en %s: %s" % [target.nombre, efecto_dic["id"]])
 	
+"""

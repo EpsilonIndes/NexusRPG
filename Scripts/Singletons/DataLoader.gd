@@ -11,14 +11,19 @@ var tecnicas: Dictionary = {}
 var enemigos: Dictionary = {}
 var drops: Dictionary = {}
 
+var _initialized: bool = false
+
 const BOOL_COLUMNS := [
 	"allow_target_switch",
 	"can_switch_targets",
 	"is_interruptible"
 ]
 
-func _init():
+func init_data():
+	if _initialized:
+		return
 	load_all_data()
+	_initialized = true
 
 func load_all_data():
 	load_dialogues("res://Data/Dialogue/dialogos_NPC_auromora.csv")

@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://da67qcq0nsqgd"]
+
+[ext_resource type="Script" uid="uid://bqgvct5oo3n25" path="res://Scripts/BattleMode/DamageText/damage_anchor.gd" id="1_aftql"]
+
+[node name="DamageNumber" type="Node3D"]
+transform = Transform3D(3.025, 0, 0, 0, 3.025, 0, 0, 0, 3.025, 0, 0, 0)
+script = ExtResource("1_aftql")
+
+[node name="Label3D" type="Label3D" parent="."]
+billboard = 1
+text = "9999"

@@ -34,3 +34,6 @@ surface_material_override/0 = ExtResource("2_lkaag")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Model/Outline/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_ymj2k")
+
+[node name="DamageAnchor" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.491677, 0)

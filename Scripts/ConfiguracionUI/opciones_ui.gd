@@ -13,8 +13,6 @@ var _dirty := false
 var _closing_accept := false
 
 
-
-
 func _ready():
 	#_setup_all_option_rows()
 
@@ -31,7 +29,7 @@ func open():
 	_dirty = false
 	apply_button.disabled = true
 	visible = true
-	
+	await get_tree().process_frame
 	_focus_first_slider()
 	
 
@@ -159,6 +157,7 @@ func _change_tab(dir: int):
 
 	tabs.current_tab = new_tab
 	await get_tree().process_frame
+	_focus_first_row()
 	_focus_first_slider()
 
 func _focus_first_row():
@@ -171,10 +170,13 @@ func _focus_first_row():
 		return
 
 	var container := scroll.get_child(0)
+	
 	for row in container.get_children():
-		if row is Control and row.focus_mode != Control.FOCUS_NONE:
-			row.grab_focus()
-			return
+		if row.has_node("Control"):
+			var ctrl = row.get_node("Control") as Control
+			if ctrl.focus_mode == Control.FOCUS_ALL:
+				row.grab_focus()
+				return
 
 func _focus_first_slider():
 	var tab = tabs.get_current_tab_control()

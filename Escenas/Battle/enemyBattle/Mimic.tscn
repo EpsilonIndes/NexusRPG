@@ -40,3 +40,6 @@ surface_material_override/0 = ExtResource("2_x8u3d")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Model/Outline/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_ymj2k")
 debug_color = Color(0.4499753, 0.45299035, 0.99443024, 0.41960785)
+
+[node name="DamageAnchor" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.491677, 0)

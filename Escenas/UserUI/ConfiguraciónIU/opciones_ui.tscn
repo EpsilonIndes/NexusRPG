@@ -94,10 +94,12 @@ key = "sfx"
 
 [node name="Video" type="ScrollContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs"]
 layout_mode = 2
+mouse_filter = 0
 metadata/_tab_index = 1
 
 [node name="VideoOptions" type="VBoxContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Video"]
 layout_mode = 2
+focus_mode = 2
 
 [node name="OptionRow_option_button" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Video/VideoOptions" instance=ExtResource("3_fwgtp")]
 layout_mode = 2

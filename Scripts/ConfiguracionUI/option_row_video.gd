@@ -5,14 +5,19 @@ signal value_changed
 @export var category: String
 @export var key: String
 
-@onready var control: Control = $Control
+@onready var control: Control = null
 @onready var label: Label = $Label_Tittle
 
 var _ignore_signal: bool = false
 
 
 func _ready():
-	assert(control is CheckBox or control is OptionButton)
+	for child in get_children():
+		if child is CheckBox or child is OptionButton:
+			control = child
+			break
+
+	control.focus_mode = Control.FOCUS_ALL
 
 	if control is CheckBox:
 		control.toggled.connect(_on_check_box_toggled)
@@ -21,7 +26,12 @@ func _ready():
 		_populate_options()
 		control.item_selected.connect(_on_option_selected)
 		control.focus_mode = Control.FOCUS_ALL
-
+	
+	
+	control.focus_entered.connect(func():
+		print("FOCUS ENTRÓ EN:", control.name)
+	)
+	
 
 func setup() -> void:
 	var value = SettingsManager.get_setting(category, key)
@@ -56,7 +66,7 @@ func _apply_value_to_control(value):
 
 func _populate_options():
 	control.clear()
-
+	
 	match key:
 		"resolution":
 			_populate_resolutions()
