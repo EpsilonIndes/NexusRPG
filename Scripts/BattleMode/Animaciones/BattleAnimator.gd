@@ -42,8 +42,10 @@ func _try_play_next():
 	
 
 func _execute(request: Dictionary) -> void:
+	print("Instanciando animación...")
 	var anim = request.scene.instantiate()
-	
+	print("Anim instanciada: ", anim)
+
 	anim.connect("impact", Callable(self, "_on_animation_impact"))
 	
 	container.add_child(anim)

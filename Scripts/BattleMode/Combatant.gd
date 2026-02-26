@@ -47,6 +47,7 @@ var esta_muerto := false
 var position_inicial: Vector3 = Vector3.ZERO
 var indice: int = -1
 
+var original_position: Vector3
 
 
 
@@ -108,6 +109,8 @@ func inicializar(datos: Dictionary, es_jugador_: bool, battle_manager_: Node) ->
 
 	# --- Técnicas ---
 	tecnicas = GlobalTechniqueDatabase.get_techniques_for(id)
+	original_position = global_position
+	
 
 #------------------
 # Helpers básicos
@@ -295,6 +298,10 @@ func ejecutar_tecnica():
 
 	var tecnica = tecnica_seleccionada["datos"]
 	var objetivos: Array = tecnica_seleccionada.get("objetivos", [])
+	
+	print("Tecnica completa:", tecnica)
+	print("Keys disponibles:", tecnica.keys())
+
 	# Aplicar costes (chequeos simples)
 	mp = max(0, mp - tecnica.get("costo_dp", 0))
 	drive = max(0, drive - tecnica.get("costo_drive", 0))
@@ -322,16 +329,17 @@ func ejecutar_tecnica():
 			print("%s ha muerto tras recibir efectos." % t.nombre)
 	
 	var anim_scene: PackedScene = tecnica.get("animation_scene", null)
+	
 	if anim_scene:
-		battle_manager.reproducir_animacion(
-			anim_scene,
-			self,
-			objetivos
-		)
-	await battle_manager.battle_animator.animation_finished
+		print("Anim_scene existe")
+		battle_manager.reproducir_animacion(anim_scene, self, objetivos)
+		await battle_manager.battle_animator.animation_finished
+	else:
+		print("anim_scene no existe")
 
 	# Limpiar selección y avisar al BattleManager
 	tecnica_seleccionada = null
+	print("avisando al battleManager que finalizó turno") # No aparece este log.
 	emit_signal("turno_finalizado")
 
 #------------------------------
@@ -447,3 +455,15 @@ func _mostrar_feedback_con_delay(data: Dictionary, delay: float) -> void:
 		data.critico,
 		data.rol_combo
 	)
+
+
+# ---------------
+#   MOVIMIENTO
+# ---------------
+
+func anim_move_to(target_position: Vector3, duration: float) -> void:
+	var tween = create_tween()
+	tween.tween_property(self, "global_position", target_position, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+func anim_return_to_origin(duration: float) -> void:
+	anim_move_to(original_position, duration)

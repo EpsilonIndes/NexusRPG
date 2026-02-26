@@ -603,4 +603,5 @@ func ordenar_combatientes_por_velocidad() -> void:
 ANIMACIÓN
 """
 func reproducir_animacion(scene, source, targets, data := {}):
+	print("reproduciendo animación")
 	battle_animator.play(scene, source, targets, data)

@@ -201,8 +201,11 @@ func _process_value(header_name: String, value: String):
 			return EffectParser.parse_effect_string(value)
 		
 		"animation_scene":
-			if value.strip_edges() != "":
-				return load(value)
+			var path = value.strip_edges()
+			if path != "":
+				var scene = load(path)
+				print("[DataLoader] Cargando animación: ", path, " -> ", scene)
+				return scene
 			return null
 		
 		_:
