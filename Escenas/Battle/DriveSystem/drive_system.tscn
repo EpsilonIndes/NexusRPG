@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://1dpysj6u1aro"]
+
+[ext_resource type="Script" uid="uid://cpvicoxr0mx3k" path="res://Scripts/BattleMode/DriveScore/DriveSystem.gd" id="1_j46cw"]
+
+[node name="DriveSystem" type="Node"]
+script = ExtResource("1_j46cw")

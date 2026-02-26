@@ -43,6 +43,6 @@ func setup(valor: int, tipo: String, rol_combo: String, critico: bool = false) -
 
 func _ready():
 	var tween = create_tween()
-	tween.tween_property(self, "position:y", position.y + 1.5, 1.0)
+	tween.tween_property(self, "position:y", position.y + 2, 0.7)
 	tween.tween_callback(queue_free)
 

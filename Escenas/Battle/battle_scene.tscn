@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dwfdbxtwcl5vd"]
+[gd_scene load_steps=13 format=3 uid="uid://dwfdbxtwcl5vd"]
 
 [ext_resource type="Script" uid="uid://dmi1n3jxy6l2" path="res://Scripts/BattleMode/BattleManager2.gd" id="1_54c5x"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="2_fyboh"]
@@ -6,6 +6,8 @@
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="4_ormgq"]
 [ext_resource type="Script" uid="uid://peo05mmkyn4t" path="res://Scripts/UI/UiOverlay.gd" id="5_l5hoi"]
 [ext_resource type="PackedScene" uid="uid://gvt6yjw3ptg0" path="res://Escenas/Battle/battle_ui/target_selector.tscn" id="6_lu3wa"]
+[ext_resource type="PackedScene" uid="uid://cuk3kad5j5gge" path="res://Animaciones/battle_animator.tscn" id="7_l5hoi"]
+[ext_resource type="PackedScene" uid="uid://1dpysj6u1aro" path="res://Escenas/Battle/DriveSystem/drive_system.tscn" id="8_rw5ry"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_f8uh2"]
 
@@ -76,3 +78,9 @@ script = ExtResource("5_l5hoi")
 [node name="TargetSelector" parent="UIOverlay" instance=ExtResource("6_lu3wa")]
 
 [node name="TechniqueOverlay" type="CanvasLayer" parent="UIOverlay"]
+
+[node name="Animation" type="Node" parent="."]
+
+[node name="BattleAnimator" parent="Animation" instance=ExtResource("7_l5hoi")]
+
+[node name="DriveSystem" parent="." instance=ExtResource("8_rw5ry")]

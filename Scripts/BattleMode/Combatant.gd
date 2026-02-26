@@ -9,6 +9,8 @@ var battle_manager: Node = null
 
 @onready var damage_anchor: Node3D = $DamageAnchor
 
+var cola_feedback: Array = []
+
 # Efectos activos: { id:String, duracion:int, args:[], tick:Callable?, on_apply:Callable?, on_expire:Callable? }
 var efectos_activos := [] # cada elemento será {id, duracion, data}
 
@@ -27,7 +29,11 @@ var espiritu := 0
 var drive := 0
 var tecnicas: Array = []
 var display_name: String = ""
+var precision: int = 0
+var evasion := 0.0
 
+var crit_rate := 0
+var crit_dmg := 0
 
 # Pa la práctica de Tweens:
 var levitation_tween: Tween
@@ -81,6 +87,13 @@ func inicializar(datos: Dictionary, es_jugador_: bool, battle_manager_: Node) ->
 		hp = hp_max
 		mp_max = stats.max_dp
 		mp = mp_max
+		precision = stats.prec
+		
+		evasion = velocidad % suerte * 2
+
+		crit_dmg = stats.crit_dmg
+		crit_rate = stats.crit_rate
+
 	else:
 		var stats = EnemyDatabase.get_stats(id)
 		ataque = stats.atk
@@ -111,7 +124,12 @@ func recibir_danio(cantidad: int, tipo: String, rol_combo: String = "", critico:
 	hp = max(0, hp - cantidad)
 	print("%s recibe %d de daño | HP: %d/%d" % [nombre, cantidad, hp, hp_max])
 	
-	mostrar_numero_danio(cantidad, tipo, critico, rol_combo)
+	cola_feedback.append({
+		"valor": cantidad,
+		"tipo": tipo,
+		"critico": critico,
+		"rol_combo": rol_combo
+	})
 
 	# Animacion de daño
 	if animated_sprite and "hit" in animated_sprite.sprite_frames.get_animation_names():
@@ -159,7 +177,13 @@ func curar_hp(cantidad: int) -> void:
 		return
 	hp = min(hp + cantidad, hp_max)
 	print("%s recupera %d HP | HP: %d/%d" % [nombre, cantidad, hp, hp_max])
-	mostrar_numero_danio(cantidad, "heal", false, "")
+	
+	cola_feedback.append({
+		"valor": cantidad,
+		"tipo": "heal",
+		"critico": 0,
+		"rol_combo": "support"
+	})
 
 func modificar_stat(stat: String, cantidad: int) -> void:
 	var allowed := ["hp", "hp_max", "dp", "mp_max", "ataque", "defensa", "velocidad", "drive"]
@@ -175,8 +199,12 @@ func modificar_stat(stat: String, cantidad: int) -> void:
 	print("%s modifica %s por %+d | Nuevo valor: %d" %
 		[nombre, stat, cantidad, self.get(stat)])
 	
-	mostrar_numero_danio(cantidad, "buff", false, "")
-
+	cola_feedback.append({
+		"valor": cantidad,
+		"tipo": "debuff",
+		"critico": false,
+		"rol_combo": ""
+	})
 #--------------------------
 # Efectos persistentes
 #--------------------------
@@ -208,12 +236,6 @@ func agregar_efecto(nuevo: Dictionary) -> void:
 		mostrar_feedback_estado(nuevo)
 	
 	print("registrado efecto %s en %s (dur: %s)" % [nuevo.get("id","?"), nombre, nuevo.get("duracion", "?")])
-
-func agregar_efecto_viejo(efecto: Dictionary) -> void:
-	efectos_activos.append(efecto)
-	if efecto.has("on_apply") and typeof(efecto.on_apply) == TYPE_CALLABLE:
-		efecto.on_apply.call(self)
-	print("registrado efecto %s en %s (dur: %s)" % [efecto.get("id","?"), nombre, efecto.get("duracion", "?")])
 
 
 func procesar_efectos_activos() -> void:
@@ -299,8 +321,14 @@ func ejecutar_tecnica():
 		if not t.esta_vivo():
 			print("%s ha muerto tras recibir efectos." % t.nombre)
 	
-	# Espera visual para animaciones
-	await get_tree().create_timer(0.6).timeout
+	var anim_scene: PackedScene = tecnica.get("animation_scene", null)
+	if anim_scene:
+		battle_manager.reproducir_animacion(
+			anim_scene,
+			self,
+			objetivos
+		)
+	await battle_manager.battle_animator.animation_finished
 
 	# Limpiar selección y avisar al BattleManager
 	tecnica_seleccionada = null
@@ -392,3 +420,30 @@ func mostrar_feedback_estado(efecto: Dictionary):
 			mostrar_numero_danio(valor, "buff", false, "")
 		"debuff":
 			mostrar_numero_danio(abs(valor), "debuff", false, "")
+		
+func registrar_evento_visual(tipo: Dictionary) -> void:
+	var miss = str(tipo.get("tipo"))
+	cola_feedback.append({
+		"valor": 0,
+		"tipo": miss,
+		"critico": 0,
+		"rol_combo": ""
+	})
+
+func reproducir_feedback() -> void:
+	var delay := 0.0
+	
+	for evento in cola_feedback:
+		_mostrar_feedback_con_delay(evento, delay)
+		delay += 0.12 # pequeño escalonado
+		
+	cola_feedback.clear()
+
+func _mostrar_feedback_con_delay(data: Dictionary, delay: float) -> void:
+	await get_tree().create_timer(delay).timeout
+	mostrar_numero_danio(
+		data.valor,
+		data.tipo,
+		data.critico,
+		data.rol_combo
+	)

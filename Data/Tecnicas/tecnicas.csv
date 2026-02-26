@@ -1,49 +1,49 @@
-personaje,tecnique_id,nombre_tech,rol_combo,descripcion,costo_drive,score_value,arma,effect,target_scope,allow_target_switch,tipo_dano
-Astro,astro_01,Golpe Previsor,opener,"Inicia combo, mejora evasión",0,100,guantes,damage:0.5;nerf:velocidad:0.2,SINGLE_ENEMY,true,fisico
-Astro,astro_02,Doble Impacto,linker,"Dos golpes, gana Drive si acierta ambos",0,120,guantes,damage:10,SINGLE_ENEMY,true,fisico
-Astro,astro_03,Ciclón de Puños,linker,"Ataque multi-target, conecta fácilmente",0,200,guantes,damage:0.5,RANDOM_ENEMY,true,fisico
-Astro,astro_04,Puño Cósmico,finisher,"Gran daño, escala con combo",0,300,guantes,damage:0.5,SINGLE_ENEMY,true,fisico
-Astro,astro_05,Counter Drive,finisher,"Devuelve daño si fue atacado",0,500,guantes,damage:0.5,RANDOM_ENEMY,false,fisico
-Astro,astro_06,Impulso Instintivo,support,"Activa miniturno si evade",0,200,guantes,boost:ataque:0.5,SELF,false,fisico
-Astro,astro_07,Ritmo de Batalla,support,"Gana ataque si conecta dos linkers",0,100,guantes,boost:velocidad:0.5,SELF,false,fisico
-Sigrid,sigrid_01,Corte Preemptivo,opener,"Va primero si el enemigo no está alerta",0,100,espadas,damage:0.5,SINGLE_ENEMY,true,fisico
-Sigrid,sigrid_02,Viento Cortante,linker,"Daño + Desbalance",0,200,espadas,damage:0.5,SINGLE_ENEMY,true,fisico
-Sigrid,sigrid_03,Danza de Acero,linker,"Rebota entre enemigos",0,400,espadas,damage:0.5,RANDOM_ENEMY,false,fisico
-Sigrid,sigrid_04,Lamento Invernal,finisher,"Daño mágico tipo hielo",0,500,espadas,damage:0.5,SINGLE_ENEMY,true,magico
-Sigrid,sigrid_05,Destino Sellado,finisher,"Crítico si el enemigo tiene estado",0,500,espadas,damage:0.5,SINGLE_ENEMY,true,magico
-Sigrid,sigrid_06,Finta,support,"Esquiva y contraataca",0,100,espadas,damage:0.5,SINGLE_ENEMY,true,magico
-Sigrid,sigrid_07,Reflejo Frío,support,"Gana velocidad si no recibe daño",0,150,espadas,boost_stat:0.5,SELF,false,magico
-Sigrid,sigrid_08,Muro de Acero,support,"Aumenta la defensa por tres turnos",350,150,espadas,persist:buff:defensa:2.0:3,ALL_ALLIES,false,magico
-Miguelito,miguelito_01,Disparo de Aviso,opener,"Marca al enemigo",0,0,ballesta,damage:0.5,SINGLE_ENEMY,true,fisico
-Miguelito,miguelito_02,Flecha Encadenada,linker,"Extiende combo si el enemigo está marcado",0,0,ballesta,damage:0.5,RANDOM_ENEMY,false,fisico
-Miguelito,miguelito_03,Tiro de Rebote,linker,"Ataca a dos enemigos",0,0,ballesta,damage:0.5,RANDOM_ENEMY,false,fisico
-Miguelito,miguelito_04,Letalidad Cazada,finisher,"Más daño por efectos negativos",0,0,ballesta,damage:0.5,SINGLE_ENEMY,true,fisico
-Miguelito,miguelito_05,Observador,support,"Gana miniturno si un aliado inicia combo",0,0,ballesta,damage:0.5,SELF,false,fisico
-Miguelito,miguelito_06,Carga Silenciosa,support,"Recupera Drive si no ataca",0,0,ballesta,damage:0.5,SELF,false,fisico
-Chipita,chip_01,Burbuja Concentrada,opener,"Reduce defensa mágica del enemigo",0,0,baston,damage:0.3;nerf:def:0.2,SINGLE_ENEMY,true,magico
-Chipita,chip_02,Ráfaga Húmeda,linker,"Ralentiza enemigos",0,0,baston,damage:0.5;nerf:spd,RANDOM_ENEMY,false,magico
-Chipita,chip_03,Espejismo Acuático,linker,"Crea imagen para evasión",0,0,baston,damage:0.5,SELF,false,magico
-Chipita,chip_04,Marea Ascendente,finisher,"Daño a todos + interrumpe turnos",0,0,baston,damage:0.5,ALL_ENEMIES,false,magico
-Chipita,chip_05,Canalizar Agua,support,"Recupera Drive a aliados",0,0,baston,damage:0.5,ALL_ALLIES,false,magico
-Chipita,chip_06,Reacción Fluida,support,"Miniturno si aliado usa técnica mágica",0,0,baston,damage:0.5,SELF,false,magico
-Maya,maya_01,Carga Estelar,opener,"Abre línea de ataque recta",0,0,lanza,damage:0.5,SINGLE_ENEMY,true,fisico
-Maya,maya_02,Golpe Ascendente,linker,"Lanza al enemigo al aire",0,0,lanza,damage:0.5,SINGLE_ENEMY,true,fisico
-Maya,maya_03,Estocada Rápida,linker,"Conecta por velocidad",0,0,lanza,damage:0.5,SINGLE_ENEMY,true,fisico
-Maya,maya_04,Columna Ígnea,finisher,"Gran daño si enemigo está en el aire",0,0,lanza,damage:0.5,SINGLE_ENEMY,true,magico
-Maya,maya_05,Rastro de Ceniza,support,"Deja fuego en el terreno",0,0,lanza,persist:dot:5:2,ALL_ENEMIES,false,dot
-Maya,maya_06,Llama Reforzada,support,"Mejora finisher si usó 2 linkers distintos",0,0,lanza,damage:0.5,SELF,false,magico
-Amanda,amanda_01,Resonancia Mental,opener,"Predice acción enemiga",0,0,guantes_pesados,damage:0.5,SINGLE_ENEMY,true,magico
-Amanda,amanda_02,Ondas Resonantes,linker,"Gana Drive extra si se usa tras Chipita",0,0,guantes_pesados,damage:0.5,SELF,false,magico
-Amanda,amanda_03,Eco de Luz,linker,"Duplica efectos anteriores",0,0,guantes_pesados,damage:0.5,SELF,false,magico
-Amanda,amanda_04,Sello de Armonía,finisher,"Cura aliados",200,0,guantes_pesados,heal_hp:2.5,SINGLE_ALLY,true,magico
-Amanda,amanda_05,Mente Expandida,support,"Permite usar técnica adicional",0,0,guantes_pesados,damage:0.5,SELF,false,magico
-Amanda,amanda_06,Drive Coral,support,"Aumenta puntaje si otro usa finisher",0,0,guantes_pesados,damage:0.5,SELF,false,magico
-Amanda,amanda_07,Iluminación Colectiva,support, "Cura a todos los aliados finalizar un combo exitoso.",300,150,guantes_pesados,heal_hp:0.8,ALL_ALLIES,false,magico
-Lucinara,lucinara_01,Golpe Purificador,opener,"Martillazo sagrado que marca el alma del enemigo.",10,120,martillo,purificacion_parcial:1;damage:0.8,SINGLE_ENEMY,true,fisico
-Lucinara,lucinara_02,Cadenas de Devoción,linker,"Invoca cadenas espirituales que atan la esencia del enemigo.",12,150,martillo,cadenas_anima:1;spd_down:0.15;damage:0.4,SINGLE_ENEMY,true,magico
-Lucinara,lucinara_03,Dislocación Ánima,linker,"Separa el alma del cuerpo causando desorientación espiritual.",14,160,martillo,alma_dislocada:1;evasion_down:0.20;damage:0.5,SINGLE_ENEMY,true,magico
-Lucinara,lucinara_04,Oración de Alma Serena,support,"Reza para calmar y proteger las almas del grupo.",18,100,martillo,heal_all:0.25;cleanse:1,ALL_ALLIES,false,fisico
-Lucinara,lucinara_05,Maza de Absolución,finisher,"Golpe final que destruye la corrupción espiritual.",22,250,martillo,consume_spirit_states:1;damage:1.6, SINGLE_ENEMY,true,fisico
-Lucinara,lucinara_06,Ruptura del Espíritu,finisher,"Desgarra el alma corrupta del enemigo causando una explosión de luz.",28,320,martillo,fisura_espiritual:1;force_purificacion_completa:1;damage:1.2, SINGLE_ENEMY,true,fisico
-Lucinara,lucinara_07,Bendición de Último Aliento,support,"Protege y cura a un aliado en peligro.",0,80,martillo,auto_trigger_low_hp:1;heal:0.3;def_up:0.15,SINGLE_ALLY,true,fisico
-Lucinara,lucinara_08,Deflagración Sagrada,support,"Contraataque de luz que hiere almas corruptas.",0,90,martillo,auto_trigger_crit:1;damage:0.6;purificacion_parcial:1,SINGLE_ENEMY,true,magico
+personaje,tecnique_id,nombre_tech,rol_combo,descripcion,costo_drive,score_value,arma,effect,target_scope,allow_target_switch,tipo_dano,visual_tipo,animation_scene
+Astro,astro_01,Golpe Previsor,opener,"Inicia combo, mejora evasión",0,100,guantes,damage:0.5;debuff:velocidad:0.2,SINGLE_ENEMY,true,fisico,debuff,res://Animaciones/anim_combate/Astro/astro_slash.tscn
+Astro,astro_02,Doble Impacto,linker,"Dos golpes, gana Drive si acierta ambos",0,120,guantes,damage:10;buff:drive:0.3,SINGLE_ENEMY,true,fisico,,
+Astro,astro_03,Ciclón de Puños,linker,"Ataque multi-target, conecta fácilmente",0,200,guantes,damage:0.5,RANDOM_ENEMY,true,fisico,,
+Astro,astro_04,Puño Cósmico,finisher,"Gran daño, escala con combo",0,300,guantes,damage:0.5,SINGLE_ENEMY,true,fisico,,
+Astro,astro_05,Counter Drive,finisher,"Devuelve daño si fue atacado",0,500,guantes,damage:0.5,RANDOM_ENEMY,false,fisico,,
+Astro,astro_06,Impulso Instintivo,support,"Activa miniturno si evade",0,200,guantes,buff:ataque:0.5,SELF,false,fisico,,
+Astro,astro_07,Ritmo de Batalla,support,"Gana ataque si conecta dos linkers",0,100,guantes,buff:velocidad:0.5,SELF,false,fisico,buff,
+Sigrid,sigrid_01,Corte Preemptivo,opener,"Va primero si el enemigo no está alerta",0,100,espadas,damage:0.5,SINGLE_ENEMY,true,fisico,,
+Sigrid,sigrid_02,Viento Cortante,linker,"Daño + Desbalance",0,200,espadas,damage:0.5;debuff:velocidad:0.2,SINGLE_ENEMY,true,fisico,debuff,
+Sigrid,sigrid_03,Danza de Acero,linker,"Rebota entre enemigos",0,400,espadas,damage:0.5,RANDOM_ENEMY,false,fisico,,
+Sigrid,sigrid_04,Lamento Invernal,finisher,"Daño mágico tipo hielo",0,500,espadas,damage:0.5,SINGLE_ENEMY,true,magico,,
+Sigrid,sigrid_05,Destino Sellado,finisher,"Crítico si el enemigo tiene estado",0,500,espadas,damage:0.5,SINGLE_ENEMY,true,magico,,
+Sigrid,sigrid_06,Finta,support,"Esquiva y contraataca",0,100,espadas,damage:0.5,SINGLE_ENEMY,true,magico,buff,
+Sigrid,sigrid_07,Reflejo Frío,support,"Gana velocidad si no recibe daño",0,150,espadas,persist:buff:velocidad:0.5,SELF,false,magico,buff,
+Sigrid,sigrid_08,Muro de Acero,support,"Aumenta la defensa por tres turnos",350,150,espadas,persist:buff:defensa:2.0:3,ALL_ALLIES,false,magico,buff,
+Miguelito,miguelito_01,Disparo de Aviso,opener,"Marca al enemigo",0,0,ballesta,damage:0.5,SINGLE_ENEMY,true,fisico,,
+Miguelito,miguelito_02,Flecha Encadenada,linker,"Extiende combo si el enemigo está marcado",0,0,ballesta,damage:0.5,RANDOM_ENEMY,false,fisico,,
+Miguelito,miguelito_03,Tiro de Rebote,linker,"Ataca a dos enemigos",0,0,ballesta,damage:0.5,RANDOM_ENEMY,false,fisico,,
+Miguelito,miguelito_04,Letalidad Cazada,finisher,"Más daño por efectos negativos",0,0,ballesta,damage:0.5,SINGLE_ENEMY,true,fisico,,
+Miguelito,miguelito_05,Observador,support,"Gana miniturno si un aliado inicia combo",0,0,ballesta,damage:0.5,SELF,false,fisico,,
+Miguelito,miguelito_06,Carga Silenciosa,support,"Recupera Drive si no ataca",0,0,ballesta,damage:0.5,SELF,false,fisico,,
+Chipita,chip_01,Burbuja Concentrada,opener,"Reduce defensa mágica del enemigo",0,0,baston,damage:0.3;debuff:defensa:0.2,SINGLE_ENEMY,true,magico,debuff,
+Chipita,chip_02,Ráfaga Húmeda,linker,"Ralentiza enemigos",0,0,baston,damage:0.5;debuff:velocidad:0.3,RANDOM_ENEMY,false,magico,,
+Chipita,chip_03,Espejismo Acuático,linker,"Crea imagen para evasión",0,0,baston,damage:0.5,SELF,false,magico,,
+Chipita,chip_04,Marea Ascendente,finisher,"Daño a todos + interrumpe turnos",0,0,baston,damage:0.5,ALL_ENEMIES,false,magico,,
+Chipita,chip_05,Canalizar Agua,support,"Recupera Drive a aliados",0,0,baston,damage:0.5,ALL_ALLIES,false,magico,,
+Chipita,chip_06,Reacción Fluida,support,"Miniturno si aliado usa técnica mágica",0,0,baston,damage:0.5,SELF,false,magico,,
+Maya,maya_01,Carga Estelar,opener,"Abre línea de ataque recta",0,0,lanza,damage:0.5,SINGLE_ENEMY,true,fisico,,
+Maya,maya_02,Golpe Ascendente,linker,"Lanza al enemigo al aire",0,0,lanza,damage:0.5,SINGLE_ENEMY,true,fisico,,
+Maya,maya_03,Estocada Rápida,linker,"Conecta por velocidad",0,0,lanza,damage:0.5,SINGLE_ENEMY,true,fisico,,
+Maya,maya_04,Columna Ígnea,finisher,"Gran daño si enemigo está en el aire",0,0,lanza,damage:0.5,SINGLE_ENEMY,true,magico,,
+Maya,maya_05,Rastro de Ceniza,support,"Deja fuego en el terreno",0,0,lanza,persist:dot:5:2,ALL_ENEMIES,false,dot,,
+Maya,maya_06,Llama Reforzada,support,"Mejora finisher si usó 2 linkers distintos",0,0,lanza,damage:0.5,SELF,false,magico,,
+Amanda,amanda_01,Resonancia Mental,opener,"Predice acción enemiga",0,0,guantes_pesados,damage:0.5,SINGLE_ENEMY,true,magico,,
+Amanda,amanda_02,Ondas Resonantes,linker,"Gana Drive extra si se usa tras Chipita",0,0,guantes_pesados,damage:0.5,SELF,false,magico,,
+Amanda,amanda_03,Eco de Luz,linker,"Duplica efectos anteriores",0,0,guantes_pesados,damage:0.5,SELF,false,magico,,
+Amanda,amanda_04,Sello de Armonía,finisher,"Cura aliados",200,0,guantes_pesados,heal_hp:2.5,SINGLE_ALLY,true,magico,heal,
+Amanda,amanda_05,Mente Expandida,support,"Permite usar técnica adicional",0,0,guantes_pesados,damage:0.5,SELF,false,magico,,
+Amanda,amanda_06,Drive Coral,support,"Aumenta puntaje si otro usa finisher",0,0,guantes_pesados,damage:0.5,SELF,false,magico,,
+Amanda,amanda_07,Iluminación Colectiva,support, "Cura a todos los aliados finalizar un combo exitoso.",300,150,guantes_pesados,heal_hp:0.8,ALL_ALLIES,false,magico,heal,
+Lucinara,lucinara_01,Golpe Purificador,opener,"Martillazo sagrado que marca el alma del enemigo.",10,120,martillo,purificacion_parcial:1;damage:0.8,SINGLE_ENEMY,true,fisico,,
+Lucinara,lucinara_02,Cadenas de Devoción,linker,"Invoca cadenas espirituales que atan la esencia del enemigo.",12,150,martillo,cadenas_anima:1;spd_down:0.15;damage:0.4,SINGLE_ENEMY,true,magico,,
+Lucinara,lucinara_03,Dislocación Ánima,linker,"Separa el alma del cuerpo causando desorientación espiritual.",14,160,martillo,alma_dislocada:1;evasion_down:0.20;damage:0.5,SINGLE_ENEMY,true,magico,,
+Lucinara,lucinara_04,Oración de Alma Serena,support,"Reza para calmar y proteger las almas del grupo.",18,100,martillo,heal_hp:0.25;cleanse:1,ALL_ALLIES,false,fisico,heal,
+Lucinara,lucinara_05,Maza de Absolución,finisher,"Golpe final que destruye la corrupción espiritual.",22,250,martillo,consume_spirit_states:1;damage:1.6, SINGLE_ENEMY,true,fisico,,
+Lucinara,lucinara_06,Ruptura del Espíritu,finisher,"Desgarra el alma corrupta del enemigo causando una explosión de luz.",28,320,martillo,fisura_espiritual:1;force_purificacion_completa:1;damage:1.2, SINGLE_ENEMY,true,fisico,,
+Lucinara,lucinara_07,Bendición de Último Aliento,support,"Protege y cura a un aliado en peligro.",0,80,martillo,auto_trigger_low_hp:1;heal:0.3;def_up:0.15,SINGLE_ALLY,true,fisico,,
+Lucinara,lucinara_08,Deflagración Sagrada,support,"Contraataque de luz que hiere almas corruptas.",0,90,martillo,auto_trigger_crit:1;damage:0.6;purificacion_parcial:1,SINGLE_ENEMY,true,magico,,

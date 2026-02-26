@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://cuk3kad5j5gge"]
+
+[ext_resource type="Script" uid="uid://p64ythsm0rtv" path="res://Scripts/BattleMode/Animaciones/BattleAnimator.gd" id="1_or88q"]
+
+[node name="BattleAnimator" type="Node"]
+script = ExtResource("1_or88q")
+
+[node name="AnimationContainer" type="Node3D" parent="."]

@@ -44,9 +44,8 @@ var enemy_type_counter: Dictionary = {}
 var tecnica_actual: Dictionary = {}
 var objetivos_actuales: Array = []
 
-var drive_score: int = 0
-var ultima_tecnica_usada: String = ""
-var repeticion_continua: int = 0
+@onready var battle_animator := $"Animation/BattleAnimator"
+@onready var drive_system := $"DriveSystem"
 
 # Referencias en la escena
 @onready var player_team = $PlayerTeam
@@ -76,11 +75,8 @@ const POS_ENEMIGOS := [
 func start_battle(jugadores: Array, enemigos: Array) -> void:
 	combatientes.clear()
 	indice_turno = 0
-	drive_score = 0
 	tecnica_actual = {}
 	objetivos_actuales.clear()
-	ultima_tecnica_usada = ""
-	repeticion_continua = 0
 
 	instanciar_equipo(jugadores, player_team, true)
 	instanciar_equipo(enemigos, enemy_team, false)
@@ -91,6 +87,13 @@ func start_battle(jugadores: Array, enemigos: Array) -> void:
 	"turns": 0,
 	"techniques_used": {}
 	}
+
+	# Para DriveSystem
+	drive_system.connect("score_changed", Callable(self, "_on_drive_score_changed"))
+	drive_system.connect("rank_changed", Callable(self, "_on_drive_rank_changed"))
+	drive_system.connect("overdrive_meter_changed", Callable(self, "_on_overdrive_meter_changed"))
+	drive_system.connect("overdrive_started", Callable(self, "_on_overdrive_started"))
+	drive_system.connect("overdrive_ended", Callable(self, "_on_overdrive_ended"))
 
 # --------------------
 # Instancia escenas de cada combatiente (escenas individuales por ID)
@@ -375,7 +378,8 @@ func finalizar_batalla() -> void:
 		"turns": 0,
 		"techniques_used": {}
 	}
-
+	if drive_system:
+		drive_system.limpiar_drive()
 	# Volver al mapa, recompensas y demás
 
 # -----------------------
@@ -537,7 +541,7 @@ func _on_combatant_turn_finished() -> void:
 		combatiente_actual.disconnect("turno_finalizado", Callable(self, "_on_combatant_turn_finished"))
 
 	# Actualizar DriveScore (si corresponde)
-	actualizar_drive_score()
+	#actualizar_drive_score()
 
 	# Limpiar técnica actual / objetivos
 	tecnica_actual = {}
@@ -550,6 +554,7 @@ func _on_combatant_turn_finished() -> void:
 #-------------------------------
 # DriveScore (Simple por ahora)
 #-------------------------------
+"""
 func actualizar_drive_score() -> void:
 	var id = tecnica_actual.get("tecnique_id", "")
 	var base = tecnica_actual.get("score_value", 0)
@@ -569,7 +574,7 @@ func actualizar_drive_score() -> void:
 			battle_stats["techniques_used"] = {}
 		
 		battle_stats["techniques_used"][id] = battle_stats["techniques_used"].get(id, 0) + 1
-
+"""
 
 # para resultados
 # enemigos derrotados:
@@ -580,7 +585,8 @@ func registrar_enemigos_derrotado(enemigo: Combatant) -> void:
 func _construir_battle_result(victoria: bool) -> Dictionary:
 	return {
 		"victoria": victoria,
-		"drive_score": drive_score,
+		"drive_score": drive_system.score,
+		"drive_rank": drive_system.rank,
 		"enemigos_derrotados": enemigos_derrotados.duplicate(),
 		"jugadores": jugadores_participantes.duplicate(),
 		"stats": battle_stats.duplicate()
@@ -595,3 +601,10 @@ func ordenar_combatientes_por_velocidad() -> void:
 			return a.indice < b.indice # desempate estable
 		return a.velocidad > b.velocidad
 	)
+
+
+"""
+ANIMACIÓN
+"""
+func reproducir_animacion(scene, source, targets, data := {}):
+	battle_animator.play(scene, source, targets, data)

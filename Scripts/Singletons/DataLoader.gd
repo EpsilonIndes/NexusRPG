@@ -163,6 +163,67 @@ func load_items_to_dict(path: String, key_column: String) -> Dictionary:
 func load_techs_to_dict(path: String, key_column: String) -> Dictionary:
 	var result: Dictionary = {}
 	var csv_rows = CsvReader.read_csv(path)
+	
+	if csv_rows.is_empty():
+		return result
+	
+	var headers = csv_rows[0]
+
+	for r in range(1, csv_rows.size()):
+		var row = csv_rows[r]
+		
+		if row.size() != headers.size():
+			push_warning("Fila inválida en CSV: %s" % str(row))
+			continue
+		
+		var entry: Dictionary = {}
+		
+		for i in headers.size():
+			var header_name = headers[i]
+			var raw_value = row[i]
+			
+			entry[header_name] = _process_value(header_name, raw_value)
+		
+		if not entry.has(key_column):
+			push_error("La fila no contiene la key: %s" % key_column)
+			continue
+		
+		result[entry[key_column]] = entry
+	
+	return result
+
+func _process_value(header_name: String, value: String):
+
+	# Columnas especiales
+	match header_name:
+		
+		"effect":
+			return EffectParser.parse_effect_string(value)
+		
+		"animation_scene":
+			if value.strip_edges() != "":
+				return load(value)
+			return null
+		
+		_:
+			pass
+	
+	# Booleanos configurables
+	if header_name in BOOL_COLUMNS:
+		return EffectParser.parse_effect_bool(value)
+	
+	# Números
+	if value.is_valid_float():
+		return float(value)
+	
+	# Default string
+	return value
+
+
+"""
+func load_techs_to_dict(path: String, key_column: String) -> Dictionary:
+	var result: Dictionary = {}
+	var csv_rows = CsvReader.read_csv(path)
 	if csv_rows.is_empty():
 		return result
 	
@@ -192,7 +253,8 @@ func load_techs_to_dict(path: String, key_column: String) -> Dictionary:
 		result[entry[key_column]] = entry
 	
 	return result
-	
+"""	
+
 func load_csv_grouped(path: String, key_column: String) -> Dictionary:
 	var result := {}
 	var file := FileAccess.open(path, FileAccess.READ)

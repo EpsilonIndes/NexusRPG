@@ -1,4 +1,4 @@
 class_id,nombre de clase,descripcion,castigo_patron,accion_castigo,recompensa_combo,accion_recompensa,notas
 C001,Castigador,Contraataca spam de Finishers,spam_finisher,counter_strike,variar_openers,bonus_damage,Enseña a no spamear
 C002,Lector,Se adapta al tipo de ataque repetido,atk_repetido,ganar_resistencia,cambio_de_rol,vulnerabilidad,Parece que "lee" al jugador
-C003,Guardián Rol,Solo se rompe con Support primero,sin_support,inmunidad,support_usado,break_defense,Mini-puzzle de combate
+C003,Guardián Rol,Solo se rompe con Support primero,sin_support,inmunidad,support_usado,break_defense,Debes usar support

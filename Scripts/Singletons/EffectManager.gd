@@ -10,7 +10,7 @@ func apply_effects(effects: Array, target: Combatant, atacante: Combatant, tecni
 			print("Efecto mal formado: %s" % efecto)
 			continue
 
-		var tipo = efecto[0]
+		var tipo = efecto[0] 
 
 		match tipo:
 			
@@ -18,35 +18,49 @@ func apply_effects(effects: Array, target: Combatant, atacante: Combatant, tecni
 			# EFECTOS INSTANTÁNEOS
 			#-------------------------------------------------
 			"damage":
+				var impacto = _resolver_impacto(atacante, target, tecnica)
+				
+				if not impacto.hit:
+					target.registrar_evento_visual({"tipo": "miss"}) 
+					return
+				
+				
 				var mult = float(efecto[1])
 				var atk_base = atacante.ataque
 				var dmg = int((atk_base * mult) - target.defensa)
 
 				var tipo_dano = tecnica.get("tipo_dano", "normal")
-				var rol_combo = tecnica.get("rol_combo", "support")
+				var rol_combo = tecnica.get("rol_combo", "")
 
-				print("aplicando %s de daño a %s" % [float(dmg), target.nombre])
-				target.recibir_danio(dmg, tipo_dano, rol_combo, false)
+			
+				if impacto.crit:
+					dmg *= atacante.crit_dmg
+
+				target.recibir_danio(dmg, tipo_dano, rol_combo, impacto.crit)
+				
+				#print("aplicando %s de daño a %s" % [float(dmg), target.nombre])
+				
+				
+				
+				
 			
 			"heal_hp":
 				var mult = float(efecto[1])
 				var heal = int(atacante.espiritu * mult)
-				print(
-					"Espíritu del Caster: ", atacante.espiritu,
-					" | MULT: ", mult
-				)
-
+				
+				print("Espíritu del Caster: ", atacante.espiritu, " | MULT: ", mult)
 				print("aplicando %s de curación a %s" % [float(heal), target.nombre])
+				
 				target.curar_hp(heal)
 
-			"boost":
-				print_debug("Lista recibida: %s" % [str(efecto)]) # boost:velocidad:0.5
+			"buff":
+				print_debug("Lista recibida: %s" % [str(efecto)]) # buff:velocidad:0.5
 				var stat = efecto[1]
 				var mult = float(efecto[2])
 				var cantidad = int(target.get(stat) * mult)
 				target.modificar_stat(stat, cantidad)
 
-			"nerf":
+			"debuff":
 				var stat = efecto[1]
 				var mult = float(efecto[2])
 				var cantidad = -int(target.get(stat) * mult)
@@ -56,7 +70,7 @@ func apply_effects(effects: Array, target: Combatant, atacante: Combatant, tecni
 			# EFECTOS PERSISTENTES
 			# Formato en CSV:
 			# 	persist:buff:ataque:0.2:3
-			#	persist:dot:5:3
+			#	persist:dot:5:3 (es daño crudo)
 			# efecto = ["persist", "buff", "ataque", "0.2", "3"]
 			#----------------------------------------------
 			"persist":
@@ -126,7 +140,7 @@ func _registrar_efecto_persistente(efecto: Array, target: Combatant) -> void:
 				"stat": stat,
 				"valor": valor,
 				"duracion": duracion,
-
+ 
 				"visual_tipo": subtipo,
 				"visual_valor": valor,
 				
@@ -140,6 +154,25 @@ func _registrar_efecto_persistente(efecto: Array, target: Combatant) -> void:
 			print("Registrando Buff/Debuff:", efecto_dic)
 			target.agregar_efecto(efecto_dic)
 
+
+func _resolver_impacto(atacante: Combatant, target: Combatant, tecnica: Dictionary) -> Dictionary:
+	var precision = atacante.precision
+	var evasion = target.evasion
+	
+	var bonus_precision = tecnica.get("bonus_precision", 0.0)
+
+	var chance = clamp((precision - evasion) + bonus_precision, 5, 95)
+	var roll = randi() % 100
+	
+	if roll >= chance:
+		return { "hit": false, "crit": false }
+	
+	# crítico
+	var crit_chance = atacante.crit_rate
+	var crit_roll = randi() % 100
+	var es_crit = crit_roll < crit_chance
+	
+	return { "hit": true, "crit": es_crit }
 
 
 """
