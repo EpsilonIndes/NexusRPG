@@ -43,6 +43,7 @@ GlobalTechniqueDatabase="*res://Scripts/BattleMode/GlobalTechniqueDatabase.gd"
 DropDatabase="*res://Scripts/SistemaItems/DropDatabase.gd"
 BattleResultProcessor="*res://Scripts/BattleMode/BattleResultProcessor.gd"
 WorldFlags="*res://Scripts/Singletons/WorldFlags.gd"
+GraphicsController="*res://Scripts/ConfiguracionUI/GraphicsController.gd"
 
 [display]
 

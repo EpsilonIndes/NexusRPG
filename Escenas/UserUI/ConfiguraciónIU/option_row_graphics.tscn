@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3 uid="uid://cgfogordi2xep"]
+
+[ext_resource type="Script" uid="uid://cl4b12tgcxltg" path="res://Scripts/ConfiguracionUI/option_row_graphics.gd" id="1_jn8dc"]
+
+[node name="option_row_graphics" type="HBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+script = ExtResource("1_jn8dc")
+
+[node name="Label_Tittle" type="Label" parent="."]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Gráficos"
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="OptionButton" type="OptionButton" parent="."]
+custom_minimum_size = Vector2(120, 0)
+layout_direction = 2
+layout_mode = 2
+size_flags_horizontal = 3

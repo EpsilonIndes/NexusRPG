@@ -15,7 +15,8 @@ var _closing_accept := false
 
 func _ready():
 	#_setup_all_option_rows()
-
+	
+	# Conectar botones
 	reset_button.pressed.connect(_on_reset_pressed)
 	apply_button.pressed.connect(_on_apply_pressed)
 	accept_button.pressed.connect(_on_accept_pressed)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://cjswe57kq821f"]
+[gd_scene load_steps=42 format=3 uid="uid://cjswe57kq821f"]
 
 [ext_resource type="PackedScene" uid="uid://bmocargan5l0q" path="res://Escenas/player.tscn" id="1_a8vtw"]
 [ext_resource type="Script" uid="uid://dpb427vjhtg17" path="res://Scripts/InventoryManager.gd" id="2_5j2cu"]
@@ -27,6 +27,7 @@
 [ext_resource type="PackedScene" uid="uid://cdarkppno1gsm" path="res://Escenas/NPCs Auromora/NPC_sigrid.tscn" id="18_7vly3"]
 [ext_resource type="Script" uid="uid://bve60yr50c5sg" path="res://Scripts/Mundo/Interactuables/ChestCommon.gd" id="18_mo6bs"]
 [ext_resource type="PackedScene" uid="uid://xlhfyi07xx0d" path="res://Escenas/NPCs Auromora/NPC_amanda.tscn" id="19_x6jwr"]
+[ext_resource type="PackedScene" uid="uid://b6txbxwkyyt2n" path="res://Escenas/Triggers/graphics_test.tscn" id="28_pjnot"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_metkf"]
 vertices = PackedVector3Array(-1.58781, 0.414183, -1.58328, -1.58781, 0.414183, 1.66672, 1.66219, 0.414183, 1.66672, 1.66219, 0.414183, -1.58328)
@@ -59,6 +60,8 @@ background_mode = 1
 background_color = Color(7.70092e-07, 0.661235, 0.874662, 1)
 ambient_light_source = 2
 ambient_light_color = Color(0.686275, 0.917647, 0.988235, 0.372549)
+glow_intensity = 0.1
+glow_bloom = 0.5
 
 [sub_resource type="Resource" id="Resource_3eirh"]
 script = ExtResource("15_6tl7n")
@@ -192,7 +195,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.557146, 0, -3.7993143)
 
 [node name="Interactuable" type="Node" parent="."]
 
-[node name="Cubiletrero" parent="Interactuable" instance=ExtResource("10_sf4ds")]
+[node name="Cubiletrero" parent="Interactuable" groups=["dynamic_lights"] instance=ExtResource("10_sf4ds")]
 
 [node name="Anciano_1" parent="Interactuable" instance=ExtResource("13_wukj4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.609187, 0.810861, -6.32963)
@@ -241,3 +244,6 @@ follow_damping = true
 
 [node name="World" type="Node" parent="."]
 script = ExtResource("17_v6mq6")
+
+[node name="GraphicsTest" parent="." instance=ExtResource("28_pjnot")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.227997, 0.940776, -1.0849122)

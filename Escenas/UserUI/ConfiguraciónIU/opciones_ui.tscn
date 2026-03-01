@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://uu6q5hosvtu6"]
+[gd_scene load_steps=8 format=3 uid="uid://uu6q5hosvtu6"]
 
 [ext_resource type="Script" uid="uid://bmcdw2lpjgpno" path="res://Scripts/ConfiguracionUI/opciones_ui.gd" id="1_ppsam"]
 [ext_resource type="PackedScene" uid="uid://bpv7eb65dq13u" path="res://Escenas/UserUI/ConfiguraciónIU/option_row_slider.tscn" id="2_w0vpb"]
 [ext_resource type="PackedScene" uid="uid://c2aabb8mr1jxx" path="res://Escenas/UserUI/ConfiguraciónIU/option_row_video.tscn" id="3_4n6ux"]
 [ext_resource type="PackedScene" uid="uid://dri6w8aln36cs" path="res://Escenas/UserUI/ConfiguraciónIU/option_row_option_button.tscn" id="3_fwgtp"]
+[ext_resource type="PackedScene" uid="uid://cgfogordi2xep" path="res://Escenas/UserUI/ConfiguraciónIU/option_row_graphics.tscn" id="5_xsljp"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_ppsam"]
 device = -1
@@ -63,7 +64,7 @@ text = "Opciones"
 [node name="Tabs" type="TabContainer" parent="PanelRoot/MarginContainer/VBoxMain"]
 layout_mode = 2
 size_flags_vertical = 3
-current_tab = 1
+current_tab = 2
 
 [node name="Audio" type="ScrollContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs"]
 visible = false
@@ -93,6 +94,7 @@ category = "audio"
 key = "sfx"
 
 [node name="Video" type="ScrollContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs"]
+visible = false
 layout_mode = 2
 mouse_filter = 0
 metadata/_tab_index = 1
@@ -116,10 +118,42 @@ layout_mode = 2
 category = "video"
 key = "vsync"
 
+[node name="Graphics" type="ScrollContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs"]
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="GameplayOptions" type="VBoxContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Graphics"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="option_row_graphics" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Graphics/GameplayOptions" instance=ExtResource("5_xsljp")]
+layout_mode = 2
+key = "preset"
+
+[node name="option_row_graphics2" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Graphics/GameplayOptions" instance=ExtResource("5_xsljp")]
+layout_mode = 2
+key = "shadows"
+
+[node name="option_row_graphics3" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Graphics/GameplayOptions" instance=ExtResource("5_xsljp")]
+layout_mode = 2
+key = "lighting"
+
+[node name="option_row_graphics4" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Graphics/GameplayOptions" instance=ExtResource("5_xsljp")]
+layout_mode = 2
+key = "postprocess"
+
+[node name="option_row_graphics5" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Graphics/GameplayOptions" instance=ExtResource("5_xsljp")]
+layout_mode = 2
+key = "particles"
+
+[node name="option_row_graphics6" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Graphics/GameplayOptions" instance=ExtResource("5_xsljp")]
+layout_mode = 2
+key = "camera_shake"
+
 [node name="Gameplay" type="ScrollContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs"]
 visible = false
 layout_mode = 2
-metadata/_tab_index = 2
+metadata/_tab_index = 3
 
 [node name="GameplayOptions" type="VBoxContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Gameplay"]
 layout_mode = 2
@@ -127,7 +161,7 @@ layout_mode = 2
 [node name="Controls" type="ScrollContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs"]
 visible = false
 layout_mode = 2
-metadata/_tab_index = 3
+metadata/_tab_index = 4
 
 [node name="ControlsOptions" type="VBoxContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Controls"]
 layout_mode = 2

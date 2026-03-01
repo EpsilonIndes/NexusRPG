@@ -21,6 +21,14 @@ const DEFAULT_SETTINGS: Dictionary = {
 	"gameplay": {
 		"text_speed": 1.0,
 		"auto_advance": false
+	},
+	"graphics": {
+		"preset": 2, # 0 bajo, 1 medio, 2 alto, 3 ultra
+		"shadows": 2,
+		"lighting": true,
+		"postprocess": 2,
+		"particles": 2,
+		"camera_shake": true
 	}
 }
 
@@ -46,6 +54,7 @@ func apply_all():
 	apply_audio()
 	apply_video()
 	apply_gameplay()
+	GraphicsController.apply_graphics(settings.graphics)
 
 func reset_to_defaults():
 	settings = DEFAULT_SETTINGS.duplicate(true)

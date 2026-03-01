@@ -1,0 +1,49 @@
+[gd_scene load_steps=7 format=3 uid="uid://b6txbxwkyyt2n"]
+
+[ext_resource type="Texture2D" uid="uid://dy1uvwkvc1aei" path="res://Sprites/UIX/indicador.png" id="1_gq67k"]
+
+[sub_resource type="Curve" id="Curve_gq67k"]
+_data = [Vector2(0.015936255, 0), 0.0, 0.0, 0, 0, Vector2(0.91235065, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_qxm5f"]
+curve = SubResource("Curve_gq67k")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qxm5f"]
+particle_flag_align_y = true
+emission_shape = 4
+emission_point_texture = ExtResource("1_gq67k")
+emission_point_count = 1
+spread = 180.0
+initial_velocity_min = 15.0
+initial_velocity_max = 18.0
+scale_min = 0.5
+scale_max = 1.8
+scale_curve = SubResource("CurveTexture_qxm5f")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0ow3v"]
+albedo_color = Color(1, 0.5977294, 0.260036, 1)
+emission_enabled = true
+emission = Color(0.980769, 0.54926586, 0, 1)
+emission_energy_multiplier = 1.56
+
+[sub_resource type="PrismMesh" id="PrismMesh_iljj3"]
+material = SubResource("StandardMaterial3D_0ow3v")
+size = Vector3(0.2, 0.5, 0.2)
+
+[node name="GraphicsTest" type="Node3D"]
+
+[node name="Node3D" type="Node3D" parent="."]
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="Node3D" groups=["particles"]]
+transform = Transform3D(0.32613224, 0, 0, 0, 0.2980992, 0, 0, 0, 0.30731297, 0, 0, 0)
+emitting = false
+amount = 50
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_qxm5f")
+draw_pass_1 = SubResource("PrismMesh_iljj3")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Node3D" groups=["dynamic_lights"]]
+light_color = Color(0.9118774, 0.5432723, 0, 1)
+light_energy = 3.0
+omni_range = 10.0
