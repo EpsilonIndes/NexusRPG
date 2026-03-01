@@ -15,7 +15,7 @@ run/main_scene="res://Escenas/nivel_1.tscn"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 boot_splash/fullsize=false
 boot_splash/use_filter=false
-boot_splash/image="uid://c5fwg8pdal6md"
+boot_splash/image="uid://dj17qdsc4syyr"
 
 [autoload]
 

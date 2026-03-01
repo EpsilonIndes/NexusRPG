@@ -1,17 +1,3 @@
 [remap]
 
-importer="csv_translation"
-type="Translation"
-uid="uid://bfrwvy0r1v76e"
-
-[deps]
-
-files=["res://Data/Char_stats/stats.class.translation", "res://Data/Char_stats/stats.job.translation", "res://Data/Char_stats/stats.hp.translation", "res://Data/Char_stats/stats.max.translation", "res://Data/Char_stats/stats.dp.translation", "res://Data/Char_stats/stats.max.translation", "res://Data/Char_stats/stats.atk.translation", "res://Data/Char_stats/stats.def.translation", "res://Data/Char_stats/stats.spd.translation", "res://Data/Char_stats/stats.lck.translation", "res://Data/Char_stats/stats.wis.translation", "res://Data/Char_stats/stats.prec.translation", "res://Data/Char_stats/stats.exp.translation", "res://Data/Char_stats/stats.exp.translation", "res://Data/Char_stats/stats.face.translation", "res://Data/Char_stats/stats.nivel.translation", "res://Data/Char_stats/stats.crit.translation", "res://Data/Char_stats/stats.crit.translation", "res://Data/Char_stats/stats.evasion.translation", "res://Data/Char_stats/stats.precision.translation", "res://Data/Char_stats/stats.base.translation", "res://Data/Char_stats/stats.base.translation", "res://Data/Char_stats/stats.base.translation", "res://Data/Char_stats/stats.base.translation", "res://Data/Char_stats/stats.growth.translation", "res://Data/Char_stats/stats.growth.translation", "res://Data/Char_stats/stats.growth.translation", "res://Data/Char_stats/stats.growth.translation"]
-
-source_file="res://Data/Char_stats/stats.csv"
-dest_files=["res://Data/Char_stats/stats.class.translation", "res://Data/Char_stats/stats.job.translation", "res://Data/Char_stats/stats.hp.translation", "res://Data/Char_stats/stats.max.translation", "res://Data/Char_stats/stats.dp.translation", "res://Data/Char_stats/stats.max.translation", "res://Data/Char_stats/stats.atk.translation", "res://Data/Char_stats/stats.def.translation", "res://Data/Char_stats/stats.spd.translation", "res://Data/Char_stats/stats.lck.translation", "res://Data/Char_stats/stats.wis.translation", "res://Data/Char_stats/stats.prec.translation", "res://Data/Char_stats/stats.exp.translation", "res://Data/Char_stats/stats.exp.translation", "res://Data/Char_stats/stats.face.translation", "res://Data/Char_stats/stats.nivel.translation", "res://Data/Char_stats/stats.crit.translation", "res://Data/Char_stats/stats.crit.translation", "res://Data/Char_stats/stats.evasion.translation", "res://Data/Char_stats/stats.precision.translation", "res://Data/Char_stats/stats.base.translation", "res://Data/Char_stats/stats.base.translation", "res://Data/Char_stats/stats.base.translation", "res://Data/Char_stats/stats.base.translation", "res://Data/Char_stats/stats.growth.translation", "res://Data/Char_stats/stats.growth.translation", "res://Data/Char_stats/stats.growth.translation", "res://Data/Char_stats/stats.growth.translation"]
-
-[params]
-
-compress=true
-delimiter=0
+importer="keep"

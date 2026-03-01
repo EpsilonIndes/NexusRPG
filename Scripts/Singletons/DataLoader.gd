@@ -3,8 +3,6 @@
 # Cargará items, loot, stats, dialogos, técnicas desde las rutas especificadas
 extends Node
 
-signal data_loaded
-
 var dialogues: Dictionary = {}
 var items: Dictionary = {}
 var loots: Dictionary = {}
@@ -23,13 +21,10 @@ const BOOL_COLUMNS := [
 
 func init_data():
 	if _is_ready:
-		emit_signal("data_loaded")
 		return
-
-	await load_all_data()
-
+		
+	load_all_data()
 	_is_ready = true
-	emit_signal("data_loaded")
 
 func load_all_data():
 	load_dialogues("res://Data/Dialogue/dialogos_NPC_auromora.csv")
@@ -39,8 +34,10 @@ func load_all_data():
 	load_tecnicas("res://Data/Tecnicas/tecnicas.csv")
 	load_enemy_stats("res://Data/Enemy_stats/stats_enemigos.csv")
 	load_enemy_drops("res://Data/Loot/drop_tables.csv")
+	print("Items exists: ", FileAccess.file_exists("res://Data/Items/items.csv"))
+	print("Stats exists: ", FileAccess.file_exists("res://Data/Char_stats/stats.csv"))
 	print("[DataLoader] Datos cargados completamente.")
-	
+
 func load_csv_to_dict(path: String, key_column: String) -> Dictionary:
 	var result: Dictionary = {}
 	var file := FileAccess.open(path, FileAccess.READ)
@@ -229,41 +226,6 @@ func _process_value(header_name: String, value: String):
 	# Default string
 	return value
 
-
-"""
-func load_techs_to_dict(path: String, key_column: String) -> Dictionary:
-	var result: Dictionary = {}
-	var csv_rows = CsvReader.read_csv(path)
-	if csv_rows.is_empty():
-		return result
-	
-	var headers = csv_rows[0] # primera fila = header
-
-	for r in range(1, csv_rows.size()):
-		var row = csv_rows[r]
-		if row.size() != headers.size():
-			print("fila inválida en CSV:", row)
-			continue
-		
-		var entry: Dictionary = {}
-		for i in headers.size():
-			var header_name = headers[i]
-			var value = row[i]
-
-			if header_name == "effect":
-				entry[header_name] = EffectParser.parse_effect_string(value)
-			elif header_name in BOOL_COLUMNS:
-				entry[header_name] = EffectParser.parse_effect_bool(value)
-				
-			elif value.is_valid_float():
-				entry[header_name] = float(value)
-			else:
-				entry[header_name] = value
-			
-		result[entry[key_column]] = entry
-	
-	return result
-"""	
 
 func load_csv_grouped(path: String, key_column: String) -> Dictionary:
 	var result := {}

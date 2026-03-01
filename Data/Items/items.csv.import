@@ -1,17 +1,3 @@
 [remap]
 
-importer="csv_translation"
-type="Translation"
-uid="uid://1kwdqjwvsdra"
-
-[deps]
-
-files=["res://Data/Items/items.item.translation", "res://Data/Items/items.item.translation", "res://Data/Items/items.description.translation", "res://Data/Items/items.value.translation", "res://Data/Items/items.rarity.translation", "res://Data/Items/items.effect.translation"]
-
-source_file="res://Data/Items/items.csv"
-dest_files=["res://Data/Items/items.item.translation", "res://Data/Items/items.item.translation", "res://Data/Items/items.description.translation", "res://Data/Items/items.value.translation", "res://Data/Items/items.rarity.translation", "res://Data/Items/items.effect.translation"]
-
-[params]
-
-compress=true
-delimiter=0
+importer="keep"

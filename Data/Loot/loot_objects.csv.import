@@ -1,17 +1,3 @@
 [remap]
 
-importer="csv_translation"
-type="Translation"
-uid="uid://bb8tscr8efyki"
-
-[deps]
-
-files=["res://Data/Loot/loot_objects.item.translation", "res://Data/Loot/loot_objects.quantity.translation", "res://Data/Loot/loot_objects.requires.translation", "res://Data/Loot/loot_objects.dialogue.translation", "res://Data/Loot/loot_objects.dialogue.translation", "res://Data/Loot/loot_objects.dialogue.translation"]
-
-source_file="res://Data/Loot/loot_objects.csv"
-dest_files=["res://Data/Loot/loot_objects.item.translation", "res://Data/Loot/loot_objects.quantity.translation", "res://Data/Loot/loot_objects.requires.translation", "res://Data/Loot/loot_objects.dialogue.translation", "res://Data/Loot/loot_objects.dialogue.translation", "res://Data/Loot/loot_objects.dialogue.translation"]
-
-[params]
-
-compress=true
-delimiter=0
+importer="keep"

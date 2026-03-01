@@ -28,10 +28,6 @@ var primera_carga: bool = false
 
 func _ready():
 	DataLoader.init_data()
-
-	if not DataLoader._is_ready:	
-		await DataLoader.data_loaded
-	
 	_initialize_team()
 	
 
