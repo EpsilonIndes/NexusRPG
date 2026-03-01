@@ -3,6 +3,8 @@
 # Cargará items, loot, stats, dialogos, técnicas desde las rutas especificadas
 extends Node
 
+signal data_loaded
+
 var dialogues: Dictionary = {}
 var items: Dictionary = {}
 var loots: Dictionary = {}
@@ -11,7 +13,7 @@ var tecnicas: Dictionary = {}
 var enemigos: Dictionary = {}
 var drops: Dictionary = {}
 
-var _initialized: bool = false
+var _is_ready: bool = false
 
 const BOOL_COLUMNS := [
 	"allow_target_switch",
@@ -20,10 +22,14 @@ const BOOL_COLUMNS := [
 ]
 
 func init_data():
-	if _initialized:
+	if _is_ready:
+		emit_signal("data_loaded")
 		return
-	load_all_data()
-	_initialized = true
+
+	await load_all_data()
+
+	_is_ready = true
+	emit_signal("data_loaded")
 
 func load_all_data():
 	load_dialogues("res://Data/Dialogue/dialogos_NPC_auromora.csv")
@@ -33,7 +39,8 @@ func load_all_data():
 	load_tecnicas("res://Data/Tecnicas/tecnicas.csv")
 	load_enemy_stats("res://Data/Enemy_stats/stats_enemigos.csv")
 	load_enemy_drops("res://Data/Loot/drop_tables.csv")
-
+	print("[DataLoader] Datos cargados completamente.")
+	
 func load_csv_to_dict(path: String, key_column: String) -> Dictionary:
 	var result: Dictionary = {}
 	var file := FileAccess.open(path, FileAccess.READ)

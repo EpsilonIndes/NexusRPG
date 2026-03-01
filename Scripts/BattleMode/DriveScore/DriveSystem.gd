@@ -45,7 +45,7 @@ actualiza rango, carga Overdrive, si Overdrive
 está activo → acumula daño
 """
 func register_action(role: String, damage_done: int) -> void:
-		pass
+	pass
 
 func _evaluate_role(role: String) -> int:
 	var value := 0

@@ -4,6 +4,8 @@ class_name Combatant
 
 signal turno_finalizado
 
+var has_acted: bool = false
+
 var battle_manager: Node = null
 @export var es_jugador: bool = false
 
@@ -110,7 +112,7 @@ func inicializar(datos: Dictionary, es_jugador_: bool, battle_manager_: Node) ->
 	# --- Técnicas ---
 	tecnicas = GlobalTechniqueDatabase.get_techniques_for(id)
 	original_position = global_position
-	
+
 
 #------------------
 # Helpers básicos
@@ -298,9 +300,6 @@ func ejecutar_tecnica():
 
 	var tecnica = tecnica_seleccionada["datos"]
 	var objetivos: Array = tecnica_seleccionada.get("objetivos", [])
-	
-	print("Tecnica completa:", tecnica)
-	print("Keys disponibles:", tecnica.keys())
 
 	# Aplicar costes (chequeos simples)
 	mp = max(0, mp - tecnica.get("costo_dp", 0))
@@ -329,18 +328,13 @@ func ejecutar_tecnica():
 			print("%s ha muerto tras recibir efectos." % t.nombre)
 	
 	var anim_scene: PackedScene = tecnica.get("animation_scene", null)
+
+	tecnica_seleccionada = null	
+	emit_signal("turno_finalizado")
 	
 	if anim_scene:
-		print("Anim_scene existe")
 		battle_manager.reproducir_animacion(anim_scene, self, objetivos)
-		await battle_manager.battle_animator.animation_finished
-	else:
-		print("anim_scene no existe")
-
-	# Limpiar selección y avisar al BattleManager
-	tecnica_seleccionada = null
-	print("avisando al battleManager que finalizó turno") # No aparece este log.
-	emit_signal("turno_finalizado")
+		#await battle_manager.battle_animator.animation_finished
 
 #------------------------------
 # IA simple para enemigos

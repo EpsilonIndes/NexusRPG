@@ -85,6 +85,12 @@ func _mover(delta) -> void:
 	_resaltar_actual()
 	
 func _confirmar() -> void:
+	if not activo:
+		return
+	
+	activo = false
+	set_process_input(false)
+	
 	var lista := _get_candidatos_actuales()
 	if lista.is_empty():
 		push_error("No hay objetivos para confirmar")

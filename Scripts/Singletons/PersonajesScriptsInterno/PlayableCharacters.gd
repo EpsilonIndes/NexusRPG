@@ -6,6 +6,10 @@ var party_actual: Array = []
 var jugador_actual: String = "Astro" # Astro por default
 
 func create_character(pj_id: String) -> void:
+	if not DataLoader._is_ready:
+		push_error("DataLoader no está listo todavía.")
+		return
+
 	if characters.has(pj_id):
 		push_warning("[PlayableCharacters] Ya existe un personaje con ID: %s" % pj_id)
 		return

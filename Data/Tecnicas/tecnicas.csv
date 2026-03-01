@@ -26,7 +26,7 @@ Chipita,chip_03,Espejismo Acuático,linker,"Crea imagen para evasión",0,0,basto
 Chipita,chip_04,Marea Ascendente,finisher,"Daño a todos + interrumpe turnos",0,0,baston,damage:0.5,ALL_ENEMIES,false,magico,,
 Chipita,chip_05,Canalizar Agua,support,"Recupera Drive a aliados",0,0,baston,damage:0.5,ALL_ALLIES,false,magico,,
 Chipita,chip_06,Reacción Fluida,support,"Miniturno si aliado usa técnica mágica",0,0,baston,damage:0.5,SELF,false,magico,,
-Maya,maya_01,Carga Estelar,opener,"Abre línea de ataque recta",0,0,lanza,damage:0.5,SINGLE_ENEMY,true,fisico,,
+Maya,maya_01,Carga Estelar,opener,"Abre línea de ataque recta",0,0,lanza,damage:0.5,SINGLE_ENEMY,true,fisico,,res://Animaciones/anim_combate/Maya/maya_slash.tscn
 Maya,maya_02,Golpe Ascendente,linker,"Lanza al enemigo al aire",0,0,lanza,damage:0.5,SINGLE_ENEMY,true,fisico,,
 Maya,maya_03,Estocada Rápida,linker,"Conecta por velocidad",0,0,lanza,damage:0.5,SINGLE_ENEMY,true,fisico,,
 Maya,maya_04,Columna Ígnea,finisher,"Gran daño si enemigo está en el aire",0,0,lanza,damage:0.5,SINGLE_ENEMY,true,magico,,

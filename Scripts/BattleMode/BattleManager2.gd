@@ -412,6 +412,10 @@ func mostrar_tecnicas_sobre(posicion_3d: Vector3) -> void:
 # Llamada desde UI cuando el jugador selecciona una técnica
 # (La UI debe llamar a este método)
 func _on_tecnica_seleccionada(tec_id: String) -> void:
+	
+	if estado_actual != BattleState.SELECCION_ACCION:
+		return
+
 	if estado_actual == BattleState.SELECCION_OBJETIVO:
 		print("[BattleManager] estado: SELECCION_OBJETIVO, retornando...")
 		return
@@ -468,11 +472,16 @@ func _on_tecnica_seleccionada(tec_id: String) -> void:
 		combatiente_actual.seleccionar_tecnica(tecnica_actual, objetivos_actuales)
 		if estado_actual != BattleState.EJECUCION_ACCION:
 			cambiar_estado(BattleState.EJECUCION_ACCION)
-	
+
 # Callback que la UI de selección de objetivo debe llamar:
 # ui_overlay.open_target_selector(candidatos, callback)
 # callback recibirá un nodo Combatant
 func _on_target_selected(target: Combatant) -> void:
+	if estado_actual != BattleState.SELECCION_OBJETIVO:
+		return
+	
+	ui_overlay.set_tecnicas_interactivas(false)
+	
 	print("[BattleManager] Objetivo confirmado: ", target.nombre)
 
 	objetivos_actuales = [target]
@@ -483,8 +492,8 @@ func _on_target_selected(target: Combatant) -> void:
 	# asignar técnica y continuar
 	combatiente_actual.seleccionar_tecnica(tecnica_actual, objetivos_actuales)
 	
-	if estado_actual != BattleState.EJECUCION_ACCION:
-		cambiar_estado(BattleState.EJECUCION_ACCION)
+	#if estado_actual != BattleState.EJECUCION_ACCION:
+	cambiar_estado(BattleState.EJECUCION_ACCION)
 
 func _on_cancel_selection_target() -> void:
 	print("[BattleMaager] Cancelado selector de objetivos")

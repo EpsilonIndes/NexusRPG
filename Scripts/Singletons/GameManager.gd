@@ -24,6 +24,30 @@ var equipo_actual: Array[Dictionary] = [ # todos los pjs actuales jugables
 var ui_lock_count := 0
 
 var estado_actual: EstadosDeJuego = EstadosDeJuego.LIBRE
+var primera_carga: bool = false
+
+func _ready():
+	DataLoader.init_data()
+
+	if not DataLoader._is_ready:	
+		await DataLoader.data_loaded
+	
+	_initialize_team()
+	
+
+func _initialize_team():
+	print("Equipo actual:", equipo_actual)
+	print("DataLoader listo:", DataLoader._is_ready)
+	print("Stats cargados:", DataLoader.stats.size())
+
+	if primera_carga:
+		return
+
+	for pj in equipo_actual:
+		PlayableCharacters.create_character(pj.id) # Crea el personaje, desde el array
+	PlayableCharacters.add_to_party("Astro")
+	primera_carga = true
+
 
 func set_estado(nuevo_estado):
 	estado_actual = nuevo_estado
@@ -61,18 +85,7 @@ func iniciar_batalla(contra_enemigos: Array[String]):
 	if not bm.is_connected("battle_finished", Callable(self, "_on_battle_finished")):
 		bm.connect("battle_finished", Callable(self, "_on_battle_finished"))
 	
-	bm.start_battle(jugadores_instanciar, contra_enemigos)
-
-
-func _ready():
-	DataLoader.init_data()
-	await get_tree().physics_frame
-	
-	for pj in equipo_actual:
-		PlayableCharacters.create_character(pj.id) # Crea el personaje, desde el array
-	PlayableCharacters.add_to_party("Astro")
-
-	
+	bm.start_battle(jugadores_instanciar, contra_enemigos)	
 	
 
 # Funcion para retornar un array de diccionarios con el equipo actual de 4 personajes
