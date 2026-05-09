@@ -11,7 +11,10 @@ var targets: Array
 var data
 
 func _ready():
-	animation_player.animation_finished.connect(_on_animation_finished)
+	if animation_player:
+		animation_player.animation_finished.connect(_on_animation_finished)
+	else:
+		push_warning("[BattleAnimation] No se encontró AnimationPlayer en %s" % name)
 
 func setup(_source, _targets, _data):
 	source = _source
@@ -19,15 +22,19 @@ func setup(_source, _targets, _data):
 	data = _data
 
 func play():
+	if animation_player == null:
+		call_deferred("_emit_finished")
+		return
 	animation_player.play("main")
 
 func set_speed(multiplier: float):
+	if animation_player == null:
+		push_warning("[BattleAnimation] No se pudo ajustar speed_scale: AnimationPlayer es null en %s" % name)
+		return
 	animation_player.speed_scale = multiplier
 
 func _on_hit_frame():
 	emit_signal("impact", targets)
-	for target in targets:
-		target.reproducir_feedback()
 
 func _move_forward():
 	if source and targets.size() > 0:
@@ -41,4 +48,7 @@ func _move_back():
 		source.anim_return_to_origin(0.25)
 
 func _on_animation_finished(_anim_name):
+	emit_signal("finished")
+
+func _emit_finished():
 	emit_signal("finished")

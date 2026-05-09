@@ -330,12 +330,16 @@ func ejecutar_tecnica():
 	
 	var anim_scene: PackedScene = tecnica.get("animation_scene", null)
 
-	tecnica_seleccionada = null	
-	emit_signal("turno_finalizado")
-	
+	tecnica_seleccionada = null
+
 	if anim_scene:
-		battle_manager.reproducir_animacion(anim_scene, self, objetivos)
-		#await battle_manager.battle_animator.animation_finished
+		await battle_manager.reproducir_animacion(anim_scene, self, objetivos)
+	else:
+		for t in objetivos:
+			if is_instance_valid(t) and t.has_method("reproducir_feedback"):
+				t.reproducir_feedback()
+
+	emit_signal("turno_finalizado")
 
 #------------------------------
 # IA simple para enemigos

@@ -614,3 +614,4 @@ ANIMACIÓN
 func reproducir_animacion(scene, source, targets, data := {}):
 	print("reproduciendo animación")
 	battle_animator.play(scene, source, targets, data)
+	await battle_animator.animation_finished

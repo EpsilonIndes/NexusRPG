@@ -65,7 +65,8 @@ func ejecutar_tecnica():
 	await super.ejecutar_tecnica()
 
 	# Volver a idle luego de usar técnica
-	anim_idle()
+	if is_inside_tree():
+		anim_idle()
 
 
 # -------------------------------------------------------
