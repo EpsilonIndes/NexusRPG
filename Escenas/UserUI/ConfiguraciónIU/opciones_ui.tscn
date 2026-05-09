@@ -64,9 +64,10 @@ text = "Opciones"
 [node name="Tabs" type="TabContainer" parent="PanelRoot/MarginContainer/VBoxMain"]
 layout_mode = 2
 size_flags_vertical = 3
-current_tab = 0
+current_tab = 3
 
 [node name="Audio" type="ScrollContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
