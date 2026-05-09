@@ -124,6 +124,7 @@ layout_mode = 2
 metadata/_tab_index = 2
 
 [node name="GameplayOptions" type="VBoxContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Graphics"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
