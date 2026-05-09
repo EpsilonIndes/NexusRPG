@@ -17,37 +17,39 @@ const PRESETS := {
 		"lighting": false,
 		"postprocess": 0,
 		"particles": 0,
-		"camera_shake": false
+		"camera_shake": false,
+		"ssao": 0
 	},
 	1: { # Medio
 		"shadows": 1,
 		"lighting": true,
 		"postprocess": 1,
 		"particles": 1,
-		"camera_shake": true
+		"camera_shake": true,
+		"ssao": 1
 	},
 	2: { # Alto
 		"shadows": 2,
 		"lighting": true,
 		"postprocess": 2,
 		"particles": 2,
-		"camera_shake": true
+		"camera_shake": true,
+		"ssao": 2
 	},
 	3: { # Ultra
 		"shadows": 2,
 		"lighting": true,
 		"postprocess": 2,
 		"particles": 2,
-		"camera_shake": true
+		"camera_shake": true,
+		"ssao": 2
 	}
 }
-
 
 func _ready() -> void:
 	get_tree().node_added.connect(_on_node_added)
 	get_tree().tree_changed.connect(_rebuild_cache)
 	_rebuild_cache()
-
 
 # -----------
 # API Pública
@@ -74,7 +76,12 @@ func apply_graphics(new_settings: Dictionary) -> void:
 
 	if old_settings.get("camera_shake") != new_settings.get("camera_shake"):
 		_apply_camera_shake(new_settings["camera_shake"])
-
+	
+	"""
+	if old_settings.get("ssao") != new_settings.get("ssao"):
+		_apply_ssao(new_settings["ssao"])
+	"""
+	
 	graphics_applied.emit()
 
 
@@ -199,6 +206,24 @@ func _apply_postprocess(level: int) -> void:
 	env.glow_enabled = level > 0
 	env.adjustment_enabled = level > 1
 
+	env.ssao_enabled = level > 0
+	if level == 1:
+		env.ssao_radius = 0.5
+		env.ssao_intensity = 1.0
+	elif level == 2:
+		env.ssao_radius = 1.0
+		env.ssao_intensity = 2.0
+
+"""
+func _apply_ssao(level: int) -> void:
+	if not world_enviroment:
+		return
+
+	var env := world_enviroment.environment
+	if not env:
+		return
+"""
+	
 
 """
 -------------------

@@ -64,7 +64,7 @@ text = "Opciones"
 [node name="Tabs" type="TabContainer" parent="PanelRoot/MarginContainer/VBoxMain"]
 layout_mode = 2
 size_flags_vertical = 3
-current_tab = 2
+current_tab = 3
 
 [node name="Audio" type="ScrollContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs"]
 visible = false
@@ -119,6 +119,7 @@ category = "video"
 key = "vsync"
 
 [node name="Graphics" type="ScrollContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
@@ -151,11 +152,11 @@ layout_mode = 2
 key = "camera_shake"
 
 [node name="Gameplay" type="ScrollContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 3
 
 [node name="GameplayOptions" type="VBoxContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Gameplay"]
+visible = false
 layout_mode = 2
 
 [node name="Controls" type="ScrollContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs"]

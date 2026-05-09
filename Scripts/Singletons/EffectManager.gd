@@ -5,6 +5,9 @@ func apply_effects(effects: Array, target: Combatant, atacante: Combatant, tecni
 	if effects.is_empty():
 		print("apply_effects llamado con array vacío")
 		return
+	var has_primary_feedback := _has_primary_feedback_effect(effects)
+	var showed_stat_feedback := false
+
 	for efecto in effects:
 		if efecto.size() < 2:
 			print("Efecto mal formado: %s" % efecto)
@@ -58,13 +61,17 @@ func apply_effects(effects: Array, target: Combatant, atacante: Combatant, tecni
 				var stat = efecto[1]
 				var mult = float(efecto[2])
 				var cantidad = int(target.get(stat) * mult)
-				target.modificar_stat(stat, cantidad)
+				var show_buff_feedback = not has_primary_feedback and not showed_stat_feedback
+				target.modificar_stat(stat, cantidad, show_buff_feedback, "buff")
+				showed_stat_feedback = showed_stat_feedback or show_buff_feedback
 
 			"debuff":
 				var stat = efecto[1]
 				var mult = float(efecto[2])
 				var cantidad = -int(target.get(stat) * mult)
-				target.modificar_stat(stat, cantidad)
+				var show_debuff_feedback = not has_primary_feedback and not showed_stat_feedback
+				target.modificar_stat(stat, cantidad, show_debuff_feedback, "debuff")
+				showed_stat_feedback = showed_stat_feedback or show_debuff_feedback
 
 			#----------------------
 			# EFECTOS PERSISTENTES
@@ -81,6 +88,15 @@ func apply_effects(effects: Array, target: Combatant, atacante: Combatant, tecni
 			#-----------------------------------------
 			_:
 				print("Efecto desconocido: %s" % tipo)
+
+
+func _has_primary_feedback_effect(effects: Array) -> bool:
+	for efecto in effects:
+		if efecto.size() < 1:
+			continue
+		if efecto[0] in ["damage", "heal_hp"]:
+			return true
+	return false
 
 
 

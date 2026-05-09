@@ -28,7 +28,11 @@ const DEFAULT_SETTINGS: Dictionary = {
 		"lighting": true,
 		"postprocess": 2,
 		"particles": 2,
-		"camera_shake": true
+		"camera_shake": true,
+		"ssao": 1
+	},
+	"controls": {
+		
 	}
 }
 

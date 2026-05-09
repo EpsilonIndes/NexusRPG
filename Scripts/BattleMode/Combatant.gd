@@ -190,7 +190,7 @@ func curar_hp(cantidad: int) -> void:
 		"rol_combo": "support"
 	})
 
-func modificar_stat(stat: String, cantidad: int) -> void:
+func modificar_stat(stat: String, cantidad: int, mostrar_feedback: bool = false, tipo_feedback: String = "") -> void:
 	var allowed := ["hp", "hp_max", "dp", "mp_max", "ataque", "defensa", "velocidad", "drive"]
 	if not stat in allowed:
 		print("Stat no encontrada o no segura para modificar: %s" % stat)
@@ -204,12 +204,15 @@ func modificar_stat(stat: String, cantidad: int) -> void:
 	print("%s modifica %s por %+d | Nuevo valor: %d" %
 		[nombre, stat, cantidad, self.get(stat)])
 	
-	cola_feedback.append({
-		"valor": cantidad,
-		"tipo": "debuff",
-		"critico": false,
-		"rol_combo": ""
-	})
+	if mostrar_feedback:
+		var tipo_visual := tipo_feedback if tipo_feedback != "" else ("buff" if cantidad >= 0 else "debuff")
+		var valor_visual = abs(cantidad) if tipo_visual == "debuff" else cantidad
+		cola_feedback.append({
+			"valor": valor_visual,
+			"tipo": tipo_visual,
+			"critico": false,
+			"rol_combo": ""
+		})
 #--------------------------
 # Efectos persistentes
 #--------------------------
@@ -287,8 +290,6 @@ func seleccionar_tecnica(tecnica: Dictionary, objetivo) -> void:
 
 
 func ejecutar_tecnica():
-	# PROCESAR EFECTOS ANTES DE ACTUAR
-	procesar_efectos_activos()
 
 	if not esta_vivo():
 		emit_signal("turno_finalizado")
@@ -344,9 +345,6 @@ func iniciar_accion():
 	if not esta_vivo():
 		emit_signal("turno_finalizado")
 		return
-
-	# PROCESAR EFECTOS ANTES DE ACTUAR
-	procesar_efectos_activos()
 
 	#Si el veneno te mató acá, no actuás
 	if not esta_vivo():
@@ -455,9 +453,9 @@ func _mostrar_feedback_con_delay(data: Dictionary, delay: float) -> void:
 #   MOVIMIENTO
 # ---------------
 
-func anim_move_to(target_position: Vector3, duration: float) -> void:
+func anim_move_to(target_position: Vector3, duration: float) -> void: # SE MUEVE HACIA ->
 	var tween = create_tween()
 	tween.tween_property(self, "global_position", target_position, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
-func anim_return_to_origin(duration: float) -> void:
+func anim_return_to_origin(duration: float) -> void: # REGRESA AL ORIGEN
 	anim_move_to(original_position, duration)

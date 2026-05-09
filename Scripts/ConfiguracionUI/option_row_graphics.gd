@@ -61,6 +61,11 @@ func _populate_options():
 		"camera_shake":
 			_add_item("Off", false)
 			_add_item("On", true)
+		
+		"ssao":
+			_add_item("Off", 0)
+			_add_item("Basic", 1)
+			_add_item("High", 2)
 
 func _add_item(text: String, metadata):
 	var index = option_button.get_item_count()
