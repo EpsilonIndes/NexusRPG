@@ -26,12 +26,6 @@ func _ready():
 		_populate_options()
 		control.item_selected.connect(_on_option_selected)
 		control.focus_mode = Control.FOCUS_ALL
-	
-	
-	control.focus_entered.connect(func():
-		print("FOCUS ENTRÓ EN:", control.name)
-	)
-	
 
 func setup() -> void:
 	var value = SettingsManager.get_setting(category, key)
@@ -91,7 +85,7 @@ func _populate_displaymode():
 	control.set_item_metadata(1, 1)
 
 func _populate_scaling():
-	control.add_item("None")
+	control.add_item("Pixel Perfect")
 	control.set_item_metadata(0, 0)
 
 	control.add_item("Keep Aspect")

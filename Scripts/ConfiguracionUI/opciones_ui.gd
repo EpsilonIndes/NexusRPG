@@ -15,11 +15,21 @@ var _closing_accept := false
 
 func _ready():
 	#_setup_all_option_rows()
+	_hide_unimplemented_tabs()
 	
 	# Conectar botones
 	reset_button.pressed.connect(_on_reset_pressed)
 	apply_button.pressed.connect(_on_apply_pressed)
 	accept_button.pressed.connect(_on_accept_pressed)
+
+func _hide_unimplemented_tabs() -> void:
+	for tab_name in ["Gameplay", "Controls"]:
+		var tab := tabs.get_node_or_null(tab_name)
+		if tab == null:
+			continue
+		var index := tabs.get_tab_idx_from_control(tab)
+		if index >= 0:
+			tabs.set_tab_hidden(index, true)
 
 func open():
 	set_process_unhandled_input(true)
@@ -48,9 +58,8 @@ func close():
 	emit_signal("closed")
 
 func _setup_all_option_rows():
-	var focusables: Array[Control] = []
-
 	for tab in tabs.get_children():
+		var focusables: Array[Control] = []
 		var scroll := tab as ScrollContainer
 		if scroll == null:
 			continue
@@ -61,27 +70,12 @@ func _setup_all_option_rows():
 				row.setup()
 				_hook_dirty_from_row(row)
 			
-			if row.has_node("Slider"):
-				var slider = row.get_node("Slider") as Control
-				if slider and slider.focus_mode != Control.FOCUS_NONE:
-					focusables.append(slider)
+			var focus_control := _get_row_focus_control(row)
+			if focus_control:
+				focusables.append(focus_control)
 	
-	if focusables.is_empty():
-		return
-
-	# Conectar navegación vertical
-	for i in focusables.size():
-		var current := focusables[i]
-		if i > 0:
-			current.focus_neighbor_top = focusables[i - 1].get_path()
-		if i < focusables.size() - 1:
-			current.focus_neighbor_bottom = focusables[i + 1].get_path()
-
-	# Último slider → Reset
+		_setup_focus_chain(focusables)
 	
-	focusables[-1].focus_neighbor_bottom = reset_button.get_path()
-
-	reset_button.focus_neighbor_top = focusables[-1].get_path()
 	reset_button.focus_neighbor_right = apply_button.get_path()
 	
 	apply_button.focus_neighbor_left = reset_button.get_path()
@@ -93,6 +87,27 @@ func _hook_dirty_from_row(row):
 	if row.has_signal("value_changed"):
 		if not row.value_changed.is_connected(_on_any_option_changed):
 			row.value_changed.connect(_on_any_option_changed)
+
+func _get_row_focus_control(row: Node) -> Control:
+	for node_name in ["Slider", "Control", "OptionButton"]:
+		if row.has_node(node_name):
+			var control := row.get_node(node_name) as Control
+			if control and control.focus_mode != Control.FOCUS_NONE:
+				return control
+	return null
+
+func _setup_focus_chain(focusables: Array[Control]) -> void:
+	if focusables.is_empty():
+		return
+
+	for i in focusables.size():
+		var current := focusables[i]
+		if i > 0:
+			current.focus_neighbor_top = focusables[i - 1].get_path()
+		if i < focusables.size() - 1:
+			current.focus_neighbor_bottom = focusables[i + 1].get_path()
+
+	focusables[-1].focus_neighbor_bottom = reset_button.get_path()
 
 
 """
@@ -121,7 +136,6 @@ func _cancel():
 Botones
 """
 func _on_any_option_changed():
-	print("DIRTY!")
 	_dirty = true
 	apply_button.disabled = false
 
@@ -166,18 +180,17 @@ func _focus_first_row():
 	if tab == null:
 		return
 
-	var scroll := tab.get_child(0) as ScrollContainer
+	var scroll := tab as ScrollContainer
 	if scroll == null:
 		return
 
 	var container := scroll.get_child(0)
 	
 	for row in container.get_children():
-		if row.has_node("Control"):
-			var ctrl = row.get_node("Control") as Control
-			if ctrl.focus_mode == Control.FOCUS_ALL:
-				row.grab_focus()
-				return
+		var ctrl := _get_row_focus_control(row)
+		if ctrl:
+			ctrl.grab_focus()
+			return
 
 func _focus_first_slider():
 	var tab = tabs.get_current_tab_control()
@@ -189,13 +202,21 @@ func _focus_first_slider():
 		return
 
 	var container := scroll.get_child(0) # AudioOptions (VBoxContainer)
+	var last_focusable: Control = null
 
 	for row in container.get_children():
-		if row.has_node("Slider"):
-			var slider := row.get_node("Slider") as Control
-			if slider.focus_mode != Control.FOCUS_NONE:
-				slider.grab_focus()
-				return
-	
-			print("Foco en:", slider.name)
-			slider.grab_focus()
+		var ctrl := _get_row_focus_control(row)
+		if ctrl:
+			if last_focusable == null:
+				ctrl.grab_focus()
+			last_focusable = ctrl
+
+	if last_focusable:
+		reset_button.focus_neighbor_top = last_focusable.get_path()
+		return
+
+	for row in container.get_children():
+		var ctrl := _get_row_focus_control(row)
+		if ctrl:
+			ctrl.grab_focus()
+			return

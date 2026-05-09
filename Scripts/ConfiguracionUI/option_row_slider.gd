@@ -1,5 +1,7 @@
 extends HBoxContainer
 
+signal value_changed
+
 
 @export var category: String
 @export var key: String
@@ -31,7 +33,6 @@ func setup():
 	apply_on_change = false
 	slider.value = value * 100.0
 	apply_on_change = true
-	print("OptionRow key:", key)
 
 	texture_rect.texture = SOUND_TEXTURE.get(key)
 	category_label.text = str(key).capitalize()
@@ -45,6 +46,7 @@ func _on_slider_value_changed(v: float) -> void:
 		SettingsManager.apply_audio()
 
 	_update_label()
+	emit_signal("value_changed")
 
 
 func _update_label():

@@ -9,8 +9,7 @@ const DEFAULT_SETTINGS: Dictionary = {
 	"audio": {
 		"master": 1.0,
 		"music": 0.8,
-		"sfx": 0.9,
-		"voices": 1.0
+		"sfx": 0.9
 	},
 	"video": {
 		"display_mode": 1,
@@ -87,12 +86,21 @@ func apply_audio():
 	_set_bus("Master", settings.audio.master)
 	_set_bus("Music", settings.audio.music)
 	_set_bus("SFX", settings.audio.sfx)
-	_set_bus("Voices", settings.audio.voices)
 
 func _set_bus(bus_name: String, value: float):
 	var idx := AudioServer.get_bus_index(bus_name)
+	if idx < 0:
+		idx = _find_bus_index_relaxed(bus_name)
 	if idx >= 0:
 		AudioServer.set_bus_volume_db(idx, linear_to_db(value))
+
+func _find_bus_index_relaxed(bus_name: String) -> int:
+	var expected := bus_name.strip_edges().to_lower()
+	for i in range(AudioServer.get_bus_count()):
+		var current := String(AudioServer.get_bus_name(i)).strip_edges().to_lower()
+		if current == expected:
+			return i
+	return -1
 
 func apply_video():
 	var video = settings.get("video", {})
@@ -114,8 +122,6 @@ func apply_video():
 	
 	# --- VSync
 	var vsync_enabled = video.get("vsync", true)
-	if vsync_enabled:
-		print("Vsync enabled")
 	DisplayServer.window_set_vsync_mode(
 		DisplayServer.VSYNC_ENABLED if vsync_enabled else DisplayServer.VSYNC_DISABLED
 	)
@@ -132,10 +138,18 @@ func _apply_scaling(mode: int):
 		0: # Pixel perfect / integer
 			root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
 			root.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_KEEP
+			root.content_scale_stretch = Window.CONTENT_SCALE_STRETCH_INTEGER
 			root.content_scale_factor = 1.0
-		1: # Stretch
+		1: # Keep aspect
+			root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
+			root.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_KEEP
+			root.content_scale_stretch = Window.CONTENT_SCALE_STRETCH_FRACTIONAL
+			root.content_scale_factor = 1.0
+		2: # Stretch
 			root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
 			root.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_EXPAND
+			root.content_scale_stretch = Window.CONTENT_SCALE_STRETCH_FRACTIONAL
+			root.content_scale_factor = 1.0
 
 
 func apply_gameplay():
@@ -163,6 +177,7 @@ ENUMERACIONES MENTALES
 
 # scaling
 0 = Pixel perfect / integer
-1 = Stretch
+1 = Keep aspect
+2 = Stretch
 
 """

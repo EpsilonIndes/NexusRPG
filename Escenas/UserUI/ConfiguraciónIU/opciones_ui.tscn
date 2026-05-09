@@ -64,10 +64,9 @@ text = "Opciones"
 [node name="Tabs" type="TabContainer" parent="PanelRoot/MarginContainer/VBoxMain"]
 layout_mode = 2
 size_flags_vertical = 3
-current_tab = 3
+current_tab = 0
 
 [node name="Audio" type="ScrollContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -118,39 +117,47 @@ layout_mode = 2
 category = "video"
 key = "vsync"
 
+[node name="OptionRow_option_button3" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Video/VideoOptions" instance=ExtResource("3_fwgtp")]
+layout_mode = 2
+category = "video"
+key = "scaling"
+
 [node name="Graphics" type="ScrollContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
-[node name="GameplayOptions" type="VBoxContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Graphics"]
-visible = false
+[node name="GraphicsOptions" type="VBoxContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Graphics"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="option_row_graphics" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Graphics/GameplayOptions" instance=ExtResource("5_xsljp")]
+[node name="option_row_graphics" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Graphics/GraphicsOptions" instance=ExtResource("5_xsljp")]
 layout_mode = 2
 key = "preset"
 
-[node name="option_row_graphics2" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Graphics/GameplayOptions" instance=ExtResource("5_xsljp")]
+[node name="option_row_graphics2" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Graphics/GraphicsOptions" instance=ExtResource("5_xsljp")]
 layout_mode = 2
 key = "shadows"
 
-[node name="option_row_graphics3" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Graphics/GameplayOptions" instance=ExtResource("5_xsljp")]
+[node name="option_row_graphics3" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Graphics/GraphicsOptions" instance=ExtResource("5_xsljp")]
 layout_mode = 2
 key = "lighting"
 
-[node name="option_row_graphics4" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Graphics/GameplayOptions" instance=ExtResource("5_xsljp")]
+[node name="option_row_graphics4" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Graphics/GraphicsOptions" instance=ExtResource("5_xsljp")]
 layout_mode = 2
 key = "postprocess"
 
-[node name="option_row_graphics5" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Graphics/GameplayOptions" instance=ExtResource("5_xsljp")]
+[node name="option_row_graphics5" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Graphics/GraphicsOptions" instance=ExtResource("5_xsljp")]
 layout_mode = 2
 key = "particles"
 
-[node name="option_row_graphics6" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Graphics/GameplayOptions" instance=ExtResource("5_xsljp")]
+[node name="option_row_graphics6" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Graphics/GraphicsOptions" instance=ExtResource("5_xsljp")]
 layout_mode = 2
 key = "camera_shake"
+
+[node name="option_row_graphics7" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Graphics/GraphicsOptions" instance=ExtResource("5_xsljp")]
+layout_mode = 2
+key = "ssao"
 
 [node name="Gameplay" type="ScrollContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs"]
 layout_mode = 2

@@ -85,9 +85,11 @@ func _on_item_selected(index: int):
 	var value = option_button.get_item_metadata(index)
 
 	if key == "preset":
-		# Aplicamos preset completo
-		var new_settings = GraphicsController.apply_preset(value)
-		SettingsManager.settings["graphics"] = new_settings
+		if value == 4:
+			SettingsManager.settings["graphics"]["preset"] = 4
+		else:
+			var new_settings = GraphicsController.apply_preset(value)
+			SettingsManager.settings["graphics"] = new_settings
 	else:
 		# Cambia solo una opción
 		SettingsManager.set_setting("graphics", key, value)

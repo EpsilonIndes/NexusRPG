@@ -77,10 +77,8 @@ func apply_graphics(new_settings: Dictionary) -> void:
 	if old_settings.get("camera_shake") != new_settings.get("camera_shake"):
 		_apply_camera_shake(new_settings["camera_shake"])
 	
-	"""
 	if old_settings.get("ssao") != new_settings.get("ssao"):
 		_apply_ssao(new_settings["ssao"])
-	"""
 	
 	graphics_applied.emit()
 
@@ -89,7 +87,9 @@ func reapply() -> void:
 	if current_settings.is_empty():
 		return
 	
-	apply_graphics(current_settings)
+	var settings_to_apply := current_settings.duplicate(true)
+	current_settings.clear()
+	apply_graphics(settings_to_apply)
 
 
 """
@@ -206,15 +206,6 @@ func _apply_postprocess(level: int) -> void:
 	env.glow_enabled = level > 0
 	env.adjustment_enabled = level > 1
 
-	env.ssao_enabled = level > 0
-	if level == 1:
-		env.ssao_radius = 0.5
-		env.ssao_intensity = 1.0
-	elif level == 2:
-		env.ssao_radius = 1.0
-		env.ssao_intensity = 2.0
-
-"""
 func _apply_ssao(level: int) -> void:
 	if not world_enviroment:
 		return
@@ -222,7 +213,15 @@ func _apply_ssao(level: int) -> void:
 	var env := world_enviroment.environment
 	if not env:
 		return
-"""
+
+	env.ssao_enabled = level > 0
+	match level:
+		1:
+			env.ssao_radius = 0.5
+			env.ssao_intensity = 1.0
+		2:
+			env.ssao_radius = 1.0
+			env.ssao_intensity = 2.0
 	
 
 """
