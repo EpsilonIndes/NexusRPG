@@ -15,7 +15,7 @@ var _closing_accept := false
 
 func _ready():
 	#_setup_all_option_rows()
-	_hide_unimplemented_tabs()
+	#_hide_unimplemented_tabs()
 	
 	# Conectar botones
 	reset_button.pressed.connect(_on_reset_pressed)
@@ -27,7 +27,7 @@ func _hide_unimplemented_tabs() -> void:
 		var tab := tabs.get_node_or_null(tab_name)
 		if tab == null:
 			continue
-		var index := tabs.get_tab_idx_from_control(tab)
+		var index = tabs.get_tab_idx_from_control(tab)
 		if index >= 0:
 			tabs.set_tab_hidden(index, true)
 

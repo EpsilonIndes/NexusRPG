@@ -44,6 +44,8 @@ DropDatabase="*res://Scripts/SistemaItems/DropDatabase.gd"
 BattleResultProcessor="*res://Scripts/BattleMode/BattleResultProcessor.gd"
 WorldFlags="*res://Scripts/Singletons/WorldFlags.gd"
 GraphicsController="*res://Scripts/ConfiguracionUI/GraphicsController.gd"
+ControlsController="*res://Scripts/ConfiguracionUI/ControlsController.gd"
+InputDisplayHelper="*res://Scripts/ConfiguracionUI/InputDisplayHelper.gd"
 
 [display]
 

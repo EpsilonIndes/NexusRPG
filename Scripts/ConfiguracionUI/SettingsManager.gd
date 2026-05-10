@@ -58,6 +58,8 @@ func apply_all():
 	apply_video()
 	apply_gameplay()
 	GraphicsController.apply_graphics(settings.graphics)
+	if get_node_or_null("/root/ControlsController") != null:
+		ControlsController.apply_controls(settings.controls)
 
 func reset_to_defaults():
 	settings = DEFAULT_SETTINGS.duplicate(true)
@@ -68,6 +70,13 @@ func load_settings():
 		return
 
 	for category in settings.keys():
+		if category == "controls":
+			settings.controls.clear()
+			if cfg.has_section(category):
+				for key in cfg.get_section_keys(category):
+					settings.controls[key] = cfg.get_value(category, key)
+			continue
+
 		for key in settings[category].keys():
 			if cfg.has_section_key(category, key):
 				settings[category][key] = cfg.get_value(category, key)
