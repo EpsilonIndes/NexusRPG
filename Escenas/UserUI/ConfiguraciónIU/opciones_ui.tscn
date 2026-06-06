@@ -42,11 +42,19 @@ grow_vertical = 2
 color = Color(0, 0, 0.53333336, 1)
 
 [node name="PanelRoot" type="PanelContainer" parent="."]
-layout_mode = 0
-offset_left = 355.0
-offset_top = 200.0
-offset_right = 925.0
-offset_bottom = 520.0
+custom_minimum_size = Vector2(570, 320)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -285.0
+offset_top = -160.0
+offset_right = 285.0
+offset_bottom = 160.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelRoot"]
 layout_mode = 2
@@ -177,16 +185,65 @@ metadata/_tab_index = 4
 [node name="ControlsOptions" type="VBoxContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Controls"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 4
 alignment = 1
 
-[node name="Movimiento" type="Label" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Controls/ControlsOptions"]
+[node name="tittle-move" type="HBoxContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Controls/ControlsOptions"]
 layout_mode = 2
+alignment = 1
+
+[node name="subtitulo-1" type="Label" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Controls/ControlsOptions/tittle-move"]
+layout_mode = 2
+text = "Teclado"
+
+[node name="spacer2" type="Control" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Controls/ControlsOptions/tittle-move"]
+custom_minimum_size = Vector2(27, 0)
+layout_mode = 2
+
+[node name="subtitulo-2" type="Label" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Controls/ControlsOptions/tittle-move"]
+layout_mode = 2
+text = "Mando"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="titulo" type="Label" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Controls/ControlsOptions"]
+layout_mode = 2
+size_flags_horizontal = 0
 text = "Movimiento"
 
 [node name="ControlBindRow" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Controls/ControlsOptions" instance=ExtResource("6_1i7hr")]
+custom_minimum_size = Vector2(20, 50)
 layout_mode = 2
-size_flags_horizontal = 8
+size_flags_vertical = 4
+focus_neighbor_top = NodePath("../../..")
+action_name = &"move_up"
+display_name = "Arriba"
+
+[node name="ControlBindRow2" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Controls/ControlsOptions" instance=ExtResource("6_1i7hr")]
+custom_minimum_size = Vector2(20, 50)
+layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 0
+focus_neighbor_top = NodePath("../../..")
+action_name = &"move_down"
+display_name = "Abajo"
+
+[node name="ControlBindRow3" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Controls/ControlsOptions" instance=ExtResource("6_1i7hr")]
+custom_minimum_size = Vector2(20, 50)
+layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 0
+focus_neighbor_top = NodePath("../../..")
+action_name = &"move_left"
+display_name = "Izquierda"
+
+[node name="ControlBindRow4" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Controls/ControlsOptions" instance=ExtResource("6_1i7hr")]
+custom_minimum_size = Vector2(20, 50)
+layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 0
+focus_neighbor_top = NodePath("../../..")
+action_name = &"move_right"
+display_name = "Derecha"
 
 [node name="BottomBar" type="HBoxContainer" parent="PanelRoot/MarginContainer"]
 layout_mode = 2

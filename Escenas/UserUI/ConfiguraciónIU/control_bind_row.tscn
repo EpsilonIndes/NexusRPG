@@ -3,18 +3,16 @@
 [ext_resource type="Script" uid="uid://1gp6k54xkyln" path="res://Scripts/ConfiguracionUI/control_bind_row.gd" id="1_jhqy2"]
 
 [node name="ControlBindRow" type="HBoxContainer"]
-custom_minimum_size = Vector2(0, 50)
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+custom_minimum_size = Vector2(0, 46.235)
+offset_right = 247.0
+offset_bottom = 46.235
 size_flags_horizontal = 4
 alignment = 1
 script = ExtResource("1_jhqy2")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 2
+size_flags_horizontal = 0
 text = "Accion"
 
 [node name="Spacer" type="Control" parent="."]
