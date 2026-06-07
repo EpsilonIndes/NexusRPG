@@ -31,4 +31,6 @@ func set_tecnicas_interactivas(valor: bool) -> void:
 	if technique_overlay and technique_overlay.has_method("set_interactive"):
 		technique_overlay.set_interactive(valor)
 		
-
+func clear_tecnicas() -> void:
+	if technique_overlay and technique_overlay.has_method("clear_techniques"):
+		technique_overlay.clear_techniques()

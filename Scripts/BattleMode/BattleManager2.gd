@@ -247,6 +247,9 @@ func ejecutar_accion() -> void:
 		push_warning("No hay combatiente actual en ejecutar_accion()")
 		finalizar_turno()
 		return
+
+	if combatiente_actual.es_jugador and ui_overlay.has_method("clear_tecnicas"):
+		ui_overlay.clear_tecnicas()
 		
 	# Nos conectamos ala señal turno_finalizado para continuar cuando termine
 	# Desconectamos antes por si quedó algo colgando
@@ -486,8 +489,6 @@ func _on_target_selected(target: Combatant) -> void:
 
 	objetivos_actuales = [target]
 
-	if ui_overlay:
-		ui_overlay.set_tecnicas_interactivas(true)
 	
 	# asignar técnica y continuar
 	combatiente_actual.seleccionar_tecnica(tecnica_actual, objetivos_actuales)
@@ -497,6 +498,8 @@ func _on_target_selected(target: Combatant) -> void:
 
 func _on_cancel_selection_target() -> void:
 	print("[BattleMaager] Cancelado selector de objetivos")
+	tecnica_actual = {}
+	objetivos_actuales.clear()
 	estado_actual = BattleState.SELECCION_ACCION
 
 func _candidatos_por_scope(scope: String) -> Array:

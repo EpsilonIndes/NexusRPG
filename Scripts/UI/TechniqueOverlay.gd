@@ -30,3 +30,10 @@ func set_interactive(valor: bool) -> void:
 
 	if has_node("TechButtonCircle"):
 		$TechButtonCircle.set_interactive(valor)
+
+func clear_techniques() -> void:
+	set_interactive(false)
+	tech_buttons.clear()
+
+	for child in get_children():
+		child.queue_free()
