@@ -28,9 +28,27 @@ func open_target_selector(targets_data: Dictionary, callback: Callable, cancel_c
 	target_selector.open(targets_data, callback, cancel_callback)
 
 func set_tecnicas_interactivas(valor: bool) -> void:
-	if technique_overlay and technique_overlay.has_method("set_interactive"):
+	if not is_instance_valid(technique_overlay):
+		return
+
+	if technique_overlay.has_method("set_interactive"):
 		technique_overlay.set_interactive(valor)
-		
+		return
+
+	for child in technique_overlay.get_children():
+		if child.has_method("set_interactive"):
+			child.set_interactive(valor)
+		if child is Control:
+			child.mouse_filter = Control.MOUSE_FILTER_STOP if valor else Control.MOUSE_FILTER_IGNORE
+
 func clear_tecnicas() -> void:
-	if technique_overlay and technique_overlay.has_method("clear_techniques"):
+	if not is_instance_valid(technique_overlay):
+		return
+
+	if technique_overlay.has_method("clear_techniques"):
 		technique_overlay.clear_techniques()
+		return
+
+	technique_overlay.visible = false
+	for child in technique_overlay.get_children():
+		child.queue_free()

@@ -19,6 +19,7 @@ func unregister_button(btn: Control) -> void:
 func set_interactive(valor: bool) -> void:
 	print("[TechniqueOverlay] Seteando interactive: ", valor)
 	interactivo = valor
+	visible = valor
 
 	mouse_filter = Control.MOUSE_FILTER_STOP if valor else Control.MOUSE_FILTER_IGNORE
 
