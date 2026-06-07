@@ -2,6 +2,7 @@
 extends Node
 
 enum EstadosDeJuego {
+	MAIN_MENU,
 	LIBRE,
 	DIALOGO,
 	COMBATE,
@@ -22,14 +23,29 @@ var equipo_actual: Array[Dictionary] = [ # todos los pjs actuales jugables
 ]
 
 var ui_lock_count := 0
-
-var estado_actual: EstadosDeJuego = EstadosDeJuego.LIBRE
+var game_started := false
+var estado_actual: EstadosDeJuego = EstadosDeJuego.MAIN_MENU
 var primera_carga: bool = false
 
 func _ready():
+	pass
+
+func start_game():
+	if game_started:
+		return
+
+	var error := get_tree().change_scene_to_file("res://Escenas/pantallas/nivel_1.tscn")
+	if error != OK:
+		push_error("[GameManager] No se pudo cargar nivel_1.tscn. Error: %s" % error)
+		return
+
+	await get_tree().tree_changed
+	await get_tree().process_frame
+
 	DataLoader.init_data()
 	_initialize_team()
-	
+	game_started = true
+
 
 func _initialize_team():
 	print("Equipo actual:", equipo_actual)
@@ -105,7 +121,7 @@ func _on_battle_finished(result: Dictionary) -> void:
 	print("[GameManager] Recompensas calculadas: ", rewards)
 
 	set_estado(EstadosDeJuego.LIBRE)
-	get_tree().change_scene_to_file("res://Escenas/nivel_1.tscn")
+	get_tree().change_scene_to_file("res://Escenas/pantallas/nivel_1.tscn")
 
 func is_in_battle() -> bool:
 	return in_battle
@@ -118,4 +134,4 @@ func push_ui() -> void:
 func pop_ui() -> void:
 	ui_lock_count = max(ui_lock_count - 1, 0)
 	if ui_lock_count == 0:
-		estado_actual = EstadosDeJuego.LIBRE
+		estado_actual = EstadosDeJuego.LIBRE if game_started else EstadosDeJuego.MAIN_MENU

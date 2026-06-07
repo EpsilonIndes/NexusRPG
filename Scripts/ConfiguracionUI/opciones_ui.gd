@@ -4,9 +4,10 @@ extends Control
 signal closed
 
 @onready var tabs := $PanelRoot/MarginContainer/VBoxMain/Tabs
-@onready var reset_button := $PanelRoot/MarginContainer/BottomBar/ResetButton
-@onready var apply_button := $PanelRoot/MarginContainer/BottomBar/ApplyButton
-@onready var accept_button := $PanelRoot/MarginContainer/BottomBar/AcceptButton
+@onready var reset_button := $BottomBar/ResetButton
+@onready var apply_button := $BottomBar/ApplyButton
+@onready var accept_button := $BottomBar/AcceptButton
+@onready var controls_capture_panel := $ControlsCapturePanel
 
 var _snapshot := {}
 var _dirty := false
@@ -16,6 +17,8 @@ var _closing_accept := false
 func _ready():
 	#_setup_all_option_rows()
 	#_hide_unimplemented_tabs()
+	if not get_viewport().gui_focus_changed.is_connected(_on_focus_changed):
+		get_viewport().gui_focus_changed.connect(_on_focus_changed)
 	
 	# Conectar botones
 	reset_button.pressed.connect(_on_reset_pressed)
@@ -68,7 +71,8 @@ func _setup_all_option_rows():
 		for row in container.get_children():
 			if row.has_method("setup"):
 				row.setup()
-				_hook_dirty_from_row(row)
+			_hook_dirty_from_row(row)
+			_hook_binding_request_from_row(row)
 			
 			var focus_control := _get_row_focus_control(row)
 			if focus_control:
@@ -88,8 +92,13 @@ func _hook_dirty_from_row(row):
 		if not row.value_changed.is_connected(_on_any_option_changed):
 			row.value_changed.connect(_on_any_option_changed)
 
+func _hook_binding_request_from_row(row):
+	if row.has_signal("binding_requested"):
+		if not row.binding_requested.is_connected(_on_binding_requested):
+			row.binding_requested.connect(_on_binding_requested)
+
 func _get_row_focus_control(row: Node) -> Control:
-	for node_name in ["Slider", "Control", "OptionButton"]:
+	for node_name in ["Slider", "Control", "OptionButton", "KeyboardButton", "GamepadButton"]:
 		if row.has_node(node_name):
 			var control := row.get_node(node_name) as Control
 			if control and control.focus_mode != Control.FOCUS_NONE:
@@ -138,6 +147,24 @@ Botones
 func _on_any_option_changed():
 	_dirty = true
 	apply_button.disabled = false
+
+func _on_binding_requested(action: StringName, family: StringName) -> void:
+	controls_capture_panel.start_capture(action, family)
+
+func _on_focus_changed(control: Control) -> void:
+	if not visible or control == null:
+		return
+
+	var scroll := _get_current_scroll_container()
+	if scroll == null:
+		return
+
+	if scroll.is_ancestor_of(control):
+		scroll.ensure_control_visible(control)
+
+func _get_current_scroll_container() -> ScrollContainer:
+	var tab = tabs.get_current_tab_control()
+	return tab as ScrollContainer
 
 func _on_reset_pressed():
 	SettingsManager.reset_to_defaults()

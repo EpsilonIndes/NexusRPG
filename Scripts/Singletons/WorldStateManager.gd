@@ -2,7 +2,7 @@
 WorldStateManager.gd (Autoload)
 Este script toma un snapshot temporal que vive solo en memoria
 
-❌ NO toca nodos, no guarda referencias
+NO toca nodos, no guarda referencias
 no congela escenas, solo guarda datos
 """
 extends Node

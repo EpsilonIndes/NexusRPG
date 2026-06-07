@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://u7k5h2uhfu3"]
+[gd_scene load_steps=3 format=3 uid="uid://u7k5h2uhfu3"]
 
 [ext_resource type="Script" uid="uid://bs6yhdrqyrfco" path="res://Scripts/UI/MainMenu.gd" id="1_dhp8k"]
+[ext_resource type="PackedScene" uid="uid://uu6q5hosvtu6" path="res://Escenas/UserUI/ConfiguraciónIU/opciones_ui.tscn" id="2_smgxr"]
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -37,6 +38,7 @@ alignment = 1
 
 [node name="Play" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+focus_behavior_recursive = 2
 text = "Play"
 
 [node name="Options" type="Button" parent="MarginContainer/VBoxContainer"]
@@ -46,6 +48,11 @@ text = "Options"
 [node name="Exit" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Exit"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="OpcionesUI" parent="CanvasLayer" instance=ExtResource("2_smgxr")]
+visible = false
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Options" to="." method="_on_options_pressed"]

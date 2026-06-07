@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://uu6q5hosvtu6"]
+[gd_scene load_steps=10 format=3 uid="uid://uu6q5hosvtu6"]
 
 [ext_resource type="Script" uid="uid://bmcdw2lpjgpno" path="res://Scripts/ConfiguracionUI/opciones_ui.gd" id="1_ppsam"]
 [ext_resource type="PackedScene" uid="uid://bpv7eb65dq13u" path="res://Escenas/UserUI/ConfiguraciónIU/option_row_slider.tscn" id="2_w0vpb"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dri6w8aln36cs" path="res://Escenas/UserUI/ConfiguraciónIU/option_row_option_button.tscn" id="3_fwgtp"]
 [ext_resource type="PackedScene" uid="uid://cgfogordi2xep" path="res://Escenas/UserUI/ConfiguraciónIU/option_row_graphics.tscn" id="5_xsljp"]
 [ext_resource type="PackedScene" uid="uid://b1kku34ju1ody" path="res://Escenas/UserUI/ConfiguraciónIU/control_bind_row.tscn" id="6_1i7hr"]
+[ext_resource type="PackedScene" uid="uid://bjy3t1d1x85r7" path="res://Escenas/UserUI/ConfiguraciónIU/controls_capture_panel.tscn" id="7_4bnd0"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_ppsam"]
 device = -1
@@ -61,7 +62,7 @@ layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_bottom = 42
 
 [node name="VBoxMain" type="VBoxContainer" parent="PanelRoot/MarginContainer"]
 layout_mode = 2
@@ -73,6 +74,7 @@ text = "Opciones"
 [node name="Tabs" type="TabContainer" parent="PanelRoot/MarginContainer/VBoxMain"]
 layout_mode = 2
 size_flags_vertical = 3
+tab_alignment = 1
 current_tab = 4
 
 [node name="Audio" type="ScrollContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs"]
@@ -189,7 +191,12 @@ alignment = 1
 
 [node name="tittle-move" type="HBoxContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Controls/ControlsOptions"]
 layout_mode = 2
+focus_behavior_recursive = 1
 alignment = 1
+
+[node name="spacer3" type="Control" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Controls/ControlsOptions/tittle-move"]
+custom_minimum_size = Vector2(45.175, 0)
+layout_mode = 2
 
 [node name="subtitulo-1" type="Label" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Controls/ControlsOptions/tittle-move"]
 layout_mode = 2
@@ -205,17 +212,13 @@ text = "Mando"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="titulo" type="Label" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Controls/ControlsOptions"]
-layout_mode = 2
-size_flags_horizontal = 0
-text = "Movimiento"
-
 [node name="ControlBindRow" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Controls/ControlsOptions" instance=ExtResource("6_1i7hr")]
 custom_minimum_size = Vector2(20, 50)
 layout_mode = 2
 size_flags_vertical = 4
 focus_neighbor_top = NodePath("../../..")
-action_name = &"move_up"
+focus_neighbor_bottom = NodePath("../ControlBindRow2")
+action_name = &"arriba"
 display_name = "Arriba"
 
 [node name="ControlBindRow2" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Controls/ControlsOptions" instance=ExtResource("6_1i7hr")]
@@ -223,8 +226,9 @@ custom_minimum_size = Vector2(20, 50)
 layout_mode = 2
 size_flags_horizontal = 1
 size_flags_vertical = 0
-focus_neighbor_top = NodePath("../../..")
-action_name = &"move_down"
+focus_neighbor_top = NodePath("../ControlBindRow")
+focus_neighbor_bottom = NodePath("../ControlBindRow3")
+action_name = &"abajo"
 display_name = "Abajo"
 
 [node name="ControlBindRow3" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Controls/ControlsOptions" instance=ExtResource("6_1i7hr")]
@@ -232,8 +236,9 @@ custom_minimum_size = Vector2(20, 50)
 layout_mode = 2
 size_flags_horizontal = 1
 size_flags_vertical = 0
-focus_neighbor_top = NodePath("../../..")
-action_name = &"move_left"
+focus_neighbor_top = NodePath("../ControlBindRow2")
+focus_neighbor_bottom = NodePath("../ControlBindRow4")
+action_name = &"izquierda"
 display_name = "Izquierda"
 
 [node name="ControlBindRow4" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Controls/ControlsOptions" instance=ExtResource("6_1i7hr")]
@@ -241,27 +246,86 @@ custom_minimum_size = Vector2(20, 50)
 layout_mode = 2
 size_flags_horizontal = 1
 size_flags_vertical = 0
-focus_neighbor_top = NodePath("../../..")
-action_name = &"move_right"
+focus_neighbor_top = NodePath("../ControlBindRow3")
+focus_neighbor_bottom = NodePath("../../../../../../../BottomBar/ApplyButton")
+action_name = &"derecha"
 display_name = "Derecha"
 
-[node name="BottomBar" type="HBoxContainer" parent="PanelRoot/MarginContainer"]
+[node name="ControlBindRow5" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Controls/ControlsOptions" instance=ExtResource("6_1i7hr")]
+custom_minimum_size = Vector2(20, 50)
 layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 0
+focus_neighbor_top = NodePath("../ControlBindRow3")
+focus_neighbor_bottom = NodePath("../../../../../../../BottomBar/ApplyButton")
+action_name = &"accion"
+display_name = "Acción"
+
+[node name="ControlBindRow6" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Controls/ControlsOptions" instance=ExtResource("6_1i7hr")]
+custom_minimum_size = Vector2(20, 50)
+layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 0
+focus_neighbor_top = NodePath("../ControlBindRow3")
+focus_neighbor_bottom = NodePath("../../../../../../../BottomBar/ApplyButton")
+action_name = &"cancelar"
+display_name = "Cancelar"
+
+[node name="ControlBindRow7" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Controls/ControlsOptions" instance=ExtResource("6_1i7hr")]
+custom_minimum_size = Vector2(20, 50)
+layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 0
+focus_neighbor_top = NodePath("../ControlBindRow3")
+focus_neighbor_bottom = NodePath("../../../../../../../BottomBar/ApplyButton")
+action_name = &"correr"
+display_name = "Correr"
+
+[node name="ControlBindRow8" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Controls/ControlsOptions" instance=ExtResource("6_1i7hr")]
+custom_minimum_size = Vector2(20, 50)
+layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 0
+focus_neighbor_top = NodePath("../ControlBindRow3")
+focus_neighbor_bottom = NodePath("../../../../../../../BottomBar/ApplyButton")
+action_name = &"L1"
+display_name = "Gatillo izquierdo"
+
+[node name="ControlBindRow9" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Controls/ControlsOptions" instance=ExtResource("6_1i7hr")]
+custom_minimum_size = Vector2(20, 50)
+layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 0
+focus_neighbor_top = NodePath("../ControlBindRow3")
+focus_neighbor_bottom = NodePath("../../../../../../../BottomBar/ApplyButton")
+action_name = &"R1"
+display_name = "Gatillo derecho"
+
+[node name="BottomBar" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 365.0
+offset_top = 481.85
+offset_right = 915.0
+offset_bottom = 512.85
 size_flags_vertical = 8
 
-[node name="ResetButton" type="Button" parent="PanelRoot/MarginContainer/BottomBar"]
+[node name="ResetButton" type="Button" parent="BottomBar"]
 layout_mode = 2
 text = "Reset"
 
-[node name="Spacer" type="Control" parent="PanelRoot/MarginContainer/BottomBar"]
+[node name="Spacer" type="Control" parent="BottomBar"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ApplyButton" type="Button" parent="PanelRoot/MarginContainer/BottomBar"]
+[node name="ApplyButton" type="Button" parent="BottomBar"]
 layout_mode = 2
 shortcut = SubResource("Shortcut_w0vpb")
 text = "Apply"
 
-[node name="AcceptButton" type="Button" parent="PanelRoot/MarginContainer/BottomBar"]
+[node name="AcceptButton" type="Button" parent="BottomBar"]
 layout_mode = 2
 text = "Accept"
+
+[node name="ControlsCapturePanel" parent="." instance=ExtResource("7_4bnd0")]
+visible = false
+layout_mode = 1

@@ -3,9 +3,14 @@ extends Node
 
 func actualizar_personajes_party():
 	var escena = get_tree().get_current_scene()
-	var reservas = escena.get_node("Personajes/reservaIA")
-	var contenedor = escena.get_node("Personajes/seguidores")
-	var jugador = escena.get_node("Personajes/Player")
+	if escena == null:
+		return
+
+	var reservas = escena.get_node_or_null("Personajes/reservaIA")
+	var contenedor = escena.get_node_or_null("Personajes/seguidores")
+	var jugador = escena.get_node_or_null("Personajes/Player")
+	if reservas == null or contenedor == null or jugador == null:
+		return
 
 	var party = PlayableCharacters.get_party_actual()
 	var total = party.size()

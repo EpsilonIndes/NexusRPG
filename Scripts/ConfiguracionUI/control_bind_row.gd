@@ -14,6 +14,8 @@ signal value_changed
 func _ready() -> void:
 	keyboard_button.pressed.connect(_on_keyboard_button_pressed)
 	gamepad_button.pressed.connect(_on_gamepad_button_pressed)
+	keyboard_button.focus_neighbor_right = gamepad_button.get_path()
+	gamepad_button.focus_neighbor_left = keyboard_button.get_path()
 
 	if get_node_or_null("/root/ControlsController") != null:
 		if not ControlsController.binding_changed.is_connected(refresh_display):

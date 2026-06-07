@@ -221,7 +221,7 @@ func _apply_ssao(level: int) -> void:
 			env.ssao_intensity = 1.0
 		2:
 			env.ssao_radius = 1.0
-			env.ssao_intensity = 2.0		
+			env.ssao_intensity = 2.0
 	
 
 """
