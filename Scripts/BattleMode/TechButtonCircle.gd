@@ -7,6 +7,7 @@ var battle_manager: Node = null
 var botones: Array[Control] = []
 var boton_focado:  Control = null
 var focus_activo := false
+const TECH_BUTTON_SCENE := preload("res://Escenas/UserUI/tech_button.tscn")
 
 func configurar(tecnicas_ids: Array):
 	# Limpiamos los hijos previos
@@ -27,30 +28,37 @@ func configurar(tecnicas_ids: Array):
 
 	for t in tecnicas_ids:
 		# Extraer el ID
-		var tecnica_id = t["id"]
+		var tecnica_id := str(t.get("id", t.get("tecnique_id", "")))
 		if tecnica_id == "":
 			push_error("Técnica sin ID interno en el array")
 			continue
 
 		# Obtenemos stats desde GlobalTechniqueDatabase
-		var stats: Dictionary = GlobalTechniqueDatabase.get_tecnica_stats(tecnica_id)
+		var stats: Dictionary = t.duplicate(true) if t.has("rol_combo") else GlobalTechniqueDatabase.get_tecnica_stats(tecnica_id)
 		if stats.is_empty():
 			push_error("No se encontraron stats para la técnica: %s" % tecnica_id)
 			continue
+
+		stats["id"] = tecnica_id
+		stats["tecnique_id"] = stats.get("tecnique_id", tecnica_id)
 
 		# Nombre para el UI
 		var nombre_visible = stats.get("nombre_tech", tecnica_id)
 		#print("Añadiendo técncia:", nombre_visible)
 
 		# Crear botón
-		var boton: Control = preload("res://Escenas/UserUI/tech_button.tscn").instantiate()
-		boton.get_node("Label").text = nombre_visible
+		var boton: Control = TECH_BUTTON_SCENE.instantiate()
+		if boton.has_method("configurar"):
+			boton.configurar(tecnica_id, stats)
+		else:
+			boton.get_node("Label").text = nombre_visible
 		boton.position = Vector2(cos(angulo), sin(angulo)) * radio # Posición circular
 		boton.focus_mode = Control.FOCUS_ALL
 
 		# Guardar info dentro del botón
-		boton.set("tecnica_id", tecnica_id)
-		boton.set("tecnica_stats", stats)
+		if not boton.has_method("configurar"):
+			boton.set("tecnica_id", tecnica_id)
+			boton.set("tecnica_stats", stats)
 
 		# Evento
 		if boton.has_signal("tecnica_seleccionada"):
@@ -83,15 +91,15 @@ func _unhandled_input(event: InputEvent) -> void:
 	if boton_focado == null:
 		return
 	
-	if event.is_action_pressed("ui_up"):
+	if event.is_action_pressed("arriba"):
 		_mover_focus(Vector2.UP)
-	elif event.is_action_pressed("ui_down"):
+	elif event.is_action_pressed("abajo"):
 		_mover_focus(Vector2.DOWN)
-	elif event.is_action_pressed("ui_left"):
+	elif event.is_action_pressed("izquierda"):
 		_mover_focus(Vector2.LEFT)
-	elif event.is_action_pressed("ui_right"):
+	elif event.is_action_pressed("derecha"):
 		_mover_focus(Vector2.RIGHT)
-	elif event.is_action_pressed("ui_accept"):
+	elif event.is_action_pressed("accion"):
 		get_viewport().set_input_as_handled()
 		print("ui_accept presionado (Botón de técnica seleccionado)")
 

@@ -211,6 +211,10 @@ func cambiar_estado(nuevo_estado: BattleState) -> void:
 			print("Batalla finalizada!")
 			finalizar_batalla()
 
+
+func cambiar_estado_diferido(nuevo_estado: BattleState) -> void:
+	call_deferred("cambiar_estado", nuevo_estado)
+
 # -----------------------
 # Flujo del Jugador
 # -----------------------
@@ -275,6 +279,7 @@ func iniciar_turno_enemigo() -> void:
 
 	if combatiente_actual == null:
 		finalizar_turno()
+		return
 
 	if combatiente_actual.esta_vivo():
 		# Procesar efectos activos antes de que el enemigo actúe
@@ -318,7 +323,7 @@ func obtener_siguiente_combatiente(es_jugador: bool) -> Node:
 
 
 func finalizar_turno() -> void:
-	cambiar_estado(BattleState.CHEQUEAR_FINAL)
+	cambiar_estado_diferido(BattleState.CHEQUEAR_FINAL)
 
 # -----------------------
 # Fin de combate
@@ -558,7 +563,7 @@ func _on_combatant_turn_finished() -> void:
 	objetivos_actuales.clear()
 
 	# Pasamos a chequear fin de batalla
-	cambiar_estado(BattleState.CHEQUEAR_FINAL)
+	cambiar_estado_diferido(BattleState.CHEQUEAR_FINAL)
 
 
 #-------------------------------

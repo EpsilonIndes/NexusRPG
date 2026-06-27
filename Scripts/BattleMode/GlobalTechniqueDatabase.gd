@@ -96,11 +96,10 @@ func get_visible_techniques_for(personaje: String) -> Array:
 
 	for tech_id in ids:
 		if DataLoader.tecnicas.has(tech_id):
-			var data: Dictionary = DataLoader.tecnicas[tech_id]
-			result.append({
-				"id": tech_id,
-				"nombre": data.get("nombre_tech", tech_id) # Nombre visible
-			})
+			var data: Dictionary = get_tecnica_stats(tech_id)
+			data["id"] = tech_id
+			data["nombre"] = data.get("nombre_tech", tech_id) # Nombre visible
+			result.append(data)
 		else:
 			push_error("Técnica '%s' no encontrada en DataLoader" % tech_id)
 	

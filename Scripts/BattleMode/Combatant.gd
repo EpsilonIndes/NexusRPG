@@ -345,38 +345,69 @@ func ejecutar_tecnica():
 # IA simple para enemigos
 #------------------------------
 func iniciar_accion():
-	# Llamada por battleManager en turno enemigo
+	# Llamada por BattleManager en turno enemigo.
+	# Los jugadores entran por UI + seleccionar_tecnica(), no por esta ruta.
+	if es_jugador:
+		push_warning("iniciar_accion() fue llamado en un jugador: %s" % nombre)
+		emit_signal("turno_finalizado")
+		return
+
 	if not esta_vivo():
 		emit_signal("turno_finalizado")
 		return
 
-	#Si el veneno te mató acá, no actuás
-	if not esta_vivo():
-		emit_signal("turno_finalizado")
-		return
-
-	# Enemigo elige técnica random
 	if tecnicas.is_empty():
-		push_warning("⚠️ El enemigo %s no tiene técnicas definidas" % nombre)
+		push_warning("El enemigo %s no tiene tecnicas definidas" % nombre)
 		emit_signal("turno_finalizado")
 		return
 	
-	var tecnica = tecnicas.pick_random()
-	
-	# candidatos según scope (usar el método público del BattleManager)
-	var scope = tecnica.get("target_scope", "SINGLE_ENEMY")
-	var candidatos = battle_manager._candidatos_por_scope(scope)
-	#fallback si no hay candidatos
-	var target = null
-	if candidatos.size() > 0:
-		# Si SINGLE -> random entre candidatos; si ALL -> pasar lista
-		if scope.begins_with("SINGLE") or scope.begins_with("RANDOM"):
-			target = candidatos.pick_random()
-		else:
-			target = candidatos.duplicate()
-	
-	# seleccionar y ejecutar
+	var tecnica = _elegir_tecnica_enemiga()
+	if tecnica.is_empty():
+		emit_signal("turno_finalizado")
+		return
+
+	var target = _elegir_objetivos_enemigos(tecnica)
+
 	seleccionar_tecnica(tecnica, target)
+	await ejecutar_tecnica()
+
+
+func _elegir_tecnica_enemiga() -> Dictionary:
+	return tecnicas.pick_random()
+
+
+func _elegir_objetivos_enemigos(tecnica: Dictionary):
+	var scope = tecnica.get("target_scope", "SINGLE_ENEMY")
+	var candidatos = _candidatos_enemigos_por_scope(scope)
+	if candidatos.is_empty():
+		return null
+
+	match scope:
+		"ALL_ENEMIES", "ALL_ALLIES":
+			return candidatos.duplicate()
+		"SELF":
+			return self
+		_:
+			return candidatos.pick_random()
+
+
+func _candidatos_enemigos_por_scope(scope: String) -> Array:
+	if battle_manager == null:
+		return []
+
+	var aliados = battle_manager.combatientes.filter(func(c): return c is Combatant and not c.es_jugador and c.esta_vivo())
+	var enemigos = battle_manager.combatientes.filter(func(c): return c is Combatant and c.es_jugador and c.esta_vivo())
+
+	match scope:
+		"ALL_ENEMIES", "SINGLE_ENEMY", "RANDOM_ENEMY":
+			return enemigos
+		"ALL_ALLIES", "SINGLE_ALLY", "RANDOM_ALLY":
+			return aliados
+		"SELF":
+			return [self]
+		_:
+			push_warning("Scope enemigo desconocido: %s" % scope)
+			return []
 
 
 #
