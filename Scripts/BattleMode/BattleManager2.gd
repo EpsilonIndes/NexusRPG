@@ -43,6 +43,8 @@ var enemy_type_counter: Dictionary = {}
 # Tech seleccionada (dict de tech)
 var tecnica_actual: Dictionary = {}
 var objetivos_actuales: Array = []
+var cola_acciones: Array = []
+var procesando_cola_acciones := false
 
 var drive_score: int = 0
 var ultima_tecnica_usada: String = ""
@@ -290,14 +292,20 @@ func iniciar_turno_enemigo() -> void:
 				return
 		
 		# Conectar señal y pedir que inicie su acción (La acción emitirá turno_finalizado)
-		if combatiente_actual.is_connected("turno_finalizado", Callable(self, "_on_combatant_turn_finished")):
-			combatiente_actual.disconnect("turno_finalizado", Callable(self, "_on_combatant_turn_finished"))
-		combatiente_actual.connect("turno_finalizado", Callable(self, "_on_combatant_turn_finished"))
+		if combatiente_actual.has_method("crear_accion_enemiga"):
+			var accion: Dictionary = combatiente_actual.crear_accion_enemiga()
+			if accion.is_empty():
+				_avanzar_turno_tras_encolar()
+				return
 
-		if combatiente_actual.has_method("iniciar_accion"):
-			combatiente_actual.iniciar_accion()
+			var objetivos = accion.get("objetivos", [])
+			if not objetivos is Array:
+				objetivos = [objetivos]
+
+			_encolar_accion(combatiente_actual, accion.get("tecnica", {}), objetivos)
+			_avanzar_turno_tras_encolar()
 		else:
-			push_warning("Combatant %s no tiene iniciar_accion()" % str(combatiente_actual))
+			push_warning("Combatant %s no tiene crear_accion_enemiga()" % str(combatiente_actual))
 			# Si el enemigo no actúa, cerramos el turno
 			# Desconectamos y avanzamos
 			if combatiente_actual.is_connected("turno_finalizado", Callable(self, "_on_combatant_turn_finished")):
@@ -477,9 +485,8 @@ func _on_tecnica_seleccionada(tec_id: String) -> void:
 
 	# Ejecutar directamente si no hubo selector
 	if objetivos_actuales.size() > 0:
-		combatiente_actual.seleccionar_tecnica(tecnica_actual, objetivos_actuales)
-		if estado_actual != BattleState.EJECUCION_ACCION:
-			cambiar_estado(BattleState.EJECUCION_ACCION)
+		_encolar_accion(combatiente_actual, tecnica_actual, objetivos_actuales)
+		_finalizar_seleccion_actual()
 
 # Callback que la UI de selección de objetivo debe llamar:
 # ui_overlay.open_target_selector(candidatos, callback)
@@ -496,16 +503,109 @@ func _on_target_selected(target: Combatant) -> void:
 
 	
 	# asignar técnica y continuar
-	combatiente_actual.seleccionar_tecnica(tecnica_actual, objetivos_actuales)
+	_encolar_accion(combatiente_actual, tecnica_actual, objetivos_actuales)
 	
 	#if estado_actual != BattleState.EJECUCION_ACCION:
-	cambiar_estado(BattleState.EJECUCION_ACCION)
+	_finalizar_seleccion_actual()
 
 func _on_cancel_selection_target() -> void:
 	print("[BattleMaager] Cancelado selector de objetivos")
 	tecnica_actual = {}
 	objetivos_actuales.clear()
 	estado_actual = BattleState.SELECCION_ACCION
+
+func _encolar_accion(actor: Combatant, tecnica: Dictionary, objetivos: Array) -> void:
+	if actor == null or tecnica.is_empty():
+		return
+
+	cola_acciones.append({
+		"actor": actor,
+		"tecnica": tecnica.duplicate(true),
+		"objetivos": objetivos.duplicate()
+	})
+
+	if not procesando_cola_acciones:
+		call_deferred("_procesar_cola_acciones")
+
+func _finalizar_seleccion_actual() -> void:
+	if ui_overlay.has_method("clear_tecnicas"):
+		ui_overlay.clear_tecnicas()
+
+	tecnica_actual = {}
+	objetivos_actuales.clear()
+	call_deferred("_avanzar_turno_tras_encolar")
+
+func _avanzar_turno_tras_encolar() -> void:
+	if estado_actual == BattleState.FINAL:
+		return
+
+	if indice_turno >= combatientes.size():
+		estado_actual = BattleState.EJECUCION_ACCION
+		return
+
+	var siguiente = combatientes[indice_turno]
+	if siguiente.es_jugador:
+		cambiar_estado(BattleState.TURNO_JUGADOR)
+	else:
+		cambiar_estado(BattleState.TURNO_ENEMIGO)
+
+func _procesar_cola_acciones() -> void:
+	if procesando_cola_acciones:
+		return
+
+	procesando_cola_acciones = true
+
+	while not cola_acciones.is_empty():
+		var accion: Dictionary = cola_acciones.pop_front()
+		var actor: Combatant = accion.get("actor", null)
+		var tecnica: Dictionary = accion.get("tecnica", {})
+		var objetivos: Array = _filtrar_objetivos_accion(actor, tecnica, accion.get("objetivos", []))
+
+		if actor == null or not is_instance_valid(actor) or not actor.esta_vivo():
+			continue
+
+		actor.seleccionar_tecnica(tecnica, objetivos)
+		await actor.ejecutar_tecnica()
+		_registrar_accion_resuelta(actor, tecnica)
+
+		if _batalla_termino():
+			cola_acciones.clear()
+			break
+
+	procesando_cola_acciones = false
+
+	if _batalla_termino():
+		if ui_overlay.has_method("clear_tecnicas"):
+			ui_overlay.clear_tecnicas()
+		cambiar_estado_diferido(BattleState.FINAL)
+	elif estado_actual == BattleState.EJECUCION_ACCION:
+		cambiar_estado_diferido(BattleState.CHEQUEAR_FINAL)
+
+func _filtrar_objetivos_accion(actor: Combatant, tecnica: Dictionary, objetivos: Array) -> Array:
+	var scope := str(tecnica.get("target_scope", ""))
+	if scope == "SELF" and actor != null and is_instance_valid(actor):
+		return [actor]
+
+	var filtrados: Array = []
+	for objetivo in objetivos:
+		if objetivo != null and is_instance_valid(objetivo) and objetivo.esta_vivo():
+			filtrados.append(objetivo)
+	return filtrados
+
+func _registrar_accion_resuelta(actor: Combatant, _tecnica: Dictionary) -> void:
+	if actor != null and actor.es_jugador:
+		if not jugadores_participantes.has(actor.id):
+			jugadores_participantes.append(actor.id)
+		actualizar_drive_score(_tecnica)
+
+func _batalla_termino() -> bool:
+	var jugadores_vivos = combatientes.any(
+		func(c): return c.es_jugador and c.esta_vivo()
+	)
+	var enemigos_vivos = combatientes.any(
+		func(c): return not c.es_jugador and c.esta_vivo()
+	)
+	return not jugadores_vivos or not enemigos_vivos
 
 func _candidatos_por_scope(scope: String) -> Array:
 	var aliados = combatientes.filter(func(c): return c is Combatant and c.es_jugador and c.esta_vivo())
@@ -556,7 +656,8 @@ func _on_combatant_turn_finished() -> void:
 		combatiente_actual.disconnect("turno_finalizado", Callable(self, "_on_combatant_turn_finished"))
 
 	# Actualizar DriveScore (si corresponde)
-	actualizar_drive_score()
+	if combatiente_actual != null and combatiente_actual.es_jugador:
+		actualizar_drive_score(tecnica_actual)
 
 	# Limpiar técnica actual / objetivos
 	tecnica_actual = {}
@@ -569,9 +670,9 @@ func _on_combatant_turn_finished() -> void:
 #-------------------------------
 # DriveScore (Simple por ahora)
 #-------------------------------
-func actualizar_drive_score() -> void:
-	var id = tecnica_actual.get("tecnique_id", "")
-	var base = tecnica_actual.get("score_value", 0)
+func actualizar_drive_score(_tecnica: Dictionary = {}) -> void:
+	var id = _tecnica.get("tecnique_id", "")
+	var base = _tecnica.get("score_value", 0)
 
 	if id == ultima_tecnica_usada:
 		repeticion_continua += 1

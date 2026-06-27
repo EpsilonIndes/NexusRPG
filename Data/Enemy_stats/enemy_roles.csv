@@ -1,0 +1,8 @@
+role_id,nombre,descripcion,categoria,script_path,notas
+R001,Castigador,Castiga habitos repetitivos del jugador,Reaction,res://Scripts/BattleMode/enemy_ai/roles/PunisherRole.gd,Reacciona a patrones del DriveScore.
+R002,Adaptativo,Aprende del comportamiento del jugador durante el combate,Reaction,res://Scripts/BattleMode/enemy_ai/roles/AdaptiveRole.gd,Modifica prioridades o resistencias.
+R003,Restrictor,Impone condiciones para danarlo o debilitarlo,Mechanic,res://Scripts/BattleMode/enemy_ai/roles/RestrictorRole.gd,Obliga a cumplir condiciones.
+R004,Presionador,Genera amenazas crecientes que deben atenderse,Pressure,res://Scripts/BattleMode/enemy_ai/roles/PressureRole.gd,Carga ataques rituales o invocaciones.
+R005,Protector,Protege aliados o altera prioridades,Support,res://Scripts/BattleMode/enemy_ai/roles/ProtectorRole.gd,Intercepta ataques o protege objetivos.
+R006,Controlador,Manipula el ritmo del combate,Control,res://Scripts/BattleMode/enemy_ai/roles/ControllerRole.gd,Retrasa turnos o aplica estados.
+R007,Especialista,Tiene una mecanica unica,Special,res://Scripts/BattleMode/enemy_ai/roles/SpecialistRole.gd,Cada enemigo puede tener una regla propia.

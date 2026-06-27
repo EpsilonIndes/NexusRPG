@@ -1,3 +1,5 @@
+# Script sin uso, ignorar!!
+
 extends Control
 
 const FACE_TEXTURES = { "Astro": preload("res://Assets/Faces/Astro.png"),

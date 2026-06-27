@@ -9,6 +9,7 @@ var loots: Dictionary = {}
 var stats: Dictionary = {}
 var tecnicas: Dictionary = {}
 var enemigos: Dictionary = {}
+var enemy_roles: Dictionary = {}
 var drops: Dictionary = {}
 
 var _is_ready: bool = false
@@ -32,7 +33,9 @@ func load_all_data():
 	load_loots("res://Data/Loot/loot_objects.csv")
 	load_stats("res://Data/Char_stats/stats.csv")
 	load_tecnicas("res://Data/Tecnicas/tecnicas.csv")
+	load_enemy_techniques("res://Data/Enemy_stats/enemy_techniques.csv")
 	load_enemy_stats("res://Data/Enemy_stats/stats_enemigos.csv")
+	load_enemy_roles("res://Data/Enemy_stats/enemy_roles.csv")
 	load_enemy_drops("res://Data/Loot/drop_tables.csv")
 	print("Items exists: ", FileAccess.file_exists("res://Data/Items/items.csv"))
 	print("Stats exists: ", FileAccess.file_exists("res://Data/Char_stats/stats.csv"))
@@ -268,7 +271,13 @@ func load_stats(path: String):
 	stats = load_stats_to_dict(path, "id")
 func load_tecnicas(path: String):
 	tecnicas = load_techs_to_dict(path, "tecnique_id")
+func load_enemy_techniques(path: String):
+	var enemy_techniques := load_techs_to_dict(path, "tecnique_id")
+	for tech_id in enemy_techniques.keys():
+		tecnicas[tech_id] = enemy_techniques[tech_id]
 func load_enemy_stats(path: String):
 	enemigos = load_stats_to_dict(path, "id")
+func load_enemy_roles(path: String):
+	enemy_roles = load_csv_to_dict(path, "role_id")
 func load_enemy_drops(path: String):
 	drops = load_csv_grouped(path, "enemy_id")

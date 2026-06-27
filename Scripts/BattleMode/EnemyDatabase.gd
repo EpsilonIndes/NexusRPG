@@ -27,8 +27,19 @@ func get_stats(enemy_id: String) -> Dictionary:
 		"lck": e.lck,
 		"wis": e.wis,
 		"exp": e.exp,
-		"class_id": e.class_id
+		"class_id": e.class_id,
+		"enemy_role_id": e.get("enemy_role_id", _role_id_from_class_id(str(e.get("class_id", ""))))
 	}
+
+func get_role_data(role_id: String) -> Dictionary:
+	if role_id == "":
+		return {}
+
+	if not DataLoader.enemy_roles.has(role_id):
+		push_warning("Enemy role no encontrado: %s" % role_id)
+		return {}
+
+	return DataLoader.enemy_roles[role_id]
 
 func get_exp(enemy_id: String) -> int:
 	var e = get_data(enemy_id)
@@ -36,3 +47,14 @@ func get_exp(enemy_id: String) -> int:
 
 func get_drop_table(enemy_id: String) -> String:
 	return get_data(enemy_id).get("drop_table", "")
+
+func _role_id_from_class_id(class_id: String) -> String:
+	match class_id:
+		"C001":
+			return "R001"
+		"C002":
+			return "R002"
+		"C003":
+			return "R003"
+		_:
+			return "R001"
