@@ -7,9 +7,11 @@ extends Control
 @onready var inventory_ui := $"../InventoryUI"
 @onready var estadisticas_ui := $"../EstadisticasUI"
 @onready var opciones_ui := $"../OpcionesUI"
+@onready var personalizar_ui := get_node_or_null("../PersonalizarTecnicasUI")
 
 @onready var inv_btn := $Panel/VBoxContainer/Inventario
 @onready var stats_btn := $Panel/VBoxContainer/Estadisticas
+@onready var personalizar_btn := $Panel/VBoxContainer/Personalizar
 @onready var opciones_btn := $Panel/VBoxContainer/Opciones
 @onready var salir_btn := $Panel/VBoxContainer/Salir
 
@@ -28,12 +30,15 @@ func _ready() -> void:
 
 	inv_btn.pressed.connect(_on_inventario_pressed)
 	stats_btn.pressed.connect(_on_estadisticas_pressed)
+	personalizar_btn.pressed.connect(_on_personalizar_pressed)
 	opciones_btn.pressed.connect(_on_opciones_pressed)
 	salir_btn.pressed.connect(close)
 
 	inventory_ui.closed.connect(_on_child_ui_closed)
 	estadisticas_ui.closed.connect(_on_child_ui_closed)
 	opciones_ui.closed.connect(_on_child_ui_closed)
+	if personalizar_ui and personalizar_ui.has_signal("closed"):
+		personalizar_ui.closed.connect(_on_child_ui_closed)
 
 func open():
 	if is_open:
@@ -85,6 +90,11 @@ func _on_inventario_pressed():
 func _on_estadisticas_pressed() -> void:
 	estadisticas_ui.open()
 	close()
+
+func _on_personalizar_pressed() -> void:
+	if personalizar_ui:
+		personalizar_ui.open()
+		close()
 
 
 func _on_animation_finished(anim_name: String) -> void:

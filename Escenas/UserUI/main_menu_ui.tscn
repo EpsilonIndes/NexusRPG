@@ -113,6 +113,10 @@ text = "Inventario"
 layout_mode = 2
 text = "Estadísticas"
 
+[node name="Personalizar" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "Personalizar"
+
 [node name="Opciones" type="Button" parent="Panel/VBoxContainer"]
 layout_mode = 2
 text = "Opciones
