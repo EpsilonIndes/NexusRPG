@@ -16,9 +16,9 @@ func procesar_batalla(result: Dictionary) -> Dictionary:
 	if not result.victoria:
 		return rewards
 	
+	_calcular_bonus_drive(result, rewards)
 	_calcular_exp(result, rewards)
 	_calcular_drops(result, rewards)
-	_calcular_bonus_drive(result, rewards)
 	return rewards
 
 func _calcular_exp(result: Dictionary, rewards: Dictionary) -> void:
@@ -42,7 +42,7 @@ func _calcular_exp(result: Dictionary, rewards: Dictionary) -> void:
 		return
 
 	# Bonus plano por DriveScore (ya lo tenías)
-	var drive_flat_bonus = int(result.get("drive_score", 0) / 100)
+	var drive_flat_bonus = int(result.get("total_drive_score", result.get("drive_score", 0)) / 100)
 	total_exp += drive_flat_bonus
 
 	# NUEVO: multiplicador por DriveRank
@@ -66,9 +66,13 @@ func _calcular_exp(result: Dictionary, rewards: Dictionary) -> void:
 
 func _calcular_drops(result: Dictionary, rewards: Dictionary) -> void:
 	var enemigos = result.get("enemigos_derrotados", [])
-	var drive_score = result.get("drive_score", 0)
+	var drive_score = result.get("total_drive_score", result.get("drive_score", 0))
+	var drive_bonus = rewards.get("drive_bonus", {})
+	var extra_drop_chance := 0.0
+	if drive_bonus is Dictionary:
+		extra_drop_chance = float(drive_bonus.get("extra_drop_chance", 0.0))
 
-	var drop_bonus = 1.0 + (drive_score / 500.0) # Tunear luego
+	var drop_bonus = 1.0 + (drive_score / 500.0) + extra_drop_chance # Tunear luego
 
 	for enemy_id in enemigos:
 		var drops = DropDatabase.get_drops(enemy_id, drop_bonus)
@@ -84,26 +88,51 @@ func _calcular_drops(result: Dictionary, rewards: Dictionary) -> void:
 		
 
 func _calcular_bonus_drive(result: Dictionary, rewards: Dictionary) -> void:
-	var score = result.get("drive_score", 0)
+	var score := int(result.get("total_drive_score", result.get("drive_score", 0)))
+	var has_highest_rank := result.has("highest_resonance_rank")
+	var drive_rank := str(result.get("highest_resonance_rank", result.get("drive_rank", "")))
 
 	var bonus := {
-		"rank": "D",
+		"rank": "Static Pulse",
 		"exp_multiplier": 1.0,
 		"extra_drop_chance": 0.0
 	}
 
-	if score >= 5000:
-		bonus.rank = "S"
-		bonus.exp_multiplier = 1.25
-		bonus.extra_drop_chance = 0.20
-	elif score >= 3500:
-		bonus.rank = "A"
-		bonus.exp_multiplier = 1.15
-	if score >= 2000:
-		bonus.rank = "B"
-		bonus.exp_multiplier = 1.10
-	if score >= 1000:
-		bonus.rank = "C"
-		bonus.exp_multiplier = 1.05
-	
+	if not has_highest_rank and (drive_rank == "" or drive_rank == "Static Pulse"):
+		drive_rank = _rank_por_score(score)
+
+	var rank_bonus := _bonus_por_drive_rank(drive_rank)
+	for key in rank_bonus.keys():
+		bonus[key] = rank_bonus[key]
+
 	rewards["drive_bonus"] = bonus
+
+
+func _rank_por_score(score: int) -> String:
+	if score >= 5000:
+		return "Nexus Ascent"
+	if score >= 3000:
+		return "Soul Gear Resonance"
+	if score >= 2250:
+		return "Harmonic Surge"
+	if score >= 1500:
+		return "Overdrive Sync"
+	if score >= 1000:
+		return "Tandem Flow"
+	return "Static Pulse"
+
+
+func _bonus_por_drive_rank(drive_rank: String) -> Dictionary:
+	match drive_rank:
+		"Nexus Ascent":
+			return {"rank": drive_rank, "exp_multiplier": 1.25, "extra_drop_chance": 0.20}
+		"Soul Gear Resonance":
+			return {"rank": drive_rank, "exp_multiplier": 1.20, "extra_drop_chance": 0.15}
+		"Harmonic Surge":
+			return {"rank": drive_rank, "exp_multiplier": 1.15, "extra_drop_chance": 0.10}
+		"Overdrive Sync":
+			return {"rank": drive_rank, "exp_multiplier": 1.10, "extra_drop_chance": 0.05}
+		"Tandem Flow":
+			return {"rank": drive_rank, "exp_multiplier": 1.05, "extra_drop_chance": 0.0}
+		_:
+			return {"rank": "Static Pulse", "exp_multiplier": 1.0, "extra_drop_chance": 0.0}

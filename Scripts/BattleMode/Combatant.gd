@@ -328,6 +328,9 @@ func ejecutar_tecnica():
 		if not t.esta_vivo():
 			print("%s ha muerto tras recibir efectos." % t.nombre)
 	
+	if battle_manager != null and battle_manager.has_method("registrar_drive_score_pre_animacion"):
+		battle_manager.registrar_drive_score_pre_animacion(self, tecnica, objetivos)
+
 	var anim_scene: PackedScene = tecnica.get("animation_scene", null)
 
 	tecnica_seleccionada = null
@@ -338,6 +341,8 @@ func ejecutar_tecnica():
 		for t in objetivos:
 			if is_instance_valid(t) and t.has_method("reproducir_feedback"):
 				t.reproducir_feedback()
+		if battle_manager != null and battle_manager.has_method("flush_drive_feedback"):
+			battle_manager.flush_drive_feedback()
 
 	emit_signal("turno_finalizado")
 

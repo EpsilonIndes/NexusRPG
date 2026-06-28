@@ -3,6 +3,7 @@ extends CanvasLayer
 
 @onready var technique_overlay := $TechniqueOverlay
 @onready var target_selector := $TargetSelector
+@onready var drive_score_feedback := get_node_or_null("DriveScoreFeedback")
 
 
 # BattleManager envia un diccionario con los candidatos y el callback propio para continuar el flujo de turnos
@@ -52,3 +53,17 @@ func clear_tecnicas() -> void:
 	technique_overlay.visible = false
 	for child in technique_overlay.get_children():
 		child.queue_free()
+
+
+func queue_drive_update(data: Dictionary) -> void:
+	if drive_score_feedback != null and drive_score_feedback.has_method("queue_drive_update"):
+		drive_score_feedback.queue_drive_update(data)
+
+
+func show_pending_drive_feedback() -> void:
+	if drive_score_feedback != null and drive_score_feedback.has_method("show_pending_drive_feedback"):
+		drive_score_feedback.show_pending_drive_feedback()
+
+
+func flush_drive_feedback() -> void:
+	show_pending_drive_feedback()

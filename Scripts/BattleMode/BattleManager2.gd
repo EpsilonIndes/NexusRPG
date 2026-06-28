@@ -1,6 +1,8 @@
 # BattleManager2
 extends Node
 
+const DriveSystemScript = preload("res://Scripts/BattleMode/DriveScore/DriveSystem.gd")
+
 enum BattleState {
 	INICIO,
 	TURNO_JUGADOR,
@@ -49,6 +51,11 @@ var procesando_cola_acciones := false
 var drive_score: int = 0
 var ultima_tecnica_usada: String = ""
 var repeticion_continua: int = 0
+var drive_system: DriveSystem = null
+var drive_estado_previo_accion: Dictionary = {}
+var drive_accion_registrada := false
+var drive_result_pendiente_cierre: Dictionary = {}
+var drive_registro_preparado := false
 
 @onready var battle_animator := $"../Animation/BattleAnimator"
 
@@ -58,6 +65,10 @@ var repeticion_continua: int = 0
 @onready var battle_camera = get_parent().get_node("Camera/BattleCamera")
 @onready var ui_overlay = get_parent().get_node("UIOverlay")
 @onready var tecnique_overlay = ui_overlay.get_node("TechniqueOverlay")
+
+
+func _ready() -> void:
+	_configurar_drive_system()
 
 const POS_JUGADORES := [
 	Vector3(1, 1.1, -5),  	
@@ -78,6 +89,7 @@ const POS_ENEMIGOS := [
 # enemigos: Array[String] (ej. ["slime","lobo_helado"])
 # --------------------
 func start_battle(jugadores: Array, enemigos: Array) -> void:
+	_configurar_drive_system()
 	combatientes.clear()
 	indice_turno = 0
 	drive_score = 0
@@ -85,6 +97,7 @@ func start_battle(jugadores: Array, enemigos: Array) -> void:
 	objetivos_actuales.clear()
 	ultima_tecnica_usada = ""
 	repeticion_continua = 0
+	drive_system.reset_battle()
 
 	instanciar_equipo(jugadores, player_team, true)
 	instanciar_equipo(enemigos, enemy_team, false)
@@ -95,6 +108,39 @@ func start_battle(jugadores: Array, enemigos: Array) -> void:
 	"turns": 0,
 	"techniques_used": {}
 	}
+
+
+func _configurar_drive_system() -> void:
+	if drive_system != null and is_instance_valid(drive_system):
+		return
+
+	var existing := get_node_or_null("DriveSystem")
+	if existing is DriveSystem:
+		drive_system = existing
+	else:
+		drive_system = DriveSystemScript.new()
+		drive_system.name = "DriveSystem"
+		add_child(drive_system)
+
+	_conectar_drive_feedback_ui()
+
+
+func _conectar_drive_feedback_ui() -> void:
+	if ui_overlay == null or not is_instance_valid(ui_overlay):
+		return
+
+	var feedback_ui := ui_overlay.get_node_or_null("DriveScoreFeedback")
+	if feedback_ui != null and feedback_ui.has_method("bind_drive_system"):
+		feedback_ui.bind_drive_system(drive_system)
+
+
+func show_pending_drive_feedback() -> void:
+	flush_drive_feedback()
+
+
+func flush_drive_feedback() -> void:
+	if ui_overlay != null and is_instance_valid(ui_overlay) and ui_overlay.has_method("flush_drive_feedback"):
+		ui_overlay.flush_drive_feedback()
 
 # --------------------
 # Instancia escenas de cada combatiente (escenas individuales por ID)
@@ -564,9 +610,28 @@ func _procesar_cola_acciones() -> void:
 		if actor == null or not is_instance_valid(actor) or not actor.esta_vivo():
 			continue
 
+		if not actor.es_jugador and drive_system != null:
+			drive_system.break_combo("enemy_action")
+
+		var estado_previo := _capturar_estado_objetivos(objetivos)
+		drive_estado_previo_accion = estado_previo
+		drive_accion_registrada = false
+		drive_result_pendiente_cierre = {}
+		drive_registro_preparado = true
 		actor.seleccionar_tecnica(tecnica, objetivos)
 		await actor.ejecutar_tecnica()
-		_registrar_accion_resuelta(actor, tecnica)
+		if not drive_accion_registrada:
+			var estado_posterior := _capturar_estado_objetivos(objetivos)
+			var fallback_result := _registrar_accion_resuelta(actor, tecnica, objetivos, estado_previo, estado_posterior)
+			flush_drive_feedback()
+			_aplicar_cierre_drive_result(fallback_result)
+		else:
+			flush_drive_feedback()
+			_aplicar_cierre_drive_result(drive_result_pendiente_cierre)
+		drive_estado_previo_accion = {}
+		drive_accion_registrada = false
+		drive_result_pendiente_cierre = {}
+		drive_registro_preparado = false
 
 		if _batalla_termino():
 			cola_acciones.clear()
@@ -592,11 +657,37 @@ func _filtrar_objetivos_accion(actor: Combatant, tecnica: Dictionary, objetivos:
 			filtrados.append(objetivo)
 	return filtrados
 
-func _registrar_accion_resuelta(actor: Combatant, _tecnica: Dictionary) -> void:
+func registrar_drive_score_pre_animacion(actor: Combatant, tecnica: Dictionary, objetivos: Array) -> void:
+	if not drive_registro_preparado:
+		return
+	if drive_accion_registrada:
+		return
+
+	var estado_previo := drive_estado_previo_accion
+	var estado_posterior := _capturar_estado_objetivos(objetivos)
+	drive_result_pendiente_cierre = _registrar_accion_resuelta(actor, tecnica, objetivos, estado_previo, estado_posterior)
+	drive_accion_registrada = true
+
+
+func _registrar_accion_resuelta(actor: Combatant, _tecnica: Dictionary, objetivos: Array = [], estado_previo: Dictionary = {}, estado_posterior: Dictionary = {}) -> Dictionary:
 	if actor != null and actor.es_jugador:
 		if not jugadores_participantes.has(actor.id):
 			jugadores_participantes.append(actor.id)
-		actualizar_drive_score(_tecnica)
+		var drive_result := actualizar_drive_score(_tecnica, actor, objetivos, estado_previo, estado_posterior)
+		if not drive_result.is_empty():
+			battle_stats["last_drive_result"] = drive_result
+		return drive_result
+	return {}
+
+
+func _aplicar_cierre_drive_result(drive_result: Dictionary) -> void:
+	if drive_result.is_empty() or drive_system == null:
+		return
+
+	if bool(drive_result.get("combo_finished", false)):
+		drive_system.end_combo("combo_finished")
+	elif bool(drive_result.get("combo_broken", false)):
+		drive_system.break_combo("combo_broken")
 
 func _batalla_termino() -> bool:
 	var jugadores_vivos = combatientes.any(
@@ -657,7 +748,11 @@ func _on_combatant_turn_finished() -> void:
 
 	# Actualizar DriveScore (si corresponde)
 	if combatiente_actual != null and combatiente_actual.es_jugador:
-		actualizar_drive_score(tecnica_actual)
+		if drive_accion_registrada:
+			_aplicar_cierre_drive_result(drive_result_pendiente_cierre)
+		else:
+			var drive_result := actualizar_drive_score(tecnica_actual)
+			_aplicar_cierre_drive_result(drive_result)
 
 	# Limpiar técnica actual / objetivos
 	tecnica_actual = {}
@@ -668,27 +763,95 @@ func _on_combatant_turn_finished() -> void:
 
 
 #-------------------------------
-# DriveScore (Simple por ahora)
+# DriveScore
 #-------------------------------
-func actualizar_drive_score(_tecnica: Dictionary = {}) -> void:
-	var id = _tecnica.get("tecnique_id", "")
-	var base = _tecnica.get("score_value", 0)
+func actualizar_drive_score(_tecnica: Dictionary = {}, actor: Combatant = null, objetivos: Array = [], estado_previo: Dictionary = {}, estado_posterior: Dictionary = {}) -> Dictionary:
+	_configurar_drive_system()
+
+	var id := str(_tecnica.get("tecnique_id", ""))
+	if id == "":
+		return {}
 
 	if id == ultima_tecnica_usada:
 		repeticion_continua += 1
-		base = int(base * (1.0 / float(repeticion_continua + 1)))
 	else:
 		repeticion_continua = 0
-	
-	drive_score += base
 	ultima_tecnica_usada = id
 
-	# para resultados:
-	if id != "":
-		if not battle_stats.has("techniques_used"):
-			battle_stats["techniques_used"] = {}
-		
-		battle_stats["techniques_used"][id] = battle_stats["techniques_used"].get(id, 0) + 1
+	if not battle_stats.has("techniques_used"):
+		battle_stats["techniques_used"] = {}
+	battle_stats["techniques_used"][id] = battle_stats["techniques_used"].get(id, 0) + 1
+
+	var action_event := _construir_drive_event(_tecnica, actor, objetivos, estado_previo, estado_posterior)
+	var result := drive_system.register_action(action_event)
+	drive_score = drive_system.total_drive_score
+	return result
+
+
+func _construir_drive_event(tecnica: Dictionary, actor: Combatant, objetivos: Array, estado_previo: Dictionary, estado_posterior: Dictionary) -> Dictionary:
+	var damage_done := 0
+	var healing_done := 0
+	var defeated_count := 0
+	var targets_hit := 0
+	var target_ids: Array[String] = []
+
+	for objetivo in objetivos:
+		if objetivo == null or not is_instance_valid(objetivo):
+			continue
+
+		var key := str(objetivo.get_instance_id())
+		var before: Dictionary = estado_previo.get(key, {})
+		var after: Dictionary = estado_posterior.get(key, {})
+		if before.is_empty() or after.is_empty():
+			continue
+
+		var before_hp := int(before.get("hp", 0))
+		var after_hp := int(after.get("hp", 0))
+		if after_hp < before_hp:
+			damage_done += before_hp - after_hp
+			targets_hit += 1
+		elif after_hp > before_hp:
+			healing_done += after_hp - before_hp
+			targets_hit += 1
+
+		if bool(before.get("alive", false)) and not bool(after.get("alive", false)):
+			defeated_count += 1
+
+		target_ids.append(str(after.get("id", "")))
+
+	return {
+		"actor_id": actor.id if actor != null else "",
+		"actor_name": actor.display_name if actor != null else "",
+		"technique_id": str(tecnica.get("tecnique_id", "")),
+		"technique_name": str(tecnica.get("nombre_tech", tecnica.get("tecnique_id", ""))),
+		"role": str(tecnica.get("rol_combo", "")),
+		"base_score": int(tecnica.get("score_value", 0)),
+		"scope": str(tecnica.get("target_scope", "")),
+		"damage_done": damage_done,
+		"healing_done": healing_done,
+		"defeated_count": defeated_count,
+		"targets_hit": targets_hit,
+		"target_ids": target_ids,
+		"valid_action": str(tecnica.get("target_scope", "")) == "SELF" or objetivos.size() > 0,
+		"turn": int(battle_stats.get("turns", 0))
+	}
+
+
+func _capturar_estado_objetivos(objetivos: Array) -> Dictionary:
+	var snapshot := {}
+	for objetivo in objetivos:
+		if objetivo == null or not is_instance_valid(objetivo):
+			continue
+
+		var key := str(objetivo.get_instance_id())
+		snapshot[key] = {
+			"id": objetivo.id,
+			"name": objetivo.display_name,
+			"hp": objetivo.hp,
+			"hp_max": objetivo.hp_max,
+			"alive": objetivo.esta_vivo()
+		}
+	return snapshot
 
 
 # para resultados
@@ -698,9 +861,20 @@ func registrar_enemigos_derrotado(enemigo: Combatant) -> void:
 		enemigos_derrotados.append(enemigo.id)
 
 func _construir_battle_result(victoria: bool) -> Dictionary:
+	var drive_summary = drive_system.get_battle_summary() if drive_system != null else {}
+	var total_drive_score := int(drive_summary.get("total_drive_score", drive_score))
+	var current_resonance_score := int(drive_summary.get("current_resonance_score", 0))
+	var current_resonance_rank := str(drive_summary.get("current_resonance_rank", "Static Pulse"))
+	var highest_resonance_rank := str(drive_summary.get("highest_resonance_rank", "Static Pulse"))
 	return {
 		"victoria": victoria,
-		"drive_score": drive_score,
+		"drive_score": total_drive_score,
+		"total_drive_score": total_drive_score,
+		"current_resonance_score": current_resonance_score,
+		"current_resonance_rank": current_resonance_rank,
+		"highest_resonance_rank": highest_resonance_rank,
+		"drive_rank": highest_resonance_rank,
+		"drive_summary": drive_summary,
 		"enemigos_derrotados": enemigos_derrotados.duplicate(),
 		"jugadores": jugadores_participantes.duplicate(),
 		"stats": battle_stats.duplicate()
@@ -722,5 +896,7 @@ ANIMACIÓN
 """
 func reproducir_animacion(scene, source, targets, data := {}):
 	print("reproduciendo animación")
-	battle_animator.play(scene, source, targets, data)
+	var animation_data := data.duplicate(true)
+	animation_data["battle_manager"] = self
+	battle_animator.play(scene, source, targets, animation_data)
 	await battle_animator.animation_finished

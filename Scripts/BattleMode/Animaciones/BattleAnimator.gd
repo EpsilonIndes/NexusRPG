@@ -9,6 +9,7 @@ signal queue_empty
 var animation_queue: Array = []
 var is_playing: bool = false
 var speed_multiplier: float = 1.0
+var current_battle_manager: Node = null
 
 
 func play(animation_scene: PackedScene, source, targets, data := {}):
@@ -45,6 +46,7 @@ func _execute(request: Dictionary) -> void:
 	print("Instanciando animación...")
 	var anim = request.scene.instantiate()
 	print("Anim instanciada: ", anim)
+	current_battle_manager = request.data.get("battle_manager", null)
 
 	anim.connect("impact", Callable(self, "_on_animation_impact"))
 	
@@ -71,6 +73,7 @@ func _execute(request: Dictionary) -> void:
 		anim.disconnect("impact", Callable(self, "_on_animation_impact"))
 	
 	anim.queue_free()
+	current_battle_manager = null
 
 	emit_signal("animation_finished")
 	is_playing = false
@@ -80,3 +83,6 @@ func _on_animation_impact(targets):
 	for t in targets:
 		if is_instance_valid(t) and t.has_method("reproducir_feedback"):
 			t.reproducir_feedback()
+
+	if current_battle_manager != null and is_instance_valid(current_battle_manager) and current_battle_manager.has_method("flush_drive_feedback"):
+		current_battle_manager.flush_drive_feedback()

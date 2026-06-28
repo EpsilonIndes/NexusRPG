@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dwfdbxtwcl5vd"]
+[gd_scene load_steps=14 format=3 uid="uid://dwfdbxtwcl5vd"]
 
 [ext_resource type="Script" uid="uid://dmi1n3jxy6l2" path="res://Scripts/BattleMode/BattleManager2.gd" id="1_54c5x"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="2_fyboh"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://gvt6yjw3ptg0" path="res://Escenas/Battle/battle_ui/target_selector.tscn" id="6_lu3wa"]
 [ext_resource type="PackedScene" uid="uid://cuk3kad5j5gge" path="res://Animaciones/battle_animator.tscn" id="7_l5hoi"]
 [ext_resource type="Script" uid="uid://2sodb4on8v3h" path="res://Scripts/UI/TechniqueOverlay.gd" id="8_y4blo"]
+[ext_resource type="Script" path="res://Scripts/UI/DriveScoreFeedbackUI.gd" id="9_drive"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_f8uh2"]
 
@@ -76,6 +77,18 @@ tween_resource = SubResource("Resource_jhl20")
 
 [node name="UIOverlay" type="CanvasLayer" parent="."]
 script = ExtResource("5_l5hoi")
+
+[node name="DriveScoreFeedback" type="Control" parent="UIOverlay"]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -300.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = 220.0
+grow_horizontal = 0
+script = ExtResource("9_drive")
 
 [node name="TargetSelector" parent="UIOverlay" instance=ExtResource("6_lu3wa")]
 

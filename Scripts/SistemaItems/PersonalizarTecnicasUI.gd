@@ -329,7 +329,11 @@ func _refresh_equipped_list() -> void:
 			var tecnica: Dictionary = equipped[index]
 			var tech_id := str(tecnica.get("id", ""))
 			var button := Button.new()
-			button.text = "%d. %s" % [index + 1, tecnica.get("nombre", tech_id)]
+			button.text = "%d. %s %s" % [
+				index + 1,
+				get_role_icon_text(str(tecnica.get("rol_combo", ""))),
+				str(tecnica.get("nombre", tech_id))
+			]
 			button.tooltip_text = "Quitar tecnica"
 			button.pressed.connect(func(): _unequip(tech_id))
 			button.focus_entered.connect(func(): _show_description(tecnica))
@@ -374,16 +378,18 @@ func _unequip(tech_id: String) -> void:
 	_refresh_technique_lists()
 
 func _show_description(tecnica: Dictionary) -> void:
+	var role := str(tecnica.get("rol_combo", ""))
 	description_label.text = "%s | %s | Drive %s\n%s" % [
-		tecnica.get("nombre", tecnica.get("id", "")),
-		ROLES.get(tecnica.get("rol_combo", ""), tecnica.get("rol_combo", "")),
+		str(tecnica.get("nombre", tecnica.get("id", ""))),
+		format_role_label(role),
 		str(int(tecnica.get("costo_drive", 0))),
-		tecnica.get("descripcion", "")
+		str(tecnica.get("descripcion", ""))
 	]
 
 func _format_technique_button(tecnica: Dictionary, equipped: bool) -> String:
 	var marker := "[x] " if equipped else "[ ] "
-	return marker + tecnica.get("nombre", tecnica.get("id", ""))
+	var role_icon := get_role_icon_text(str(tecnica.get("rol_combo", "")))
+	return marker + role_icon + " " + str(tecnica.get("nombre", tecnica.get("id", "")))
 
 func _is_equipped_full() -> bool:
 	return GlobalTechniqueDatabase.get_equipped_technique_ids_for(current_character_id).size() >= GlobalTechniqueDatabase.MAX_EQUIPPED_TECHNIQUES
@@ -393,6 +399,38 @@ func _get_role_from_title(title: String) -> String:
 		if ROLES[role] == title:
 			return role
 	return title.to_lower()
+
+func get_role_color(role: String) -> Color:
+	match role.to_lower():
+		"opener":
+			return Color(0.25, 0.9, 0.35)
+		"linker":
+			return Color(0.2, 0.55, 1.0)
+		"finisher":
+			return Color(1.0, 0.55, 0.15)
+		"support":
+			return Color(0.72, 0.35, 1.0)
+		_:
+			return Color(0.6, 0.6, 0.6)
+
+func get_role_icon_text(role: String) -> String:
+	match role.to_lower():
+		"opener":
+			return "🟢"
+		"linker":
+			return "🔵"
+		"finisher":
+			return "🟠"
+		"support":
+			return "🟣"
+		_:
+			return "⚪"
+
+func format_role_label(role: String) -> String:
+	return "%s %s" % [
+		get_role_icon_text(role),
+		ROLES.get(role.to_lower(), "Sin rol")
+	]
 
 func _get_character_display_name(char_id: String) -> String:
 	var stats := _get_character_stats(char_id)

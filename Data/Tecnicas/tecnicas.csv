@@ -1,5 +1,5 @@
 personaje,tecnique_id,nombre_tech,rol_combo,descripcion,costo_drive,score_value,arma,effect,target_scope,allow_target_switch,tipo_dano,visual_tipo,animation_scene
-Astro,astro_01,Golpe Previsor,opener,"Inicia combo, mejora evasión",0,100,guantes,damage:0.5;debuff:velocidad:0.2,SINGLE_ENEMY,true,fisico,debuff,res://Animaciones/anim_combate/Astro/astro_slash.tscn
+Astro,astro_01,Golpe Previsor,opener,"Golpe iniciador, El siguiente aliado actúa inmediatamente después del usuario.",0,100,guantes,damage:0.5;debuff:velocidad:0.2,SINGLE_ENEMY,true,fisico,debuff,res://Animaciones/anim_combate/Astro/astro_slash.tscn
 Astro,astro_02,Doble Impacto,linker,"Dos golpes, gana Drive si acierta ambos",0,120,guantes,damage:10;buff:drive:0.3,SINGLE_ENEMY,true,fisico,,res://Animaciones/anim_combate/Astro/astro_slash.tscn
 Astro,astro_03,Ciclón de Puños,linker,"Ataque multi-target, conecta fácilmente",0,200,guantes,damage:0.5,RANDOM_ENEMY,true,fisico,,
 Astro,astro_04,Puño Cósmico,finisher,"Gran daño, escala con combo",0,300,guantes,damage:0.5,SINGLE_ENEMY,true,fisico,,
@@ -35,7 +35,7 @@ Maya,maya_06,Llama Reforzada,support,"Mejora finisher si usó 2 linkers distinto
 Amanda,amanda_01,Resonancia Mental,opener,"Predice acción enemiga",0,0,guantes_pesados,damage:0.5,SINGLE_ENEMY,true,magico,,
 Amanda,amanda_02,Ondas Resonantes,linker,"Gana Drive extra si se usa tras Chipita",0,0,guantes_pesados,damage:0.5,SELF,false,magico,,
 Amanda,amanda_03,Eco de Luz,linker,"Duplica efectos anteriores",0,0,guantes_pesados,damage:0.5,SELF,false,magico,,
-Amanda,amanda_04,Sello de Armonía,finisher,"Cura aliados",200,0,guantes_pesados,heal_hp:2.5,SINGLE_ALLY,true,magico,heal,
+Amanda,amanda_04,Sello de Armonía,support,"Cura aliados",200,0,guantes_pesados,heal_hp:2.5,SINGLE_ALLY,true,magico,heal,
 Amanda,amanda_05,Mente Expandida,support,"Permite usar técnica adicional",0,0,guantes_pesados,damage:0.5,SELF,false,magico,,
 Amanda,amanda_06,Drive Coral,support,"Aumenta puntaje si otro usa finisher",0,0,guantes_pesados,damage:0.5,SELF,false,magico,,
 Amanda,amanda_07,Iluminación Colectiva,support, "Cura a todos los aliados finalizar un combo exitoso.",300,150,guantes_pesados,heal_hp:0.8,ALL_ALLIES,false,magico,heal,
