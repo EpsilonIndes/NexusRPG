@@ -320,13 +320,50 @@ func ejecutar_tecnica():
 	
 	# Ejecutar efectos (Effectmanager espera target: Combatant)
 	var efectos = tecnica.get("efectos", [])
+	var scoped_effects := EffectManager.split_effects_by_scope(efectos)
+	var target_effects: Array = scoped_effects.get("target", [])
+	var action_effects: Array = scoped_effects.get("action", [])
+	var unknown_effects: Array = scoped_effects.get("unknown", [])
+	var has_offensive_target_effects := EffectManager.has_offensive_target_effects(target_effects)
+	var has_damage_effects := EffectManager.has_damage_effects(target_effects)
+	var resolution_context := {
+		"any_hit": false,
+		"hit_count": 0,
+		"damaged_count": 0,
+		"healed_count": 0,
+		"defeated_count": 0,
+		"targets_count": objetivos.size(),
+		"requires_hit_for_initiative": has_offensive_target_effects
+	}
+	var effect_context := {
+		"battle_manager": battle_manager,
+		"drive_system": battle_manager.get("drive_system") if battle_manager != null else null,
+		"technique": tecnica,
+		"targets": objetivos,
+		"resolution": resolution_context
+	}
 	for t in objetivos:
 		if t == null:
 			continue
-		EffectManager.apply_effects(efectos, t, self, tecnica)
+		var was_alive = t.esta_vivo()
+		var per_target_effects := target_effects + unknown_effects
+		if not per_target_effects.is_empty():
+			EffectManager.aplicar_efectos(per_target_effects, self, t, effect_context)
+			if has_offensive_target_effects and not has_damage_effects:
+				resolution_context["any_hit"] = true
+				resolution_context["hit_count"] = int(resolution_context.get("hit_count", 0)) + 1
+		if was_alive and not t.esta_vivo() and t.es_jugador != es_jugador:
+			resolution_context["defeated_count"] = int(resolution_context.get("defeated_count", 0)) + 1
 		# Si el objetivo murió, ver log y update
 		if not t.esta_vivo():
 			print("%s ha muerto tras recibir efectos." % t.nombre)
+
+	resolution_context.erase("_hit_target_ids")
+	resolution_context.erase("_damaged_target_ids")
+	resolution_context.erase("_healed_target_ids")
+
+	if not action_effects.is_empty():
+		EffectManager.aplicar_efectos(action_effects, self, null, effect_context)
 	
 	if battle_manager != null and battle_manager.has_method("registrar_drive_score_pre_animacion"):
 		battle_manager.registrar_drive_score_pre_animacion(self, tecnica, objetivos)

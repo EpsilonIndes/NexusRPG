@@ -49,21 +49,6 @@ func _level_up() -> void:
 	print("[%s] subió al nivel %d" % [id, stats["nivel"]])
 
 
-
-
-
-func _level_up_viejo() -> void:
-	# Subir stats, aumentar exp apra siguiente nivel, etc
-	stats["nivel"] = stats.get("nivel", 1) +1
-	stats["exp_para_siguiente"] = int(stats["exp_para_siguiente"] * 1.2)
-	# bonus de stats:
-	stats["hp"] += 5
-	stats["atk"] += 2
-	stats["def"] += 2
-	stats["spd"] += 1
-	print("[%s] subió al nivel %d!" % [id, stats["nivel"]])
-
-
 func get_stats() -> Dictionary:
 	return stats
 

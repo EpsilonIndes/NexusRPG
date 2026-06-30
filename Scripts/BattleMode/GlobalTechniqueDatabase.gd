@@ -5,7 +5,7 @@ extends Node
 const MAX_EQUIPPED_TECHNIQUES := 4
 
 var tecnica_obtenida: Dictionary = {
-	"Astro": ["astro_01", "astro_02", "astro_03", "astro_07"],
+	"Astro": ["astro_01", "astro_02", "astro_04", "astro_07"],
 	"Chipita": ["chip_01", "chip_02"],
 	"Miguelito": ["mig_01", "mig_02", "mig_03"],
 	"Maya": ["maya_01", "maya_02", "maya_05"],

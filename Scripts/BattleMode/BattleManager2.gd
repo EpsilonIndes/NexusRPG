@@ -101,6 +101,7 @@ func start_battle(jugadores: Array, enemigos: Array) -> void:
 
 	instanciar_equipo(jugadores, player_team, true)
 	instanciar_equipo(enemigos, enemy_team, false)
+	_reset_has_acted_cycle()
 
 	cambiar_estado(BattleState.TURNO_JUGADOR)
 
@@ -368,7 +369,8 @@ func obtener_siguiente_combatiente(es_jugador: bool) -> Node:
 		var c = combatientes [indice_turno]
 		indice_turno += 1
 		# usar la propiedad es_jugador (no llamada)
-		if c.esta_vivo() and c.es_jugador == es_jugador:
+		if c.esta_vivo() and c.es_jugador == es_jugador and not c.has_acted:
+			c.has_acted = true
 			return c
 	
 	# Si terminamos la lista -> resetear
@@ -376,8 +378,48 @@ func obtener_siguiente_combatiente(es_jugador: bool) -> Node:
 	return null
 
 
+func promote_next_ally_after(actor) -> bool:
+	if actor == null or not is_instance_valid(actor):
+		return false
+
+	var insertion_index = clamp(indice_turno, 0, combatientes.size())
+	var candidate_index := -1
+
+	for i in range(insertion_index, combatientes.size()):
+		var candidate = combatientes[i]
+		if candidate == actor:
+			continue
+		if candidate is Combatant and candidate.esta_vivo() and candidate.es_jugador == actor.es_jugador and not candidate.has_acted:
+			candidate_index = i
+			break
+
+	if candidate_index == -1:
+		return false
+	if candidate_index == insertion_index:
+		return true
+
+	var promoted = combatientes[candidate_index]
+	combatientes.remove_at(candidate_index)
+	combatientes.insert(insertion_index, promoted)
+	print("Iniciativa: %s actuara inmediatamente despues de %s" % [promoted.nombre, actor.nombre])
+	return true
+
+
 func finalizar_turno() -> void:
 	cambiar_estado_diferido(BattleState.CHEQUEAR_FINAL)
+
+
+func _reset_has_acted_cycle() -> void:
+	for c in combatientes:
+		if c is Combatant:
+			c.has_acted = false
+
+
+func _all_living_combatants_acted() -> bool:
+	for c in combatientes:
+		if c is Combatant and c.esta_vivo() and not c.has_acted:
+			return false
+	return true
 
 # -----------------------
 # Fin de combate
@@ -402,8 +444,9 @@ func chequear_si_termina():
 
 
 	# Si terminó el ciclo entero, reseteamos el índice SOLO acá
-	if indice_turno >= combatientes.size():
+	if indice_turno >= combatientes.size() or _all_living_combatants_acted():
 		ordenar_combatientes_por_velocidad()
+		_reset_has_acted_cycle()
 		indice_turno = 0
 	
 	# Dejamos que el flujo normal decide quién sigue

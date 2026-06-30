@@ -1,11 +1,11 @@
 personaje,tecnique_id,nombre_tech,rol_combo,descripcion,costo_drive,score_value,arma,effect,target_scope,allow_target_switch,tipo_dano,visual_tipo,animation_scene
-Astro,astro_01,Golpe Previsor,opener,"Golpe iniciador, El siguiente aliado actúa inmediatamente después del usuario.",0,100,guantes,damage:0.5;debuff:velocidad:0.2,SINGLE_ENEMY,true,fisico,debuff,res://Animaciones/anim_combate/Astro/astro_slash.tscn
-Astro,astro_02,Doble Impacto,linker,"Dos golpes, gana Drive si acierta ambos",0,120,guantes,damage:10;buff:drive:0.3,SINGLE_ENEMY,true,fisico,,res://Animaciones/anim_combate/Astro/astro_slash.tscn
-Astro,astro_03,Ciclón de Puños,linker,"Ataque multi-target, conecta fácilmente",0,200,guantes,damage:0.5,RANDOM_ENEMY,true,fisico,,
-Astro,astro_04,Puño Cósmico,finisher,"Gran daño, escala con combo",0,300,guantes,damage:0.5,SINGLE_ENEMY,true,fisico,,
+Astro,astro_01,Golpe Previsor,opener,"Golpe iniciador, El siguiente aliado actúa inmediatamente después del usuario.",0,100,guantes,damage:2;initiative:next_ally_after_user,SINGLE_ENEMY,true,fisico,debuff,res://Animaciones/anim_combate/Astro/astro_slash.tscn
+Astro,astro_02,Doble Impacto,linker,"Dos golpes, gana Drive si acierta ambos",0,120,guantes,damage:2;buff:drive:0.3,SINGLE_ENEMY,true,fisico,,res://Animaciones/anim_combate/Astro/astro_slash.tscn
+Astro,astro_03,Ciclón de Puños,linker,"Ataque aleatorio, conecta fácilmente",0,200,guantes,damage:0.5,RANDOM_ENEMY,true,fisico,,
+Astro,astro_04,Puño Cósmico,finisher,"Gran daño, finalizador de combo",0,300,guantes,damage:5;combo:reset,SINGLE_ENEMY,true,fisico,,
 Astro,astro_05,Counter Drive,finisher,"Devuelve daño si fue atacado",0,500,guantes,damage:0.5,RANDOM_ENEMY,false,fisico,,
 Astro,astro_06,Impulso Instintivo,support,"Activa miniturno si evade",0,200,guantes,buff:ataque:0.5,SELF,false,fisico,,
-Astro,astro_07,Ritmo de Batalla,support,"Gana ataque si conecta dos linkers",0,100,guantes,buff:velocidad:0.5,SELF,false,fisico,buff,
+Astro,astro_07,Ritmo de Batalla,support,"Gana ataque si conecta dos linkers",0,100,guantes,buff:ataque:1;combo:bonus_finisher,SELF,false,fisico,buff,
 Sigrid,sigrid_01,Corte Preemptivo,opener,"Va primero si el enemigo no está alerta",0,100,espadas,damage:0.5,SINGLE_ENEMY,true,fisico,,
 Sigrid,sigrid_02,Viento Cortante,linker,"Daño + Desbalance",0,200,espadas,damage:0.5;debuff:velocidad:0.2,SINGLE_ENEMY,true,fisico,debuff,
 Sigrid,sigrid_03,Danza de Acero,linker,"Rebota entre enemigos",0,400,espadas,damage:0.5,RANDOM_ENEMY,false,fisico,,
@@ -32,7 +32,7 @@ Maya,maya_03,Estocada Rápida,linker,"Conecta por velocidad",0,0,lanza,damage:0.
 Maya,maya_04,Columna Ígnea,finisher,"Gran daño si enemigo está en el aire",0,0,lanza,damage:0.5,SINGLE_ENEMY,true,magico,,
 Maya,maya_05,Rastro de Ceniza,support,"Deja fuego en el terreno",0,0,lanza,persist:dot:5:2,ALL_ENEMIES,false,dot,,
 Maya,maya_06,Llama Reforzada,support,"Mejora finisher si usó 2 linkers distintos",0,0,lanza,damage:0.5,SELF,false,magico,,
-Amanda,amanda_01,Resonancia Mental,opener,"Predice acción enemiga",0,0,guantes_pesados,damage:0.5,SINGLE_ENEMY,true,magico,,
+Amanda,amanda_01,Resonancia Mental,opener,"Ataque iniciador ",0,0,guantes_pesados,damage:0.5;resonance:reset,SINGLE_ENEMY,true,magico,,
 Amanda,amanda_02,Ondas Resonantes,linker,"Gana Drive extra si se usa tras Chipita",0,0,guantes_pesados,damage:0.5,SELF,false,magico,,
 Amanda,amanda_03,Eco de Luz,linker,"Duplica efectos anteriores",0,0,guantes_pesados,damage:0.5,SELF,false,magico,,
 Amanda,amanda_04,Sello de Armonía,support,"Cura aliados",200,0,guantes_pesados,heal_hp:2.5,SINGLE_ALLY,true,magico,heal,

@@ -1,6 +1,8 @@
 extends Node
+
 @onready var player: Node3D = get_node("../Personajes/Player")
 @onready var cont_seguidores: Node3D = get_node("../Personajes/seguidores")
+
 func _ready():
 	WorldStateManager.restore_player(player)
 	PartyHandler.actualizar_personajes_party()

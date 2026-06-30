@@ -39,6 +39,9 @@ var active_rank_bonus: Dictionary = {}
 var overdrive_meter: float = 0.0
 var overdrive_active: bool = false
 var damage_buffer: int = 0
+var resonance_break_protection: int = 0
+var combo_break_protection: int = 0
+var combo_extension_bonus: int = 0
 
 var max_overdrive_meter: float = 100.0
 var spam_threshold: int = 2
@@ -81,6 +84,9 @@ func reset_battle() -> void:
 	overdrive_meter = 0.0
 	overdrive_active = false
 	damage_buffer = 0
+	resonance_break_protection = 0
+	combo_break_protection = 0
+	combo_extension_bonus = 0
 	emit_signal("score_changed", total_drive_score, 0, {})
 	emit_signal("rank_changed", "Static Pulse", current_resonance_rank)
 	emit_signal("combo_changed", get_combo_state())
@@ -159,14 +165,44 @@ func register_action(action_event: Dictionary) -> Dictionary:
 
 
 func end_combo(reason: String) -> void:
+	if _consume_combo_break_protection():
+		return
 	reset_resonance(reason)
 
 
 func break_combo(reason: String) -> void:
+	if _consume_combo_break_protection():
+		return
 	reset_resonance(reason)
 
 
-func reset_resonance(reason: String = "") -> void:
+func add_drive(amount) -> void:
+	var delta = max(0, int(amount))
+	if delta <= 0:
+		return
+
+	total_drive_score += delta
+	_update_overdrive_meter(delta)
+	_sync_compat_aliases()
+	emit_signal("score_changed", total_drive_score, delta, {"source": "effect", "effect": "drive:add"})
+
+
+func add_resonance(amount) -> void:
+	var delta = max(0, int(amount))
+	if delta <= 0:
+		return
+
+	var previous_score := current_resonance_score
+	current_resonance_score += delta
+	_update_resonance_rank()
+	_sync_compat_aliases()
+	emit_signal("score_changed", total_drive_score, current_resonance_score - previous_score, {"source": "effect", "effect": "resonance:add"})
+
+
+func reset_resonance(reason: String = "effect") -> void:
+	if _consume_resonance_break_protection():
+		return
+
 	var previous_rank := current_resonance_rank
 	current_resonance_score = 0
 	current_resonance_rank = "Static Pulse"
@@ -175,10 +211,37 @@ func reset_resonance(reason: String = "") -> void:
 	active_rank_bonus.clear()
 	combo_chain = 0
 	combo_sequence.clear()
+	combo_extension_bonus = 0
 	emit_signal("combo_changed", get_combo_state())
 	if previous_rank != current_resonance_rank:
 		emit_signal("rank_changed", previous_rank, current_resonance_rank)
 	emit_signal("resonance_reset", reason)
+
+
+func protect_resonance_break(count: int = 1) -> void:
+	resonance_break_protection += max(0, int(count))
+
+
+func extend_combo(amount: int = 1) -> void:
+	var delta = max(0, int(amount))
+	if delta <= 0:
+		return
+
+	# Extension effect: incrementa la cadena de combo actual sin cambiar el flujo
+	combo_extension_bonus += delta
+	combo_chain += delta
+	max_combo_chain = max(max_combo_chain, combo_chain)
+	emit_signal("combo_changed", get_combo_state())
+
+
+func protect_combo_break(count: int = 1) -> void:
+	combo_break_protection += max(0, int(count))
+
+
+func reset_combo(reason: String = "effect") -> void:
+	if _consume_combo_break_protection():
+		return
+	reset_resonance(reason)
 
 
 func get_battle_summary() -> Dictionary:
@@ -196,6 +259,9 @@ func get_battle_summary() -> Dictionary:
 		"overdrive_meter": overdrive_meter,
 		"overdrive_active": overdrive_active,
 		"damage_buffer": damage_buffer,
+		"resonance_break_protection": resonance_break_protection,
+		"combo_break_protection": combo_break_protection,
+		"combo_extension_bonus": combo_extension_bonus,
 		"feedback": feedback_log.duplicate(true),
 		"actions": action_history.duplicate(true)
 	}
@@ -391,6 +457,24 @@ func _rank_index(rank_name: String) -> int:
 	return 0
 
 
+func _consume_resonance_break_protection() -> bool:
+	if resonance_break_protection <= 0:
+		return false
+
+	resonance_break_protection -= 1
+	emit_signal("combo_changed", get_combo_state())
+	return true
+
+
+func _consume_combo_break_protection() -> bool:
+	if combo_break_protection <= 0:
+		return false
+
+	combo_break_protection -= 1
+	emit_signal("combo_changed", get_combo_state())
+	return true
+
+
 func get_combo_state() -> Dictionary:
 	return {
 		"chain": combo_chain,
@@ -399,5 +483,8 @@ func get_combo_state() -> Dictionary:
 		"last_roles": last_roles.duplicate(),
 		"last_technique_id": last_technique_id,
 		"repeated_role_count": repeated_role_count,
-		"repeated_technique_count": repeated_technique_count
+		"repeated_technique_count": repeated_technique_count,
+		"resonance_break_protection": resonance_break_protection,
+		"combo_break_protection": combo_break_protection,
+		"combo_extension_bonus": combo_extension_bonus
 	}
