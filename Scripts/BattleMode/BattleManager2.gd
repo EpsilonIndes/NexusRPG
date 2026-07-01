@@ -342,7 +342,7 @@ func iniciar_turno_enemigo() -> void:
 		if combatiente_actual.has_method("crear_accion_enemiga"):
 			var accion: Dictionary = combatiente_actual.crear_accion_enemiga()
 			if accion.is_empty():
-				_avanzar_turno_tras_encolar()
+				finalizar_turno()
 				return
 
 			var objetivos = accion.get("objetivos", [])
@@ -350,7 +350,7 @@ func iniciar_turno_enemigo() -> void:
 				objetivos = [objetivos]
 
 			_encolar_accion(combatiente_actual, accion.get("tecnica", {}), objetivos)
-			_avanzar_turno_tras_encolar()
+			_esperar_resolucion_accion_encolada()
 		else:
 			push_warning("Combatant %s no tiene crear_accion_enemiga()" % str(combatiente_actual))
 			# Si el enemigo no actúa, cerramos el turno
@@ -622,21 +622,13 @@ func _finalizar_seleccion_actual() -> void:
 
 	tecnica_actual = {}
 	objetivos_actuales.clear()
-	call_deferred("_avanzar_turno_tras_encolar")
+	_esperar_resolucion_accion_encolada()
 
-func _avanzar_turno_tras_encolar() -> void:
+func _esperar_resolucion_accion_encolada() -> void:
 	if estado_actual == BattleState.FINAL:
 		return
 
-	if indice_turno >= combatientes.size():
-		estado_actual = BattleState.EJECUCION_ACCION
-		return
-
-	var siguiente = combatientes[indice_turno]
-	if siguiente.es_jugador:
-		cambiar_estado(BattleState.TURNO_JUGADOR)
-	else:
-		cambiar_estado(BattleState.TURNO_ENEMIGO)
+	estado_actual = BattleState.EJECUCION_ACCION
 
 func _procesar_cola_acciones() -> void:
 	if procesando_cola_acciones:
@@ -654,7 +646,7 @@ func _procesar_cola_acciones() -> void:
 			continue
 
 		if not actor.es_jugador and drive_system != null:
-			drive_system.break_combo("enemy_action")
+			drive_system.reset_resonance("enemy_action")
 
 		var estado_previo := _capturar_estado_objetivos(objetivos)
 		drive_estado_previo_accion = estado_previo
@@ -729,8 +721,6 @@ func _aplicar_cierre_drive_result(drive_result: Dictionary) -> void:
 
 	if bool(drive_result.get("combo_finished", false)):
 		drive_system.end_combo("combo_finished")
-	elif bool(drive_result.get("combo_broken", false)):
-		drive_system.break_combo("combo_broken")
 
 func _batalla_termino() -> bool:
 	var jugadores_vivos = combatientes.any(

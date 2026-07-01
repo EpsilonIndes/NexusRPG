@@ -167,13 +167,13 @@ func register_action(action_event: Dictionary) -> Dictionary:
 func end_combo(reason: String) -> void:
 	if _consume_combo_break_protection():
 		return
-	reset_resonance(reason)
+	reset_combo(reason)
 
 
 func break_combo(reason: String) -> void:
 	if _consume_combo_break_protection():
 		return
-	reset_resonance(reason)
+	reset_combo(reason)
 
 
 func add_drive(amount) -> void:
@@ -209,10 +209,6 @@ func reset_resonance(reason: String = "effect") -> void:
 	rank = current_resonance_rank
 	drive_rank = current_resonance_rank
 	active_rank_bonus.clear()
-	combo_chain = 0
-	combo_sequence.clear()
-	combo_extension_bonus = 0
-	emit_signal("combo_changed", get_combo_state())
 	if previous_rank != current_resonance_rank:
 		emit_signal("rank_changed", previous_rank, current_resonance_rank)
 	emit_signal("resonance_reset", reason)
@@ -241,7 +237,10 @@ func protect_combo_break(count: int = 1) -> void:
 func reset_combo(reason: String = "effect") -> void:
 	if _consume_combo_break_protection():
 		return
-	reset_resonance(reason)
+	combo_chain = 0
+	combo_sequence.clear()
+	combo_extension_bonus = 0
+	emit_signal("combo_changed", get_combo_state())
 
 
 func get_battle_summary() -> Dictionary:
