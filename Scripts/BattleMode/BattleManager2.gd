@@ -290,7 +290,7 @@ func iniciar_turno_jugador():
 			camera_director.show_turn_actor(combatiente_actual)
 		await get_tree().process_frame
 
-		mostrar_tecnicas_sobre(combatiente_actual.global_transform.origin)
+		mostrar_tecnicas_sobre()
 		ui_overlay.set_tecnicas_interactivas(true)
 		cambiar_estado(BattleState.SELECCION_ACCION)
 	else:
@@ -497,7 +497,7 @@ func finalizar_batalla() -> void:
 # -----------------------
 # UI — Técnicas
 # -----------------------
-func mostrar_tecnicas_sobre(posicion_3d: Vector3) -> void:
+func mostrar_tecnicas_sobre(_posicion_3d := Vector3.ZERO) -> void:
 	var char_id := ""
 
 	if combatiente_actual != null:
@@ -510,34 +510,19 @@ func mostrar_tecnicas_sobre(posicion_3d: Vector3) -> void:
 	
 	var tecnicas_data := GlobalTechniqueDatabase.get_visible_techniques_for(char_id)
 
-	var screen_pos = _get_screen_position_for_battle_ui(posicion_3d)
 	var circulo = preload("res://Escenas/UserUI/tech_button_circle.tscn").instantiate()
 
-	circulo.global_position = screen_pos
 	circulo.battle_manager = self
-	circulo.configurar(tecnicas_data)
 
 	for c in tecnique_overlay.get_children():
 		c.queue_free()
 	
 	tecnique_overlay.add_child(circulo)
+	circulo.configurar(tecnicas_data)
 
 
 # Llamada desde UI cuando el jugador selecciona una técnica
 # (La UI debe llamar a este método)
-func _get_screen_position_for_battle_ui(posicion_3d: Vector3) -> Vector2:
-	var viewport_size := get_viewport().get_visible_rect().size
-	var margin := 120.0
-	var screen_pos := viewport_size * 0.5
-
-	if battle_camera != null and is_instance_valid(battle_camera):
-		screen_pos = battle_camera.unproject_position(posicion_3d)
-
-	screen_pos.x = clamp(screen_pos.x, margin, max(margin, viewport_size.x - margin))
-	screen_pos.y = clamp(screen_pos.y, margin, max(margin, viewport_size.y - margin))
-	return screen_pos
-
-
 func _on_tecnica_seleccionada(tec_id: String) -> void:
 	
 	if estado_actual != BattleState.SELECCION_ACCION:
