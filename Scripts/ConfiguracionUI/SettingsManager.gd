@@ -28,6 +28,7 @@ const DEFAULT_SETTINGS: Dictionary = {
 		"postprocess": 2,
 		"particles": 2,
 		"camera_shake": true,
+		"battle_camera_mode": 2,
 		"ssao": 1
 	},
 	"controls": {

@@ -167,6 +167,10 @@ key = "particles"
 layout_mode = 2
 key = "camera_shake"
 
+[node name="option_row_graphics8" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Graphics/GraphicsOptions" instance=ExtResource("5_xsljp")]
+layout_mode = 2
+key = "battle_camera_mode"
+
 [node name="option_row_graphics7" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Graphics/GraphicsOptions" instance=ExtResource("5_xsljp")]
 layout_mode = 2
 key = "ssao"

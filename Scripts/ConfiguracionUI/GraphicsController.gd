@@ -76,6 +76,9 @@ func apply_graphics(new_settings: Dictionary) -> void:
 
 	if old_settings.get("camera_shake") != new_settings.get("camera_shake"):
 		_apply_camera_shake(new_settings["camera_shake"])
+
+	if old_settings.get("battle_camera_mode") != new_settings.get("battle_camera_mode"):
+		_apply_battle_camera_mode(int(new_settings.get("battle_camera_mode", 2)))
 	
 	if old_settings.get("ssao") != new_settings.get("ssao"):
 		_apply_ssao(new_settings["ssao"])
@@ -126,6 +129,12 @@ func _on_node_added(node: Node) -> void:
 		cached_particles.append(node)
 		_apply_particles(current_settings.get("particles", 2))
 
+	if _is_battle_camera_node(node):
+		if not cached_cameras.has(node):
+			cached_cameras.append(node)
+		_apply_camera_shake(current_settings.get("camera_shake", true))
+		_apply_battle_camera_mode(int(current_settings.get("battle_camera_mode", 2)))
+
 
 func apply_preset(level: int) -> Dictionary:
 	if not PRESETS.has(level):
@@ -133,8 +142,11 @@ func apply_preset(level: int) -> Dictionary:
 
 	var preset_values = PRESETS[level].duplicate(true)
 
-	# Construimos el nuevo settings completo
-	var new_settings = preset_values.duplicate(true)
+	var new_settings := current_settings.duplicate(true)
+	if new_settings.is_empty() and get_node_or_null("/root/SettingsManager") != null:
+		new_settings = SettingsManager.settings.get("graphics", {}).duplicate(true)
+	for key in preset_values.keys():
+		new_settings[key] = preset_values[key]
 	new_settings["preset"] = level
 
 	apply_graphics(new_settings)
@@ -251,6 +263,14 @@ func _apply_camera_shake(enabled: bool) -> void:
 	for cam in cached_cameras:
 		if cam.has_method("set_shake_enabled"):
 			cam.set_shake_enabled(enabled)
+
+func _apply_battle_camera_mode(mode: int) -> void:
+	for cam in cached_cameras:
+		if cam.has_method("set_battle_camera_mode"):
+			cam.set_battle_camera_mode(mode)
+
+func _is_battle_camera_node(node: Node) -> bool:
+	return node.is_in_group("battle_camera") or node.has_method("set_battle_camera_mode") or node.has_method("set_shake_enabled")
 
 """
 ------------------------

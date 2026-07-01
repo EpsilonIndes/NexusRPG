@@ -1,4 +1,4 @@
-personaje,tecnique_id,nombre_tech,rol_combo,descripcion,costo_drive,score_value,arma,effect,target_scope,allow_target_switch,tipo_dano,visual_tipo,animation_scene
+personaje,tecnique_id,nombre_tech,rol_combo,descripcion,costo_drive,score_value,arma,effect,target_scope,allow_target_switch,tipo_dano,visual_tipo,animation_scene,camera_profile
 Slime,slime_01,Embate Gelatinoso,enemy,Ataque basico enemigo.,0,0,natural,damage:0.5,SINGLE_ENEMY,false,fisico,,
 Triangle,triangle_01,Corte Angular,enemy,Ataque basico enemigo.,0,0,natural,damage:0.6,SINGLE_ENEMY,false,fisico,,
 Esfera_roja,esfera_roja_01,Impacto Carmesi,enemy,Ataque basico enemigo.,0,0,natural,damage:0.55,SINGLE_ENEMY,false,magico,,

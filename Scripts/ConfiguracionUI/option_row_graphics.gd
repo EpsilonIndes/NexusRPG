@@ -61,6 +61,11 @@ func _populate_options():
 		"camera_shake":
 			_add_item("Off", false)
 			_add_item("On", true)
+
+		"battle_camera_mode":
+			_add_item("Fija", 0)
+			_add_item("Reducida", 1)
+			_add_item("Dinamica", 2)
 		
 		"ssao":
 			_add_item("Off", 0)

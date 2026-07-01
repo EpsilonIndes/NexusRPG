@@ -174,7 +174,8 @@ func _defend_decision(reason: String) -> Dictionary:
 		"allow_target_switch": false,
 		"tipo_dano": "",
 		"visual_tipo": "",
-		"animation_scene": null
+		"animation_scene": null,
+		"camera_profile": "default"
 	}
 	return {
 		"intent": EnemyRoleBase.Intent.DEFEND,

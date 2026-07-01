@@ -63,12 +63,17 @@ var drive_registro_preparado := false
 @onready var player_team = $PlayerTeam
 @onready var enemy_team = $EnemyTeam
 @onready var battle_camera = get_parent().get_node("Camera/BattleCamera")
+@onready var camera_director = get_parent().get_node_or_null("Camera/BattleCameraDirector")
 @onready var ui_overlay = get_parent().get_node("UIOverlay")
 @onready var tecnique_overlay = ui_overlay.get_node("TechniqueOverlay")
 
 
 func _ready() -> void:
 	_configurar_drive_system()
+	if battle_animator != null and battle_animator.has_signal("animation_impact"):
+		var impact_callable := Callable(self, "_on_animation_impact_camera")
+		if not battle_animator.is_connected("animation_impact", impact_callable):
+			battle_animator.connect("animation_impact", impact_callable)
 
 const POS_JUGADORES := [
 	Vector3(1, 1.1, -5),  	
@@ -281,6 +286,10 @@ func iniciar_turno_jugador():
 		
 		# Mostrar técnicas y pasar a selección
 		
+		if camera_director != null and camera_director.has_method("show_turn_actor"):
+			camera_director.show_turn_actor(combatiente_actual)
+		await get_tree().process_frame
+
 		mostrar_tecnicas_sobre(combatiente_actual.global_transform.origin)
 		ui_overlay.set_tecnicas_interactivas(true)
 		cambiar_estado(BattleState.SELECCION_ACCION)
@@ -501,7 +510,7 @@ func mostrar_tecnicas_sobre(posicion_3d: Vector3) -> void:
 	
 	var tecnicas_data := GlobalTechniqueDatabase.get_visible_techniques_for(char_id)
 
-	var screen_pos = battle_camera.unproject_position(posicion_3d)
+	var screen_pos = _get_screen_position_for_battle_ui(posicion_3d)
 	var circulo = preload("res://Escenas/UserUI/tech_button_circle.tscn").instantiate()
 
 	circulo.global_position = screen_pos
@@ -516,6 +525,19 @@ func mostrar_tecnicas_sobre(posicion_3d: Vector3) -> void:
 
 # Llamada desde UI cuando el jugador selecciona una técnica
 # (La UI debe llamar a este método)
+func _get_screen_position_for_battle_ui(posicion_3d: Vector3) -> Vector2:
+	var viewport_size := get_viewport().get_visible_rect().size
+	var margin := 120.0
+	var screen_pos := viewport_size * 0.5
+
+	if battle_camera != null and is_instance_valid(battle_camera):
+		screen_pos = battle_camera.unproject_position(posicion_3d)
+
+	screen_pos.x = clamp(screen_pos.x, margin, max(margin, viewport_size.x - margin))
+	screen_pos.y = clamp(screen_pos.y, margin, max(margin, viewport_size.y - margin))
+	return screen_pos
+
+
 func _on_tecnica_seleccionada(tec_id: String) -> void:
 	
 	if estado_actual != BattleState.SELECCION_ACCION:
@@ -653,8 +675,12 @@ func _procesar_cola_acciones() -> void:
 		drive_accion_registrada = false
 		drive_result_pendiente_cierre = {}
 		drive_registro_preparado = true
+		if camera_director != null and camera_director.has_method("begin_action"):
+			camera_director.begin_action(actor, tecnica, objetivos)
 		actor.seleccionar_tecnica(tecnica, objetivos)
 		await actor.ejecutar_tecnica()
+		if camera_director != null and camera_director.has_method("end_action"):
+			camera_director.end_action()
 		if not drive_accion_registrada:
 			var estado_posterior := _capturar_estado_objetivos(objetivos)
 			var fallback_result := _registrar_accion_resuelta(actor, tecnica, objetivos, estado_previo, estado_posterior)
@@ -691,6 +717,10 @@ func _filtrar_objetivos_accion(actor: Combatant, tecnica: Dictionary, objetivos:
 		if objetivo != null and is_instance_valid(objetivo) and objetivo.esta_vivo():
 			filtrados.append(objetivo)
 	return filtrados
+
+func _on_animation_impact_camera(source, targets, _data: Dictionary = {}) -> void:
+	if camera_director != null and camera_director.has_method("show_impact"):
+		camera_director.show_impact(source, targets)
 
 func registrar_drive_score_pre_animacion(actor: Combatant, tecnica: Dictionary, objetivos: Array) -> void:
 	if not drive_registro_preparado:

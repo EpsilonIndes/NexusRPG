@@ -1,14 +1,15 @@
-[gd_scene load_steps=14 format=3 uid="uid://dwfdbxtwcl5vd"]
+[gd_scene load_steps=17 format=3 uid="uid://dwfdbxtwcl5vd"]
 
 [ext_resource type="Script" uid="uid://dmi1n3jxy6l2" path="res://Scripts/BattleMode/BattleManager2.gd" id="1_54c5x"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="2_fyboh"]
 [ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="3_n6tgm"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="4_ormgq"]
+[ext_resource type="Script" uid="uid://be6oqgcpkdrmu" path="res://Scripts/BattleMode/battle_camera_director.gd" id="5_acwgc"]
 [ext_resource type="Script" uid="uid://peo05mmkyn4t" path="res://Scripts/UI/UiOverlay.gd" id="5_l5hoi"]
 [ext_resource type="PackedScene" uid="uid://gvt6yjw3ptg0" path="res://Escenas/Battle/battle_ui/target_selector.tscn" id="6_lu3wa"]
 [ext_resource type="PackedScene" uid="uid://cuk3kad5j5gge" path="res://Animaciones/battle_animator.tscn" id="7_l5hoi"]
 [ext_resource type="Script" uid="uid://2sodb4on8v3h" path="res://Scripts/UI/TechniqueOverlay.gd" id="8_y4blo"]
-[ext_resource type="Script" path="res://Scripts/UI/DriveScoreFeedbackUI.gd" id="9_drive"]
+[ext_resource type="Script" uid="uid://ddtxi1hte2362" path="res://Scripts/UI/DriveScoreFeedbackUI.gd" id="9_drive"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_f8uh2"]
 
@@ -24,6 +25,12 @@ ssao_enabled = true
 glow_enabled = true
 
 [sub_resource type="Resource" id="Resource_jhl20"]
+script = ExtResource("4_ormgq")
+
+[sub_resource type="Resource" id="Resource_5q04j"]
+script = ExtResource("4_ormgq")
+
+[sub_resource type="Resource" id="Resource_okom5"]
 script = ExtResource("4_ormgq")
 
 [node name="BattleTest" type="Node3D"]
@@ -69,11 +76,50 @@ process_priority = 300
 process_physics_priority = 300
 script = ExtResource("2_fyboh")
 
-[node name="PhantomCamera3D" type="Node3D" parent="Camera"]
+[node name="OverviewPCam" type="Node3D" parent="Camera"]
 transform = Transform3D(-4.37114e-08, -0.34202, 0.939693, 0, 0.939693, 0.34202, -1, 1.49502e-08, -4.10753e-08, 10.0669, 4.41768, -0.117567)
 script = ExtResource("3_n6tgm")
 priority = 1
 tween_resource = SubResource("Resource_jhl20")
+
+[node name="ActionPCam" type="Node3D" parent="Camera"]
+script = ExtResource("3_n6tgm")
+tween_resource = SubResource("Resource_5q04j")
+metadata/_custom_type_script = "uid://csjccrhj5wnx7"
+
+[node name="ImpactPCam" type="Node3D" parent="Camera"]
+script = ExtResource("3_n6tgm")
+tween_resource = SubResource("Resource_okom5")
+metadata/_custom_type_script = "uid://csjccrhj5wnx7"
+
+[node name="CameraRigPoints" type="Node3D" parent="Camera"]
+
+[node name="PlayerViewSlot1" type="Marker3D" parent="Camera/CameraRigPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3391769, 2.3475912, -6.321256)
+
+[node name="PlayerViewSlot2" type="Marker3D" parent="Camera/CameraRigPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.7556686, 2.3751352, -6.83811)
+
+[node name="PlayerViewSlot3" type="Marker3D" parent="Camera/CameraRigPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9042752, 2.402174, -5.9808865)
+
+[node name="PlayerViewSlot4" type="Marker3D" parent="Camera/CameraRigPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.505, 2.402174, -6.4323997)
+
+[node name="EnemyViewSlot1" type="Marker3D" parent="Camera/CameraRigPoints"]
+transform = Transform3D(0.8932851, 0, -0.44949052, 0, 1, 0, 0.44949052, 0, 0.8932851, -4.7853684, 1.9904042, 6.8323555)
+
+[node name="EnemyViewSlot2" type="Marker3D" parent="Camera/CameraRigPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9674754, 1.9904042, 7.2212386)
+
+[node name="EnemyViewSlot3" type="Marker3D" parent="Camera/CameraRigPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.705862, 1.9904042, 7.1871862)
+
+[node name="EnemyViewSlot4" type="Marker3D" parent="Camera/CameraRigPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.324281, 1.9904042, 6.895932)
+
+[node name="BattleCameraDirector" type="Node" parent="Camera"]
+script = ExtResource("5_acwgc")
 
 [node name="UIOverlay" type="CanvasLayer" parent="."]
 script = ExtResource("5_l5hoi")

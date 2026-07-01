@@ -179,9 +179,11 @@ func load_techs_to_dict(path: String, key_column: String) -> Dictionary:
 	for r in range(1, csv_rows.size()):
 		var row = csv_rows[r]
 		
-		if row.size() != headers.size():
+		if row.size() > headers.size():
 			push_warning("Fila inválida en CSV: %s" % str(row))
 			continue
+		while row.size() < headers.size():
+			row.append("")
 		
 		var entry: Dictionary = {}
 		
@@ -214,6 +216,10 @@ func _process_value(header_name: String, value: String):
 				print("[DataLoader] Cargando animación: ", path, " -> ", scene)
 				return scene
 			return null
+
+		"camera_profile":
+			var profile := value.strip_edges()
+			return profile if profile != "" else "default"
 		
 		_:
 			pass
