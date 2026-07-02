@@ -10,16 +10,47 @@ func procesar_batalla(result: Dictionary) -> Dictionary:
 	var rewards := {
 		"exp": {},			# { "Astro": 120, "Maya": 90, ...}
 		"items": [],		# Vacío por ahora
-		"drive_bonus": 0	# reservado
+		"drive_bonus": 0,	# reservado
+		"stats_actualizadas": {}
 	}
 
-	if not result.victoria:
+	_actualizar_estado_jugadores(result, rewards)
+
+	if not result.get("victoria", false):
 		return rewards
 	
 	_calcular_bonus_drive(result, rewards)
 	_calcular_exp(result, rewards)
 	_calcular_drops(result, rewards)
 	return rewards
+
+func _actualizar_estado_jugadores(result: Dictionary, rewards: Dictionary) -> void:
+	var estados = result.get("jugadores_estado", {})
+	if not (estados is Dictionary):
+		return
+
+	for pj_id in estados.keys():
+		var estado = estados[pj_id]
+		if not (estado is Dictionary):
+			continue
+
+		var pj = PlayableCharacters.get_character(pj_id)
+		if pj == null:
+			continue
+
+		var stats: Dictionary = pj.get_stats()
+		var max_hp := int(stats.get("max_hp", estado.get("hp_max", 0)))
+		var max_dp := int(stats.get("max_dp", estado.get("dp_max", 0)))
+		var hp_actual := int(estado.get("hp", stats.get("hp", max_hp)))
+		var dp_actual := int(estado.get("dp", stats.get("dp", max_dp)))
+
+		stats["hp"] = clamp(hp_actual, 0, max_hp) if max_hp > 0 else max(0, hp_actual)
+		stats["dp"] = clamp(dp_actual, 0, max_dp) if max_dp > 0 else max(0, dp_actual)
+
+		rewards["stats_actualizadas"][pj_id] = {
+			"hp": stats["hp"],
+			"dp": stats["dp"]
+		}
 
 func _calcular_exp(result: Dictionary, rewards: Dictionary) -> void:
 	var enemigos = result.get("enemigos_derrotados", [])

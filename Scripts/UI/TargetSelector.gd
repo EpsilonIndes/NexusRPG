@@ -10,11 +10,12 @@ var allow_switch: bool = false
 var index_actual: int = 0
 var callback: Callable
 var cancel_callback: Callable
+var focus_callback: Callable
 var activo: bool = false
 
 @onready var ui_overlay = get_parent()
 
-func open(targets_data: Dictionary, _callback: Callable, _cancel_callback: Callable) -> void:
+func open(targets_data: Dictionary, _callback: Callable, _cancel_callback: Callable, _focus_callback: Callable = Callable()) -> void:
 	if activo:
 		push_warning("TargetSelector ya estaba activo, ignorando open() duplicado")
 		return
@@ -29,6 +30,7 @@ func open(targets_data: Dictionary, _callback: Callable, _cancel_callback: Calla
 
 	callback = _callback
 	cancel_callback = _cancel_callback
+	focus_callback = _focus_callback
 	index_actual = 0
 	activo = true
 	visible = true
@@ -46,6 +48,7 @@ func close(restaurar_tecnicas: bool = false) -> void:
 	targets.allies.clear()
 	callback = Callable()
 	cancel_callback = Callable()
+	focus_callback = Callable()
 	set_process_input(false)
 
 	if restaurar_tecnicas:
@@ -129,6 +132,8 @@ func _resaltar_actual() -> void:
 	if c.has_method("set_target_highlight"):
 		print("Resaltando objetivo:", c.nombre)
 		c.set_target_highlight(true)
+	if focus_callback.is_valid():
+		focus_callback.call(c)
 
 
 func _quitar_resaltado_actual() -> void:

@@ -15,6 +15,10 @@ const PROFILE_HEAL := "heal"
 const PROFILE_AREA := "area"
 const PROFILE_FINISHER := "finisher"
 const PROFILE_ENEMY := "enemy"
+const PCAM_FOLLOW_NONE := 0
+const PCAM_FOLLOW_SIMPLE := 2
+const PCAM_LOOK_NONE := 0
+const PCAM_LOOK_SIMPLE := 2
 
 @export var overview_pcam: Node3D
 @export var action_pcam: Node3D
@@ -25,11 +29,13 @@ const PROFILE_ENEMY := "enemy"
 
 @export var overview_priority := 1
 @export var turn_focus_priority := 8
+@export var target_focus_priority := 9
 @export var action_priority := 10
 @export var impact_priority := 20
 
 @export var overview_fov := 60.0
 @export var turn_focus_fov := 56.0
+@export var target_focus_fov := 50.0
 @export var action_fov := 55.0
 @export var impact_fov := 48.0
 @export var finisher_fov := 42.0
@@ -37,6 +43,24 @@ const PROFILE_ENEMY := "enemy"
 @export var look_height_offset := Vector3(0.0, 1.2, 0.0)
 @export var fallback_player_camera_offset := Vector3(3.0, 2.1, -3.4)
 @export var fallback_enemy_camera_offset := Vector3(-3.0, 2.1, 3.4)
+@export_group("Dynamic Profile Offsets")
+@export var dynamic_default_offset := Vector3(0.0, 1.2, -3.2)
+@export var dynamic_melee_offset := Vector3(0.8, 1.25, -2.4)
+@export var dynamic_ranged_offset := Vector3(1.4, 1.45, -3.8)
+@export var dynamic_support_offset := Vector3(0.0, 1.7, -4.4)
+@export var dynamic_area_offset := Vector3(0.0, 2.8, -5.2)
+@export var dynamic_finisher_offset := Vector3(0.55, 1.05, -2.0)
+@export var dynamic_enemy_offset := Vector3(0.0, 1.35, 3.2)
+
+@export_group("Dynamic Profile FOV")
+@export var dynamic_default_fov := 52.0
+@export var dynamic_melee_fov := 48.0
+@export var dynamic_ranged_fov := 56.0
+@export var dynamic_support_fov := 58.0
+@export var dynamic_area_fov := 62.0
+@export var dynamic_finisher_fov := 40.0
+
+@export_group("Impact")
 @export var impact_push_distance := 0.45
 @export var shake_distance := 0.08
 @export var reduced_uses_impact_camera := false
@@ -79,10 +103,34 @@ func show_turn_actor(actor: Node3D) -> void:
 		return
 
 	var target_position := actor.global_position + look_height_offset
+	_clear_follow(pcam)
 	_place_action_camera(pcam, actor, target_position, false)
 	_set_fov(pcam, turn_focus_fov)
 	_look_at_position(pcam, target_position)
 	_activate_pcam(pcam, turn_focus_priority)
+
+
+func focus_target(actor: Node3D, target: Node3D) -> void:
+	if battle_camera_mode == BattleCameraMode.FIXED:
+		return
+	if target == null or not is_instance_valid(target):
+		return
+
+	var pcam := action_pcam if action_pcam != null else overview_pcam
+	if pcam == null:
+		return
+
+	var source := actor if actor != null and is_instance_valid(actor) else current_actor
+	var target_position := target.global_position + look_height_offset
+	_clear_follow(pcam)
+	if source != null and is_instance_valid(source):
+		_place_action_camera(pcam, source, target_position, false)
+	else:
+		pcam.global_position = target_position + fallback_player_camera_offset
+
+	_set_fov(pcam, target_focus_fov)
+	_look_at_position(pcam, target_position)
+	_activate_pcam(pcam, target_focus_priority)
 
 
 func begin_action(actor: Node3D, tecnica: Dictionary, objetivos: Array) -> void:
@@ -99,8 +147,13 @@ func begin_action(actor: Node3D, tecnica: Dictionary, objetivos: Array) -> void:
 		return
 
 	var target_position := _get_action_look_position(actor, current_targets)
-	_place_action_camera(pcam, actor, target_position, false)
-	_set_fov(pcam, _get_action_fov(current_profile))
+	if battle_camera_mode == BattleCameraMode.DYNAMIC:
+		_configure_dynamic_action_camera(pcam, actor, target_position)
+		_set_fov(pcam, _get_dynamic_action_fov(current_profile))
+	else:
+		_clear_follow(pcam)
+		_place_action_camera(pcam, actor, target_position, false)
+		_set_fov(pcam, _get_action_fov(current_profile))
 	_look_at_position(pcam, target_position)
 	_activate_pcam(pcam, action_priority)
 
@@ -118,6 +171,7 @@ func show_impact(actor: Node3D, objetivos: Array) -> void:
 
 	var source := actor if actor != null else current_actor
 	var target_position := _get_action_look_position(source, objetivos)
+	_clear_follow(pcam)
 	if source != null and is_instance_valid(source):
 		_place_action_camera(pcam, source, target_position, true)
 	else:
@@ -130,6 +184,8 @@ func show_impact(actor: Node3D, objetivos: Array) -> void:
 
 
 func end_action() -> void:
+	_clear_follow(action_pcam)
+	_clear_follow(impact_pcam)
 	current_actor = null
 	current_targets.clear()
 	current_profile = PROFILE_DEFAULT
@@ -209,6 +265,27 @@ func _place_action_camera(pcam: Node3D, actor: Node3D, target_position: Vector3,
 			pcam.global_position += direction * impact_push_distance
 
 
+func _configure_dynamic_action_camera(pcam: Node3D, actor: Node3D, target_position: Vector3) -> void:
+	var offset := _get_dynamic_follow_offset(current_profile, actor)
+	if pcam.has_method("set_follow_target"):
+		pcam.set("follow_mode", PCAM_FOLLOW_SIMPLE)
+		pcam.set("follow_offset", offset)
+		pcam.call("set_follow_target", actor)
+	else:
+		pcam.global_position = actor.global_position + offset
+
+	if pcam.global_position.distance_to(target_position) > 0.01:
+		pcam.look_at(target_position, Vector3.UP)
+
+
+func _clear_follow(pcam: Node) -> void:
+	if pcam == null or not is_instance_valid(pcam):
+		return
+	if pcam.has_method("erase_follow_target"):
+		pcam.call("erase_follow_target")
+		pcam.set("follow_mode", PCAM_FOLLOW_NONE)
+
+
 func _get_slot_for_actor(actor: Node3D) -> Node3D:
 	if actor == null or not is_instance_valid(actor):
 		return null
@@ -276,7 +353,7 @@ func _look_at_position(pcam: Node3D, position: Vector3) -> void:
 
 	_look_target_marker.global_position = position
 	if pcam.has_method("set_look_at_target"):
-		pcam.set("look_at_mode", 2)
+		pcam.set("look_at_mode", PCAM_LOOK_SIMPLE)
 		pcam.call("set_look_at_target", _look_target_marker)
 	elif pcam.global_position.distance_to(position) > 0.01:
 		pcam.look_at(position, Vector3.UP)
@@ -315,6 +392,41 @@ func _get_action_fov(profile: String) -> float:
 			return overview_fov
 		_:
 			return action_fov
+
+
+func _get_dynamic_action_fov(profile: String) -> float:
+	match profile:
+		PROFILE_FINISHER:
+			return dynamic_finisher_fov
+		PROFILE_MELEE:
+			return dynamic_melee_fov
+		PROFILE_RANGED:
+			return dynamic_ranged_fov
+		PROFILE_SUPPORT, PROFILE_HEAL:
+			return dynamic_support_fov
+		PROFILE_AREA:
+			return dynamic_area_fov
+		_:
+			return dynamic_default_fov
+
+
+func _get_dynamic_follow_offset(profile: String, actor: Node3D) -> Vector3:
+	if not _is_player_actor(actor):
+		return dynamic_enemy_offset
+
+	match profile:
+		PROFILE_FINISHER:
+			return dynamic_finisher_offset
+		PROFILE_MELEE:
+			return dynamic_melee_offset
+		PROFILE_RANGED:
+			return dynamic_ranged_offset
+		PROFILE_SUPPORT, PROFILE_HEAL:
+			return dynamic_support_offset
+		PROFILE_AREA:
+			return dynamic_area_offset
+		_:
+			return dynamic_default_offset
 
 
 func _get_impact_fov(profile: String) -> float:

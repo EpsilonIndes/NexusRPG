@@ -87,9 +87,9 @@ func inicializar(datos: Dictionary, es_jugador_: bool, battle_manager_: Node) ->
 		suerte = stats.lck
 		espiritu = stats.wis
 		hp_max = stats.max_hp
-		hp = hp_max
+		hp = clamp(int(stats.get("hp", hp_max)), 0, hp_max)
 		mp_max = stats.max_dp
-		mp = mp_max
+		mp = clamp(int(stats.get("dp", mp_max)), 0, mp_max)
 		precision = stats.prec
 		
 		evasion = velocidad % suerte * 2

@@ -565,7 +565,12 @@ func _on_tecnica_seleccionada(tec_id: String) -> void:
 
 			await get_tree().process_frame
 
-			ui_overlay.open_target_selector(targets_data, Callable(self, "_on_target_selected"), Callable(self, "_on_cancel_selection_target"))
+			ui_overlay.open_target_selector(
+				targets_data,
+				Callable(self, "_on_target_selected"),
+				Callable(self, "_on_cancel_selection_target"),
+				Callable(self, "_on_target_focus_changed")
+			)
 			return
 		else:
 			# fallback seguro
@@ -604,10 +609,18 @@ func _on_target_selected(target: Combatant) -> void:
 	#if estado_actual != BattleState.EJECUCION_ACCION:
 	_finalizar_seleccion_actual()
 
+func _on_target_focus_changed(target: Combatant) -> void:
+	if estado_actual != BattleState.SELECCION_OBJETIVO:
+		return
+	if camera_director != null and camera_director.has_method("focus_target"):
+		camera_director.focus_target(combatiente_actual, target)
+
 func _on_cancel_selection_target() -> void:
 	print("[BattleMaager] Cancelado selector de objetivos")
 	tecnica_actual = {}
 	objetivos_actuales.clear()
+	if camera_director != null and camera_director.has_method("show_turn_actor"):
+		camera_director.show_turn_actor(combatiente_actual)
 	estado_actual = BattleState.SELECCION_ACCION
 
 func _encolar_accion(actor: Combatant, tecnica: Dictionary, objetivos: Array) -> void:
@@ -905,8 +918,25 @@ func _capturar_estado_objetivos(objetivos: Array) -> Dictionary:
 # para resultados
 # enemigos derrotados:
 func registrar_enemigos_derrotado(enemigo: Combatant) -> void:
-	if enemigo != null and not enemigos_derrotados.has(enemigo.id):
+	if enemigo != null and not enemigo.es_jugador and not enemigos_derrotados.has(enemigo.id):
 		enemigos_derrotados.append(enemigo.id)
+
+func _construir_estado_jugadores() -> Dictionary:
+	var estado_jugadores := {}
+	for combatiente in combatientes:
+		if combatiente == null or not is_instance_valid(combatiente):
+			continue
+		if not combatiente.es_jugador:
+			continue
+
+		estado_jugadores[combatiente.id] = {
+			"hp": combatiente.hp,
+			"hp_max": combatiente.hp_max,
+			"dp": combatiente.mp,
+			"dp_max": combatiente.mp_max,
+			"alive": combatiente.esta_vivo()
+		}
+	return estado_jugadores
 
 func _construir_battle_result(victoria: bool) -> Dictionary:
 	var drive_summary = drive_system.get_battle_summary() if drive_system != null else {}
@@ -925,6 +955,7 @@ func _construir_battle_result(victoria: bool) -> Dictionary:
 		"drive_summary": drive_summary,
 		"enemigos_derrotados": enemigos_derrotados.duplicate(),
 		"jugadores": jugadores_participantes.duplicate(),
+		"jugadores_estado": _construir_estado_jugadores(),
 		"stats": battle_stats.duplicate()
 	}
 
