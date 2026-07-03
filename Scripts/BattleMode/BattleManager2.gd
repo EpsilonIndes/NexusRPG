@@ -40,6 +40,7 @@ var estado_actual: BattleState = BattleState.INICIO
 var combatientes: Array = []
 var combatiente_actual: Node = null
 var indice_turno: int = 0
+var cola_turnos: Array = []
 var enemy_type_counter: Dictionary = {}
 
 # Tech seleccionada (dict de tech)
@@ -97,6 +98,7 @@ func start_battle(jugadores: Array, enemigos: Array) -> void:
 	_configurar_drive_system()
 	combatientes.clear()
 	indice_turno = 0
+	cola_turnos.clear()
 	drive_score = 0
 	tecnica_actual = {}
 	objetivos_actuales.clear()
@@ -106,9 +108,9 @@ func start_battle(jugadores: Array, enemigos: Array) -> void:
 
 	instanciar_equipo(jugadores, player_team, true)
 	instanciar_equipo(enemigos, enemy_team, false)
-	_reset_has_acted_cycle()
+	_rebuild_turn_queue()
 
-	cambiar_estado(BattleState.TURNO_JUGADOR)
+	cambiar_estado(BattleState.CHEQUEAR_FINAL)
 
 	battle_stats = {
 	"turns": 0,
@@ -374,42 +376,70 @@ func iniciar_turno_enemigo() -> void:
 # Orden de turnos
 # -----------------------
 func obtener_siguiente_combatiente(es_jugador: bool) -> Node:
-	while indice_turno < combatientes.size():
-		var c = combatientes [indice_turno]
-		indice_turno += 1
-		# usar la propiedad es_jugador (no llamada)
-		if c.esta_vivo() and c.es_jugador == es_jugador and not c.has_acted:
-			c.has_acted = true
-			return c
-	
-	# Si terminamos la lista -> resetear
+	var siguiente := _peek_next_turn_combatant()
+	if siguiente == null:
+		return null
+	if siguiente.es_jugador != es_jugador:
+		return null
+
+	cola_turnos.pop_front()
+	siguiente.has_acted = true
+	indice_turno = combatientes.find(siguiente)
+	return siguiente
+
+
+func _rebuild_turn_queue() -> void:
+	ordenar_combatientes_por_velocidad()
+	_reset_has_acted_cycle()
+	cola_turnos.clear()
+	for c in combatientes:
+		if c is Combatant and c.esta_vivo():
+			cola_turnos.append(c)
 	indice_turno = 0
-	return null
+
+
+func _prune_turn_queue() -> void:
+	for i in range(cola_turnos.size() - 1, -1, -1):
+		var c = cola_turnos[i]
+		if c == null or not is_instance_valid(c) or not c.esta_vivo():
+			cola_turnos.remove_at(i)
+
+
+func _peek_next_turn_combatant() -> Combatant:
+	_prune_turn_queue()
+	if cola_turnos.is_empty():
+		_rebuild_turn_queue()
+		_prune_turn_queue()
+	if cola_turnos.is_empty():
+		return null
+	return cola_turnos[0]
+
+
+func _find_next_ally_in_turn_queue(actor: Combatant) -> int:
+	for i in range(cola_turnos.size()):
+		var candidate = cola_turnos[i]
+		if candidate == actor:
+			continue
+		if candidate is Combatant and candidate.esta_vivo() and candidate.es_jugador == actor.es_jugador:
+			return i
+	return -1
 
 
 func promote_next_ally_after(actor) -> bool:
 	if actor == null or not is_instance_valid(actor):
 		return false
 
-	var insertion_index = clamp(indice_turno, 0, combatientes.size())
-	var candidate_index := -1
-
-	for i in range(insertion_index, combatientes.size()):
-		var candidate = combatientes[i]
-		if candidate == actor:
-			continue
-		if candidate is Combatant and candidate.esta_vivo() and candidate.es_jugador == actor.es_jugador and not candidate.has_acted:
-			candidate_index = i
-			break
+	_prune_turn_queue()
+	var candidate_index := _find_next_ally_in_turn_queue(actor)
 
 	if candidate_index == -1:
 		return false
-	if candidate_index == insertion_index:
+	if candidate_index == 0:
 		return true
 
-	var promoted = combatientes[candidate_index]
-	combatientes.remove_at(candidate_index)
-	combatientes.insert(insertion_index, promoted)
+	var promoted = cola_turnos[candidate_index]
+	cola_turnos.remove_at(candidate_index)
+	cola_turnos.insert(0, promoted)
 	print("Iniciativa: %s actuara inmediatamente despues de %s" % [promoted.nombre, actor.nombre])
 	return true
 
@@ -423,12 +453,6 @@ func _reset_has_acted_cycle() -> void:
 		if c is Combatant:
 			c.has_acted = false
 
-
-func _all_living_combatants_acted() -> bool:
-	for c in combatientes:
-		if c is Combatant and c.esta_vivo() and not c.has_acted:
-			return false
-	return true
 
 # -----------------------
 # Fin de combate
@@ -452,14 +476,11 @@ func chequear_si_termina():
 		return
 
 
-	# Si terminó el ciclo entero, reseteamos el índice SOLO acá
-	if indice_turno >= combatientes.size() or _all_living_combatants_acted():
-		ordenar_combatientes_por_velocidad()
-		_reset_has_acted_cycle()
-		indice_turno = 0
-	
-	# Dejamos que el flujo normal decide quién sigue
-	var siguiente = combatientes[indice_turno]
+	# La cola decide el proximo actor; si esta vacia, se reconstruye por velocidad.
+	var siguiente := _peek_next_turn_combatant()
+	if siguiente == null:
+		cambiar_estado(BattleState.FINAL)
+		return
 	if siguiente.es_jugador:
 		combatiente_actual = siguiente
 		cambiar_estado(BattleState.TURNO_JUGADOR)

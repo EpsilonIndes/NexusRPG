@@ -22,7 +22,7 @@ func _run_dialogue(npc_id: String, bubble: SpeechBubble, npc: NpcBase) -> void:
 	GameManager.pop_ui()
 	
 	bubble.queue_free()
-	npc.on_dialogue_finished()
+	npc.finish_dialogue()
 
 func esperar_input():
 	while true:

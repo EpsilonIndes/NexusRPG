@@ -12,6 +12,12 @@ var callback: Callable
 var cancel_callback: Callable
 var focus_callback: Callable
 var activo: bool = false
+var touch_buttons: Array[Button] = []
+
+@export var touch_zone_size := Vector2(128.0, 128.0)
+@export var touch_zone_offset := Vector2.ZERO
+@export var touch_anchor_height := 1.0
+@export var show_debug_touch_zones := false
 
 @onready var ui_overlay = get_parent()
 
@@ -35,9 +41,12 @@ func open(targets_data: Dictionary, _callback: Callable, _cancel_callback: Calla
 	activo = true
 	visible = true
 	set_process_input(true)
+	set_process(true)
 
 	_ordenar_grupo_actual()
+	_reconstruir_touch_zones()
 	_resaltar_actual()
+	_actualizar_touch_zones()
 
 
 func close(restaurar_tecnicas: bool = false) -> void:
@@ -50,9 +59,18 @@ func close(restaurar_tecnicas: bool = false) -> void:
 	cancel_callback = Callable()
 	focus_callback = Callable()
 	set_process_input(false)
+	set_process(false)
+	_limpiar_touch_zones()
 
 	if restaurar_tecnicas:
 		ui_overlay.set_tecnicas_interactivas(true)
+
+
+func _process(_delta: float) -> void:
+	if not activo:
+		return
+
+	_actualizar_touch_zones()
 
 
 func _input(event: InputEvent) -> void:
@@ -157,6 +175,35 @@ func _on_target_chosen(target: Combatant) -> void:
 		selected_callback.call(target)
 
 
+func _seleccionar_indice(nuevo_indice: int) -> void:
+	var lista := _get_candidatos_actuales()
+	if nuevo_indice < 0 or nuevo_indice >= lista.size():
+		return
+	if nuevo_indice == index_actual:
+		return
+
+	_quitar_resaltado_actual()
+	index_actual = nuevo_indice
+	_resaltar_actual()
+
+
+func _on_touch_target_pressed(target: Combatant) -> void:
+	if not activo:
+		return
+
+	var lista := _get_candidatos_actuales()
+	var target_index := lista.find(target)
+	if target_index == -1:
+		return
+
+	get_viewport().set_input_as_handled()
+
+	if target_index == index_actual:
+		_confirmar()
+	else:
+		_seleccionar_indice(target_index)
+
+
 func _alternar_grupo() -> void:
 	if not allow_switch:
 		push_warning("allow_switch no permitido")
@@ -173,7 +220,9 @@ func _alternar_grupo() -> void:
 	grupo_actual = nuevo_grupo
 	index_actual = 0
 	_ordenar_grupo_actual()
+	_reconstruir_touch_zones()
 	_resaltar_actual()
+	_actualizar_touch_zones()
 
 
 func _get_candidatos_actuales() -> Array:
@@ -185,3 +234,82 @@ func _ordenar_grupo_actual() -> void:
 	lista.sort_custom(func(a, b):
 		return a.global_position.x < b.global_position.x
 	)
+
+
+func _reconstruir_touch_zones() -> void:
+	_limpiar_touch_zones()
+
+	for target in _get_candidatos_actuales():
+		var button := Button.new()
+		button.text = ""
+		button.focus_mode = Control.FOCUS_NONE
+		button.mouse_filter = Control.MOUSE_FILTER_STOP
+		button.custom_minimum_size = touch_zone_size
+		button.size = touch_zone_size
+		button.modulate = Color(1.0, 1.0, 1.0, 0.25 if show_debug_touch_zones else 0.0)
+		button.pressed.connect(Callable(self, "_on_touch_target_pressed").bind(target))
+		add_child(button)
+		touch_buttons.append(button)
+
+
+func _limpiar_touch_zones() -> void:
+	for button in touch_buttons:
+		if button != null and is_instance_valid(button):
+			button.queue_free()
+	touch_buttons.clear()
+
+
+func _actualizar_touch_zones() -> void:
+	var camera := _get_battle_camera()
+	if camera == null:
+		for button in touch_buttons:
+			if button != null and is_instance_valid(button):
+				button.visible = false
+		return
+
+	var lista := _get_candidatos_actuales()
+	for i in range(touch_buttons.size()):
+		var button := touch_buttons[i]
+		if button == null or not is_instance_valid(button):
+			continue
+		if i >= lista.size() or not _target_es_valido(lista[i]):
+			button.visible = false
+			button.disabled = true
+			continue
+
+		var target = lista[i]
+		var anchor_position := _get_touch_anchor_position(target)
+		if camera.is_position_behind(anchor_position):
+			button.visible = false
+			button.disabled = true
+			continue
+
+		var screen_position := camera.unproject_position(anchor_position)
+		button.size = touch_zone_size
+		button.global_position = screen_position - touch_zone_size * 0.5 + touch_zone_offset
+		button.visible = true
+		button.disabled = false
+
+
+func _get_battle_camera() -> Camera3D:
+	var scene := get_tree().current_scene
+	if scene == null:
+		return null
+
+	var camera := scene.get_node_or_null("Camera/BattleCamera")
+	if camera is Camera3D:
+		return camera
+
+	return get_viewport().get_camera_3d()
+
+
+func _get_touch_anchor_position(target: Combatant) -> Vector3:
+	var damage_anchor := target.get_node_or_null("DamageAnchor")
+	if damage_anchor is Node3D:
+		return damage_anchor.global_position
+
+	return target.global_position + Vector3.UP * touch_anchor_height
+
+
+func _target_es_valido(target) -> bool:
+	return target != null and is_instance_valid(target) and target.has_method("esta_vivo") and target.esta_vivo()

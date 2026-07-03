@@ -220,6 +220,7 @@ world_flag_id = "m_chest_1_auromora"
 
 [node name="Maya" parent="Interactuable" instance=ExtResource("11_5x380")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.59051, 0.783088, -6.87827)
+world_flag_id = "maya_reclutada_prueba"
 
 [node name="Sigrid_npc" parent="Interactuable" instance=ExtResource("18_7vly3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.489412, 2.867685, -8.371642)

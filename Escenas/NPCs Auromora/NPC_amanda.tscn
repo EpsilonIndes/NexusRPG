@@ -25,6 +25,7 @@ height = 1.31188
 [node name="Amanda_npc" type="CharacterBody3D" groups=["interactuables"]]
 script = ExtResource("1_0mvpi")
 npc_id = "amanda_npc_1"
+world_flag_id = "amanda_reclutada"
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)

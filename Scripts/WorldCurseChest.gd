@@ -2,7 +2,7 @@ class_name WorldChestCursed
 extends WorldChestBase
 
 func interact():
-	if WorldFlags.has_flag(world_flag_id):
+	if _has_world_flag():
 		return
 
 	# Evento extra
