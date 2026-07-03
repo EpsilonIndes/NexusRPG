@@ -43,6 +43,11 @@ const PCAM_LOOK_SIMPLE := 2
 @export var look_height_offset := Vector3(0.0, 1.2, 0.0)
 @export var fallback_player_camera_offset := Vector3(3.0, 2.1, -3.4)
 @export var fallback_enemy_camera_offset := Vector3(-3.0, 2.1, 3.4)
+@export_group("Target Selection")
+@export var target_focus_camera_lift := 1.15
+@export var target_focus_look_lift := 0.35
+@export var lift_enemy_target_focus_only := true
+
 @export_group("Dynamic Profile Offsets")
 @export var dynamic_default_offset := Vector3(0.0, 1.2, -3.2)
 @export var dynamic_melee_offset := Vector3(0.8, 1.25, -2.4)
@@ -121,12 +126,17 @@ func focus_target(actor: Node3D, target: Node3D) -> void:
 		return
 
 	var source := actor if actor != null and is_instance_valid(actor) else current_actor
+	var should_lift := _should_lift_target_focus(target)
 	var target_position := target.global_position + look_height_offset
+	if should_lift:
+		target_position += Vector3(0.0, target_focus_look_lift, 0.0)
 	_clear_follow(pcam)
 	if source != null and is_instance_valid(source):
 		_place_action_camera(pcam, source, target_position, false)
 	else:
 		pcam.global_position = target_position + fallback_player_camera_offset
+	if should_lift:
+		pcam.global_position.y += target_focus_camera_lift
 
 	_set_fov(pcam, target_focus_fov)
 	_look_at_position(pcam, target_position)
@@ -319,6 +329,12 @@ func _is_slot_usable(slot: Node3D) -> bool:
 	if slot == null or not is_instance_valid(slot):
 		return false
 	return not ignore_unmoved_slots or slot.global_position.length() > 0.001
+
+
+func _should_lift_target_focus(target: Node3D) -> bool:
+	if target == null or not is_instance_valid(target):
+		return false
+	return not lift_enemy_target_focus_only or not _is_player_actor(target)
 
 
 func _get_action_look_position(actor: Node3D, targets: Array) -> Vector3:

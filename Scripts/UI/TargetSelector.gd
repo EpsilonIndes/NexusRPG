@@ -13,11 +13,15 @@ var cancel_callback: Callable
 var focus_callback: Callable
 var activo: bool = false
 var touch_buttons: Array[Button] = []
+var cancel_touch_button: Button = null
 
 @export var touch_zone_size := Vector2(128.0, 128.0)
 @export var touch_zone_offset := Vector2.ZERO
 @export var touch_anchor_height := 1.0
 @export var show_debug_touch_zones := false
+@export var cancel_button_text := "Cancelar"
+@export var cancel_button_size := Vector2(160.0, 56.0)
+@export var cancel_button_margin := Vector2(24.0, 24.0)
 
 @onready var ui_overlay = get_parent()
 
@@ -45,6 +49,7 @@ func open(targets_data: Dictionary, _callback: Callable, _cancel_callback: Calla
 
 	_ordenar_grupo_actual()
 	_reconstruir_touch_zones()
+	_crear_cancel_touch_button()
 	_resaltar_actual()
 	_actualizar_touch_zones()
 
@@ -61,6 +66,7 @@ func close(restaurar_tecnicas: bool = false) -> void:
 	set_process_input(false)
 	set_process(false)
 	_limpiar_touch_zones()
+	_limpiar_cancel_touch_button()
 
 	if restaurar_tecnicas:
 		ui_overlay.set_tecnicas_interactivas(true)
@@ -71,6 +77,7 @@ func _process(_delta: float) -> void:
 		return
 
 	_actualizar_touch_zones()
+	_actualizar_cancel_touch_button()
 
 
 func _input(event: InputEvent) -> void:
@@ -204,6 +211,14 @@ func _on_touch_target_pressed(target: Combatant) -> void:
 		_seleccionar_indice(target_index)
 
 
+func _on_cancel_touch_pressed() -> void:
+	if not activo:
+		return
+
+	get_viewport().set_input_as_handled()
+	_cancelar()
+
+
 func _alternar_grupo() -> void:
 	if not allow_switch:
 		push_warning("allow_switch no permitido")
@@ -257,6 +272,36 @@ func _limpiar_touch_zones() -> void:
 		if button != null and is_instance_valid(button):
 			button.queue_free()
 	touch_buttons.clear()
+
+
+func _crear_cancel_touch_button() -> void:
+	_limpiar_cancel_touch_button()
+
+	cancel_touch_button = Button.new()
+	cancel_touch_button.text = cancel_button_text
+	cancel_touch_button.focus_mode = Control.FOCUS_NONE
+	cancel_touch_button.mouse_filter = Control.MOUSE_FILTER_STOP
+	cancel_touch_button.custom_minimum_size = cancel_button_size
+	cancel_touch_button.size = cancel_button_size
+	cancel_touch_button.pressed.connect(_on_cancel_touch_pressed)
+	add_child(cancel_touch_button)
+	_actualizar_cancel_touch_button()
+
+
+func _limpiar_cancel_touch_button() -> void:
+	if cancel_touch_button != null and is_instance_valid(cancel_touch_button):
+		cancel_touch_button.queue_free()
+	cancel_touch_button = null
+
+
+func _actualizar_cancel_touch_button() -> void:
+	if cancel_touch_button == null or not is_instance_valid(cancel_touch_button):
+		return
+
+	cancel_touch_button.size = cancel_button_size
+	cancel_touch_button.global_position = cancel_button_margin
+	cancel_touch_button.visible = activo
+	cancel_touch_button.disabled = not activo
 
 
 func _actualizar_touch_zones() -> void:
