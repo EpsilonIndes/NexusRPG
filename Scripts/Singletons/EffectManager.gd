@@ -159,9 +159,12 @@ func _aplicar_damage(efecto: Array, actor: Combatant, target: Combatant, techniq
 	var dmg := int((atk_base * mult) - target.defensa)
 	var tipo_dano := String(technique.get("tipo_dano", "normal"))
 	var rol_combo := String(technique.get("rol_combo", ""))
+	var finisher_multiplier := _get_finisher_damage_multiplier(actor, technique, context)
 
 	if impacto.crit:
 		dmg *= actor.crit_dmg
+	if finisher_multiplier != 1.0:
+		dmg = int(dmg * finisher_multiplier)
 
 	var hp_before := target.hp
 	target.recibir_danio(dmg, tipo_dano, rol_combo, impacto.crit)
@@ -569,3 +572,13 @@ func _get_drive_system(context: Dictionary, actor: Combatant):
 	if battle_manager != null:
 		return battle_manager.get("drive_system")
 	return null
+
+
+func _get_finisher_damage_multiplier(actor: Combatant, technique: Dictionary, context: Dictionary) -> float:
+	if str(technique.get("rol_combo", "")).to_lower() != "finisher":
+		return 1.0
+
+	var drive_system = _get_drive_system(context, actor)
+	if drive_system != null and drive_system.has_method("get_finisher_damage_multiplier_for"):
+		return float(drive_system.get_finisher_damage_multiplier_for(technique))
+	return 1.0

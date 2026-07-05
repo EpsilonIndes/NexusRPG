@@ -953,8 +953,6 @@ func _construir_estado_jugadores() -> Dictionary:
 		estado_jugadores[combatiente.id] = {
 			"hp": combatiente.hp,
 			"hp_max": combatiente.hp_max,
-			"dp": combatiente.mp,
-			"dp_max": combatiente.mp_max,
 			"alive": combatiente.esta_vivo()
 		}
 	return estado_jugadores

@@ -165,7 +165,6 @@ func _defend_decision(reason: String) -> Dictionary:
 		"nombre_tech": "Defensa",
 		"rol_combo": "enemy",
 		"descripcion": "Fallback defensivo de IA enemiga.",
-		"costo_drive": 0,
 		"score_value": 0,
 		"arma": "natural",
 		"effect": [],

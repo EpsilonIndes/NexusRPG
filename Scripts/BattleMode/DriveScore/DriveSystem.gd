@@ -32,6 +32,7 @@ var repeated_technique_count: int = 0
 var combo_chain: int = 0
 var combo_sequence: Array[String] = []
 var max_combo_chain: int = 0
+var finisher_prep: int = 0
 var feedback_log: Array[Dictionary] = []
 var action_history: Array[Dictionary] = []
 var active_rank_bonus: Dictionary = {}
@@ -58,10 +59,24 @@ const RANK_THRESHOLDS := [
 ]
 
 const ROLE_FLOW := {
-	"opener": ["linker", "support"],
+	"opener": ["linker", "support", "finisher"],
 	"linker": ["linker", "finisher", "support"],
 	"support": ["opener", "linker", "finisher"],
 	"finisher": ["opener", "support"]
+}
+
+const MAX_FINISHER_PREP := 3
+const FINISHER_PREP_DAMAGE_MULTIPLIERS := {
+	0: 0.75,
+	1: 1.0,
+	2: 1.25,
+	3: 1.5
+}
+const FINISHER_PREP_SCORE_DELTAS := {
+	0: -40,
+	1: 0,
+	2: 45,
+	3: 90
 }
 
 
@@ -78,6 +93,7 @@ func reset_battle() -> void:
 	combo_chain = 0
 	combo_sequence.clear()
 	max_combo_chain = 0
+	finisher_prep = 0
 	feedback_log.clear()
 	action_history.clear()
 	active_rank_bonus.clear()
@@ -97,7 +113,7 @@ func register_action(action_event: Dictionary) -> Dictionary:
 	if action_event.is_empty():
 		return {}
 
-	var role := str(action_event.get("role", action_event.get("rol_combo", "")))
+	var role := str(action_event.get("role", action_event.get("rol_combo", ""))).to_lower()
 	var technique_id := str(action_event.get("technique_id", action_event.get("tecnique_id", "")))
 	var base_score := int(action_event.get("base_score", action_event.get("score_value", 0)))
 	var damage_done := int(action_event.get("damage_done", 0))
@@ -110,6 +126,7 @@ func register_action(action_event: Dictionary) -> Dictionary:
 	var combo_result := _evaluate_combo(role)
 	if not valid_action:
 		combo_result["broken"] = true
+		reset_combo("invalid_action")
 	var combo_delta := int(combo_result.get("delta", 0))
 	var repeat_delta := _evaluate_technique_repeat(technique_id)
 	var impact_delta := int(damage_done / 3.0) + int(healing_done / 4.0)
@@ -239,8 +256,26 @@ func reset_combo(reason: String = "effect") -> void:
 		return
 	combo_chain = 0
 	combo_sequence.clear()
+	finisher_prep = 0
 	combo_extension_bonus = 0
 	emit_signal("combo_changed", get_combo_state())
+
+
+func get_finisher_prep_for_technique(technique: Dictionary) -> int:
+	var role := str(technique.get("rol_combo", technique.get("role", ""))).to_lower()
+	if role != "finisher":
+		return 0
+	if not _is_valid_next_role(role):
+		return 0
+	return int(clamp(finisher_prep, 0, MAX_FINISHER_PREP))
+
+
+func get_finisher_damage_multiplier_for(technique: Dictionary) -> float:
+	var role := str(technique.get("rol_combo", technique.get("role", ""))).to_lower()
+	if role != "finisher":
+		return 1.0
+	var prep := get_finisher_prep_for_technique(technique)
+	return float(FINISHER_PREP_DAMAGE_MULTIPLIERS.get(prep, 1.0))
 
 
 func get_battle_summary() -> Dictionary:
@@ -311,14 +346,34 @@ func _evaluate_technique_repeat(technique_id: String) -> int:
 
 
 func _evaluate_combo(role: String) -> Dictionary:
+	role = role.to_lower()
 	if role == "" or role == "enemy":
 		return {"delta": 0, "finished": false, "broken": false}
+
+	var prep_before := finisher_prep
+	var usable_finisher_prep := get_finisher_prep_for_technique({"rol_combo": role}) if role == "finisher" else 0
+	var prep_delta := 0
+	var finisher_score_delta := 0
 
 	if combo_sequence.is_empty():
 		combo_sequence.append(role)
 		combo_chain = 1
 		max_combo_chain = max(max_combo_chain, combo_chain)
-		return {"delta": 20 if role == "opener" else 0, "finished": false, "broken": false}
+		if role == "opener":
+			prep_delta = _add_finisher_prep(1)
+		elif role == "finisher":
+			finisher_score_delta = _get_finisher_prep_score_delta(0)
+			finisher_prep = 0
+		return {
+			"delta": (20 if role == "opener" else 0) + finisher_score_delta,
+			"finished": false,
+			"broken": false,
+			"valid_flow": role == "opener",
+			"finisher_prep": usable_finisher_prep,
+			"finisher_prep_before": prep_before,
+			"finisher_prep_delta": prep_delta,
+			"finisher_prep_max": MAX_FINISHER_PREP
+		}
 
 	var previous_role = combo_sequence.back()
 	var allowed_next: Array = ROLE_FLOW.get(previous_role, [])
@@ -332,23 +387,40 @@ func _evaluate_combo(role: String) -> Dictionary:
 		was_broken = true
 		combo_chain = 1
 		combo_sequence = [role]
+		finisher_prep = 0
 
 	if combo_sequence.size() > 6:
 		combo_sequence.pop_front()
 
 	max_combo_chain = max(max_combo_chain, combo_chain)
 
-	var delta := combo_chain * 15 if is_valid_flow else -10
+	if role == "finisher":
+		finisher_score_delta = _get_finisher_prep_score_delta(usable_finisher_prep)
+		finisher_prep = 0
+	elif is_valid_flow or role == "opener":
+		prep_delta = _get_finisher_prep_delta_for_role(role, is_valid_flow)
+		if prep_delta > 0:
+			prep_delta = _add_finisher_prep(prep_delta)
+
+	var scoring_chain := int(min(combo_chain, MAX_FINISHER_PREP + 1))
+	var delta := scoring_chain * 15 if is_valid_flow else -10
+	if is_valid_flow and role == "linker" and combo_chain > MAX_FINISHER_PREP + 1:
+		delta = 0
 	var finished := false
-	if role == "finisher" and combo_chain >= 3:
-		delta += combo_chain * 35
-		finished = true
+	if role == "finisher":
+		delta += finisher_score_delta
+		finished = usable_finisher_prep > 0
 
 	return {
 		"delta": delta,
 		"finished": finished,
 		"broken": was_broken,
-		"valid_flow": is_valid_flow
+		"valid_flow": is_valid_flow,
+		"finisher_prep": usable_finisher_prep,
+		"finisher_prep_before": prep_before,
+		"finisher_prep_after": finisher_prep,
+		"finisher_prep_delta": prep_delta,
+		"finisher_prep_max": MAX_FINISHER_PREP
 	}
 
 
@@ -404,9 +476,23 @@ func _build_feedback(event: Dictionary, action_score: int, combo_delta: int, rep
 		tags.append("repeat_penalty")
 	if defeated_count > 0:
 		tags.append("defeat_bonus")
+	if str(event.get("role", event.get("rol_combo", ""))).to_lower() == "finisher":
+		var prep := int(combo_result.get("finisher_prep", 0))
+		if prep <= 0:
+			tags.append("finisher_unprepared")
+		elif prep >= MAX_FINISHER_PREP:
+			tags.append("finisher_prep_max")
+		else:
+			tags.append("finisher_prepared")
 
 	var text := "+%d DriveScore" % action_score
-	if tags.has("combo_finish"):
+	if tags.has("finisher_unprepared"):
+		text = "Finisher sin preparacion: %s" % text
+	elif tags.has("finisher_prep_max"):
+		text = "Preparacion maxima: %s" % text
+	elif tags.has("finisher_prepared"):
+		text = "Preparacion x%d: %s" % [int(combo_result.get("finisher_prep", 0)), text]
+	elif tags.has("combo_finish"):
 		text = "Combo cerrado: %s" % text
 	elif tags.has("combo_flow"):
 		text = "Flujo de combo: %s" % text
@@ -474,11 +560,45 @@ func _consume_combo_break_protection() -> bool:
 	return true
 
 
+func _is_valid_next_role(role: String) -> bool:
+	role = role.to_lower()
+	if combo_sequence.is_empty():
+		return false
+	var previous_role := str(combo_sequence.back()).to_lower()
+	var allowed_next: Array = ROLE_FLOW.get(previous_role, [])
+	return role in allowed_next
+
+
+func _add_finisher_prep(amount: int) -> int:
+	var before := finisher_prep
+	finisher_prep = int(min(MAX_FINISHER_PREP, finisher_prep + max(0, amount)))
+	return finisher_prep - before
+
+
+func _get_finisher_prep_delta_for_role(role: String, is_valid_flow: bool) -> int:
+	match role:
+		"opener":
+			return 1
+		"linker":
+			return 1 if is_valid_flow else 0
+		"support":
+			return 1 if is_valid_flow else 0
+		_:
+			return 0
+
+
+func _get_finisher_prep_score_delta(prep: int) -> int:
+	var clamped_prep := int(clamp(prep, 0, MAX_FINISHER_PREP))
+	return int(FINISHER_PREP_SCORE_DELTAS.get(clamped_prep, 0))
+
+
 func get_combo_state() -> Dictionary:
 	return {
 		"chain": combo_chain,
 		"max_chain": max_combo_chain,
 		"sequence": combo_sequence.duplicate(),
+		"finisher_prep": finisher_prep,
+		"max_finisher_prep": MAX_FINISHER_PREP,
 		"last_roles": last_roles.duplicate(),
 		"last_technique_id": last_technique_id,
 		"repeated_role_count": repeated_role_count,

@@ -20,7 +20,6 @@ func get_stats(enemy_id: String) -> Dictionary:
 		"nombre": e.nombre,
 		"tipo": e.tipo,
 		"hp": e.hp,
-		"mp": e.mp,
 		"atk": e.atk,
 		"def": e.def,
 		"spd": e.spd,

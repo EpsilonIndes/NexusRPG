@@ -7,7 +7,6 @@ var stats: Dictionary
 var in_party: bool = false
 
 var hp: int
-var dp: int
 var ataque: int
 var defensa: int
 var velocidad: int
@@ -60,7 +59,6 @@ func get_combat_stats() -> Dictionary:
 		"stats": stats,
 		"in_party": in_party,
 		"hp": hp,
-		"dp": dp,
 		"atk": ataque,
 		"def": defensa,
 		"spd": velocidad,

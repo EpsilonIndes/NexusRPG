@@ -40,16 +40,12 @@ func _actualizar_estado_jugadores(result: Dictionary, rewards: Dictionary) -> vo
 
 		var stats: Dictionary = pj.get_stats()
 		var max_hp := int(stats.get("max_hp", estado.get("hp_max", 0)))
-		var max_dp := int(stats.get("max_dp", estado.get("dp_max", 0)))
 		var hp_actual := int(estado.get("hp", stats.get("hp", max_hp)))
-		var dp_actual := int(estado.get("dp", stats.get("dp", max_dp)))
 
 		stats["hp"] = clamp(hp_actual, 0, max_hp) if max_hp > 0 else max(0, hp_actual)
-		stats["dp"] = clamp(dp_actual, 0, max_dp) if max_dp > 0 else max(0, dp_actual)
 
 		rewards["stats_actualizadas"][pj_id] = {
-			"hp": stats["hp"],
-			"dp": stats["dp"]
+			"hp": stats["hp"]
 		}
 
 func _calcular_exp(result: Dictionary, rewards: Dictionary) -> void:

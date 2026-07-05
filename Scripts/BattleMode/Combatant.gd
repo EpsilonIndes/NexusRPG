@@ -21,14 +21,11 @@ var id: String = ""
 var nombre: String = ""
 var hp := 0
 var hp_max := 0
-var mp := 0
-var mp_max := 0
 var ataque := 0
 var defensa := 0
 var velocidad := 0
 var suerte := 0
 var espiritu := 0
-var drive := 0
 var tecnicas: Array = []
 var display_name: String = ""
 var precision: int = 0
@@ -78,7 +75,7 @@ func inicializar(datos: Dictionary, es_jugador_: bool, battle_manager_: Node) ->
 	nombre = datos.get("nombre", id)
 
 	# --- Stats base ---
-	# csv_encabezados: hp,max_hp,dp,max_dp,atk,def,spd,lck,wis,face
+	# Algunas columnas legacy de recursos ya no se usan en combate.
 	if es_jugador:
 		var stats = PlayableCharacters.get_stats(id)
 		ataque = stats.atk
@@ -88,8 +85,6 @@ func inicializar(datos: Dictionary, es_jugador_: bool, battle_manager_: Node) ->
 		espiritu = stats.wis
 		hp_max = stats.max_hp
 		hp = clamp(int(stats.get("hp", hp_max)), 0, hp_max)
-		mp_max = stats.max_dp
-		mp = clamp(int(stats.get("dp", mp_max)), 0, mp_max)
 		precision = stats.prec
 		
 		evasion = velocidad % suerte * 2
@@ -106,8 +101,6 @@ func inicializar(datos: Dictionary, es_jugador_: bool, battle_manager_: Node) ->
 		espiritu = stats.wis
 		hp_max = stats.get("hp", 50)
 		hp = hp_max
-		mp_max = stats.get("mp", 0)
-		mp = mp_max
 
 	# --- Técnicas ---
 	tecnicas = GlobalTechniqueDatabase.get_techniques_for(id)
@@ -191,7 +184,7 @@ func curar_hp(cantidad: int) -> void:
 	})
 
 func modificar_stat(stat: String, cantidad: int, mostrar_feedback: bool = false, tipo_feedback: String = "") -> void:
-	var allowed := ["hp", "hp_max", "dp", "mp_max", "ataque", "defensa", "velocidad", "drive"]
+	var allowed := ["hp", "hp_max", "ataque", "defensa", "velocidad"]
 	if not stat in allowed:
 		print("Stat no encontrada o no segura para modificar: %s" % stat)
 		return
@@ -301,10 +294,6 @@ func ejecutar_tecnica():
 
 	var tecnica = tecnica_seleccionada["datos"]
 	var objetivos: Array = tecnica_seleccionada.get("objetivos", [])
-
-	# Aplicar costes (chequeos simples)
-	mp = max(0, mp - tecnica.get("costo_dp", 0))
-	drive = max(0, drive - tecnica.get("costo_drive", 0))
 
 	# Log y animacion de ataque
 	var nombres_objetivos = objetivos.map(func(o): return o.nombre)

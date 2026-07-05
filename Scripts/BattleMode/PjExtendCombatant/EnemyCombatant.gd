@@ -161,7 +161,6 @@ func _crear_tecnica_defensiva_fallback() -> Dictionary:
 		"nombre_tech": "Defensa",
 		"rol_combo": "enemy",
 		"descripcion": "Fallback defensivo enemigo.",
-		"costo_drive": 0,
 		"score_value": 0,
 		"arma": "natural",
 		"effect": [],

@@ -379,10 +379,10 @@ func _unequip(tech_id: String) -> void:
 
 func _show_description(tecnica: Dictionary) -> void:
 	var role := str(tecnica.get("rol_combo", ""))
-	description_label.text = "%s | %s | Drive %s\n%s" % [
+	description_label.text = "%s | %s | Score +%s\n%s" % [
 		str(tecnica.get("nombre", tecnica.get("id", ""))),
 		format_role_label(role),
-		str(int(tecnica.get("costo_drive", 0))),
+		str(int(tecnica.get("score_value", 0))),
 		str(tecnica.get("descripcion", ""))
 	]
 
