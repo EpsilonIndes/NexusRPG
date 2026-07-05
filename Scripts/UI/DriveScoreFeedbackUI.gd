@@ -36,7 +36,7 @@ func bind_drive_system(system: DriveSystem) -> void:
 
 	if drive_system == system:
 		if drive_system != null:
-			var summary := drive_system.get_battle_summary()
+			var summary = drive_system.get_battle_summary()
 			_set_score(int(summary.get("total_drive_score", summary.get("score", 0))))
 			_set_rank(str(summary.get("current_resonance_rank", summary.get("rank", "Static Pulse"))))
 			_set_combo(summary.get("combo", {}))
@@ -64,10 +64,10 @@ func bind_drive_system(system: DriveSystem) -> void:
 	if not drive_system.feedback_requested.is_connected(feedback_callable):
 		drive_system.feedback_requested.connect(feedback_callable)
 
-	var summary = drive_system.get_battle_summary()
-	_set_score(int(summary.get("total_drive_score", summary.get("score", 0))))
-	_set_rank(str(summary.get("current_resonance_rank", summary.get("rank", "Static Pulse"))))
-	_set_combo(summary.get("combo", {}))
+	var new_summary = drive_system.get_battle_summary()
+	_set_score(int(new_summary.get("total_drive_score", new_summary.get("score", 0))))
+	_set_rank(str(new_summary.get("current_resonance_rank", new_summary.get("rank", "Static Pulse"))))
+	_set_combo(new_summary.get("combo", {}))
 
 
 func _disconnect_drive_system() -> void:

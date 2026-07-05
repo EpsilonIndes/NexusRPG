@@ -71,7 +71,7 @@ const PCAM_LOOK_SIMPLE := 2
 @export var reduced_uses_impact_camera := false
 @export var ignore_unmoved_slots := true
 
-var battle_camera_mode := BattleCameraMode.DYNAMIC
+var battle_camera_mode: int = BattleCameraMode.DYNAMIC
 var shake_enabled := true
 var current_actor: Node3D = null
 var current_targets: Array = []
