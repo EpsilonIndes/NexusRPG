@@ -140,7 +140,7 @@ func esta_vivo() -> bool:
 
 func recibir_danio(cantidad: int, tipo: String, rol_combo: String = "", critico: bool = false) -> void:
 	if cantidad <= 0:
-		print("Salud reducida a 0! ", nombre)
+		print("%s no recibe dano efectivo." % nombre)
 		return
 
 	hp = max(0, hp - cantidad)
@@ -411,6 +411,12 @@ func ejecutar_tecnica():
 	
 	if battle_manager != null and battle_manager.has_method("registrar_drive_score_pre_animacion"):
 		battle_manager.registrar_drive_score_pre_animacion(self, tecnica, objetivos)
+		effect_context["drive_registered"] = true
+
+	if bool(effect_context.get("deferred_combo_reset", false)):
+		var drive_system = effect_context.get("drive_system", null)
+		if drive_system != null and drive_system.has_method("reset_combo"):
+			drive_system.reset_combo("combo_effect")
 
 	var anim_scene: PackedScene = tecnica.get("animation_scene", null)
 

@@ -14,4 +14,4 @@ func interact():
 		"Iniciando prueba de combate"
 	])
 	
-	GameManager.iniciar_batalla(["Triangle", "Triangle", "Slime"])
+	GameManager.iniciar_batalla(["Triangle", "Esfera_roja", "Slime"])

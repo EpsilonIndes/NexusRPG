@@ -156,15 +156,16 @@ func _aplicar_damage(efecto: Array, actor: Combatant, target: Combatant, techniq
 
 	var mult := float(efecto[1])
 	var atk_base := actor.ataque
-	var dmg := int((atk_base * mult) - target.defensa)
 	var tipo_dano := String(technique.get("tipo_dano", "normal"))
 	var rol_combo := String(technique.get("rol_combo", ""))
 	var finisher_multiplier := _get_finisher_damage_multiplier(actor, technique, context)
+	var scaled_attack := float(atk_base) * mult * finisher_multiplier
+	var dmg := int(scaled_attack - target.defensa)
 
 	if impacto.crit:
 		dmg *= actor.crit_dmg
-	if finisher_multiplier != 1.0:
-		dmg = int(dmg * finisher_multiplier)
+	if dmg <= 0 and _should_apply_minimum_damage(actor, target, mult):
+		dmg = 1
 
 	var hp_before := target.hp
 	target.recibir_danio(dmg, tipo_dano, rol_combo, impacto.crit)
@@ -477,6 +478,9 @@ func _aplicar_combo_effect(efecto: Array, _target: Combatant, actor: Combatant, 
 			else:
 				push_warning("No hay handler para combo:protect_break: %s" % str(efecto))
 		"reset":
+			if _should_defer_combo_reset(context):
+				context["deferred_combo_reset"] = true
+				return
 			if drive_system != null and drive_system.has_method("reset_combo"):
 				drive_system.reset_combo("combo_effect")
 			elif battle_manager != null and battle_manager.has_method("reset_combo"):
@@ -585,3 +589,18 @@ func _get_finisher_damage_multiplier(actor: Combatant, technique: Dictionary, co
 	if drive_system != null and drive_system.has_method("get_finisher_damage_multiplier_for"):
 		return float(drive_system.get_finisher_damage_multiplier_for(technique))
 	return 1.0
+
+
+func _should_apply_minimum_damage(actor: Combatant, target: Combatant, damage_multiplier: float) -> bool:
+	if actor == null or target == null:
+		return false
+	if damage_multiplier <= 0.0:
+		return false
+	return actor.es_jugador != target.es_jugador
+
+
+func _should_defer_combo_reset(context: Dictionary) -> bool:
+	var technique: Dictionary = context.get("technique", {})
+	if str(technique.get("rol_combo", "")).to_lower() != "finisher":
+		return false
+	return not bool(context.get("drive_registered", false))
