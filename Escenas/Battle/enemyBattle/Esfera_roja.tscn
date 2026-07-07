@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://cxdsmrnjoyv7v"]
+
+[ext_resource type="Script" uid="uid://dw27ee6mb6xpi" path="res://Scripts/BattleMode/PjExtendCombatant/EnemyCombatant.gd" id="1_esfera"]
+[ext_resource type="Material" uid="uid://dngphssgf382m" path="res://Materiales/target_highlight_material.tres" id="2_highlight"]
+[ext_resource type="Material" uid="uid://1ng466f3q4qq" path="res://Materiales/textura_enemigo_circulo.tres" id="3_body"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_esfera"]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_esfera"]
+data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
+
+[node name="Esfera_roja" type="Node3D"]
+script = ExtResource("1_esfera")
+
+[node name="Model" type="MeshInstance3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Model"]
+mesh = SubResource("SphereMesh_esfera")
+skeleton = NodePath("../..")
+surface_material_override/0 = ExtResource("3_body")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Model/MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Model/MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_esfera")
+
+[node name="Outline" type="MeshInstance3D" parent="Model"]
+material_override = ExtResource("2_highlight")
+mesh = SubResource("SphereMesh_esfera")
+skeleton = NodePath("../..")
+surface_material_override/0 = ExtResource("3_body")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Model/Outline"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Model/Outline/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_esfera")
+
+[node name="DamageAnchor" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.491677, 0)

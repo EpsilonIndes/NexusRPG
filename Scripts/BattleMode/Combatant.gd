@@ -50,6 +50,8 @@ const MODIFIABLE_STATS := [
 ]
 const STAT_BUFF_MAX_MULTIPLIER := 2.0
 const STAT_DEBUFF_MIN_MULTIPLIER := 0.5
+const DEFAULT_ENEMY_PRECISION := 80
+const DEFAULT_ENEMY_CRIT_DAMAGE := 2
 
 # Pa la práctica de Tweens:
 var levitation_tween: Tween
@@ -118,6 +120,10 @@ func inicializar(datos: Dictionary, es_jugador_: bool, battle_manager_: Node) ->
 		espiritu = stats.wis
 		hp_max = stats.get("hp", 50)
 		hp = hp_max
+		precision = int(stats.get("precision", stats.get("prec", DEFAULT_ENEMY_PRECISION)))
+		evasion = int(velocidad) % max(1, int(suerte)) * 2
+		crit_rate = int(stats.get("crit_rate", stats.get("crit", 0)))
+		crit_dmg = int(stats.get("crit_dmg", DEFAULT_ENEMY_CRIT_DAMAGE))
 
 	# --- Técnicas ---
 	tecnicas = GlobalTechniqueDatabase.get_techniques_for(id)
