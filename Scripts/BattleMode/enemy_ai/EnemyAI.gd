@@ -24,16 +24,20 @@ func decide_action(context: Dictionary) -> Dictionary:
 
 	var role_decision := active_role.evaluate(context)
 	var intent := str(role_decision.get("intent", EnemyRoleBase.Intent.ATTACK))
-	var technique: Dictionary = role_decision.get("technique", {})
+	var tactical_role := str(role_decision.get("tactical_role", _tactical_role_for_intent(intent)))
+	var technique := _select_tactical_technique(context, tactical_role, intent)
 	var target = role_decision.get("target", null)
 
-	if technique.is_empty():
-		technique = _select_default_technique(context, intent)
+	if technique.is_empty() and tactical_role != EnemyRoleBase.TacticalRole.ATTACK:
+		technique = _select_tactical_technique(context, EnemyRoleBase.TacticalRole.ATTACK, EnemyRoleBase.Intent.ATTACK)
 
 	if technique.is_empty():
-		return _empty_decision("missing_technique")
+		technique = _select_any_valid_technique(context)
 
-	if target == null:
+	if technique.is_empty():
+		return _defend_decision("missing_technique")
+
+	if target == null or not _target_matches_scope(target, technique, context):
 		target = _select_default_target(context, technique)
 
 	if _needs_living_target(technique) and _normalize_targets(target).is_empty():
@@ -48,6 +52,7 @@ func decide_action(context: Dictionary) -> Dictionary:
 
 	return {
 		"intent": intent,
+		"tactical_role": tactical_role,
 		"technique": technique,
 		"target": target,
 		"reason": str(role_decision.get("reason", "default_attack")),
@@ -56,16 +61,33 @@ func decide_action(context: Dictionary) -> Dictionary:
 	}
 
 
-func _select_default_technique(context: Dictionary, intent: String) -> Dictionary:
+func _select_tactical_technique(context: Dictionary, tactical_role: String, intent: String) -> Dictionary:
 	var techniques: Array = context.get("available_techniques", [])
-	if techniques.is_empty():
-		return {}
+	var tactical_matches := []
+	for technique in techniques:
+		if not technique is Dictionary:
+			continue
+		if str(technique.get("rol_combo", "")) == tactical_role and _technique_matches_intent_scope(technique, intent):
+			tactical_matches.append(technique)
 
-	var preferred := _filter_techniques_for_intent(techniques, intent)
-	if not preferred.is_empty():
-		return preferred.pick_random()
+	if not tactical_matches.is_empty():
+		return tactical_matches.pick_random()
 
-	return techniques.pick_random()
+	for technique in techniques:
+		if technique is Dictionary and str(technique.get("rol_combo", "")) == tactical_role:
+			return technique
+
+	return {}
+
+
+func _select_any_valid_technique(context: Dictionary) -> Dictionary:
+	var techniques: Array = context.get("available_techniques", [])
+	var valid := []
+	for technique in techniques:
+		if technique is Dictionary and not technique.is_empty():
+			valid.append(technique)
+
+	return valid.pick_random() if not valid.is_empty() else {}
 
 
 func _select_non_offensive_technique(context: Dictionary) -> Dictionary:
@@ -81,25 +103,31 @@ func _select_non_offensive_technique(context: Dictionary) -> Dictionary:
 	return {}
 
 
-func _filter_techniques_for_intent(techniques: Array, intent: String) -> Array:
-	var result: Array = []
-	for technique in techniques:
-		if not technique is Dictionary:
-			continue
+func _technique_matches_intent_scope(technique: Dictionary, intent: String) -> bool:
+	var scope := str(technique.get("target_scope", "SINGLE_ENEMY"))
+	match intent:
+		EnemyRoleBase.Intent.DEFEND, EnemyRoleBase.Intent.CHARGE:
+			return scope == "SELF"
+		EnemyRoleBase.Intent.PROTECT:
+			return scope in ["SINGLE_ALLY", "ALL_ALLIES", "SELF"]
+		_:
+			return scope in ["SINGLE_ENEMY", "RANDOM_ENEMY", "ALL_ENEMIES"]
 
-		var scope := str(technique.get("target_scope", "SINGLE_ENEMY"))
-		match intent:
-			EnemyRoleBase.Intent.DEFEND, EnemyRoleBase.Intent.CHARGE:
-				if scope == "SELF":
-					result.append(technique)
-			EnemyRoleBase.Intent.PROTECT:
-				if scope in ["SINGLE_ALLY", "ALL_ALLIES", "SELF"]:
-					result.append(technique)
-			_:
-				if scope in ["SINGLE_ENEMY", "RANDOM_ENEMY", "ALL_ENEMIES"]:
-					result.append(technique)
 
-	return result
+func _tactical_role_for_intent(intent: String) -> String:
+	match intent:
+		EnemyRoleBase.Intent.COUNTER:
+			return EnemyRoleBase.TacticalRole.COUNTER
+		EnemyRoleBase.Intent.CONTROL, EnemyRoleBase.Intent.INTERRUPT:
+			return EnemyRoleBase.TacticalRole.CONTROL
+		EnemyRoleBase.Intent.PROTECT, EnemyRoleBase.Intent.DEFEND:
+			return EnemyRoleBase.TacticalRole.PROTECT
+		EnemyRoleBase.Intent.CHARGE:
+			return EnemyRoleBase.TacticalRole.CHARGE
+		EnemyRoleBase.Intent.SPECIAL:
+			return EnemyRoleBase.TacticalRole.SPECIAL
+		_:
+			return EnemyRoleBase.TacticalRole.ATTACK
 
 
 func _select_default_target(context: Dictionary, technique: Dictionary):
@@ -118,6 +146,21 @@ func _select_default_target(context: Dictionary, technique: Dictionary):
 			return owner
 		_:
 			return _pick_lowest_hp_ratio(opponents)
+
+
+func _target_matches_scope(target, technique: Dictionary, context: Dictionary) -> bool:
+	var scope := str(technique.get("target_scope", "SINGLE_ENEMY"))
+	match scope:
+		"ALL_ENEMIES":
+			return target is Array and not _normalize_targets(target).is_empty()
+		"ALL_ALLIES":
+			return target is Array and not _normalize_targets(target).is_empty()
+		"SELF":
+			return target == owner
+		"SINGLE_ALLY", "RANDOM_ALLY":
+			return target in context.get("allies", [])
+		_:
+			return target in context.get("opponents", [])
 
 
 func _needs_living_target(technique: Dictionary) -> bool:
@@ -165,8 +208,6 @@ func _defend_decision(reason: String) -> Dictionary:
 		"nombre_tech": "Defensa",
 		"rol_combo": "enemy",
 		"descripcion": "Fallback defensivo de IA enemiga.",
-		"score_value": 0,
-		"arma": "natural",
 		"effect": [],
 		"efectos": [],
 		"target_scope": "SELF",

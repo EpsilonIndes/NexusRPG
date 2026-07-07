@@ -33,6 +33,23 @@ var evasion := 0.0
 
 var crit_rate := 0
 var crit_dmg := 0
+var stats_base: Dictionary = {}
+
+const MODIFIABLE_STATS := [
+	"hp",
+	"hp_max",
+	"ataque",
+	"defensa",
+	"velocidad",
+	"suerte",
+	"espiritu",
+	"precision",
+	"evasion",
+	"crit_rate",
+	"crit_dmg"
+]
+const STAT_BUFF_MAX_MULTIPLIER := 2.0
+const STAT_DEBUFF_MIN_MULTIPLIER := 0.5
 
 # Pa la práctica de Tweens:
 var levitation_tween: Tween
@@ -105,6 +122,7 @@ func inicializar(datos: Dictionary, es_jugador_: bool, battle_manager_: Node) ->
 	# --- Técnicas ---
 	tecnicas = GlobalTechniqueDatabase.get_techniques_for(id)
 	original_position = global_position
+	_capturar_stats_base()
 
 
 #------------------
@@ -183,29 +201,60 @@ func curar_hp(cantidad: int) -> void:
 		"rol_combo": "support"
 	})
 
-func modificar_stat(stat: String, cantidad: int, mostrar_feedback: bool = false, tipo_feedback: String = "") -> void:
-	var allowed := ["hp", "hp_max", "ataque", "defensa", "velocidad"]
-	if not stat in allowed:
+func modificar_stat(stat: String, cantidad: int, mostrar_feedback: bool = false, tipo_feedback: String = "") -> int:
+	if not stat in MODIFIABLE_STATS:
 		print("Stat no encontrada o no segura para modificar: %s" % stat)
-		return
+		return 0
 	# usar set/get para propiedades
 	var current = self.get(stat)
 	if current == null:
 		current = 0
 
-	self.set(stat, current + cantidad)
-	print("%s modifica %s por %+d | Nuevo valor: %d" %
-		[nombre, stat, cantidad, self.get(stat)])
+	var nuevo_valor = _calcular_stat_modificada(stat, current, cantidad)
+	var delta_aplicado := int(nuevo_valor - current)
+	if delta_aplicado == 0:
+		print("%s ya tiene %s en el limite permitido | Valor: %s" % [nombre, stat, str(current)])
+		return 0
+
+	self.set(stat, nuevo_valor)
+	print("%s modifica %s por %+d | Nuevo valor: %s" %
+		[nombre, stat, delta_aplicado, str(self.get(stat))])
 	
 	if mostrar_feedback:
-		var tipo_visual := tipo_feedback if tipo_feedback != "" else ("buff" if cantidad >= 0 else "debuff")
-		var valor_visual = abs(cantidad) if tipo_visual == "debuff" else cantidad
+		var tipo_visual := tipo_feedback if tipo_feedback != "" else ("buff" if delta_aplicado >= 0 else "debuff")
+		var valor_visual = abs(delta_aplicado) if tipo_visual == "debuff" else delta_aplicado
 		cola_feedback.append({
 			"valor": valor_visual,
 			"tipo": tipo_visual,
 			"critico": false,
 			"rol_combo": ""
 		})
+	return delta_aplicado
+
+
+func _capturar_stats_base() -> void:
+	stats_base.clear()
+	for stat in MODIFIABLE_STATS:
+		var value = self.get(stat)
+		if value != null:
+			stats_base[stat] = value
+
+
+func _calcular_stat_modificada(stat: String, current, cantidad: int):
+	var base = stats_base.get(stat, current)
+	var min_value = base
+	var max_value = base
+
+	if stat in ["hp", "hp_max"]:
+		min_value = 0
+		max_value = hp_max if stat == "hp" else max(base, current + cantidad)
+	else:
+		min_value = int(floor(float(base) * STAT_DEBUFF_MIN_MULTIPLIER))
+		max_value = int(ceil(float(base) * STAT_BUFF_MAX_MULTIPLIER))
+		if base > 0:
+			min_value = max(1, min_value)
+
+	return clamp(current + cantidad, min_value, max_value)
 #--------------------------
 # Efectos persistentes
 #--------------------------
@@ -233,7 +282,7 @@ func agregar_efecto(nuevo: Dictionary) -> void:
 
 	efectos_activos.append(nuevo)
 	
-	if nuevo.has("visual_tipo"):
+	if nuevo.has("visual_tipo") and int(nuevo.get("visual_valor", 0)) != 0:
 		mostrar_feedback_estado(nuevo)
 	
 	print("registrado efecto %s en %s (dur: %s)" % [nuevo.get("id","?"), nombre, nuevo.get("duracion", "?")])

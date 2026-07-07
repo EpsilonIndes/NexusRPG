@@ -271,14 +271,17 @@ func _aplicar_persistente(efecto: Array, target: Combatant) -> void:
 				"tier": tier,
 				"stat": stat,
 				"valor": valor,
+				"applied_delta": 0,
 				"duracion": duracion,
 				"visual_tipo": subtipo,
-				"visual_valor": valor,
-				"on_apply": func(c):
-					c.modificar_stat(stat, valor),
-				"on_expire": func(c):
-					c.modificar_stat(stat, -valor)
+				"visual_valor": valor
 			}
+			efecto_dic["on_apply"] = func(c):
+				var aplicado = c.modificar_stat(stat, valor)
+				efecto_dic["applied_delta"] = aplicado
+				efecto_dic["visual_valor"] = aplicado
+			efecto_dic["on_expire"] = func(c):
+				c.modificar_stat(stat, -int(efecto_dic.get("applied_delta", valor)))
 
 			print("Registrando Buff/Debuff:", efecto_dic)
 			target.agregar_efecto(efecto_dic)

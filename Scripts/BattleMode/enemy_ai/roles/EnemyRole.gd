@@ -15,6 +15,15 @@ class Intent:
 	const SPECIAL := "SPECIAL"
 
 
+class TacticalRole:
+	const ATTACK := "enemy_attack"
+	const COUNTER := "enemy_counter"
+	const CONTROL := "enemy_control"
+	const PROTECT := "enemy_protect"
+	const CHARGE := "enemy_charge"
+	const SPECIAL := "enemy_special"
+
+
 func setup(owner_: EnemyCombatant) -> void:
 	owner = owner_
 
@@ -22,6 +31,7 @@ func setup(owner_: EnemyCombatant) -> void:
 func evaluate(context: Dictionary) -> Dictionary:
 	return {
 		"intent": Intent.ATTACK,
+		"tactical_role": TacticalRole.ATTACK,
 		"technique": _find_attack_technique(context),
 		"target": _find_vulnerable_opponent(context),
 		"reason": "base_attack"
@@ -29,14 +39,25 @@ func evaluate(context: Dictionary) -> Dictionary:
 
 
 func _find_attack_technique(context: Dictionary) -> Dictionary:
-	var techniques: Array = context.get("available_techniques", [])
-	for technique in techniques:
-		if technique is Dictionary:
-			var scope := str(technique.get("target_scope", "SINGLE_ENEMY"))
-			if scope in ["SINGLE_ENEMY", "RANDOM_ENEMY", "ALL_ENEMIES"]:
-				return technique
+	var tactical := _find_tactical_technique(context, [TacticalRole.ATTACK])
+	if not tactical.is_empty():
+		return tactical
 
+	var scoped := _find_technique_by_scope(context, ["SINGLE_ENEMY", "RANDOM_ENEMY", "ALL_ENEMIES"])
+	if not scoped.is_empty():
+		return scoped
+
+	var techniques: Array = context.get("available_techniques", [])
 	return techniques[0] if not techniques.is_empty() and techniques[0] is Dictionary else {}
+
+
+func _find_tactical_technique(context: Dictionary, tactical_roles: Array) -> Dictionary:
+	var techniques: Array = context.get("available_techniques", [])
+	for role_name in tactical_roles:
+		for technique in techniques:
+			if technique is Dictionary and str(technique.get("rol_combo", "")) == str(role_name):
+				return technique
+	return {}
 
 
 func _find_technique_by_scope(context: Dictionary, scopes: Array) -> Dictionary:

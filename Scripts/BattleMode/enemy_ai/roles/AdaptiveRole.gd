@@ -6,8 +6,9 @@ func evaluate(context: Dictionary) -> Dictionary:
 	var most_used := _get_most_used_player_technique(context)
 	if most_used != "":
 		return {
-			"intent": Intent.COUNTER,
-			"technique": _find_attack_technique(context),
+			"intent": Intent.CONTROL,
+			"tactical_role": TacticalRole.CONTROL,
+			"technique": _find_tactical_technique(context, [TacticalRole.CONTROL, TacticalRole.SPECIAL, TacticalRole.ATTACK]),
 			"target": _find_vulnerable_opponent(context),
 			"reason": "adapt_to_%s" % most_used
 		}

@@ -161,8 +161,6 @@ func _crear_tecnica_defensiva_fallback() -> Dictionary:
 		"nombre_tech": "Defensa",
 		"rol_combo": "enemy",
 		"descripcion": "Fallback defensivo enemigo.",
-		"score_value": 0,
-		"arma": "natural",
 		"effect": [],
 		"efectos": [],
 		"target_scope": "SELF",
@@ -180,7 +178,6 @@ func _crear_contexto_ia() -> Dictionary:
 	var battle_stats := {}
 	var last_technique := ""
 	var repeated_count := 0
-	var drive_score := 0
 
 	if battle_manager != null:
 		allies = battle_manager.combatientes.filter(func(c): return c is Combatant and not c.es_jugador and c.esta_vivo())
@@ -188,12 +185,10 @@ func _crear_contexto_ia() -> Dictionary:
 		var stats_value = battle_manager.get("battle_stats")
 		var last_technique_value = battle_manager.get("ultima_tecnica_usada")
 		var repeated_count_value = battle_manager.get("repeticion_continua")
-		var drive_score_value = battle_manager.get("drive_score")
 
 		battle_stats = stats_value if stats_value is Dictionary else {}
 		last_technique = str(last_technique_value) if last_technique_value != null else ""
 		repeated_count = int(repeated_count_value) if repeated_count_value != null else 0
-		drive_score = int(drive_score_value) if drive_score_value != null else 0
 
 	return {
 		"owner": self,
@@ -201,11 +196,11 @@ func _crear_contexto_ia() -> Dictionary:
 		"opponents": opponents,
 		"available_techniques": get_tecnicas_disponibles(),
 		"enemy_role_id": enemy_role_id,
-		"drive_score": drive_score,
 		"last_player_technique_id": last_technique,
 		"last_player_combo_role": _obtener_rol_combo_tecnica(last_technique),
 		"repeated_player_technique_count": repeated_count,
 		"player_technique_usage": battle_stats.get("techniques_used", {}),
+		# Placeholders for future role-specific state. Keep them inert until the battle flow owns those counters.
 		"pressure_turns": 0,
 		"restriction_condition_met": false
 	}

@@ -9,7 +9,8 @@ func evaluate(context: Dictionary) -> Dictionary:
 	if repeated_count >= 2 or last_role == "finisher":
 		return {
 			"intent": Intent.COUNTER,
-			"technique": _find_attack_technique(context),
+			"tactical_role": TacticalRole.COUNTER,
+			"technique": _find_tactical_technique(context, [TacticalRole.COUNTER, TacticalRole.ATTACK]),
 			"target": _find_vulnerable_opponent(context),
 			"reason": "punish_repetition_or_finisher"
 		}
