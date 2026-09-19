@@ -3,14 +3,14 @@ Astro,astro_01,Golpe Previsor,opener,"Golpe iniciador, El siguiente aliado actú
 Astro,astro_02,Doble Impacto,linker,"Dos golpes",120,guantes,damage:2,SINGLE_ENEMY,true,fisico,,res://Animaciones/anim_combate/Astro/astro_slash.tscn,melee
 Astro,astro_03,Ciclón de Puños,linker,"Ataque aleatorio, conecta fácilmente",200,guantes,damage:0.5,RANDOM_ENEMY,true,fisico,,,melee
 Astro,astro_04,Puño Cósmico,finisher,"Gran daño, finalizador de combo",300,guantes,damage:1;combo:reset,SINGLE_ENEMY,true,fisico,,,melee
-Astro,astro_05,Counter Drive,finisher,"Devuelve daño si fue atacado",500,guantes,guard:counter,SELF,false,fisico,,,melee
+Astro,astro_05,Counter Drive,finisher,"Devuelve daño si fue atacado",500,guantes,guard:counter,SELF,false,fisico,,,finisher
 Astro,astro_06,Impulso Instintivo,support,"Activa miniturno si evade",200,guantes,buff:ataque:0.5,SELF,false,fisico,,,melee
-Astro,astro_07,Ritmo de Batalla,support,"Gana ataque si conecta dos linkers",100,guantes,buff:ataque:1;combo:bonus_finisher,SELF,false,fisico,buff,,melee
+Astro,astro_07,Ritmo de Batalla,support,"Gana ataque si conecta dos linkers",100,guantes,buff:ataque:1;combo:bonus_finisher,SELF,false,fisico,buff,,support
 Sigrid,sigrid_01,Corte Preemptivo,opener,"Va primero si el enemigo no está alerta",100,espadas,damage:0.5,SINGLE_ENEMY,true,fisico,,,melee
 Sigrid,sigrid_02,Viento Cortante,linker,"Daño + Desbalance",200,espadas,damage:0.5;debuff:velocidad:0.2,SINGLE_ENEMY,true,fisico,debuff,,melee
 Sigrid,sigrid_03,Danza de Acero,linker,"Rebota entre enemigos",400,espadas,damage:0.5,RANDOM_ENEMY,false,fisico,,,melee
-Sigrid,sigrid_04,Lamento Invernal,finisher,"Daño mágico tipo hielo",500,espadas,damage:0.5,SINGLE_ENEMY,true,magico,,,melee
-Sigrid,sigrid_05,Destino Sellado,finisher,"Crítico si el enemigo tiene estado",500,espadas,damage:0.5,SINGLE_ENEMY,true,magico,,,melee
+Sigrid,sigrid_04,Lamento Invernal,finisher,"Daño mágico tipo hielo",500,espadas,damage:0.5,SINGLE_ENEMY,true,magico,,,finisher
+Sigrid,sigrid_05,Destino Sellado,finisher,"Crítico si el enemigo tiene estado",500,espadas,damage:0.5,SINGLE_ENEMY,true,magico,,,finisher
 Sigrid,sigrid_06,Finta,support,"Esquiva y contraataca",100,espadas,damage:0.5,SINGLE_ENEMY,true,magico,buff,,melee
 Sigrid,sigrid_07,Reflejo Frío,support,"Gana velocidad si no recibe daño",150,espadas,persist:buff:velocidad:0.5,SELF,false,magico,buff,,melee
 Sigrid,sigrid_08,Muro de Acero,support,"Aumenta la defensa por tres turnos",150,espadas,persist:buff:defensa:2.0:3,ALL_ALLIES,false,magico,buff,,melee

@@ -44,133 +44,29 @@ func _instanciar_enemy_role(role_id: String) -> EnemyRoleBase:
 		return EnemyRoleBase.new()
 
 	var script = load(script_path)
-	if script == null:
+	if not script is Script or not script.can_instantiate():
 		push_warning("No se pudo cargar enemy role '%s' en %s. Usando EnemyRole base." % [role_id, script_path])
 		return EnemyRoleBase.new()
 
 	var role = script.new()
-	if role.has_method("setup"):
-		role.setup(self)
+	if not role is EnemyRoleBase:
+		if role is Node:
+			role.free()
+		push_warning("Script de rol incompatible: %s" % script_path)
+		return EnemyRoleBase.new()
 	return role
 
 
 func crear_accion_enemiga() -> Dictionary:
+	if not esta_vivo():
+		return {}
 	if enemy_ai == null:
 		_configurar_ia_enemiga({})
-
-	var decision := enemy_ai.decide_action(_crear_contexto_ia())
-	if _accion_es_valida(decision):
-		return decision
-
-	push_warning("El enemigo %s (%s) usa fallback de IA: %s" % [id, nombre, decision.get("reason", "sin_motivo")])
-	return _crear_accion_fallback(decision.get("reason", "invalid_decision"))
+	return enemy_ai.decide_action(_crear_contexto_ia())
 
 
 func get_tecnicas_disponibles() -> Array:
 	return tecnicas.duplicate(true)
-
-
-func _accion_es_valida(accion: Dictionary) -> bool:
-	var tecnica: Dictionary = accion.get("tecnica", {})
-	if tecnica.is_empty():
-		return false
-
-	var scope := str(tecnica.get("target_scope", "SINGLE_ENEMY"))
-	if scope == "SELF":
-		return true
-
-	var objetivos = accion.get("objetivos", [])
-	if not objetivos is Array:
-		objetivos = [objetivos]
-
-	for objetivo in objetivos:
-		if objetivo != null and is_instance_valid(objetivo) and objetivo.has_method("esta_vivo") and objetivo.esta_vivo():
-			return true
-
-	return false
-
-
-func _crear_accion_fallback(reason: String) -> Dictionary:
-	for tecnica in get_tecnicas_disponibles():
-		if not tecnica is Dictionary or tecnica.is_empty():
-			continue
-
-		var target = _elegir_objetivo_fallback(tecnica)
-		var objetivos := _normalizar_objetivos(target)
-		if str(tecnica.get("target_scope", "SINGLE_ENEMY")) == "SELF" or not objetivos.is_empty():
-			return {
-				"intent": "ATTACK",
-				"technique": tecnica,
-				"target": target,
-				"reason": "enemy_combatant_fallback_%s" % reason,
-				"tecnica": tecnica,
-				"objetivos": objetivos
-			}
-
-	var tecnica_defensiva := _crear_tecnica_defensiva_fallback()
-	return {
-		"intent": "DEFEND",
-		"technique": tecnica_defensiva,
-		"target": self,
-		"reason": "enemy_combatant_defensive_fallback_%s" % reason,
-		"tecnica": tecnica_defensiva,
-		"objetivos": [self]
-	}
-
-
-func _elegir_objetivo_fallback(tecnica: Dictionary):
-	var scope := str(tecnica.get("target_scope", "SINGLE_ENEMY"))
-	var contexto := _crear_contexto_ia()
-	var allies: Array = contexto.get("allies", [])
-	var opponents: Array = contexto.get("opponents", [])
-
-	match scope:
-		"ALL_ENEMIES":
-			return opponents
-		"ALL_ALLIES":
-			return allies
-		"SINGLE_ALLY", "RANDOM_ALLY":
-			return _primer_vivo(allies)
-		"SELF":
-			return self
-		_:
-			return _primer_vivo(opponents)
-
-
-func _primer_vivo(candidatos: Array):
-	for candidato in candidatos:
-		if candidato != null and is_instance_valid(candidato) and candidato.has_method("esta_vivo") and candidato.esta_vivo():
-			return candidato
-	return null
-
-
-func _normalizar_objetivos(target) -> Array:
-	if target == null:
-		return []
-	if target is Array:
-		return target.filter(func(t): return t != null and is_instance_valid(t) and t.has_method("esta_vivo") and t.esta_vivo())
-	if target != null and is_instance_valid(target) and target.has_method("esta_vivo") and target.esta_vivo():
-		return [target]
-	return []
-
-
-func _crear_tecnica_defensiva_fallback() -> Dictionary:
-	return {
-		"personaje": id,
-		"tecnique_id": "%s_defend_fallback" % id,
-		"nombre_tech": "Defensa",
-		"rol_combo": "enemy",
-		"descripcion": "Fallback defensivo enemigo.",
-		"effect": [],
-		"efectos": [],
-		"target_scope": "SELF",
-		"allow_target_switch": false,
-		"tipo_dano": "",
-		"visual_tipo": "",
-		"animation_scene": null,
-		"camera_profile": "default"
-	}
-
 
 func _crear_contexto_ia() -> Dictionary:
 	var allies: Array = []
@@ -179,9 +75,9 @@ func _crear_contexto_ia() -> Dictionary:
 	var last_technique := ""
 	var repeated_count := 0
 
-	if battle_manager != null:
-		allies = battle_manager.combatientes.filter(func(c): return c is Combatant and not c.es_jugador and c.esta_vivo())
-		opponents = battle_manager.combatientes.filter(func(c): return c is Combatant and c.es_jugador and c.esta_vivo())
+	if is_instance_valid(battle_manager):
+		allies = battle_manager.combatientes.filter(func(c): return EnemyAIClass.Targets.living(c) and not c.es_jugador)
+		opponents = battle_manager.combatientes.filter(func(c): return EnemyAIClass.Targets.living(c) and c.es_jugador)
 		var stats_value = battle_manager.get("battle_stats")
 		var last_technique_value = battle_manager.get("ultima_tecnica_usada")
 		var repeated_count_value = battle_manager.get("repeticion_continua")

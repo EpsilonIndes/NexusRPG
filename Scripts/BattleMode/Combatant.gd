@@ -348,6 +348,7 @@ func ejecutar_tecnica():
 		return
 
 	var tecnica = tecnica_seleccionada["datos"]
+	var decision: Dictionary = tecnica_seleccionada.get("decision", {})
 	var objetivos: Array = tecnica_seleccionada.get("objetivos", [])
 
 	# Log y animacion de ataque
@@ -423,7 +424,7 @@ func ejecutar_tecnica():
 	tecnica_seleccionada = null
 
 	if anim_scene:
-		await battle_manager.reproducir_animacion(anim_scene, self, objetivos)
+		await battle_manager.reproducir_animacion(anim_scene, self, objetivos, {"decision": decision})
 	else:
 		for t in objetivos:
 			if is_instance_valid(t) and t.has_method("reproducir_feedback"):

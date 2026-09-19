@@ -42,6 +42,8 @@ func actualizar_personajes_party():
 
 				# Reactivamos física al siguiente frame
 				await get_tree().process_frame
+				if not is_instance_valid(personaje) or not personaje.is_inside_tree():
+					return
 				personaje.set_physics_process(true)
 
 				_freeze_follow(personaje, 1.0)
@@ -71,6 +73,8 @@ func actualizar_personajes_party():
 # Helpers #
 
 func _posicionar_personaje(personaje: CharacterBody3D, base: Vector3, index: int, total: int):
+	if not is_instance_valid(personaje) or not personaje.is_inside_tree():
+		return
 	var pos_offset = get_posicion_circular(base, index, total)
 	pos_offset = snap_to_floor(pos_offset)
 
@@ -80,6 +84,8 @@ func _posicionar_personaje(personaje: CharacterBody3D, base: Vector3, index: int
 
 	# Activar fisica al siguiente frame
 	await get_tree().process_frame
+	if not is_instance_valid(personaje) or not personaje.is_inside_tree():
+		return
 	personaje.set_physics_process(true)
 
 
@@ -109,4 +115,5 @@ func _freeze_follow(personaje: Node, tiempo: float) -> void:
 
 	personaje.set_follow_enabled(false)
 	await get_tree().create_timer(tiempo).timeout
-	personaje.set_follow_enabled(true)
+	if is_instance_valid(personaje) and personaje.is_inside_tree():
+		personaje.set_follow_enabled(true)

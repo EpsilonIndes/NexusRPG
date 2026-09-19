@@ -122,6 +122,10 @@ layout_mode = 2
 text = "Opciones
 "
 
+[node name="Guardar" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "Guardar / cargar"
+
 [node name="Salir" type="Button" parent="Panel/VBoxContainer"]
 layout_mode = 2
 shortcut = SubResource("Shortcut_rts76")

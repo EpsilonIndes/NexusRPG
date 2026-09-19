@@ -205,11 +205,11 @@ func _deserialize_event(serialized_event: String) -> InputEvent:
 	match data.get("type", ""):
 		"InputEventKey":
 			var key_event := InputEventKey.new()
-			key_event.keycode = int(data.get("keycode", 0))
-			key_event.physical_keycode = int(data.get("physical_keycode", 0))
-			key_event.key_label = int(data.get("key_label", 0))
+			key_event.keycode = int(data.get("keycode", 0)) as Key
+			key_event.physical_keycode = int(data.get("physical_keycode", 0)) as Key
+			key_event.key_label = int(data.get("key_label", 0)) as Key
 			key_event.unicode = int(data.get("unicode", 0))
-			key_event.location = int(data.get("location", 0))
+			key_event.location = int(data.get("location", 0)) as KeyLocation
 			key_event.alt_pressed = bool(data.get("alt_pressed", false))
 			key_event.shift_pressed = bool(data.get("shift_pressed", false))
 			key_event.ctrl_pressed = bool(data.get("ctrl_pressed", false))
@@ -217,17 +217,17 @@ func _deserialize_event(serialized_event: String) -> InputEvent:
 			event = key_event
 		"InputEventJoypadButton":
 			var joypad_button_event := InputEventJoypadButton.new()
-			joypad_button_event.button_index = int(data.get("button_index", 0))
+			joypad_button_event.button_index = int(data.get("button_index", 0)) as JoyButton
 			joypad_button_event.pressure = float(data.get("pressure", 0.0))
 			event = joypad_button_event
 		"InputEventJoypadMotion":
 			var joypad_motion_event := InputEventJoypadMotion.new()
-			joypad_motion_event.axis = int(data.get("axis", 0))
+			joypad_motion_event.axis = int(data.get("axis", 0)) as JoyAxis
 			joypad_motion_event.axis_value = float(data.get("axis_value", 0.0))
 			event = joypad_motion_event
 		"InputEventMouseButton":
 			var mouse_button_event := InputEventMouseButton.new()
-			mouse_button_event.button_index = int(data.get("button_index", 0))
+			mouse_button_event.button_index = int(data.get("button_index", 0)) as MouseButton
 			mouse_button_event.factor = float(data.get("factor", 1.0))
 			mouse_button_event.double_click = bool(data.get("double_click", false))
 			event = mouse_button_event

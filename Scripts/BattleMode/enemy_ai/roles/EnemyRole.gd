@@ -28,44 +28,14 @@ func setup(owner_: EnemyCombatant) -> void:
 	owner = owner_
 
 
+# Contract: intent, tactical_role, preferred target, reason. No technique selection or effects.
 func evaluate(context: Dictionary) -> Dictionary:
 	return {
 		"intent": Intent.ATTACK,
 		"tactical_role": TacticalRole.ATTACK,
-		"technique": _find_attack_technique(context),
 		"target": _find_vulnerable_opponent(context),
 		"reason": "base_attack"
 	}
-
-
-func _find_attack_technique(context: Dictionary) -> Dictionary:
-	var tactical := _find_tactical_technique(context, [TacticalRole.ATTACK])
-	if not tactical.is_empty():
-		return tactical
-
-	var scoped := _find_technique_by_scope(context, ["SINGLE_ENEMY", "RANDOM_ENEMY", "ALL_ENEMIES"])
-	if not scoped.is_empty():
-		return scoped
-
-	var techniques: Array = context.get("available_techniques", [])
-	return techniques[0] if not techniques.is_empty() and techniques[0] is Dictionary else {}
-
-
-func _find_tactical_technique(context: Dictionary, tactical_roles: Array) -> Dictionary:
-	var techniques: Array = context.get("available_techniques", [])
-	for role_name in tactical_roles:
-		for technique in techniques:
-			if technique is Dictionary and str(technique.get("rol_combo", "")) == str(role_name):
-				return technique
-	return {}
-
-
-func _find_technique_by_scope(context: Dictionary, scopes: Array) -> Dictionary:
-	var techniques: Array = context.get("available_techniques", [])
-	for technique in techniques:
-		if technique is Dictionary and str(technique.get("target_scope", "")) in scopes:
-			return technique
-	return {}
 
 
 func _find_vulnerable_opponent(context: Dictionary):

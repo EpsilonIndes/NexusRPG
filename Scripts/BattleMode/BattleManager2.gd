@@ -2,6 +2,7 @@
 extends Node
 
 const DriveSystemScript = preload("res://Scripts/BattleMode/DriveScore/DriveSystem.gd")
+const ActionTargets = preload("res://Scripts/BattleMode/ActionTargets.gd")
 
 enum BattleState {
 	INICIO,
@@ -360,7 +361,7 @@ func iniciar_turno_enemigo() -> void:
 			if not objetivos is Array:
 				objetivos = [objetivos]
 
-			_encolar_accion(combatiente_actual, accion.get("tecnica", {}), objetivos)
+			_encolar_accion(combatiente_actual, accion.get("tecnica", {}), objetivos, accion)
 			_esperar_resolucion_accion_encolada()
 		else:
 			push_warning("Combatant %s no tiene crear_accion_enemiga()" % str(combatiente_actual))
@@ -459,10 +460,10 @@ func _reset_has_acted_cycle() -> void:
 # -----------------------
 func chequear_si_termina():
 	var jugadores_vivos = combatientes.any(
-		func(c): return c.es_jugador and c.esta_vivo()
+		func(c): return ActionTargets.living(c) and c.es_jugador
 	)
 	var enemigos_vivos = combatientes.any(
-		func(c): return not c.es_jugador and c.esta_vivo()
+		func(c): return ActionTargets.living(c) and not c.es_jugador
 	)
 
 	if not jugadores_vivos:
@@ -500,7 +501,7 @@ func finalizar_batalla() -> void:
 	usar una función Lambda/anónima [func(c)]
 	
 	"""
-	var victoria := combatientes.any(func(c): return c.es_jugador and c.esta_vivo())
+	var victoria := combatientes.any(func(c): return ActionTargets.living(c) and c.es_jugador)
 
 	var battle_result = _construir_battle_result(victoria)
 	emit_signal("battle_finished", battle_result)
@@ -644,14 +645,15 @@ func _on_cancel_selection_target() -> void:
 		camera_director.show_turn_actor(combatiente_actual)
 	estado_actual = BattleState.SELECCION_ACCION
 
-func _encolar_accion(actor: Combatant, tecnica: Dictionary, objetivos: Array) -> void:
-	if actor == null or tecnica.is_empty():
+func _encolar_accion(actor: Combatant, tecnica: Dictionary, objetivos: Array, decision: Dictionary = {}) -> void:
+	if not ActionTargets.living(actor) or tecnica.is_empty():
 		return
 
 	cola_acciones.append({
 		"actor": actor,
 		"tecnica": tecnica.duplicate(true),
-		"objetivos": objetivos.duplicate()
+		"objetivos": objetivos.duplicate(),
+		"decision": decision.duplicate(true)
 	})
 
 	if not procesando_cola_acciones:
@@ -679,12 +681,22 @@ func _procesar_cola_acciones() -> void:
 
 	while not cola_acciones.is_empty():
 		var accion: Dictionary = cola_acciones.pop_front()
-		var actor: Combatant = accion.get("actor", null)
-		var tecnica: Dictionary = accion.get("tecnica", {})
-		var objetivos: Array = _filtrar_objetivos_accion(actor, tecnica, accion.get("objetivos", []))
-
-		if actor == null or not is_instance_valid(actor) or not actor.esta_vivo():
+		# Validate the Variant before assigning a typed reference: a freed Object
+		# raises an error even on assignment to Combatant.
+		var actor = accion.get("actor", null)
+		if not ActionTargets.living(actor):
 			continue
+		var tecnica = accion.get("tecnica", {})
+		if not ActionTargets.valid_technique(tecnica):
+			continue
+		var objetivos: Array = _filtrar_objetivos_accion(actor, tecnica, accion.get("objetivos", []))
+		# No surviving legal target: consume the action without effects or resonance changes.
+		if objetivos.is_empty():
+			continue
+		var decision: Dictionary = accion.get("decision", {}).duplicate(true)
+		if not decision.is_empty():
+			decision["objetivos"] = objetivos.duplicate()
+			decision["target"] = objetivos.duplicate() if str(tecnica.get("target_scope", "")).begins_with("ALL_") else objetivos[0]
 
 		if not actor.es_jugador and drive_system != null:
 			drive_system.reset_resonance("enemy_action")
@@ -697,6 +709,7 @@ func _procesar_cola_acciones() -> void:
 		if camera_director != null and camera_director.has_method("begin_action"):
 			camera_director.begin_action(actor, tecnica, objetivos)
 		actor.seleccionar_tecnica(tecnica, objetivos)
+		actor.tecnica_seleccionada["decision"] = decision
 		await actor.ejecutar_tecnica()
 		if camera_director != null and camera_director.has_method("end_action"):
 			camera_director.end_action()
@@ -727,15 +740,7 @@ func _procesar_cola_acciones() -> void:
 		cambiar_estado_diferido(BattleState.CHEQUEAR_FINAL)
 
 func _filtrar_objetivos_accion(actor: Combatant, tecnica: Dictionary, objetivos: Array) -> Array:
-	var scope := str(tecnica.get("target_scope", ""))
-	if scope == "SELF" and actor != null and is_instance_valid(actor):
-		return [actor]
-
-	var filtrados: Array = []
-	for objetivo in objetivos:
-		if objetivo != null and is_instance_valid(objetivo) and objetivo.esta_vivo():
-			filtrados.append(objetivo)
-	return filtrados
+	return ActionTargets.resolve(actor, tecnica, objetivos, combatientes, ActionTargets.living(actor) and not actor.es_jugador)
 
 func _on_animation_impact_camera(source, targets, _data: Dictionary = {}) -> void:
 	if camera_director != null and camera_director.has_method("show_impact"):
@@ -754,7 +759,7 @@ func registrar_drive_score_pre_animacion(actor: Combatant, tecnica: Dictionary, 
 
 
 func _registrar_accion_resuelta(actor: Combatant, _tecnica: Dictionary, objetivos: Array = [], estado_previo: Dictionary = {}, estado_posterior: Dictionary = {}) -> Dictionary:
-	if actor != null and actor.es_jugador:
+	if is_instance_valid(actor) and actor.es_jugador:
 		if not jugadores_participantes.has(actor.id):
 			jugadores_participantes.append(actor.id)
 		var drive_result := actualizar_drive_score(_tecnica, actor, objetivos, estado_previo, estado_posterior)
@@ -773,16 +778,16 @@ func _aplicar_cierre_drive_result(drive_result: Dictionary) -> void:
 
 func _batalla_termino() -> bool:
 	var jugadores_vivos = combatientes.any(
-		func(c): return c.es_jugador and c.esta_vivo()
+		func(c): return ActionTargets.living(c) and c.es_jugador
 	)
 	var enemigos_vivos = combatientes.any(
-		func(c): return not c.es_jugador and c.esta_vivo()
+		func(c): return ActionTargets.living(c) and not c.es_jugador
 	)
 	return not jugadores_vivos or not enemigos_vivos
 
 func _candidatos_por_scope(scope: String) -> Array:
-	var aliados = combatientes.filter(func(c): return c is Combatant and c.es_jugador and c.esta_vivo())
-	var enemigos = combatientes.filter(func(c): return c is Combatant and not c.es_jugador and c.esta_vivo())
+	var aliados = combatientes.filter(func(c): return ActionTargets.living(c) and c.es_jugador)
+	var enemigos = combatientes.filter(func(c): return ActionTargets.living(c) and not c.es_jugador)
 
 	match scope:
 		"ALL_ENEMIES", "SINGLE_ENEMY", "RANDOM_ENEMY":
@@ -982,6 +987,7 @@ func get_combatant():
 	return combatiente_actual
 
 func ordenar_combatientes_por_velocidad() -> void:
+	combatientes = combatientes.filter(func(c): return is_instance_valid(c) and c is Combatant)
 	combatientes.sort_custom(func(a, b):
 		if a.velocidad == b.velocidad:
 			return a.indice < b.indice # desempate estable

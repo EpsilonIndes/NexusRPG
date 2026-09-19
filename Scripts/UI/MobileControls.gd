@@ -99,6 +99,8 @@ func _make_action_button(node_name: String, label: String, actions: Array[String
 
 
 func _layout_controls() -> void:
+	if not is_inside_tree():
+		return
 	if not visible or _joystick == null:
 		return
 

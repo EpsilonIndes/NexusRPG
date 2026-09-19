@@ -20,11 +20,16 @@ extends Control
 @onready var party_sumary_anim := party_sumary.get_node("AnimationPlayer")
 
 var is_open := false
+var save_slots: Control
 
 func _ready() -> void:
 	visible = false
 	party_sumary.visible = false
 	set_process_unhandled_input(false)
+	save_slots = preload("res://Escenas/UserUI/save_slots_ui.tscn").instantiate()
+	get_parent().add_child.call_deferred(save_slots)
+	save_slots.closed.connect(_on_child_ui_closed)
+	$Panel/VBoxContainer/Guardar.pressed.connect(_on_save_pressed)
 
 	anim.animation_finished.connect(_on_animation_finished)
 
@@ -67,7 +72,7 @@ func close():
 	GameManager.pop_ui()
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("menu") and not is_open and GameManager.ui_lock_count == 0:
+	if event.is_action_pressed("menu") and not is_open and GameManager.ui_lock_count == 0 and GameManager.estado_actual == GameManager.EstadosDeJuego.LIBRE:
 		open()
 		return
 	elif event.is_action_pressed("menu") and is_open and GameManager.ui_lock_count == 1:
@@ -108,3 +113,7 @@ func _on_opciones_pressed() -> void:
 
 func _on_child_ui_closed():
 	open()
+
+func _on_save_pressed() -> void:
+	save_slots.open(true)
+	close()

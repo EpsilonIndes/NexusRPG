@@ -51,9 +51,10 @@ func _ready() -> void:
 	get_tree().tree_changed.connect(_rebuild_cache)
 	_rebuild_cache()
 
-# -----------
-# API Pública
-# -----------
+"""
+API pública
+
+"""
 
 func apply_graphics(new_settings: Dictionary) -> void:
 	if current_settings == new_settings:
@@ -100,6 +101,8 @@ Caché System
 
 """
 func _rebuild_cache() -> void:
+	if not is_inside_tree():
+		return
 	cached_lights.clear()
 	cached_particles.clear()
 	cached_cameras.clear()
@@ -207,6 +210,7 @@ func _apply_lighting(enabled: bool) -> void:
 1 Basic (Glow)
 2 Full (Glow + Color Adjust)
 """
+
 func _apply_postprocess(level: int) -> void:
 	if not world_enviroment:
 		return

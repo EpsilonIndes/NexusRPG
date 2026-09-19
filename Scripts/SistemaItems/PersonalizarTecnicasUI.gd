@@ -108,8 +108,8 @@ func _build_layout() -> void:
 	var panel := PanelContainer.new()
 	panel.custom_minimum_size = panel_size
 	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	panel.offset_left = -panel_size.x * 0.5
-	panel.offset_top = -panel_size.y * 0.5
+	panel.offset_left = - panel_size.x * 0.5
+	panel.offset_top = - panel_size.y * 0.5
 	panel.offset_right = panel_size.x * 0.5
 	panel.offset_bottom = panel_size.y * 0.5
 	add_child(panel)

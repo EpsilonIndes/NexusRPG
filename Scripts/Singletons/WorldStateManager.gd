@@ -33,7 +33,7 @@ func capture_followers(seguidores: Node3D):
 			"rotation": child.global_rotation
 		})
 	
-	snapshot["party"] = followers_snapshot
+	snapshot["followers"] = followers_snapshot
 
 
 func restore_player(player: Node3D) -> void:
@@ -46,11 +46,11 @@ func restore_player(player: Node3D) -> void:
 	if snapshot.has("player_rotation"):
 		player.global_rotation = snapshot["player_rotation"]
 	
-	# Limpiar snapshot
-	clear_snapshot()
+	# Followers are restored by world.gd after the party has spawned.
 
 func restore_followers(seguidores: Node3D):
 	if not snapshot.has("followers"):
+		clear_snapshot()
 		return
 	
 	var data = snapshot["followers"]

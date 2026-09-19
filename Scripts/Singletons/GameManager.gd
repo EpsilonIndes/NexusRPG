@@ -33,18 +33,26 @@ func _ready():
 func start_game():
 	if game_started:
 		return
+	if SaveManager.busy:
+		return
+	SaveManager.busy = true
+	await SceneTransition.cover()
 
 	var error := get_tree().change_scene_to_file("res://Escenas/pantallas/nivel_1.tscn")
 	if error != OK:
+		await SceneTransition.reveal()
+		SaveManager.busy = false
 		push_error("[GameManager] No se pudo cargar nivel_1.tscn. Error: %s" % error)
 		return
 
-	await get_tree().tree_changed
-	await get_tree().process_frame
-
+	SaveManager.reset_progress()
 	DataLoader.init_data()
 	_initialize_team()
 	game_started = true
+	set_estado(EstadosDeJuego.LIBRE)
+	await get_tree().scene_changed
+	await SceneTransition.reveal()
+	SaveManager.busy = false
 
 
 func _initialize_team():

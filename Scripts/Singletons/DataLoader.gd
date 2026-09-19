@@ -37,8 +37,6 @@ func load_all_data():
 	load_enemy_stats("res://Data/Enemy_stats/stats_enemigos.csv")
 	load_enemy_roles("res://Data/Enemy_stats/enemy_roles.csv")
 	load_enemy_drops("res://Data/Loot/drop_tables.csv")
-	print("Items exists: ", FileAccess.file_exists("res://Data/Items/items.csv"))
-	print("Stats exists: ", FileAccess.file_exists("res://Data/Char_stats/stats.csv"))
 	print("[DataLoader] Datos cargados completamente.")
 
 func load_csv_to_dict(path: String, key_column: String) -> Dictionary:
@@ -74,7 +72,7 @@ func load_csv_grouped_by_key(path: String, key_column: String) -> Dictionary:
 
 	while not file.eof_reached():
 		var row := file.get_line().strip_edges().split(",")
-		if row.size() < 2:  # Evita líneas vacías o mal formadas
+		if row.size() < 2: # Evita líneas vacías o mal formadas
 			continue
 
 		var entry := {}
@@ -202,10 +200,8 @@ func load_techs_to_dict(path: String, key_column: String) -> Dictionary:
 	return result
 
 func _process_value(header_name: String, value: String):
-
 	# Columnas especiales
 	match header_name:
-		
 		"effect":
 			return EffectParser.parse_effect_string(value)
 		
@@ -263,7 +259,6 @@ func load_csv_grouped(path: String, key_column: String) -> Dictionary:
 	return result
 
 
-
 func load_dialogues(path: String):
 	dialogues = load_csv_grouped_by_key(path, "npc_id")
 
@@ -275,15 +270,20 @@ func load_loots(path: String):
 
 func load_stats(path: String):
 	stats = load_stats_to_dict(path, "id")
+
 func load_tecnicas(path: String):
 	tecnicas = load_techs_to_dict(path, "tecnique_id")
+
 func load_enemy_techniques(path: String):
 	var enemy_techniques := load_techs_to_dict(path, "tecnique_id")
 	for tech_id in enemy_techniques.keys():
 		tecnicas[tech_id] = enemy_techniques[tech_id]
+
 func load_enemy_stats(path: String):
 	enemigos = load_stats_to_dict(path, "id")
+
 func load_enemy_roles(path: String):
 	enemy_roles = load_csv_to_dict(path, "role_id")
+
 func load_enemy_drops(path: String):
 	drops = load_csv_grouped(path, "enemy_id")

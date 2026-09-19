@@ -2,237 +2,125 @@ extends RefCounted
 class_name EnemyAI
 
 const EnemyRoleBase = preload("res://Scripts/BattleMode/enemy_ai/roles/EnemyRole.gd")
+const Targets = preload("res://Scripts/BattleMode/ActionTargets.gd")
 
-var owner: EnemyCombatant = null
-var role: EnemyRoleBase = null
-
+var owner: EnemyCombatant
+var role: EnemyRoleBase
 
 func _init(owner_: EnemyCombatant = null, role_: EnemyRoleBase = null) -> void:
 	owner = owner_
-	role = role_
-	if role != null and role.has_method("setup"):
-		role.setup(owner)
+	role = role_ if role_ != null else EnemyRoleBase.new()
+	role.setup(owner)
 
 
 func decide_action(context: Dictionary) -> Dictionary:
-	if owner == null:
-		return _empty_decision("missing_owner")
-		
-	var active_role := role
-	if active_role == null:
-		active_role = EnemyRoleBase.new()
-
-	var role_decision := active_role.evaluate(context)
-	var intent := str(role_decision.get("intent", EnemyRoleBase.Intent.ATTACK))
-	var tactical_role := str(role_decision.get("tactical_role", _tactical_role_for_intent(intent)))
-	var technique := _select_tactical_technique(context, tactical_role, intent)
-	var target = role_decision.get("target", null)
-
-	if technique.is_empty() and tactical_role != EnemyRoleBase.TacticalRole.ATTACK:
-		technique = _select_tactical_technique(context, EnemyRoleBase.TacticalRole.ATTACK, EnemyRoleBase.Intent.ATTACK)
-
-	if technique.is_empty():
-		technique = _select_any_valid_technique(context)
-
-	if technique.is_empty():
-		return _defend_decision("missing_technique")
-
-	if target == null or not _target_matches_scope(target, technique, context):
-		target = _select_default_target(context, technique)
-
-	if _needs_living_target(technique) and _normalize_targets(target).is_empty():
-		var alternative := _select_non_offensive_technique(context)
-		if not alternative.is_empty():
-			technique = alternative
-			target = _select_default_target(context, technique)
-			if _needs_living_target(technique) and _normalize_targets(target).is_empty():
-				return _defend_decision("missing_living_targets")
-		else:
-			return _defend_decision("missing_living_targets")
-
-	return {
-		"intent": intent,
-		"tactical_role": tactical_role,
-		"technique": technique,
-		"target": target,
-		"reason": str(role_decision.get("reason", "default_attack")),
-		"tecnica": technique,
-		"objetivos": _normalize_targets(target)
-	}
-
-
-func _select_tactical_technique(context: Dictionary, tactical_role: String, intent: String) -> Dictionary:
-	var techniques: Array = context.get("available_techniques", [])
-	var tactical_matches := []
-	for technique in techniques:
-		if not technique is Dictionary:
+	if not Targets.living(owner):
+		return {}
+	# Roles propose intent and a preferred target; only the AI selects techniques.
+	var proposal := role.evaluate(context)
+	var requested_intent := str(proposal.get("intent", EnemyRoleBase.Intent.ATTACK))
+	var requested_role := str(proposal.get("tactical_role", "enemy_attack"))
+	var roster: Array = context.get("allies", []) + context.get("opponents", [])
+	var available: Array = context.get("available_techniques", [])
+	var compatible: Array = []
+	var attacks: Array = []
+	var offensive: Array = []
+	var usable: Array = []
+	for technique in available:
+		if not Targets.valid_technique(technique):
 			continue
-		if str(technique.get("rol_combo", "")) == tactical_role and _technique_matches_intent_scope(technique, intent):
-			tactical_matches.append(technique)
-
-	if not tactical_matches.is_empty():
-		return tactical_matches.pick_random()
-
-	for technique in techniques:
-		if technique is Dictionary and str(technique.get("rol_combo", "")) == tactical_role:
-			return technique
-
-	return {}
-
-
-func _select_any_valid_technique(context: Dictionary) -> Dictionary:
-	var techniques: Array = context.get("available_techniques", [])
-	var valid := []
-	for technique in techniques:
-		if technique is Dictionary and not technique.is_empty():
-			valid.append(technique)
-
-	return valid.pick_random() if not valid.is_empty() else {}
-
-
-func _select_non_offensive_technique(context: Dictionary) -> Dictionary:
-	var techniques: Array = context.get("available_techniques", [])
-	for technique in techniques:
-		if not technique is Dictionary:
+		if Targets.resolve(owner, technique, [], roster).is_empty():
 			continue
+		usable.append(technique)
+		if _offensive_scope(technique):
+			offensive.append(technique)
+			if str(technique.get("rol_combo", "")) == "enemy_attack":
+				attacks.append(technique)
+		if str(technique.get("rol_combo", "")) == requested_role and _matches_intent(technique, requested_intent):
+			compatible.append(technique)
 
-		var scope := str(technique.get("target_scope", "SINGLE_ENEMY"))
-		if scope in ["SELF", "SINGLE_ALLY", "ALL_ALLIES", "RANDOM_ALLY"]:
-			return technique
+	var technique: Dictionary = {}
+	var fallback_reason := ""
+	if not compatible.is_empty():
+		technique = compatible.pick_random()
+	elif not attacks.is_empty():
+		technique = attacks.pick_random()
+		fallback_reason = "attack_fallback"
+	elif not offensive.is_empty():
+		technique = offensive.pick_random()
+		fallback_reason = "offensive_fallback"
+	elif not usable.is_empty():
+		technique = usable.pick_random()
+		fallback_reason = "available_fallback"
+	else:
+		return fallback_decision("no_usable_technique", proposal)
 
-	return {}
-
-
-func _technique_matches_intent_scope(technique: Dictionary, intent: String) -> bool:
-	var scope := str(technique.get("target_scope", "SINGLE_ENEMY"))
-	match intent:
-		EnemyRoleBase.Intent.DEFEND, EnemyRoleBase.Intent.CHARGE:
-			return scope == "SELF"
-		EnemyRoleBase.Intent.PROTECT:
-			return scope in ["SINGLE_ALLY", "ALL_ALLIES", "SELF"]
-		_:
-			return scope in ["SINGLE_ENEMY", "RANDOM_ENEMY", "ALL_ENEMIES"]
-
-
-func _tactical_role_for_intent(intent: String) -> String:
-	match intent:
-		EnemyRoleBase.Intent.COUNTER:
-			return EnemyRoleBase.TacticalRole.COUNTER
-		EnemyRoleBase.Intent.CONTROL, EnemyRoleBase.Intent.INTERRUPT:
-			return EnemyRoleBase.TacticalRole.CONTROL
-		EnemyRoleBase.Intent.PROTECT, EnemyRoleBase.Intent.DEFEND:
-			return EnemyRoleBase.TacticalRole.PROTECT
-		EnemyRoleBase.Intent.CHARGE:
-			return EnemyRoleBase.TacticalRole.CHARGE
-		EnemyRoleBase.Intent.SPECIAL:
-			return EnemyRoleBase.TacticalRole.SPECIAL
-		_:
-			return EnemyRoleBase.TacticalRole.ATTACK
+	var preferred = proposal.get("target", null)
+	var preferences: Array = preferred if preferred is Array else [preferred]
+	if str(technique.get("target_scope", "")).begins_with("RANDOM_"):
+		preferences = []
+	var targets := Targets.resolve(owner, technique, preferences, roster)
+	var intent := requested_intent if fallback_reason.is_empty() else _intent_for(technique)
+	return _decision(technique, targets, intent, proposal, fallback_reason)
 
 
-func _select_default_target(context: Dictionary, technique: Dictionary):
-	var scope := str(technique.get("target_scope", "SINGLE_ENEMY"))
-	var allies: Array = context.get("allies", [])
-	var opponents: Array = context.get("opponents", [])
-
-	match scope:
-		"ALL_ENEMIES":
-			return opponents.duplicate()
-		"ALL_ALLIES":
-			return allies.duplicate()
-		"SINGLE_ALLY", "RANDOM_ALLY":
-			return _pick_lowest_hp_ratio(allies)
-		"SELF":
-			return owner
-		_:
-			return _pick_lowest_hp_ratio(opponents)
-
-
-func _target_matches_scope(target, technique: Dictionary, context: Dictionary) -> bool:
-	var scope := str(technique.get("target_scope", "SINGLE_ENEMY"))
-	match scope:
-		"ALL_ENEMIES":
-			return target is Array and not _normalize_targets(target).is_empty()
-		"ALL_ALLIES":
-			return target is Array and not _normalize_targets(target).is_empty()
-		"SELF":
-			return target == owner
-		"SINGLE_ALLY", "RANDOM_ALLY":
-			return target in context.get("allies", [])
-		_:
-			return target in context.get("opponents", [])
-
-
-func _needs_living_target(technique: Dictionary) -> bool:
-	var scope := str(technique.get("target_scope", "SINGLE_ENEMY"))
-	return scope in ["SINGLE_ENEMY", "RANDOM_ENEMY", "ALL_ENEMIES", "SINGLE_ALLY", "RANDOM_ALLY", "ALL_ALLIES"]
-
-
-func _pick_lowest_hp_ratio(candidates: Array):
-	var best = null
-	var best_ratio := INF
-	for candidate in candidates:
-		if candidate == null or not is_instance_valid(candidate) or not candidate.has_method("esta_vivo") or not candidate.esta_vivo():
-			continue
-
-		var max_hp = max(1.0, float(candidate.get("hp_max")))
-		var ratio = float(candidate.get("hp")) / max_hp
-		if ratio < best_ratio:
-			best_ratio = ratio
-			best = candidate
-
-	return best
-
-
-func _normalize_targets(target) -> Array:
-	if target == null:
-		return []
-	if target is Array:
-		return target.filter(func(t): return t != null and is_instance_valid(t) and t.has_method("esta_vivo") and t.esta_vivo())
-	if target != null and is_instance_valid(target) and target.has_method("esta_vivo") and target.esta_vivo():
-		return [target]
-	return []
-
-
-func _defend_decision(reason: String) -> Dictionary:
-	var owner_id := ""
-	if owner != null:
-		owner_id = owner.id
-	var technique_id := "enemy_ai_defend"
-	if owner_id != "":
-		technique_id = "%s_ai_defend" % owner_id
-
+func fallback_decision(reason: String, proposal: Dictionary = {}) -> Dictionary:
+	if not Targets.living(owner):
+		return {}
+	# Safe no-op, not a defensive buff. Do not change balance through recovery logic.
 	var technique := {
-		"personaje": owner_id,
-		"tecnique_id": technique_id,
-		"nombre_tech": "Defensa",
-		"rol_combo": "enemy",
-		"descripcion": "Fallback defensivo de IA enemiga.",
-		"effect": [],
-		"efectos": [],
-		"target_scope": "SELF",
-		"allow_target_switch": false,
-		"tipo_dano": "",
-		"visual_tipo": "",
-		"animation_scene": null,
+		"personaje": owner.id,
+		"tecnique_id": "%s_ai_wait" % owner.id,
+		"nombre_tech": "Esperar",
+		"rol_combo": "enemy_wait",
+		"descripcion": "Sin tecnica ejecutable; consume el turno sin efectos.",
+		"effect": [], "efectos": [], "target_scope": "SELF",
+		"allow_target_switch": false, "animation_scene": null,
 		"camera_profile": "default"
 	}
+	return _decision(technique, [owner], "WAIT", proposal, reason)
+
+
+func _decision(technique: Dictionary, targets: Array, intent: String, proposal: Dictionary, fallback_reason: String) -> Dictionary:
+	var scope := str(technique.get("target_scope", ""))
 	return {
-		"intent": EnemyRoleBase.Intent.DEFEND,
+		"intent": intent,
+		"tactical_role": str(technique.get("rol_combo", "")),
+		"reason": str(proposal.get("reason", "base_attack")) if fallback_reason.is_empty() else fallback_reason,
+		"requested_intent": str(proposal.get("intent", "")),
+		"requested_tactical_role": str(proposal.get("tactical_role", "")),
+		"requested_reason": str(proposal.get("reason", "")),
+		"fallback_reason": fallback_reason,
 		"technique": technique,
-		"target": owner,
-		"reason": reason,
+		"target": targets if scope.begins_with("ALL_") else (targets[0] if not targets.is_empty() else null),
+		# Compatibility aliases for the existing battle pipeline.
 		"tecnica": technique,
-		"objetivos": [owner] if owner != null else []
+		"objetivos": targets
 	}
 
 
-func _empty_decision(reason: String) -> Dictionary:
-	return {
-		"intent": EnemyRoleBase.Intent.NONE,
-		"technique": {},
-		"target": null,
-		"reason": reason,
-		"tecnica": {},
-		"objetivos": []
-	}
+func _offensive_scope(technique: Dictionary) -> bool:
+	return str(technique.get("target_scope", "")) in ["SINGLE_ENEMY", "RANDOM_ENEMY", "ALL_ENEMIES"]
+
+
+func _matches_intent(technique: Dictionary, intent: String) -> bool:
+	var scope := str(technique.get("target_scope", ""))
+	match intent:
+		"DEFEND", "CHARGE":
+			return scope == "SELF"
+		"PROTECT":
+			return scope in ["SELF", "SINGLE_ALLY", "ALL_ALLIES", "RANDOM_ALLY"]
+		"ATTACK", "COUNTER", "CONTROL", "INTERRUPT", "SPECIAL":
+			return _offensive_scope(technique)
+	return false
+
+
+func _intent_for(technique: Dictionary) -> String:
+	var tactical := str(technique.get("rol_combo", ""))
+	if not _offensive_scope(technique):
+		return "CHARGE" if tactical == "enemy_charge" and technique.get("target_scope") == "SELF" else "PROTECT"
+	match tactical:
+		"enemy_counter": return "COUNTER"
+		"enemy_control": return "CONTROL"
+		"enemy_special": return "SPECIAL"
+	return "ATTACK"

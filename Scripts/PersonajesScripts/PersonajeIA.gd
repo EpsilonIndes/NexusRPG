@@ -34,11 +34,15 @@ var update_interval := 0.25
 # ----------------------------------------------------
 func _ready():
 	await get_tree().process_frame
+	if not is_inside_tree():
+		return
 	asignar_kosmo()
 
 	await get_tree().physics_frame 
 
-	if kosmo == null:
+	if not is_inside_tree():
+		return
+	if not is_instance_valid(kosmo):
 		push_warning("%s no encontró a Astro" % pj_nombre)
 		return
 

@@ -8,7 +8,6 @@ func evaluate(context: Dictionary) -> Dictionary:
 		return {
 			"intent": Intent.CONTROL,
 			"tactical_role": TacticalRole.CONTROL,
-			"technique": _find_tactical_technique(context, [TacticalRole.CONTROL, TacticalRole.SPECIAL, TacticalRole.ATTACK]),
 			"target": _find_vulnerable_opponent(context),
 			"reason": "adapt_to_%s" % most_used
 		}

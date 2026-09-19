@@ -8,7 +8,6 @@ func evaluate(context: Dictionary) -> Dictionary:
 	return {
 		"intent": Intent.ATTACK if has_condition else Intent.DEFEND,
 		"tactical_role": tactical_role,
-		"technique": _find_tactical_technique(context, [tactical_role, TacticalRole.ATTACK]),
 		"target": _find_vulnerable_opponent(context) if has_condition else owner,
 		"reason": "restriction_open" if has_condition else "restriction_closed"
 	}
