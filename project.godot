@@ -48,6 +48,7 @@ ControlsController="*res://Scripts/ConfiguracionUI/ControlsController.gd"
 InputDisplayHelper="*res://Scripts/ConfiguracionUI/InputDisplayHelper.gd"
 SaveManager="*res://Scripts/Singletons/SaveManager.gd"
 SceneTransition="*res://Scripts/Singletons/SceneTransition.gd"
+DeviceManager="*res://Scripts/Singletons/DeviceManager.gd"
 
 [display]
 

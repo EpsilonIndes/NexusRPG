@@ -6,7 +6,7 @@ const MOVE_UP := &"arriba"
 const MOVE_DOWN := &"abajo"
 
 @export var show_on_mobile_only: bool = true
-@export var force_visible_for_testing: bool = true
+@export var force_visible_for_testing: bool = false
 @export_range(0.0, 1.0, 0.01) var opacity: float = 0.78
 @export var joystick_size: float = 150.0
 @export var button_size: float = 64.0
@@ -23,11 +23,9 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	modulate.a = opacity
 
-	visible = _should_show_controls()
-	if not visible:
-		return
-
 	_build_controls()
+	DeviceManager.presentation_changed.connect(_refresh_visibility)
+	_refresh_visibility()
 	get_viewport().size_changed.connect(_layout_controls)
 	call_deferred("_layout_controls")
 
@@ -45,8 +43,20 @@ func _should_show_controls() -> bool:
 	if force_visible_for_testing:
 		return true
 	if not show_on_mobile_only:
-		return true
-	return OS.has_feature("android") or OS.has_feature("ios") or DisplayServer.is_touchscreen_available()
+		return DeviceManager.input_method != DeviceManager.InputMethod.GAMEPAD
+	return DeviceManager.uses_touch()
+
+func _process(_delta: float) -> void:
+	_refresh_visibility()
+
+func _refresh_visibility() -> void:
+	var should_show := _should_show_controls() and GameManager.estado_actual == GameManager.EstadosDeJuego.LIBRE and not SceneTransition.active
+	if visible != should_show:
+		visible = should_show
+		if visible:
+			_layout_controls()
+		elif _joystick != null:
+			_joystick._clear()
 
 
 func _build_controls() -> void:

@@ -174,7 +174,7 @@ func _build_character_panel(parent: VBoxContainer) -> void:
 		tabs_row.add_child(_make_tab_hint(character_prev_hint))
 
 	character_tabs = TabBar.new()
-	character_tabs.tab_alignment = character_tabs_alignment
+	character_tabs.tab_alignment = character_tabs_alignment as TabBar.AlignmentMode
 	character_tabs.size_flags_horizontal = Control.SIZE_EXPAND_FILL if character_tabs_expand else Control.SIZE_SHRINK_CENTER
 	character_tabs.tab_changed.connect(_on_character_tab_changed)
 	tabs_row.add_child(character_tabs)

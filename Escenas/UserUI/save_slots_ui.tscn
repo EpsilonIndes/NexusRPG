@@ -41,40 +41,36 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "Partidas guardadas"
 
+[node name="Modes" type="TabBar" parent="Panel/Margin/Column"]
+layout_mode = 2
+focus_mode = 0
+
 [node name="Slots" type="ItemList" parent="Panel/Margin/Column"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/v_separation = 16
-
-[node name="Name" type="LineEdit" parent="Panel/Margin/Column"]
-layout_mode = 2
-placeholder_text = "Nombre de la partida (opcional)"
-max_length = 64
 
 [node name="Status" type="Label" parent="Panel/Margin/Column"]
 layout_mode = 2
 custom_minimum_size = Vector2(0, 32)
 autowrap_mode = 2
 
-[node name="Actions" type="HBoxContainer" parent="Panel/Margin/Column"]
+[node name="Hints" type="Label" parent="Panel/Margin/Column"]
 layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="New" type="Button" parent="Panel/Margin/Column/Actions"]
-layout_mode = 2
-text = "Nuevo guardado"
-
-[node name="Save" type="Button" parent="Panel/Margin/Column/Actions"]
-layout_mode = 2
-text = "Sobrescribir"
-
-[node name="Load" type="Button" parent="Panel/Margin/Column/Actions"]
-layout_mode = 2
-text = "Cargar partida"
-
-[node name="Back" type="Button" parent="Panel/Margin/Column/Actions"]
-layout_mode = 2
-text = "Volver"
+autowrap_mode = 2
 
 [node name="Confirmation" type="ConfirmationDialog" parent="."]
 title = "Confirmar"
+
+[node name="NewSave" type="ConfirmationDialog" parent="."]
+title = "Nuevo guardado"
+size = Vector2i(440, 140)
+ok_button_text = "Guardar"
+
+[node name="Name" type="LineEdit" parent="NewSave"]
+offset_left = 16.0
+offset_top = 20.0
+offset_right = 424.0
+offset_bottom = 58.0
+placeholder_text = "Nombre opcional: Mi partida"
+max_length = 64

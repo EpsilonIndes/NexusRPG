@@ -36,6 +36,8 @@ func setup() -> void:
 	_apply_value_to_control(value)
 	_ignore_signal = false
 	label.text = key.capitalize()
+	if key == "input_mode":
+		label.text = "Interfaz de entrada"
 
 
 func _on_check_box_toggled(pressed: bool):
@@ -62,6 +64,11 @@ func _populate_options():
 	control.clear()
 	
 	match key:
+		"input_mode":
+			for option in ["Automático", "Táctil", "Teclado y mouse", "Mando"]:
+				var index: int = control.item_count
+				control.add_item(option)
+				control.set_item_metadata(index, index)
 		"resolution":
 			_populate_resolutions()
 		"display_mode":

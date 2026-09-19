@@ -2,6 +2,7 @@ extends CanvasLayer
 ## Persistent overlay: it survives scene replacement and freezes input/gameplay.
 @export var fade_out_seconds := 0.3
 @export var fade_in_seconds := 0.4
+@export var black_hold_seconds := 0.5
 var active := false
 var _was_paused := false
 var _curtain: ColorRect
@@ -31,11 +32,14 @@ func cover() -> void:
 	await get_tree().process_frame
 
 func reveal() -> void:
-	# Allow deferred world/party setup to settle while gameplay is still paused.
-	await get_tree().process_frame
-	await get_tree().process_frame
+	# Let followers/navigation settle behind black while player input stays locked.
+	var previous_state = GameManager.estado_actual
+	GameManager.set_estado(GameManager.EstadosDeJuego.CINEMATICA)
+	get_tree().paused = _was_paused
+	await get_tree().create_timer(black_hold_seconds, true, false, true).timeout
 	await _fade(0.0, fade_in_seconds)
 	_curtain.hide()
+	GameManager.set_estado(previous_state)
 	get_tree().paused = _was_paused
 	active = false
 

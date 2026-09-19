@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://u7k5h2uhfu3"]
 
 [ext_resource type="Script" uid="uid://bs6yhdrqyrfco" path="res://Scripts/UI/MainMenu.gd" id="1_dhp8k"]
-[ext_resource type="PackedScene" path="res://Escenas/UserUI/save_slots_ui.tscn" id="3_saves"]
 [ext_resource type="PackedScene" uid="uid://uu6q5hosvtu6" path="res://Escenas/UserUI/ConfiguraciónIU/opciones_ui.tscn" id="2_smgxr"]
+[ext_resource type="PackedScene" path="res://Escenas/UserUI/save_slots_ui.tscn" id="3_saves"]
 
 [node name="Menu" type="Control"]
 layout_mode = 3

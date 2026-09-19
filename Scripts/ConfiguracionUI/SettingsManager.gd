@@ -6,6 +6,7 @@ const SETTINGS_PATH: String= "user://settings.cfg"
 const SETTINGS_VERSION: int = 1
 
 const DEFAULT_SETTINGS: Dictionary = {
+	"interface": {"input_mode": 0},
 	"audio": {
 		"master": 1.0,
 		"music": 0.8,
@@ -55,6 +56,8 @@ func _ready():
 	apply_all()
 
 func apply_all():
+	if get_node_or_null("/root/DeviceManager") != null:
+		DeviceManager.apply_settings()
 	apply_audio()
 	apply_video()
 	apply_gameplay()

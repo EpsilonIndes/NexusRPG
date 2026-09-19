@@ -107,6 +107,22 @@ func read_save(filename: String) -> Dictionary:
 		return {}
 	return data
 
+func delete_save(filename: String) -> bool:
+	last_error = ""
+	if busy or GameManager.in_battle:
+		return _fail("No se puede eliminar en este momento.")
+	if not _valid_filename(filename):
+		return _fail("Nombre de archivo inválido.")
+	var path := SAVE_DIR + filename
+	if not FileAccess.file_exists(path):
+		return _fail("El archivo seleccionado ya no existe.")
+	# Remove only companions of this exact slot; never enumerate unrelated saves.
+	for suffix in [".bak", ".tmp", ""]:
+		var target: String = path + suffix
+		if FileAccess.file_exists(target) and DirAccess.remove_absolute(target) != OK:
+			return _fail("No se pudo eliminar completamente el guardado. Intentá de nuevo.")
+	return true
+
 func _validate(data: Variant) -> bool:
 	if not data is Dictionary:
 		return false

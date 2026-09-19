@@ -2,6 +2,8 @@
 
 - Menú inicial: Nueva partida y Cargar partida.
 - Menú de exploración: Guardar / cargar.
+- Pestañas Guardar/Cargar: L1/R1 o Q/W. Aceptar sobre una fila (o doble clic) abre la acción de esa pestaña. Crear nuevo guardado y Volver son filas de la lista; no hay botones de acciones separados al pie.
+- Triángulo/Y o R abre la confirmación de eliminación del archivo seleccionado y su respaldo. Con mouse se usa clic derecho. También permite eliminar archivos dañados. La eliminación se limita al archivo elegido y sus compañeros .bak/.tmp.
 - Nuevo guardado crea un archivo independiente, sin límite fijo de ranuras.
 - Sobrescribir requiere confirmación. Cargar avisa de la pérdida del progreso sin guardar.
 - La lista muestra nombre, fecha UTC, duración, mapa, equipo y nivel del líder.

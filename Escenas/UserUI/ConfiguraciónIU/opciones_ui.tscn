@@ -184,6 +184,11 @@ metadata/_tab_index = 3
 visible = false
 layout_mode = 2
 
+[node name="InputMode" parent="PanelRoot/MarginContainer/VBoxMain/Tabs/Gameplay/GameplayOptions" instance=ExtResource("3_fwgtp")]
+layout_mode = 2
+category = "interface"
+key = "input_mode"
+
 [node name="Controls" type="ScrollContainer" parent="PanelRoot/MarginContainer/VBoxMain/Tabs"]
 layout_mode = 2
 metadata/_tab_index = 4

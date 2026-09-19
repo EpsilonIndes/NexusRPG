@@ -56,6 +56,46 @@ func _run() -> void:
 		get_tree().current_scene.get_node("CanvasLayer").add_child(panel)
 		panel.open(true)
 		check(panel.slots.size() >= 1, "Save list populated")
+		var accept_key := InputEventKey.new()
+		accept_key.keycode = KEY_ENTER
+		accept_key.pressed = true
+		get_viewport().push_input(accept_key, true)
+		check(panel.new_dialog.visible, "Enter activates new-save row")
+		panel.new_dialog.hide()
+		panel._focus_list()
+		for index in panel.slots_list.item_count:
+			if panel.slots_list.get_item_metadata(index) == filename:
+				panel.slots_list.select(index)
+		get_viewport().push_input(accept_key, true)
+		check(panel.confirmation.visible and panel.pending_action == "save", "Enter activates selected save")
+		panel.confirmation.hide()
+		panel._focus_list()
+		panel.mode_tabs.current_tab = 1
+		for index in panel.slots_list.item_count:
+			if panel.slots_list.get_item_metadata(index) == filename:
+				panel.slots_list.select(index)
+		var accept_pad := InputEventJoypadButton.new()
+		accept_pad.button_index = JOY_BUTTON_A
+		accept_pad.pressed = true
+		get_viewport().push_input(accept_pad, true)
+		check(panel.confirmation.visible and panel.pending_action == "load", "Controller accept activates load")
+		panel.confirmation.hide()
+		panel._focus_list()
+		var triangle := InputEventJoypadButton.new()
+		triangle.button_index = JOY_BUTTON_Y
+		triangle.pressed = true
+		get_viewport().push_input(triangle, true)
+		check(panel.confirmation.visible and panel.pending_action == "delete", "Triangle opens delete confirmation")
+		check(FileAccess.file_exists(SaveManager.SAVE_DIR + filename), "Delete requires confirmation")
+		panel.confirmation.hide()
+		panel._focus_list()
+		var delete_key := InputEventKey.new()
+		delete_key.keycode = KEY_R
+		delete_key.pressed = true
+		get_viewport().push_input(delete_key, true)
+		check(panel.confirmation.visible and panel.pending_action == "delete", "R opens delete confirmation")
+		panel.confirmation.hide()
+		check(FileAccess.file_exists(SaveManager.SAVE_DIR + filename), "Cancel keeps save")
 		panel.close()
 		check(GameManager.ui_lock_count == 0, "Panel close releases lock")
 		panel.queue_free()
@@ -83,8 +123,13 @@ func _run() -> void:
 		var menu := get_tree().current_scene
 		check(not menu.load_button.disabled, "Title screen enables load")
 		menu._on_load_pressed()
-		check(menu.save_slots.visible and not menu.save_slots.new_button.visible, "Title opens load-only panel")
+		check(menu.save_slots.visible and not menu.save_slots.allow_save, "Title opens load-only panel")
 		check(await SaveManager.load_game(filename), "Load from title succeeds")
+		check(not SaveManager.delete_save("../escape.sav"), "Delete rejects path traversal")
+		check(SaveManager.delete_save(corrupt_name), "Can delete damaged save")
+		check(FileAccess.file_exists(SaveManager.SAVE_DIR + filename), "Deleting another slot preserves selected save")
+		check(SaveManager.delete_save(filename), "Delete valid save")
+		check(not FileAccess.file_exists(SaveManager.SAVE_DIR + filename) and not FileAccess.file_exists(SaveManager.SAVE_DIR + filename + ".bak"), "Deletion removes file and backup")
 		SaveManager.reset_progress()
 		check(InventoryManager.items.is_empty() and WorldFlags.flags.is_empty(), "New game reset clears progress")
 	for filename in owned_files:
