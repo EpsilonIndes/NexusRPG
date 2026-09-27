@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://cuk3kad5j5gge" path="res://Animaciones/battle_animator.tscn" id="7_l5hoi"]
 [ext_resource type="Script" uid="uid://2sodb4on8v3h" path="res://Scripts/UI/TechniqueOverlay.gd" id="8_y4blo"]
 [ext_resource type="PackedScene" path="res://Escenas/Battle/battle_ui/drive_score_feedback.tscn" id="9_drive"]
-[ext_resource type="PackedScene" path="res://Escenas/UserUI/battle_hud.tscn" id="10_hud"]
+[ext_resource type="PackedScene" uid="uid://ckj2nd5m52pd2" path="res://Escenas/UserUI/battle_hud.tscn" id="10_hud"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_f8uh2"]
 
@@ -122,10 +122,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.324281, 1.9904042, 6.895932
 [node name="BattleCameraDirector" type="Node" parent="Camera"]
 script = ExtResource("5_acwgc")
 
+[node name="BattleResultCam" type="Camera3D" parent="Camera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1064944, 0)
+
 [node name="UIOverlay" type="CanvasLayer" parent="."]
 script = ExtResource("5_l5hoi")
 
 [node name="BattleHud" parent="UIOverlay" instance=ExtResource("10_hud")]
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="DriveScoreFeedback" parent="UIOverlay" instance=ExtResource("9_drive")]
 

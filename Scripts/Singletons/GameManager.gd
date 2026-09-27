@@ -12,6 +12,7 @@ enum EstadosDeJuego {
 
 var in_battle = false
 var pending_battle_rewards: Dictionary = {}
+var _closing_battle_results := false
 
 const BattleResultsUIScene: PackedScene = preload("res://Escenas/UserUI/battle_results_ui.tscn")
 
@@ -125,20 +126,14 @@ func get_team_instanciar() -> Array[Dictionary]:
 	return team # [{"id": "Astro"}, {"id": "Sigrid"}]
 
 func _on_battle_finished(result: Dictionary) -> void:
-	in_battle = false
+	if not pending_battle_rewards.is_empty():
+		return
 	print("Resultado de batalla recibido: ", result)
 
 	var rewards = BattleResultProcessor.procesar_batalla(result)
 	print("[GameManager] Recompensas calculadas: ", rewards)
 	pending_battle_rewards = rewards.duplicate(true)
 
-	set_estado(EstadosDeJuego.LIBRE)
-	var change_error := get_tree().change_scene_to_file("res://Escenas/pantallas/nivel_1.tscn")
-	if change_error != OK:
-		push_error("[GameManager] No se pudo volver al mapa después de la batalla. Error: %s" % change_error)
-		return
-
-	await get_tree().scene_changed
 	_mostrar_resultado_batalla()
 
 
@@ -148,18 +143,30 @@ func _mostrar_resultado_batalla() -> void:
 
 	var results_ui = BattleResultsUIScene.instantiate()
 	results_ui.name = "BattleResultsUI"
-	get_tree().current_scene.add_child(results_ui)
+	var results_layer := CanvasLayer.new()
+	results_layer.name = "BattleResultsLayer"
+	results_layer.layer = 100
+	get_tree().current_scene.add_child(results_layer)
+	results_layer.add_child(results_ui)
 	results_ui.finished.connect(_cerrar_resultado_batalla)
 	push_ui()
 	results_ui.mostrar_recompensas(pending_battle_rewards)
 
 
 func _cerrar_resultado_batalla() -> void:
-	var results_ui := get_tree().current_scene.get_node_or_null("BattleResultsUI")
-	if results_ui != null:
-		results_ui.queue_free()
+	if _closing_battle_results or pending_battle_rewards.is_empty():
+		return
+	_closing_battle_results = true
+	var change_error := get_tree().change_scene_to_file("res://Escenas/pantallas/nivel_1.tscn")
+	if change_error != OK:
+		_closing_battle_results = false
+		push_error("[GameManager] No se pudo volver al mapa después de la batalla. Error: %s" % change_error)
+		return
+	await get_tree().scene_changed
+	in_battle = false
 	pending_battle_rewards.clear()
 	pop_ui()
+	_closing_battle_results = false
 
 func is_in_battle() -> bool:
 	return in_battle

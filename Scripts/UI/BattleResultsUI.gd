@@ -16,20 +16,37 @@ const TOUCH_ACTION_SCENE: PackedScene = preload("res://Escenas/UserUI/Inventory/
 
 var rewards: Dictionary = {}
 var _exp_rows: Array[Dictionary] = []
+var _camera_pan_distance := 1.0
 signal finished
 
 func _ready() -> void:
 	next_button.pressed.connect(_show_experience_page)
 	continue_button.pressed.connect(func(): finished.emit())
 	exp_page.visible = false
+	$Pages.visible = false
+	$ActionHints.visible = false
 	set_process_unhandled_input(true)
-	next_button.grab_focus()
-	_update_presentation()
 
 func mostrar_recompensas(data: Dictionary) -> void:
 	rewards = data.duplicate(true)
 	_build_summary_page()
 	_build_experience_page()
+	_play_result_camera_intro()
+
+func _play_result_camera_intro() -> void:
+	var battle_scene := get_tree().current_scene
+	var result_camera := battle_scene.get_node_or_null("Camera/BattleResultCam") as Camera3D
+	if result_camera == null:
+		_show_summary_page()
+		return
+
+	result_camera.make_current()
+	var start_position := result_camera.global_position
+	var target_position := start_position + Vector3.DOWN * _camera_pan_distance
+	var tween: Tween = create_tween()
+	tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(result_camera, "global_position", target_position, 1.0)
+	await tween.finished
 	_show_summary_page()
 
 func _build_summary_page() -> void:
@@ -81,6 +98,8 @@ func _create_exp_row(detail: Dictionary) -> Dictionary:
 func _show_summary_page() -> void:
 	summary_page.visible = true
 	exp_page.visible = false
+	$Pages.visible = true
+	$ActionHints.visible = true
 	next_button.grab_focus()
 	_update_presentation()
 
@@ -137,4 +156,3 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel") and exp_page.visible:
 		_show_summary_page()
 		get_viewport().set_input_as_handled()
-
