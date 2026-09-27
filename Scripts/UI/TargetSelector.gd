@@ -255,10 +255,7 @@ func _reconstruir_touch_zones() -> void:
 	_limpiar_touch_zones()
 
 	for target in _get_candidatos_actuales():
-		var button := Button.new()
-		button.text = ""
-		button.focus_mode = Control.FOCUS_NONE
-		button.mouse_filter = Control.MOUSE_FILTER_STOP
+		var button := preload("res://Escenas/Battle/battle_ui/target_touch_zone.tscn").instantiate() as Button
 		button.custom_minimum_size = touch_zone_size
 		button.size = touch_zone_size
 		button.modulate = Color(1.0, 1.0, 1.0, 0.25 if show_debug_touch_zones else 0.0)
@@ -277,10 +274,8 @@ func _limpiar_touch_zones() -> void:
 func _crear_cancel_touch_button() -> void:
 	_limpiar_cancel_touch_button()
 
-	cancel_touch_button = Button.new()
+	cancel_touch_button = preload("res://Escenas/Battle/battle_ui/target_cancel_button.tscn").instantiate()
 	cancel_touch_button.text = cancel_button_text
-	cancel_touch_button.focus_mode = Control.FOCUS_NONE
-	cancel_touch_button.mouse_filter = Control.MOUSE_FILTER_STOP
 	cancel_touch_button.custom_minimum_size = cancel_button_size
 	cancel_touch_button.size = cancel_button_size
 	cancel_touch_button.pressed.connect(_on_cancel_touch_pressed)

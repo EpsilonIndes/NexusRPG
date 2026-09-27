@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dwfdbxtwcl5vd"]
+[gd_scene load_steps=18 format=3 uid="uid://dwfdbxtwcl5vd"]
 
 [ext_resource type="Script" uid="uid://dmi1n3jxy6l2" path="res://Scripts/BattleMode/BattleManager2.gd" id="1_54c5x"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="2_fyboh"]
@@ -9,7 +9,8 @@
 [ext_resource type="PackedScene" uid="uid://gvt6yjw3ptg0" path="res://Escenas/Battle/battle_ui/target_selector.tscn" id="6_lu3wa"]
 [ext_resource type="PackedScene" uid="uid://cuk3kad5j5gge" path="res://Animaciones/battle_animator.tscn" id="7_l5hoi"]
 [ext_resource type="Script" uid="uid://2sodb4on8v3h" path="res://Scripts/UI/TechniqueOverlay.gd" id="8_y4blo"]
-[ext_resource type="Script" uid="uid://ddtxi1hte2362" path="res://Scripts/UI/DriveScoreFeedbackUI.gd" id="9_drive"]
+[ext_resource type="PackedScene" path="res://Escenas/Battle/battle_ui/drive_score_feedback.tscn" id="9_drive"]
+[ext_resource type="PackedScene" path="res://Escenas/UserUI/battle_hud.tscn" id="10_hud"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_f8uh2"]
 
@@ -124,17 +125,9 @@ script = ExtResource("5_acwgc")
 [node name="UIOverlay" type="CanvasLayer" parent="."]
 script = ExtResource("5_l5hoi")
 
-[node name="DriveScoreFeedback" type="Control" parent="UIOverlay"]
-layout_mode = 3
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -1265.0
-offset_top = 24.0
-offset_right = -989.0
-offset_bottom = 220.0
-grow_horizontal = 0
-script = ExtResource("9_drive")
+[node name="BattleHud" parent="UIOverlay" instance=ExtResource("10_hud")]
+
+[node name="DriveScoreFeedback" parent="UIOverlay" instance=ExtResource("9_drive")]
 
 [node name="TargetSelector" parent="UIOverlay" instance=ExtResource("6_lu3wa")]
 

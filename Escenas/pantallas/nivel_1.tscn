@@ -181,6 +181,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 
 [node name="InventoryUI" parent="CanvasLayer" instance=ExtResource("10_x6jwr")]
+anchors_preset = -1
 
 [node name="MainMenuUI" parent="CanvasLayer" instance=ExtResource("11_lotfc")]
 

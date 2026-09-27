@@ -9,6 +9,7 @@ extends Node
 func procesar_batalla(result: Dictionary) -> Dictionary:
 	var rewards := {
 		"exp": {},			# { "Astro": 120, "Maya": 90, ...}
+		"exp_detalle": [],	# Estado antes/después para la pantalla de resultados
 		"items": [],		# Vacío por ahora
 		"drive_bonus": 0,	# reservado
 		"stats_actualizadas": {}
@@ -87,8 +88,30 @@ func _calcular_exp(result: Dictionary, rewards: Dictionary) -> void:
 	for pj_id in jugadores:
 		var pj = PlayableCharacters.get_character(pj_id)
 		if pj:
+			var stats_antes: Dictionary = pj.get_stats().duplicate(true)
+			var nivel_inicial := int(stats_antes.get("nivel", 1))
+			var exp_inicial := int(stats_antes.get("exp_actual", 0))
+			var exp_siguiente_inicial := int(stats_antes.get("exp_para_siguiente", 100))
+
 			pj.gain_exp(exp_por_jugador)
 			rewards["exp"][pj_id] = exp_por_jugador
+
+			var stats_despues: Dictionary = pj.get_stats()
+			var nivel_final := int(stats_despues.get("nivel", nivel_inicial))
+			var exp_final := int(stats_despues.get("exp_actual", exp_inicial))
+			var exp_siguiente_final := int(stats_despues.get("exp_para_siguiente", exp_siguiente_inicial))
+			rewards["exp_detalle"].append({
+				"id": pj_id,
+				"exp_ganada": exp_por_jugador,
+				"nivel_inicial": nivel_inicial,
+				"nivel_final": nivel_final,
+				"exp_inicial": exp_inicial,
+				"exp_final": exp_final,
+				"exp_para_siguiente_inicial": exp_siguiente_inicial,
+				"exp_para_siguiente_final": exp_siguiente_final,
+				"subio_de_nivel": nivel_final > nivel_inicial,
+				"niveles_subidos": max(0, nivel_final - nivel_inicial)
+			})
 
 
 func _calcular_drops(result: Dictionary, rewards: Dictionary) -> void:

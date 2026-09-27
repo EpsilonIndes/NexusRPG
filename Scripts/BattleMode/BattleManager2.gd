@@ -109,6 +109,7 @@ func start_battle(jugadores: Array, enemigos: Array) -> void:
 
 	instanciar_equipo(jugadores, player_team, true)
 	instanciar_equipo(enemigos, enemy_team, false)
+	ui_overlay.get_node("BattleHud").bind_battle(self)
 	_rebuild_turn_queue()
 
 	cambiar_estado(BattleState.CHEQUEAR_FINAL)

@@ -11,6 +11,9 @@ enum EstadosDeJuego {
 }
 
 var in_battle = false
+var pending_battle_rewards: Dictionary = {}
+
+const BattleResultsUIScene: PackedScene = preload("res://Escenas/UserUI/battle_results_ui.tscn")
 
 
 var equipo_actual: Array[Dictionary] = [ # todos los pjs actuales jugables
@@ -127,9 +130,36 @@ func _on_battle_finished(result: Dictionary) -> void:
 
 	var rewards = BattleResultProcessor.procesar_batalla(result)
 	print("[GameManager] Recompensas calculadas: ", rewards)
+	pending_battle_rewards = rewards.duplicate(true)
 
 	set_estado(EstadosDeJuego.LIBRE)
-	get_tree().change_scene_to_file("res://Escenas/pantallas/nivel_1.tscn")
+	var change_error := get_tree().change_scene_to_file("res://Escenas/pantallas/nivel_1.tscn")
+	if change_error != OK:
+		push_error("[GameManager] No se pudo volver al mapa después de la batalla. Error: %s" % change_error)
+		return
+
+	await get_tree().scene_changed
+	_mostrar_resultado_batalla()
+
+
+func _mostrar_resultado_batalla() -> void:
+	if pending_battle_rewards.is_empty():
+		return
+
+	var results_ui = BattleResultsUIScene.instantiate()
+	results_ui.name = "BattleResultsUI"
+	get_tree().current_scene.add_child(results_ui)
+	results_ui.finished.connect(_cerrar_resultado_batalla)
+	push_ui()
+	results_ui.mostrar_recompensas(pending_battle_rewards)
+
+
+func _cerrar_resultado_batalla() -> void:
+	var results_ui := get_tree().current_scene.get_node_or_null("BattleResultsUI")
+	if results_ui != null:
+		results_ui.queue_free()
+	pending_battle_rewards.clear()
+	pop_ui()
 
 func is_in_battle() -> bool:
 	return in_battle

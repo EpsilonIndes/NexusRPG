@@ -1,0 +1,5 @@
+[gd_scene format=3]
+[node name="FeedbackLine" type="Label"]
+mouse_filter = 2
+theme_override_font_sizes/font_size = 13
+horizontal_alignment = 2

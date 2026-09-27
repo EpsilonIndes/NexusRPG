@@ -1,0 +1,95 @@
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://dws1uwhnt83bj"]
+
+[sub_resource type="StyleBoxFlat" id="Keycap"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.15, 0.19, 0.26, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxEmpty" id="Empty"]
+
+[sub_resource type="StyleBoxFlat" id="Focus"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.55, 0.77, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="Hover"]
+bg_color = Color(0.18, 0.24, 0.33, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.55, 0.77, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="Card"]
+bg_color = Color(0.1, 0.13, 0.19, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="Pressed"]
+bg_color = Color(0.12, 0.18, 0.27, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[resource]
+InventoryActionHint/base_type = &"HBoxContainer"
+InventoryActionHint/constants/separation = 4
+InventoryActionKey/base_type = &"PanelContainer"
+InventoryActionKey/styles/panel = SubResource("Keycap")
+InventoryBody/base_type = &"HBoxContainer"
+InventoryBody/constants/separation = 20
+InventoryCardContent/base_type = &"PanelContainer"
+InventoryCardContent/styles/panel = SubResource("Empty")
+InventoryCardMargin/base_type = &"MarginContainer"
+InventoryCardMargin/constants/margin_bottom = 5
+InventoryCardMargin/constants/margin_left = 5
+InventoryCardMargin/constants/margin_right = 5
+InventoryCardMargin/constants/margin_top = 5
+InventoryCardRow/base_type = &"HBoxContainer"
+InventoryCardRow/constants/separation = 12
+InventoryCharacterCard/base_type = &"Button"
+InventoryCharacterCard/styles/focus = SubResource("Focus")
+InventoryCharacterCard/styles/hover = SubResource("Hover")
+InventoryCharacterCard/styles/normal = SubResource("Card")
+InventoryCharacterCard/styles/pressed = SubResource("Pressed")
+InventoryColumn/base_type = &"VBoxContainer"
+InventoryColumn/constants/separation = 12
+InventoryHints/base_type = &"HFlowContainer"
+InventoryHints/constants/h_separation = 18
+InventoryHints/constants/v_separation = 8
+InventoryItems/base_type = &"ItemList"
+InventoryItems/constants/v_separation = 12
+InventoryItemsCompact/base_type = &"InventoryItems"
+InventoryItemsCompact/constants/v_separation = 20
+InventoryMargin/base_type = &"MarginContainer"
+InventoryMargin/constants/margin_bottom = 20
+InventoryMargin/constants/margin_left = 20
+InventoryMargin/constants/margin_right = 20
+InventoryMargin/constants/margin_top = 20
+InventoryTargets/base_type = &"VBoxContainer"
+InventoryTargets/constants/separation = 8
+InventoryTargetsCompact/base_type = &"InventoryTargets"
+InventoryTargetsCompact/constants/separation = 12
+InventoryTitle/base_type = &"Label"
+InventoryTitle/font_sizes/font_size = 26
+InventoryTouchAction/base_type = &"Button"

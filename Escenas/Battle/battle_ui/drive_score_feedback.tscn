@@ -1,0 +1,51 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://Scripts/UI/DriveScoreFeedbackUI.gd" id="1"]
+[node name="DriveScoreFeedback" type="Control"]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -300.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = 220.0
+grow_horizontal = 0
+mouse_filter = 2
+script = ExtResource("1")
+[node name="Root" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme_override_constants/separation = 4
+[node name="Score" type="Label" parent="Root"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 34
+text = "000000"
+horizontal_alignment = 2
+[node name="Rank" type="Label" parent="Root"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 15
+text = "Static Pulse"
+horizontal_alignment = 2
+[node name="Combo" type="Label" parent="Root"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 18
+text = "Combo x0  Max x0"
+horizontal_alignment = 2
+[node name="Sequence" type="Label" parent="Root"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 12
+text = ""
+horizontal_alignment = 2
+autowrap_mode = 3
+[node name="FeedbackList" type="VBoxContainer" parent="Root"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 2
+alignment = 2

@@ -5,6 +5,12 @@ var velocidad := 1.5
 var tiempo_vida := 1.0
 
 func setup(valor: int, tipo: String, rol_combo: String, critico: bool = false) -> void:
+	# Los fallos llegan con valor 0 como marcador, no como daño bloqueado.
+	if tipo == "miss":
+		label.text = "MISS"
+		label.modulate = Color(0.75, 0.75, 0.75)
+		return
+
 	label.text = str(valor)
 
 	match tipo:
@@ -45,4 +51,3 @@ func _ready():
 	var tween = create_tween()
 	tween.tween_property(self, "position:y", position.y + 2, 0.7)
 	tween.tween_callback(queue_free)
-

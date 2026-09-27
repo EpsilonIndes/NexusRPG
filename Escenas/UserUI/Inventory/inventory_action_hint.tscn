@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/UI/InventoryActionHint.gd" id="1"]
+
+[node name="ActionHint" type="HBoxContainer"]
+mouse_filter = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"InventoryActionHint"
+script = ExtResource("1")
+
+[node name="Keycap" type="PanelContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"InventoryActionKey"
+
+[node name="Glyph" type="Label" parent="Keycap"]
+layout_mode = 2
+mouse_filter = 2
+text = "Enter"
+
+[node name="Caption" type="Label" parent="."]
+layout_mode = 2
+mouse_filter = 2
+text = "Usar"

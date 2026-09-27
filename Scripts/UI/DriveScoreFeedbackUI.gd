@@ -86,64 +86,15 @@ func _disconnect_drive_system() -> void:
 		drive_system.feedback_requested.disconnect(feedback_callable)
 
 
-func _build_layout() -> void:
+func _ensure_layout() -> void:
 	if layout_built:
 		return
-
+	score_label = $Root/Score
+	rank_label = $Root/Rank
+	combo_label = $Root/Combo
+	sequence_label = $Root/Sequence
+	feedback_list = $Root/FeedbackList
 	layout_built = true
-	anchors_preset = Control.PRESET_TOP_RIGHT
-	anchor_left = 1.0
-	anchor_right = 1.0
-	anchor_top = 0.0
-	anchor_bottom = 0.0
-	offset_left = -300.0
-	offset_top = 24.0
-	offset_right = -24.0
-	offset_bottom = 220.0
-
-	var root := VBoxContainer.new()
-	root.name = "Root"
-	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	root.add_theme_constant_override("separation", 4)
-	add_child(root)
-
-	score_label = Label.new()
-	score_label.name = "Score"
-	score_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	score_label.add_theme_font_size_override("font_size", 34)
-	root.add_child(score_label)
-
-	rank_label = Label.new()
-	rank_label.name = "Rank"
-	rank_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	rank_label.add_theme_font_size_override("font_size", 15)
-	root.add_child(rank_label)
-
-	combo_label = Label.new()
-	combo_label.name = "Combo"
-	combo_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	combo_label.add_theme_font_size_override("font_size", 18)
-	root.add_child(combo_label)
-
-	sequence_label = Label.new()
-	sequence_label.name = "Sequence"
-	sequence_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	sequence_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	sequence_label.add_theme_font_size_override("font_size", 12)
-	root.add_child(sequence_label)
-
-	feedback_list = VBoxContainer.new()
-	feedback_list.name = "FeedbackList"
-	feedback_list.alignment = BoxContainer.ALIGNMENT_END
-	feedback_list.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	feedback_list.add_theme_constant_override("separation", 2)
-	root.add_child(feedback_list)
-
-
-func _ensure_layout() -> void:
-	if not layout_built:
-		_build_layout()
 
 
 func _reset_view() -> void:
@@ -215,11 +166,9 @@ func _show_feedback_line(feedback: Dictionary) -> void:
 	if text == "":
 		return
 
-	var label := Label.new()
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	var label := preload("res://Escenas/Battle/battle_ui/drive_feedback_line.tscn").instantiate() as Label
 	label.text = text
 	label.modulate = _feedback_color(feedback)
-	label.add_theme_font_size_override("font_size", 13)
 	feedback_list.add_child(label)
 	_trim_feedback()
 
@@ -272,8 +221,10 @@ func _set_combo(combo_state: Dictionary) -> void:
 
 
 func _trim_feedback() -> void:
-	while feedback_list.get_child_count() > max_feedback_lines:
-		feedback_list.get_child(0).queue_free()
+	while feedback_list.get_child_count() > maxi(0, max_feedback_lines):
+		var oldest := feedback_list.get_child(0)
+		feedback_list.remove_child(oldest)
+		oldest.queue_free()
 
 
 func _feedback_color(feedback: Dictionary) -> Color:
