@@ -22,7 +22,7 @@ Miguelito,miguelito_05,Observador,support,"Gana miniturno si un aliado inicia co
 Miguelito,miguelito_06,Carga Silenciosa,support,"Recupera Drive si no ataca",0,ballesta,damage:0.5,SELF,false,fisico,,,melee
 Chipita,chip_01,Burbuja Concentrada,opener,"Reduce defensa mágica del enemigo",0,baston,damage:0.3;debuff:defensa:0.2,SINGLE_ENEMY,true,magico,debuff,,melee
 Chipita,chip_02,Ráfaga Húmeda,linker,"Ralentiza enemigos",0,baston,damage:0.5;debuff:velocidad:0.3,RANDOM_ENEMY,false,magico,,,melee
-Chipita,chip_03,Espejismo Acuático,linker,"Crea imagen para evasión",0,baston,damage:0.5,SELF,false,magico,,,melee
+Chipita,chip_03,Lente cósmico,linker,"Crea imagen para evasión",0,baston,damage:0.5,SELF,false,magico,,,melee
 Chipita,chip_04,Marea Ascendente,finisher,"Daño a todos + interrumpe turnos",0,baston,damage:0.5,ALL_ENEMIES,false,magico,,,melee
 Chipita,chip_05,Canalizar Agua,support,"Recupera Drive a aliados",0,baston,damage:0.5,ALL_ALLIES,false,magico,,,melee
 Chipita,chip_06,Reacción Fluida,support,"Miniturno si aliado usa técnica mágica",0,baston,damage:0.5,SELF,false,magico,,,melee

@@ -109,7 +109,7 @@ func iniciar_batalla(contra_enemigos: Array[String]):
 	if not bm.is_connected("battle_finished", Callable(self, "_on_battle_finished")):
 		bm.connect("battle_finished", Callable(self, "_on_battle_finished"))
 	
-	bm.start_battle(jugadores_instanciar, contra_enemigos)	
+	bm.start_battle(jugadores_instanciar, contra_enemigos)
 	
 
 # Funcion para retornar un array de diccionarios con el equipo actual de 4 personajes

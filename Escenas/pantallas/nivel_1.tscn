@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://cjswe57kq821f"]
+[gd_scene load_steps=45 format=3 uid="uid://cjswe57kq821f"]
 
 [ext_resource type="PackedScene" uid="uid://bmocargan5l0q" path="res://Escenas/player.tscn" id="1_a8vtw"]
 [ext_resource type="Script" uid="uid://dpb427vjhtg17" path="res://Scripts/InventoryManager.gd" id="2_5j2cu"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://ckhl1sgngkvhd" path="res://Escenas/Personajes/Sigrid.tscn" id="5_oduvb"]
 [ext_resource type="PackedScene" uid="uid://ddbnhhajofjkw" path="res://Escenas/Personajes/Chipita.tscn" id="6_ai0lc"]
 [ext_resource type="PackedScene" uid="uid://dkn8gxfmy5tm6" path="res://Escenas/UserUI/label_dialogue.tscn" id="6_dp2kd"]
+[ext_resource type="PackedScene" uid="uid://deymi3xn36lbb" path="res://Escenas/NPCs Auromora/NPC_Miguelito.tscn" id="7_2nmtk"]
 [ext_resource type="PackedScene" uid="uid://dhfemvdo74v03" path="res://Escenas/UserUI/party_sumary_ui.tscn" id="9_nkr7g"]
 [ext_resource type="PackedScene" uid="uid://brmhxiplj1nln" path="res://Escenas/UserUI/party_character_slot.tscn" id="10_pjnot"]
 [ext_resource type="PackedScene" uid="uid://dioro2qfasopc" path="res://Escenas/Objetos/cubiletrero.tscn" id="10_sf4ds"]
@@ -27,7 +28,8 @@
 [ext_resource type="Script" uid="uid://cq8p0ssv6jhso" path="res://Scripts/para_nodo/world.gd" id="17_v6mq6"]
 [ext_resource type="PackedScene" uid="uid://cdarkppno1gsm" path="res://Escenas/NPCs Auromora/NPC_sigrid.tscn" id="18_7vly3"]
 [ext_resource type="Script" uid="uid://bve60yr50c5sg" path="res://Scripts/Mundo/Interactuables/ChestCommon.gd" id="18_mo6bs"]
-[ext_resource type="PackedScene" uid="uid://xlhfyi07xx0d" path="res://Escenas/NPCs Auromora/NPC_amanda.tscn" id="19_x6jwr"]
+[ext_resource type="PackedScene" uid="uid://dcgovfjf058v7" path="res://Escenas/NPCs Auromora/chipita_npc.tscn" id="24_holr5"]
+[ext_resource type="PackedScene" uid="uid://cvef6ufy7deka" path="res://Escenas/NPCs Auromora/Amanda_npc.tscn" id="25_2nmtk"]
 [ext_resource type="PackedScene" uid="uid://b6txbxwkyyt2n" path="res://Escenas/Triggers/graphics_test.tscn" id="28_pjnot"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_metkf"]
@@ -105,6 +107,9 @@ pj_nombre = "Maya"
 [node name="Sigrid" parent="Personajes/reservaIA" groups=["equipo"] instance=ExtResource("5_oduvb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.944998, 0)
 pj_nombre = "Sigrid"
+
+[node name="Miguelito" parent="Personajes/reservaIA" instance=ExtResource("2_csbrw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1317377, 0.8763044, 1.0638132)
 
 [node name="Chipita" parent="Personajes/reservaIA" groups=["equipo"] instance=ExtResource("6_ai0lc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.944555, 0.751558)
@@ -206,6 +211,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.557146, 0, -3.7993143)
 
 [node name="Cubiletrero" parent="Interactuable" groups=["dynamic_lights"] instance=ExtResource("10_sf4ds")]
 
+[node name="Miguelito_npc" parent="Interactuable" instance=ExtResource("7_2nmtk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.996872, 0.717541, -8.695454)
+npc_id = "miguelito_npc_2"
+
 [node name="Anciano_1" parent="Interactuable" instance=ExtResource("13_wukj4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.609187, 0.810861, -6.32963)
 
@@ -226,8 +235,12 @@ world_flag_id = "maya_reclutada_prueba"
 [node name="Sigrid_npc" parent="Interactuable" instance=ExtResource("18_7vly3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.489412, 2.867685, -8.371642)
 
-[node name="Amanda_npc" parent="Interactuable" instance=ExtResource("19_x6jwr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.452143, 0.717541, -7.2336907)
+[node name="Chipita_npc2" parent="Interactuable" instance=ExtResource("24_holr5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.4670243, 0.717541, -7.547989)
+npc_id = "chipita_npc_1"
+
+[node name="Amanda_npc" parent="Interactuable" instance=ExtResource("25_2nmtk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.713395, 0.717541, -7.9694424)
 
 [node name="CameraManager" type="Node" parent="."]
 

@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://dcgovfjf058v7"]
+
+[ext_resource type="Script" uid="uid://ciikaepqjexgr" path="res://Scripts/NPCsDIalogos/npc_chipita.gd" id="1_al0go"]
+[ext_resource type="Texture2D" uid="uid://d1511sm5oiovm" path="res://Sprites/Chipita/Chipitadown.png" id="2_keuhg"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ibmry"]
+atlas = ExtResource("2_keuhg")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_bg1i0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ibmry")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_y33gn"]
+radius = 0.303653
+height = 1.31188
+
+[node name="Chipita_npc" type="CharacterBody3D" groups=["interactuables"]]
+script = ExtResource("1_al0go")
+
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+billboard = 1
+texture_filter = 0
+sprite_frames = SubResource("SpriteFrames_bg1i0")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_y33gn")
+
+[node name="DialogueAnchor" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.69557905, 0)
